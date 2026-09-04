@@ -1,0 +1,122 @@
+// @fetrag/ui - design system FETRAG « Le Cercle et l'Étoile »
+// Contrat d'export partagé par apps/web et apps/lms. Chaque fichier listé ici doit exister.
+
+// Utilitaires
+export { cn } from './lib/cn'
+
+// Primitives (Radix + Tailwind)
+export { Button, buttonVariants, type ButtonProps } from './components/button'
+export { IconButton } from './components/icon-button'
+export { Badge, badgeVariants, type BadgeProps } from './components/badge'
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/card'
+export { Input } from './components/input'
+export { Textarea } from './components/textarea'
+export { Label } from './components/label'
+export { Checkbox } from './components/checkbox'
+export { RadioGroup, RadioGroupItem } from './components/radio-group'
+export { Switch } from './components/switch'
+export { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel } from './components/select'
+export { NativeSelect } from './components/native-select'
+export { FormField, FormMessage, FormDescription } from './components/form-field'
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/tabs'
+export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from './components/dialog'
+export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuGroup } from './components/dropdown-menu'
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './components/tooltip'
+export { Popover, PopoverTrigger, PopoverContent } from './components/popover'
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './components/accordion'
+export { Avatar, AvatarImage, AvatarFallback } from './components/avatar'
+export { Separator } from './components/separator'
+export { Progress } from './components/progress'
+export { Skeleton } from './components/skeleton'
+export { Alert, AlertTitle, AlertDescription } from './components/alert'
+export { Table, TableHeader, TableBody, TableRow, TableHead, TableCell, TableCaption } from './components/table'
+export { Pagination } from './components/pagination'
+export { EmptyState } from './components/empty-state'
+export { Toaster, toast } from './components/toaster'
+export { Breadcrumbs, type BreadcrumbItem } from './components/breadcrumbs'
+export { StatusBadge } from './components/status-badge'
+
+// Composants signatures FETRAG
+export { Ribbon } from './components/brand/ribbon'
+export { Emblem } from './components/brand/emblem'
+export { Logo } from './components/brand/logo'
+export { ArcRing } from './components/brand/arc-ring'
+export { ProgressArc } from './components/brand/progress-arc'
+export { RingBackdrop } from './components/brand/ring-backdrop'
+export { SectionHeading } from './components/brand/section-heading'
+export { PillarCard } from './components/brand/pillar-card'
+export { TriptychStrip } from './components/brand/triptych-strip'
+export { ModuleCard } from './components/brand/module-card'
+export { StatTile } from './components/brand/stat-tile'
+export { CertificateSeal } from './components/brand/certificate-seal'
+export { MottoStrip } from './components/brand/motto-strip'
+export { GradientDivider } from './components/brand/gradient-divider'
+
+// Mouvement (motion / framer-motion v12) - respectent prefers-reduced-motion
+export { Reveal } from './components/motion/reveal'
+export { Stagger, StaggerItem } from './components/motion/stagger'
+export { Counter } from './components/motion/counter'
+export { Marquee } from './components/motion/marquee'
+export { HoverLift } from './components/motion/hover-lift'
+export { PageTransition } from './components/motion/page-transition'
+export { useReducedMotionSafe } from './components/motion/use-reduced-motion'
+
+// Mise en page
+export { Container } from './components/layout/container'
+export { Section } from './components/layout/section'
+export { PageHeader } from './components/layout/page-header'
+export { Prose } from './components/layout/prose'
+export { AppShell, AppShellSidebar, AppShellMain, AppShellTopbar } from './components/layout/app-shell'
+export { SidebarNav, type SidebarNavItem } from './components/layout/sidebar-nav'
+
+// i18n
+export { fr, t } from './i18n/fr'
+
+// Exports complémentaires (ajouts du lot UI, le contrat ci-dessus reste inchangé)
+export { statusLabel, type TranslationKey, type TranslationVars } from './i18n/fr'
+export { type Tone, toneClasses, toneHex, pillarTone, resolveTone, toneAt } from './lib/tones'
+export { formatNumber, formatPercent, initials, padNumber, clamp } from './lib/format'
+export { type IconButtonProps } from './components/icon-button'
+export { type CardProps } from './components/card'
+export { type InputProps, fieldClassName } from './components/input'
+export { type NativeSelectOption, type NativeSelectProps } from './components/native-select'
+export { type FormFieldProps } from './components/form-field'
+export { type AlertProps } from './components/alert'
+export { type PaginationProps, paginationRange } from './components/pagination'
+export { type EmptyStateProps } from './components/empty-state'
+export { type StatusBadgeProps, statusTone } from './components/status-badge'
+export { PopoverAnchor } from './components/popover'
+export { type RibbonProps } from './components/brand/ribbon'
+export { type EmblemProps } from './components/brand/emblem'
+export { type LogoProps, LOGO_SRC } from './components/brand/logo'
+export { type ArcRingProps } from './components/brand/arc-ring'
+export { type ProgressArcProps } from './components/brand/progress-arc'
+export { type RingBackdropProps } from './components/brand/ring-backdrop'
+export { type SectionHeadingProps } from './components/brand/section-heading'
+export { type PillarCardProps } from './components/brand/pillar-card'
+export { type TriptychStripProps, type TriptychItem } from './components/brand/triptych-strip'
+export { type ModuleCardProps } from './components/brand/module-card'
+export { type StatTileProps } from './components/brand/stat-tile'
+export { type CertificateSealProps } from './components/brand/certificate-seal'
+export { type MottoStripProps } from './components/brand/motto-strip'
+export { type GradientDividerProps } from './components/brand/gradient-divider'
+export { type RevealProps, type MotionTag } from './components/motion/reveal'
+export { type StaggerProps, type StaggerItemProps } from './components/motion/stagger'
+export { type CounterProps } from './components/motion/counter'
+export { type MarqueeProps } from './components/motion/marquee'
+export { type HoverLiftProps } from './components/motion/hover-lift'
+export { type PageTransitionProps } from './components/motion/page-transition'
+export { EASE_OUT_EXPO } from './components/motion/use-reduced-motion'
+export { type ContainerProps } from './components/layout/container'
+export { type SectionProps } from './components/layout/section'
+export { type PageHeaderProps } from './components/layout/page-header'
+export { type ProseProps } from './components/layout/prose'
+export {
+  useAppShell,
+  SIDEBAR_WIDTH,
+  type AppShellProps,
+  type AppShellSidebarProps,
+  type AppShellTopbarProps,
+  type AppShellMainProps,
+} from './components/layout/app-shell'
+export { type SidebarNavProps, isActivePath } from './components/layout/sidebar-nav'

@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DATABASE_URL: postgresql://fetrag:fetrag@localhost:5432/fetrag
+  DATABASE_URL_UNPOOLED: postgresql://fetrag:fetrag@localhost:5432/fetrag
+  AUTH_SECRET: ci-secret-0123456789abcdef0123456789
+  AUTH_TRUST_HOST: 'true'
+  FEATURE_LOCAL_AUTH: 'true'
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  quality:
+    name: Lint, types, tests, build
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: fetrag
+          POSTGRES_PASSWORD: fetrag
+          POSTGRES_DB: fetrag
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U fetrag"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install (immuable)
+        run: pnpm install --frozen-lockfile
+      - name: Migrations
+        run: pnpm --filter @fetrag/db exec prisma migrate deploy
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Tests unitaires
+        run: pnpm test
+      - name: Audit des dépendances
+        run: pnpm audit --audit-level high || true
+      - name: Build
+        run: pnpm build

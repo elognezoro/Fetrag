@@ -1,0 +1,163 @@
+/*
+ * FETRAG - thème Tailwind v4 (CSS-first). Importé par packages/ui/src/styles/globals.css.
+ * Chaque valeur provient de src/index.ts ; garder les deux fichiers synchronisés.
+ */
+@theme {
+  /* --- Couleurs de marque (échantillonnées sur le logo) --- */
+  --color-blue-50: #eef4fd;
+  --color-blue-100: #d9e6fa;
+  --color-blue-200: #b3cdf5;
+  --color-blue-300: #7fabee;
+  --color-blue-400: #3f82e1;
+  --color-blue-500: #0259c7;
+  --color-blue-600: #024cb5;
+  --color-blue-700: #033b97;
+  --color-blue-800: #022a77;
+  --color-blue-900: #042768;
+  --color-blue-950: #02163f;
+
+  --color-green-50: #f6fae6;
+  --color-green-100: #ebf4c7;
+  --color-green-200: #d8ea93;
+  --color-green-300: #c1dc57;
+  --color-green-400: #accd1e;
+  --color-green-500: #9cc102;
+  --color-green-600: #7fa000;
+  --color-green-700: #627c03;
+  --color-green-800: #4b5e08;
+  --color-green-900: #3b4a0c;
+
+  --color-gold-50: #fffbe6;
+  --color-gold-100: #fff3b8;
+  --color-gold-200: #ffe87a;
+  --color-gold-300: #fdda3c;
+  --color-gold-400: #fbd406;
+  --color-gold-500: #f9c804;
+  --color-gold-600: #dba702;
+  --color-gold-700: #b07f05;
+  --color-gold-800: #8b620c;
+  --color-gold-900: #6e4e10;
+
+  --color-navy: #042768;
+  --color-navy-deep: #02163f;
+  --color-ink: #0b1b3f;
+
+  --color-neutral-0: #ffffff;
+  --color-neutral-25: #fcfcfd;
+  --color-neutral-50: #f7f8fc;
+  --color-neutral-100: #eef0f6;
+  --color-neutral-200: #dfe3ec;
+  --color-neutral-300: #c5cbd9;
+  --color-neutral-400: #9aa3b8;
+  --color-neutral-500: #6b7591;
+  --color-neutral-600: #4e5872;
+  --color-neutral-700: #38405a;
+  --color-neutral-800: #242b42;
+  --color-neutral-900: #141a2e;
+  --color-neutral-950: #0b0f1e;
+
+  /* --- Rôles sémantiques --- */
+  --color-primary: #0259c7;
+  --color-primary-strong: #033b97;
+  --color-primary-soft: #eef4fd;
+  --color-accent: #9cc102;
+  --color-accent-strong: #627c03;
+  --color-accent-soft: #f6fae6;
+  --color-highlight: #f9c804;
+  --color-highlight-strong: #b07f05;
+  --color-highlight-soft: #fffbe6;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f7f8fc;
+  --color-border: #dfe3ec;
+  --color-success: #7fa000;
+  --color-warning: #dba702;
+  --color-danger: #c62828;
+  --color-danger-soft: #fdecec;
+  --color-info: #3f82e1;
+
+  /* --- Typographie --- */
+  --font-display: var(--font-fraunces), 'Fraunces', 'Georgia', 'Times New Roman', serif;
+  --font-sans: var(--font-manrope), 'Manrope', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  /* --- Rayons --- */
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 2.5rem;
+  --radius-pill: 999px;
+
+  /* --- Ombres --- */
+  --shadow-soft: 0 1px 2px rgba(4, 39, 104, 0.06), 0 8px 24px -12px rgba(4, 39, 104, 0.18);
+  --shadow-lift: 0 12px 32px -12px rgba(2, 89, 199, 0.28), 0 2px 6px rgba(4, 39, 104, 0.08);
+  --shadow-glow-blue: 0 0 0 4px rgba(2, 89, 199, 0.16);
+  --shadow-glow-green: 0 0 0 4px rgba(156, 193, 2, 0.24);
+  --shadow-glow-gold: 0 0 0 4px rgba(249, 200, 4, 0.28);
+
+  /* --- Animations --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
+  --animate-arc-draw: arc-draw 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 2.2s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  --animate-rise: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  @keyframes arc-draw {
+    from {
+      stroke-dashoffset: var(--arc-length, 1000);
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.35);
+      opacity: 0;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

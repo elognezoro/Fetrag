@@ -1,0 +1,46 @@
+{
+  "name": "@fetrag/auth",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Auth.js (OIDC + auth locale), sessions partagées, RBAC et portées.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@auth/prisma-adapter": "^2.9.1",
+    "@fetrag/config": "workspace:*",
+    "@fetrag/contracts": "workspace:*",
+    "@fetrag/db": "workspace:*",
+    "@fetrag/domain": "workspace:*",
+    "bcryptjs": "^3.0.2",
+    "next-auth": "^5.0.0-beta.28",
+    "otplib": "^12.0.1",
+    "qrcode": "^1.5.4",
+    "zod": "^3.25.56"
+  },
+  "peerDependencies": {
+    "next": "^15.3.3",
+    "react": "^19.1.0"
+  },
+  "devDependencies": {
+    "@fetrag/eslint-config": "workspace:*",
+    "@fetrag/tsconfig": "workspace:*",
+    "@types/node": "^22.15.30",
+    "eslint": "^9.28.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.2",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19.1.8",
+    "next": "^15.3.3",
+    "react": "^19.1.0"
+  }
+}

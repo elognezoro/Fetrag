@@ -1,0 +1,6 @@
+{
+  "extends": "@fetrag/tsconfig/react-library.json",
+  "include": [
+    "src"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "name": "fetrag",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Écosystème numérique FETRAG - site institutionnel fetrag.ga + LMS formation.fetrag.ga (monorepo pnpm + Turborepo)",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=20.11",
+    "pnpm": ">=9"
+  },
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "pnpm --filter @fetrag/web dev",
+    "dev:lms": "pnpm --filter @fetrag/lms dev",
+    "build": "turbo run build",
+    "build:web": "turbo run build --filter=@fetrag/web...",
+    "build:lms": "turbo run build --filter=@fetrag/lms...",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:e2e": "turbo run test:e2e",
+    "db:generate": "pnpm --filter @fetrag/db generate",
+    "db:migrate": "pnpm --filter @fetrag/db migrate:dev",
+    "db:deploy": "pnpm --filter @fetrag/db migrate:deploy",
+    "db:push": "pnpm --filter @fetrag/db push",
+    "db:seed": "pnpm --filter @fetrag/db seed",
+    "db:studio": "pnpm --filter @fetrag/db studio",
+    "db:reset": "pnpm --filter @fetrag/db reset",
+    "clean": "turbo run clean && rimraf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,md,json,css}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,md,json,css}\""
+  },
+  "devDependencies": {
+    "@fetrag/eslint-config": "workspace:*",
+    "@fetrag/tsconfig": "workspace:*",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "rimraf": "^6.0.1",
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^19.1.8",
+      "@types/react-dom": "^19.1.6"
+    }
+  }
+}

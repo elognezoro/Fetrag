@@ -1,0 +1,25 @@
+{
+  "name": "@fetrag/config",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "zod": "^3.25.56"
+  },
+  "devDependencies": {
+    "@fetrag/eslint-config": "workspace:*",
+    "@fetrag/tsconfig": "workspace:*",
+    "@types/node": "^22.15.30",
+    "eslint": "^9.28.0",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,112 @@
+name: fetrag
+
+# Environnement auto-hébergé de référence (réversibilité, chapitre 41).
+# En développement local : `docker compose -f infra/docker/docker-compose.yml up postgres minio mailpit`.
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: fetrag
+      POSTGRES_PASSWORD: fetrag
+      POSTGRES_DB: fetrag
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U fetrag']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ':9001'
+    environment:
+      MINIO_ROOT_USER: fetrag
+      MINIO_ROOT_PASSWORD: fetrag-secret
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - miniodata:/data
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - '8025:8025'
+      - '1025:1025'
+
+  web:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.next
+      args:
+        APP: web
+    env_file: ../../.env
+    environment:
+      PORT: 3000
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  lms:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.next
+      args:
+        APP: lms
+    env_file: ../../.env
+    environment:
+      PORT: 3000
+    ports:
+      - '3001:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.node
+      args:
+        APP: api
+    env_file: ../../.env
+    environment:
+      PORT: 4000
+    ports:
+      - '4000:4000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile.node
+      args:
+        APP: worker
+    env_file: ../../.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  proxy:
+    image: caddy:2-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ../proxy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddydata:/data
+    depends_on:
+      - web
+      - lms
+      - api
+
+volumes:
+  pgdata:
+  miniodata:
+  caddydata:

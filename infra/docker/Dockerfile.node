@@ -1,0 +1,23 @@
+# syntax=docker/dockerfile:1.7
+# Image pour apps/api (serveur Hono) et apps/worker (build arg APP=api|worker)
+ARG NODE_VERSION=22
+FROM node:${NODE_VERSION}-alpine AS base
+RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
+WORKDIR /repo
+
+FROM base AS deps
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc turbo.json ./
+COPY apps ./apps
+COPY packages ./packages
+RUN pnpm install --frozen-lockfile
+
+FROM deps AS runner
+ARG APP=api
+ENV NODE_ENV=production
+ENV SERVICE_NAME=fetrag-${APP}
+WORKDIR /repo/apps/${APP}
+RUN addgroup -S fetrag && adduser -S fetrag -G fetrag && chown -R fetrag:fetrag /repo
+USER fetrag
+EXPOSE 4000
+# tsx exécute directement les sources TypeScript du monorepo (pas d'étape de bundling)
+CMD ["sh", "-c", "pnpm exec tsx src/$( [ \"$SERVICE_NAME\" = fetrag-worker ] && echo main.ts || echo server.ts )"]

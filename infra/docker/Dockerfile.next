@@ -1,0 +1,34 @@
+# syntax=docker/dockerfile:1.7
+# Image générique pour apps/web et apps/lms (build arg APP=web|lms)
+ARG NODE_VERSION=22
+FROM node:${NODE_VERSION}-alpine AS base
+RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
+WORKDIR /repo
+
+FROM base AS deps
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc turbo.json ./
+COPY apps ./apps
+COPY packages ./packages
+RUN pnpm install --frozen-lockfile
+
+FROM deps AS build
+ARG APP=web
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV DATABASE_URL=postgresql://build:build@localhost:5432/build
+ENV AUTH_SECRET=build-only-secret-not-used-at-runtime
+RUN pnpm turbo run build --filter=@fetrag/${APP}...
+
+FROM node:${NODE_VERSION}-alpine AS runner
+ARG APP=web
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+WORKDIR /app
+RUN addgroup -S fetrag && adduser -S fetrag -G fetrag
+COPY --from=build --chown=fetrag:fetrag /repo/apps/${APP}/.next/standalone ./
+COPY --from=build --chown=fetrag:fetrag /repo/apps/${APP}/.next/static ./apps/${APP}/.next/static
+COPY --from=build --chown=fetrag:fetrag /repo/apps/${APP}/public ./apps/${APP}/public
+USER fetrag
+EXPOSE 3000
+ENV APP_DIR=apps/${APP}
+CMD ["sh", "-c", "node ${APP_DIR}/server.js"]

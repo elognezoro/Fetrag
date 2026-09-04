@@ -1,0 +1,4 @@
+{
+  "extends": "@fetrag/tsconfig/node.json",
+  "include": ["src"]
+}

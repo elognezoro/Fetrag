@@ -1,0 +1,32 @@
+# Reverse proxy de référence (TLS automatique, en-têtes de sécurité, compression, sous-domaines)
+# Remplacer les hôtes par fetrag.ga / formation.fetrag.ga en production auto-hébergée.
+
+(security) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "SAMEORIGIN"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+	encode zstd gzip
+}
+
+fetrag.ga, www.fetrag.ga {
+	import security
+	redir https://fetrag.ga{uri} 308 {
+		if {host} == "www.fetrag.ga"
+	}
+	reverse_proxy web:3000
+}
+
+formation.fetrag.ga {
+	import security
+	reverse_proxy lms:3000
+}
+
+api.fetrag.ga {
+	import security
+	reverse_proxy api:4000
+}

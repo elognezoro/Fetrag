@@ -1,0 +1,29 @@
+{
+  "name": "@fetrag/analytics",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Événements métier, agrégations et indicateurs pour les tableaux de bord.",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@fetrag/db": "workspace:*"
+  },
+  "devDependencies": {
+    "@fetrag/eslint-config": "workspace:*",
+    "@fetrag/tsconfig": "workspace:*",
+    "@types/node": "^22.15.30",
+    "eslint": "^9.28.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.2"
+  }
+}

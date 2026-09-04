@@ -1,0 +1,44 @@
+{
+  "name": "@fetrag/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./seed-data": "./src/seed-data.ts"
+  },
+  "scripts": {
+    "generate": "prisma generate",
+    "postinstall": "prisma generate",
+    "migrate:dev": "dotenv -e ../../.env -- prisma migrate dev",
+    "migrate:deploy": "dotenv -e ../../.env -- prisma migrate deploy",
+    "migrate:status": "dotenv -e ../../.env -- prisma migrate status",
+    "push": "dotenv -e ../../.env -- prisma db push",
+    "reset": "dotenv -e ../../.env -- prisma migrate reset --force",
+    "seed": "dotenv -e ../../.env -- tsx prisma/seed/index.ts",
+    "studio": "dotenv -e ../../.env -- prisma studio",
+    "lint": "eslint src prisma/seed",
+    "typecheck": "tsc --noEmit"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma",
+    "seed": "tsx prisma/seed/index.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "bcryptjs": "^3.0.2"
+  },
+  "devDependencies": {
+    "@fetrag/eslint-config": "workspace:*",
+    "@fetrag/tsconfig": "workspace:*",
+    "@types/node": "^22.15.30",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^9.28.0",
+    "prisma": "^6.9.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
+  }
+}

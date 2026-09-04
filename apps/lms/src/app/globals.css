@@ -1,0 +1,34 @@
+/* Feuille de style de la plateforme de formation : tout le design system vient de @fetrag/ui. */
+@import '@fetrag/ui/styles/globals.css';
+
+/* Tailwind doit scanner les composants partagés du design system (chemin relatif à ce fichier). */
+@source '../../../../packages/ui/src';
+
+/* Lien d'évitement (accessibilité) : visible uniquement au focus clavier. */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  transform: translateY(-200%);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-blue-600);
+  color: white;
+  font-weight: 700;
+  padding: 0.6rem 1.1rem;
+  box-shadow: var(--shadow-lift);
+  transition: transform 150ms var(--ease-out-expo);
+}
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Bande supérieure tricolore (bleu / vert / or) de la barre de navigation. */
+.tricolor-band {
+  background-image: linear-gradient(
+    90deg,
+    var(--color-blue-500) 0 34%,
+    var(--color-green-500) 34% 67%,
+    var(--color-gold-500) 67% 100%
+  );
+}

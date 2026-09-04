@@ -1,0 +1,76 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalEnv": ["NODE_ENV", "CI", "VERCEL", "VERCEL_ENV", "VERCEL_URL"],
+  "globalPassThroughEnv": [
+    "DATABASE_URL",
+    "DATABASE_URL_UNPOOLED",
+    "AUTH_SECRET",
+    "AUTH_URL",
+    "AUTH_TRUST_HOST",
+    "AUTH_COOKIE_DOMAIN",
+    "APP_WEB_URL",
+    "APP_LMS_URL",
+    "API_URL",
+    "OIDC_ISSUER",
+    "OIDC_CLIENT_ID",
+    "OIDC_CLIENT_SECRET",
+    "SMTP_HOST",
+    "SMTP_PORT",
+    "SMTP_USER",
+    "SMTP_PASSWORD",
+    "SMTP_FROM",
+    "EMAIL_PROVIDER",
+    "STORAGE_PROVIDER",
+    "S3_ENDPOINT",
+    "S3_REGION",
+    "S3_BUCKET_PUBLIC",
+    "S3_BUCKET_PRIVATE",
+    "S3_ACCESS_KEY_ID",
+    "S3_SECRET_ACCESS_KEY",
+    "BLOB_READ_WRITE_TOKEN",
+    "PAYMENT_PROVIDER",
+    "PAYMENT_WEBHOOK_SECRET",
+    "CRON_SECRET",
+    "FEATURE_LOCAL_AUTH",
+    "FEATURE_PAYMENTS",
+    "FEATURE_FORUMS",
+    "FEATURE_NEWSLETTER",
+    "NEXT_PUBLIC_APP_WEB_URL",
+    "NEXT_PUBLIC_APP_LMS_URL",
+    "NEXT_PUBLIC_SITE_NAME"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "^generate"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "generate": {
+      "cache": false,
+      "outputs": ["node_modules/.prisma/**", "generated/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^generate"]
+    },
+    "lint": {
+      "dependsOn": ["^generate"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build", "^generate"]
+    },
+    "test": {
+      "dependsOn": ["^generate"],
+      "outputs": ["coverage/**"]
+    },
+    "test:e2e": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
