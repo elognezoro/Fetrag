@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Award, BarChart3, CalendarDays, ClipboardCheck, ExternalLink, MessageSquareText, UserCheck, Users, UsersRound } from 'lucide-react'
+import { Award, BarChart3, CalendarDays, ClipboardCheck, ExternalLink, MessageSquareText, UserCheck, Users } from 'lucide-react'
 import { cohortStatusLabels, sessionModeLabels } from '@fetrag/contracts'
 import { isDomainError, formatDate, formatDateTime } from '@fetrag/domain'
 import { Avatar, AvatarFallback, Badge, Button, Card, CardContent, EmptyState, Progress, StatusBadge, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Tabs, TabsContent, TabsList, TabsTrigger, initials } from '@fetrag/ui'

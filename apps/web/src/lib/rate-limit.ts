@@ -6,7 +6,6 @@ interface Bucket {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var __fetragRateLimit: Map<string, Bucket> | undefined
 }
 

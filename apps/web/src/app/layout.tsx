@@ -9,6 +9,9 @@ import { loadUserMenuProps } from '@/components/site/user-menu'
 import { siteConfig } from '@/lib/site'
 import './globals.css'
 
+// Toutes les pages lisent la session : rendu dynamique explicite (évite les tentatives de pré-rendu statique au build).
+export const dynamic = 'force-dynamic'
+
 /** Serif à axe optique pour les titres (écho du lettrage du logo). */
 const fraunces = Fraunces({
   subsets: ['latin'],
