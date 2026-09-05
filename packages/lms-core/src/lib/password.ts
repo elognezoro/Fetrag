@@ -1,6 +1,6 @@
 // Déclaration ambiante de bcryptjs : rend l'import typé dans tout programme TypeScript qui compile ce fichier
 // (apps Next via transpilePackages), y compris avant que `pnpm install` ait lié la dépendance déclarée.
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+ 
 import { randomBytes, scryptSync } from 'node:crypto'
 
 const BCRYPT_ROUNDS = 11

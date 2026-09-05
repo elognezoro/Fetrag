@@ -1,4 +1,4 @@
-import { Prisma, prisma, type OrderStatus, type PaymentStatus } from '@fetrag/db'
+import { type Prisma, prisma, type OrderStatus, type PaymentStatus } from '@fetrag/db'
 import { audit, emit, NotFoundError } from '@fetrag/domain'
 import { log as logger } from './log'
 import { sendPaymentNotification } from './emails'

@@ -48,7 +48,6 @@ export async function renderCertificatePdf(input: CertificateRenderInput): Promi
   const [width, height] = A4_LANDSCAPE
   const helvetica = await pdf.embedFont(StandardFonts.Helvetica)
   const helveticaBold = await pdf.embedFont(StandardFonts.HelveticaBold)
-  const times = await pdf.embedFont(StandardFonts.TimesRoman)
   const timesBold = await pdf.embedFont(StandardFonts.TimesRomanBold)
 
   // Cadre : bordure bleue épaisse et filet or intérieur (anneau institutionnel).
