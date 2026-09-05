@@ -1,8 +1,8 @@
 // Apprentissage : POST /enrollments (inscription selon la politique du cours) et POST /progress (remontée idempotente).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { idSchema, progressReportSchema } from '@fetrag/contracts'
 import { enrollments, progress } from '@fetrag/lms-core'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, protectedErrors } from '../lib/responses'
 import { requestMeta } from '../lib/request'
 import { authenticated, requirePrincipal } from '../middleware/auth'
@@ -109,7 +109,7 @@ const progressRoute = createRoute({
   },
 })
 
-export const learningRoutes = new OpenAPIHono<ApiEnv>()
+export const learningRoutes = createRouter()
 
 learningRoutes.openapi(enrollRoute, async (c) => {
   const principal = requirePrincipal(c)

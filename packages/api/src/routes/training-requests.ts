@@ -1,6 +1,7 @@
 // Workflow institutionnel (chapitre 14) : GET/POST /training-requests, GET /training-requests/{id},
 // POST /training-requests/{id}/decision (coordination).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import {
   idSchema,
   sessionModeSchema,
@@ -11,7 +12,6 @@ import {
 } from '@fetrag/contracts'
 import { trainingRequests } from '@fetrag/lms-core'
 import { can, ForbiddenError } from '@fetrag/domain'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, paginatedSchema, protectedErrors } from '../lib/responses'
 import { requestMeta } from '../lib/request'
 import { authenticated, requireCan, requirePrincipal } from '../middleware/auth'
@@ -186,7 +186,7 @@ const decisionRoute = createRoute({
   },
 })
 
-export const trainingRequestRoutes = new OpenAPIHono<ApiEnv>()
+export const trainingRequestRoutes = createRouter()
 
 trainingRequestRoutes.openapi(listRoute, async (c) => {
   const principal = requirePrincipal(c)

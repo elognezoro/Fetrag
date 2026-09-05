@@ -1,8 +1,9 @@
 // Webhooks PSP : POST /payments/webhooks/{provider} (et alias /webhooks/payments/{provider}).
 // Corps BRUT transmis tel quel au service (la signature HMAC porte sur les octets reçus) : aucun validateur
 // de corps n'est déclaré (un validateur JSON re-sérialiserait la charge utile). Sans authentification.
+import { createRouter } from '../lib/router'
 import type { Context } from 'hono'
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRoute, z } from '@hono/zod-openapi'
 import { processWebhook } from '@fetrag/payments'
 import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent } from '../lib/responses'
@@ -54,7 +55,7 @@ function webhookRoute(path: '/payments/webhooks/{provider}' | '/webhooks/payment
   })
 }
 
-export const webhookRoutes = new OpenAPIHono<ApiEnv>()
+export const webhookRoutes = createRouter()
 
 async function handleWebhook(c: Context<ApiEnv>, provider: string) {
   const rawBody = await c.req.text()

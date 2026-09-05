@@ -33,7 +33,20 @@ export function registerOpenApi<E extends ApiEnv>(app: OpenAPIHono<E, Record<str
   for (const [name, scheme] of Object.entries(securitySchemes)) {
     app.openAPIRegistry.registerComponent('securitySchemes', name, scheme)
   }
-  app.doc('/openapi.json', {
+  // Le document est généré manuellement pour retirer le préfixe /api/v1 des chemins : il est déjà
+  // porté par `servers[0].url` (sinon Swagger UI appellerait /api/v1/api/v1/...).
+  app.get('/openapi.json', (c) => {
+    const document = app.getOpenAPIDocument(openApiConfig) as { paths?: Record<string, unknown> }
+    const paths: Record<string, unknown> = {}
+    for (const [path, value] of Object.entries(document.paths ?? {})) {
+      paths[path.startsWith(API_BASE_PATH) ? path.slice(API_BASE_PATH.length) || '/' : path] = value
+    }
+    return c.json({ ...document, paths })
+  })
+  app.get('/docs', swaggerUI({ url: `${API_BASE_PATH}/openapi.json`, title: 'API FETRAG' }))
+}
+
+const openApiConfig = {
     openapi: '3.0.3',
     info: {
       title: 'API FETRAG',
@@ -46,6 +59,4 @@ export function registerOpenApi<E extends ApiEnv>(app: OpenAPIHono<E, Record<str
     },
     servers: [{ url: API_BASE_PATH, description: 'Préfixe commun (fetrag.ga, formation.fetrag.ga ou serveur API autonome)' }],
     tags: apiTags,
-  })
-  app.get('/docs', swaggerUI({ url: `${API_BASE_PATH}/openapi.json`, title: 'API FETRAG' }))
 }

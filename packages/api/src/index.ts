@@ -58,15 +58,19 @@ export function allowedOrigins(): string[] {
 
 /** Construit l'application Hono de l'API, préfixée par /api/v1. */
 export function createApiApp() {
-  const app = new OpenAPIHono<ApiEnv>({
+  const root = new OpenAPIHono<ApiEnv>({
     defaultHook: (result, c) => {
       if (!result.success) return errorResponse(c, result.error)
       return undefined
     },
-  }).basePath(API_BASE_PATH)
-
-  app.onError(onError)
-  app.notFound(notFound)
+  })
+  // Les gestionnaires d'erreur et de 404 doivent être posés AVANT basePath() : l'instance renvoyée par
+  // basePath() est un clone dont la fonction fetch reste liée à l'instance d'origine. Lorsque l'API est
+  // montée dans une autre application Hono (apps Next.js via mounted.route('/', app)), seul le gestionnaire
+  // présent au moment du montage est enveloppé autour des routes.
+  root.onError(onError)
+  root.notFound(notFound)
+  const app = root.basePath(API_BASE_PATH)
 
   app.use('*', correlationMiddleware)
   app.use('*', requestLogger)
@@ -114,6 +118,10 @@ export function createApiApp() {
   app.route('/', commerceRoutes)
   app.route('/', webhookRoutes)
   app.route('/', adminRoutes)
+
+  // Route de repli : lorsqu'elle est montée dans une application hôte, la réponse 404 JSON de l'API
+  // doit rester la sienne (le gestionnaire notFound d'une sous-application n'est pas propagé par Hono).
+  app.all('*', (c) => notFound(c))
 
   return app
 }

@@ -1,9 +1,9 @@
 // Agenda public : GET /events (à venir ou passés) et GET /events/{slug}.
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { eventKinds, idSchema, sessionModeSchema } from '@fetrag/contracts'
 import { events } from '@fetrag/cms'
 import { NotFoundError } from '@fetrag/domain'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, paginatedSchema, paginationQuerySchema, publicErrors } from '../lib/responses'
 import { categoryRefSchema, isoDateSchema, nullableDateSchema, offerSummarySchema, slugParamSchema } from '../schemas/common'
 
@@ -85,7 +85,7 @@ const detailRoute = createRoute({
   },
 })
 
-export const eventRoutes = new OpenAPIHono<ApiEnv>()
+export const eventRoutes = createRouter()
 
 eventRoutes.openapi(listRoute, async (c) => {
   const q = c.req.valid('query')

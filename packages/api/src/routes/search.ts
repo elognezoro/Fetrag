@@ -1,7 +1,7 @@
 // Recherche transverse : GET /search?q= (contenus publiés uniquement).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { MAX_QUERY_LENGTH, searchPublic, searchTypes } from '@fetrag/search'
-import type { ApiEnv } from '../env'
 import { jsonContent, publicErrors } from '../lib/responses'
 import { nullableDateSchema } from '../schemas/common'
 
@@ -52,7 +52,7 @@ const searchRoute = createRoute({
   },
 })
 
-export const searchRoutes = new OpenAPIHono<ApiEnv>()
+export const searchRoutes = createRouter()
 
 searchRoutes.openapi(searchRoute, async (c) => {
   const q = c.req.valid('query')

@@ -1,10 +1,10 @@
 // Espace personnel : GET /me, GET /me/enrollments, GET /me/certificates, GET /me/orders.
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { idSchema, localeSchema, orderStatuses, paymentMethodSchema, paymentStatusSchema, roleSchema, scopeTypeSchema } from '@fetrag/contracts'
 import { certification, enrollments } from '@fetrag/lms-core'
 import { orders } from '@fetrag/payments'
 import { NotFoundError } from '@fetrag/domain'
-import type { ApiEnv } from '../env'
 import { loadProfile } from '../lib/profile'
 import { jsonContent, paginatedSchema, protectedErrors } from '../lib/responses'
 import { authenticated, requirePrincipal } from '../middleware/auth'
@@ -188,7 +188,7 @@ const ordersRoute = createRoute({
   responses: { 200: jsonContent(paginatedSchema(orderSummarySchema, 'OrderPage'), 'Commandes paginées'), ...protectedErrors() },
 })
 
-export const meRoutes = new OpenAPIHono<ApiEnv>()
+export const meRoutes = createRouter()
 
 meRoutes.openapi(meRoute, async (c) => {
   const principal = requirePrincipal(c)

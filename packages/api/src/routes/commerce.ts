@@ -1,8 +1,8 @@
 // Commerce : POST /checkout (Idempotency-Key obligatoire) et GET /orders/{id}.
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { checkoutInputSchema, idSchema, orderStatuses, paymentMethodSchema, paymentStatusSchema } from '@fetrag/contracts'
 import { createCheckout, orders } from '@fetrag/payments'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, protectedErrors } from '../lib/responses'
 import { authenticated, requirePrincipal } from '../middleware/auth'
 import { idempotencyRequired, requireIdempotencyKey } from '../middleware/idempotency'
@@ -131,7 +131,7 @@ const orderRoute = createRoute({
   responses: { 200: jsonContent(orderDetailSchema, 'Commande'), ...protectedErrors() },
 })
 
-export const commerceRoutes = new OpenAPIHono<ApiEnv>()
+export const commerceRoutes = createRouter()
 
 commerceRoutes.openapi(checkoutRoute, async (c) => {
   const principal = requirePrincipal(c)

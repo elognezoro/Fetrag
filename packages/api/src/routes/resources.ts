@@ -1,9 +1,9 @@
 // Centre de ressources : GET /resources (publiées, droit d'accès selon le visiteur) et GET /resources/{slug}.
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { accessLevelSchema, idSchema, localeSchema, resourceKinds, slugSchema } from '@fetrag/contracts'
 import { resources } from '@fetrag/cms'
 import { NotFoundError } from '@fetrag/domain'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, paginatedSchema, paginationQuerySchema, publicErrors } from '../lib/responses'
 import { categoryRefSchema, isoDateSchema, nullableDateSchema, offerSummarySchema, slugParamSchema } from '../schemas/common'
 
@@ -73,7 +73,7 @@ const detailRoute = createRoute({
   },
 })
 
-export const resourceRoutes = new OpenAPIHono<ApiEnv>()
+export const resourceRoutes = createRouter()
 
 resourceRoutes.openapi(listRoute, async (c) => {
   const q = c.req.valid('query')

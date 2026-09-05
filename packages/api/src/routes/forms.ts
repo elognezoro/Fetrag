@@ -1,9 +1,9 @@
 // Formulaires publics : POST /forms/{kind} (contact, support, membership, partnership) et POST /newsletter.
 // Validation Zod des contrats partagés, pot de miel `website`, limitation stricte de débit.
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { contactFormSchema, formKindLabels, membershipFormSchema, newsletterSchema, partnershipFormSchema } from '@fetrag/contracts'
 import { forms, newsletter } from '@fetrag/cms'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent } from '../lib/responses'
 import { requestMeta } from '../lib/request'
 import { strictRateLimit } from '../middleware/rate-limit'
@@ -86,7 +86,7 @@ const newsletterRoute = createRoute({
   },
 })
 
-export const formRoutes = new OpenAPIHono<ApiEnv>()
+export const formRoutes = createRouter()
 
 function schemaFor(kind: PublicFormKind) {
   switch (kind) {

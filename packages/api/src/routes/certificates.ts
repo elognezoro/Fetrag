@@ -1,9 +1,9 @@
 // Certificats : vérification publique GET /certificates/verify/{code} et émission
 // POST /certificates/{enrollmentId}/issue (coordination, Idempotency-Key obligatoire).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { certificateVerificationSchema, idSchema } from '@fetrag/contracts'
 import { certification } from '@fetrag/lms-core'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, protectedErrors } from '../lib/responses'
 import { requestMeta } from '../lib/request'
 import { authenticated, requireCan } from '../middleware/auth'
@@ -88,7 +88,7 @@ const issueRoute = createRoute({
   },
 })
 
-export const certificateRoutes = new OpenAPIHono<ApiEnv>()
+export const certificateRoutes = createRouter()
 
 certificateRoutes.openapi(verifyRoute, async (c) => {
   const { code } = c.req.valid('param')

@@ -1,5 +1,6 @@
 // Évaluations : POST /quizzes/{activityId}/attempts (démarrer / reprendre) et POST /attempts/{id}/submit (correction).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { idSchema, questionTypeSchema, submitAttemptSchema } from '@fetrag/contracts'
 import { quizzes } from '@fetrag/lms-core'
 
@@ -10,7 +11,6 @@ type AttemptStatusName = (typeof attemptStatuses)[number]
 function toAttemptStatus(value: string): AttemptStatusName {
   return (attemptStatuses as readonly string[]).includes(value) ? (value as AttemptStatusName) : 'SUBMITTED'
 }
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, protectedErrors } from '../lib/responses'
 import { authenticated, requirePrincipal } from '../middleware/auth'
 import { protectedSecurity } from '../openapi'
@@ -132,7 +132,7 @@ const submitRoute = createRoute({
   },
 })
 
-export const quizRoutes = new OpenAPIHono<ApiEnv>()
+export const quizRoutes = createRouter()
 
 quizRoutes.openapi(startRoute, async (c) => {
   const principal = requirePrincipal(c)

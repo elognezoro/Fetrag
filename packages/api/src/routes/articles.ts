@@ -1,9 +1,9 @@
 // Actualités et communiqués : GET /articles (paginé) et GET /articles/{slug}.
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { idSchema, localeSchema, slugSchema } from '@fetrag/contracts'
 import { articles } from '@fetrag/cms'
 import { NotFoundError } from '@fetrag/domain'
-import type { ApiEnv } from '../env'
 import { errorResponses, jsonContent, paginatedSchema, paginationQuerySchema, publicErrors } from '../lib/responses'
 import { categoryRefSchema, isoDateSchema, nullableDateSchema, slugParamSchema } from '../schemas/common'
 
@@ -67,7 +67,7 @@ const detailRoute = createRoute({
   },
 })
 
-export const articleRoutes = new OpenAPIHono<ApiEnv>()
+export const articleRoutes = createRouter()
 
 articleRoutes.openapi(listRoute, async (c) => {
   const q = c.req.valid('query')

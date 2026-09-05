@@ -1,10 +1,10 @@
 // Administration : GET /admin/stats (reports.read) et GET /jobs/status (super administrateur).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { financeStats, lmsStats, webStats } from '@fetrag/analytics'
 import { getJobStats, listHandlers } from '@fetrag/jobs'
 import { dashboards } from '@fetrag/lms-core'
 import { can } from '@fetrag/domain'
-import type { ApiEnv } from '../env'
 import { jsonObjectSchema, toJsonObject } from '../lib/json'
 import { jsonContent, protectedErrors } from '../lib/responses'
 import { authenticated, requireCan, requireSuperAdmin } from '../middleware/auth'
@@ -61,7 +61,7 @@ const jobsRoute = createRoute({
   responses: { 200: jsonContent(jobStatusSchema, 'File de jobs'), ...protectedErrors() },
 })
 
-export const adminRoutes = new OpenAPIHono<ApiEnv>()
+export const adminRoutes = createRouter()
 
 adminRoutes.openapi(statsRoute, async (c) => {
   const principal = requireCan(c, 'reports.read')

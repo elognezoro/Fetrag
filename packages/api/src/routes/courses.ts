@@ -1,8 +1,8 @@
 // Catalogue public de formation : GET /courses (paginé, filtres) et GET /courses/{slug} (fiche complète).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { activityTypeSchema, courseLevels, courseModalitySchema, enrollmentPolicySchema, idSchema, localeSchema, pillarSchema, publicCourseSchema, sessionModeSchema } from '@fetrag/contracts'
 import { catalog } from '@fetrag/lms-core'
-import type { ApiEnv } from '../env'
 import { jsonValueSchema, toJsonValue } from '../lib/json'
 import { errorResponses, jsonContent, paginatedSchema, paginationQuerySchema, publicErrors } from '../lib/responses'
 import { categoryRefSchema, nullableDateSchema, slugParamSchema } from '../schemas/common'
@@ -140,7 +140,7 @@ const detailRoute = createRoute({
   },
 })
 
-export const courseRoutes = new OpenAPIHono<ApiEnv>()
+export const courseRoutes = createRouter()
 
 courseRoutes.openapi(listRoute, async (c) => {
   const query = c.req.valid('query')

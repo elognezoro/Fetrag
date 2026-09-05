@@ -1,8 +1,8 @@
 // GET /health : état de l'API et de la base de données (supervision, sonde Vercel / conteneur).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { prisma } from '@fetrag/db'
 import { runHealthChecks } from '@fetrag/observability'
-import type { ApiEnv } from '../env'
 import { jsonContent } from '../lib/responses'
 import { API_VERSION } from '../openapi'
 
@@ -35,7 +35,7 @@ const healthRoute = createRoute({
   },
 })
 
-export const healthRoutes = new OpenAPIHono<ApiEnv>()
+export const healthRoutes = createRouter()
 
 healthRoutes.openapi(healthRoute, async (c) => {
   const result = await runHealthChecks([

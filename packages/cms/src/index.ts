@@ -47,3 +47,6 @@ export type { RevisionSummary, RevisionDetail, RevisionComparison } from './revi
 export type { TransitionResult, TransitionOptions, PublishScheduledResult } from './publishing'
 export type { OfferSummary } from './offers'
 export type { UploadFile, UploadRules, SendEmailInput, NotifyInput } from './platform'
+
+// Transitions du traitement des demandes de service (utilisées par le back-office)
+export { serviceRequestTransitions } from './service-requests'

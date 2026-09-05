@@ -1,9 +1,9 @@
 // Services aux membres et organisations : GET /services et GET /services/{slug}.
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { idSchema } from '@fetrag/contracts'
 import { services } from '@fetrag/cms'
 import { NotFoundError } from '@fetrag/domain'
-import type { ApiEnv } from '../env'
 import { jsonValueSchema, toJsonValue } from '../lib/json'
 import { errorResponses, jsonContent, publicErrors } from '../lib/responses'
 import { categoryRefSchema, offerSummarySchema, slugParamSchema } from '../schemas/common'
@@ -59,7 +59,7 @@ const detailRoute = createRoute({
   },
 })
 
-export const serviceRoutes = new OpenAPIHono<ApiEnv>()
+export const serviceRoutes = createRouter()
 
 serviceRoutes.openapi(listRoute, async (c) => {
   const items = await services.listPublished()

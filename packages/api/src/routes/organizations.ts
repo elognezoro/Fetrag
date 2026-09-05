@@ -1,8 +1,8 @@
 // Organisations affiliées : GET /organizations/{id}/report (rapport strictement filtré par organizationId).
-import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
+import { createRouter } from '../lib/router'
+import { createRoute, z } from '@hono/zod-openapi'
 import { idSchema } from '@fetrag/contracts'
 import { reports } from '@fetrag/lms-core'
-import type { ApiEnv } from '../env'
 import { jsonContent, protectedErrors } from '../lib/responses'
 import { authenticated, requireCan } from '../middleware/auth'
 import { protectedSecurity } from '../openapi'
@@ -70,7 +70,7 @@ const reportRoute = createRoute({
   responses: { 200: jsonContent(organizationReportSchema, 'Rapport'), ...protectedErrors() },
 })
 
-export const organizationRoutes = new OpenAPIHono<ApiEnv>()
+export const organizationRoutes = createRouter()
 
 organizationRoutes.openapi(reportRoute, async (c) => {
   const { id } = c.req.valid('param')
