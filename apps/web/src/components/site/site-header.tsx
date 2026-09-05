@@ -47,7 +47,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
       <div className="container-fetrag flex h-[var(--header-height)] items-center justify-between gap-4">
         <Logo size={40} withText href="/" priority className="shrink-0" />
 
-        <nav aria-label="Navigation principale" className="hidden items-center gap-0.5 lg:flex">
+        <nav aria-label="Navigation principale" className="hidden items-center gap-0.5 xl:flex">
           {mainNavigation.map((item) => {
             const active = isActivePath(pathname, item.href)
             return (
@@ -56,8 +56,8 @@ export function SiteHeader({ user }: SiteHeaderProps) {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'relative rounded-full px-3 py-2 text-sm font-semibold text-neutral-700 transition-colors hover:text-blue-600',
-                  'after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-green-500 after:transition-transform after:duration-200 hover:after:scale-x-100',
+                  'relative whitespace-nowrap rounded-full px-2 py-2 text-sm font-semibold text-neutral-700 transition-colors hover:text-blue-600 2xl:px-3',
+                  'after:absolute after:inset-x-2 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:bg-green-500 after:transition-transform after:duration-200 hover:after:scale-x-100',
                   active && 'text-blue-700 after:scale-x-100',
                 )}
               >
@@ -67,13 +67,14 @@ export function SiteHeader({ user }: SiteHeaderProps) {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           <a
             href={lmsHref('/')}
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-green-700 transition hover:bg-green-50"
           >
             <GraduationCap className="size-4" aria-hidden="true" />
-            Plateforme de formation
+            <span className="hidden 2xl:inline">Plateforme de formation</span>
+            <span className="sr-only 2xl:hidden">Plateforme de formation</span>
             <ArrowUpRight className="size-3.5 opacity-70" aria-hidden="true" />
           </a>
           {user ? (
@@ -88,7 +89,7 @@ export function SiteHeader({ user }: SiteHeaderProps) {
           )}
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-2 xl:hidden">
           {user ? <UserMenuClient user={user} compact /> : null}
           <button
             type="button"
