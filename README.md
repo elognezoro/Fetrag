@@ -31,7 +31,7 @@ infra/          docker, proxy (Caddy), deployment
 docs/           specs (CDC), adr, architecture, api, runbooks, guides
 ```
 
-Voir [CLAUDE.md](CLAUDE.md) pour les conventions, [docs/adr](docs/adr) pour les décisions d'architecture et [docs/specs/FETRAG_CDC_UNIFIE.md](docs/specs/FETRAG_CDC_UNIFIE.md) pour le cahier des charges.
+Voir [CLAUDE.md](CLAUDE.md) pour les conventions, [docs/adr](docs/adr) pour les décisions d'architecture, [docs/specs/FETRAG_CDC_UNIFIE.md](docs/specs/FETRAG_CDC_UNIFIE.md) pour le cahier des charges, [docs/RECETTE.md](docs/RECETTE.md) pour l'état de recette, [docs/guides](docs/guides) pour les guides par rôle et [docs/runbooks](docs/runbooks) pour l'exploitation.
 
 ## Déploiement Vercel
 
