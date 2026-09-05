@@ -131,7 +131,7 @@ export async function RequestDetail({ request, cohortHref, actions, children }: 
             </DetailList>
             {request.motivation ? (
               <div className="mt-5 border-t border-neutral-100 pt-4">
-                <p className="eyebrow mb-1 text-[11px] text-neutral-500">Motivation de l'organisation</p>
+                <p className="eyebrow mb-1 text-[11px] text-neutral-500">Motivation de l’organisation</p>
                 <p className="whitespace-pre-line text-sm leading-relaxed text-neutral-700">{request.motivation}</p>
               </div>
             ) : null}
