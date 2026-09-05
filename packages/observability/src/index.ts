@@ -1,4 +1,5 @@
-import { randomUUID } from 'node:crypto'
+// Aucune dépendance à `node:crypto` : ce module est importable depuis un composant client ou l'Edge runtime.
+const randomUUID = (): string => globalThis.crypto.randomUUID()
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error'
 

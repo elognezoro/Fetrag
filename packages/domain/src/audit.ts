@@ -1,5 +1,5 @@
-import { createHash } from 'node:crypto'
-import { prisma, type Prisma } from '@fetrag/db'
+import type { Prisma } from '@fetrag/db'
+import { sha256Hex } from './hash'
 
 export type AuditAction =
   | 'auth.login'
@@ -41,14 +41,17 @@ export interface AuditContext {
   correlationId?: string | null
 }
 
+/** Empreinte pseudonymisée d'une adresse IP (SEC-09) - synchrone et universelle. */
 export function hashIp(ip: string | null | undefined): string | null {
   if (!ip) return null
-  return createHash('sha256').update(`fetrag:${ip}`).digest('hex').slice(0, 32)
+  return sha256Hex(`fetrag:${ip}`).slice(0, 32)
 }
 
 /**
  * Journal d'audit fonctionnellement immuable (SHR-07).
  * Ne jamais y écrire de données personnelles sensibles inutiles (SEC-09).
+ * Le client Prisma est chargé à l'exécution uniquement : ce module reste importable
+ * depuis un composant client (le bundle navigateur n'instancie jamais Prisma).
  */
 export async function audit(
   action: AuditAction,
@@ -57,6 +60,7 @@ export async function audit(
   diff?: { before?: unknown; after?: unknown },
 ): Promise<void> {
   try {
+    const { prisma } = await import('@fetrag/db')
     await prisma.auditLog.create({
       data: {
         action,

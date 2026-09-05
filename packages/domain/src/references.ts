@@ -1,16 +1,20 @@
-import { randomBytes, randomInt } from 'node:crypto'
+import { randomBytesWeb, randomIntWeb } from './hash'
 
 /** Alphabet sans caractères ambigus (0/O, 1/I/L). */
 const SAFE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
 
 export function randomCode(length = 8, alphabet = SAFE_ALPHABET): string {
   let out = ''
-  for (let i = 0; i < length; i++) out += alphabet[randomInt(0, alphabet.length)]
+  for (let i = 0; i < length; i++) out += alphabet[randomIntWeb(alphabet.length)]
   return out
 }
 
 export function randomToken(bytes = 32): string {
-  return randomBytes(bytes).toString('base64url')
+  const raw = randomBytesWeb(bytes)
+  let binary = ''
+  for (const b of raw) binary += String.fromCharCode(b)
+  // base64url sans dépendance Node (Buffer absent côté navigateur)
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '')
 }
 
 /**
