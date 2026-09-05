@@ -1,6 +1,7 @@
 'use client'
 
-import { useActionState, useId, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useActionState, useCallback, useId, useState } from 'react'
 import { Pencil, Plus, Save, Trash2 } from 'lucide-react'
 import { Button, Checkbox, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, FormField, Input, NativeSelect, Textarea } from '@fetrag/ui'
 import { idleState } from '@/server/staff/action-state'
@@ -22,12 +23,29 @@ export interface TemplateValue {
   isDefault: boolean
 }
 
+export interface TemplateFormProps {
+  template?: TemplateValue
+  courses: Array<{ id: string; code: string; title: string }>
+  /** Ouvre la boîte de dialogue dès le montage (page dédiée /admin/certificats/nouveau). */
+  defaultOpen?: boolean
+  /** Redirection après enregistrement ; `{id}` est remplacé par l'identifiant du modèle. */
+  successHref?: string
+}
+
 /** Modèle de certificat ou d'attestation : textes, signataire, critères d'éligibilité, validité, modèle par défaut. */
-export function TemplateForm({ template, courses }: { template?: TemplateValue; courses: Array<{ id: string; code: string; title: string }> }) {
-  const [open, setOpen] = useState(false)
+export function TemplateForm({ template, courses, defaultOpen = false, successHref }: TemplateFormProps) {
+  const router = useRouter()
+  const [open, setOpen] = useState(defaultOpen)
   const [state, formAction] = useActionState(saveCertificateTemplate, idleState)
   const id = useId()
-  useActionFeedback(state, { onSuccess: () => setOpen(false) })
+  const onSuccess = useCallback(
+    (result: { id?: string }) => {
+      setOpen(false)
+      if (successHref && result.id) router.push(successHref.replace('{id}', result.id))
+    },
+    [router, successHref],
+  )
+  useActionFeedback(state, { onSuccess })
   const errors = state.status === 'error' ? state.fieldErrors ?? {} : {}
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -73,7 +91,7 @@ export function TemplateForm({ template, courses }: { template?: TemplateValue; 
             <Input name="signatoryTitle" defaultValue={template?.signatoryTitle ?? 'Secrétaire Général de la FETRAG'} required maxLength={160} />
           </FormField>
           <fieldset className="grid gap-3 rounded-xl border border-neutral-200 p-4 sm:col-span-2 sm:grid-cols-3">
-            <legend className="px-1 text-sm font-semibold text-navy">Critères d'éligibilité</legend>
+            <legend className="px-1 text-sm font-semibold text-navy">Critères d’éligibilité</legend>
             <FormField label="Score minimal (%)" htmlFor={`${id}-minScore`} error={errors['criteria.minScore']}>
               <Input name="minScore" type="number" min={0} max={100} defaultValue={template?.criteria.minScore ?? 60} />
             </FormField>
@@ -105,12 +123,12 @@ export function TemplateForm({ template, courses }: { template?: TemplateValue; 
   )
 }
 
-export function RemoveTemplateButton({ templateId, name, usage }: { templateId: string; name: string; usage: number }) {
+export function RemoveTemplateButton({ templateId, name, usage, redirectTo }: { templateId: string; name: string; usage: number; redirectTo?: string }) {
   return (
     <ActionButton
       variant="ghost"
       size="sm"
-      action={() => removeCertificateTemplate({ templateId })}
+      action={() => removeCertificateTemplate({ templateId, redirectTo })}
       confirm={{ title: `Supprimer le modèle « ${name} »`, description: usage ? `${usage} certificat(s) y font référence : la suppression sera refusée.` : 'Le modèle sera supprimé définitivement.', confirmLabel: 'Supprimer', destructive: true }}
       aria-label={`Supprimer le modèle ${name}`}
     >

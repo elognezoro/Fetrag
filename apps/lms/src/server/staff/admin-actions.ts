@@ -1,10 +1,11 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { idSchema, z } from '@fetrag/contracts'
+import { enrollmentStatuses, idSchema, z } from '@fetrag/contracts'
 import { prisma } from '@fetrag/db'
-import { audit, can, ForbiddenError, isSuperAdmin, NotFoundError, PreconditionError } from '@fetrag/domain'
-import { auditContext, certification, certificateTemplateInputSchema, questionBank, questionInputSchema } from '@fetrag/lms-core'
+import { audit, can, ForbiddenError, hasGlobalRole, isSuperAdmin, NotFoundError, PreconditionError, type Principal } from '@fetrag/domain'
+import { processJobs, registerDefaultHandlers } from '@fetrag/jobs'
+import { auditContext, certification, certificateTemplateInputSchema, enrollments, questionBank, questionInputSchema } from '@fetrag/lms-core'
 import { failureState, successState, type ActionState } from './action-state'
 import { formBoolean, formInt, formJson, formLines, formNullable, formOptional, formString, runAction } from './context'
 import { parseQuestionCsv, roleGrantSchema, settingSchema } from './schemas'
@@ -87,7 +88,9 @@ export async function saveQuestion(_previous: ActionState, formData: FormData): 
     if (questionId) {
       const result = await questionBank.update(principal, idSchema.parse(questionId), data, meta)
       revalidatePath('/admin/questions')
-      return successState(result.supersededId ? 'Nouvelle version de la question créée (l’ancienne, déjà répondue, est désactivée)' : 'Question enregistrée', { id: result.question.id })
+      revalidatePath(`/admin/questions/${questionId}`)
+      revalidatePath(`/admin/questions/${result.question.id}`)
+      return successState(result.supersededId ? 'Nouvelle version de la question créée (l’ancienne, déjà répondue, est désactivée)' : 'Question enregistrée', { id: result.question.id, redirectTo: result.supersededId ? `/admin/questions/${result.question.id}` : undefined })
     }
     const question = await questionBank.create(principal, data, meta)
     revalidatePath('/admin/questions')
@@ -95,19 +98,19 @@ export async function saveQuestion(_previous: ActionState, formData: FormData): 
   })
 }
 
-export async function removeQuestion(input: { questionId: string }): Promise<ActionState> {
+export async function removeQuestion(input: { questionId: string; redirectTo?: string }): Promise<ActionState> {
   return runAction(async (principal, meta) => {
     const result = await questionBank.remove(principal, idSchema.parse(input.questionId), meta)
     revalidatePath('/admin/questions')
-    return successState(result.deleted ? 'Question supprimée' : 'Question désactivée (déjà utilisée dans un quiz ou des réponses)')
+    return successState(result.deleted ? 'Question supprimée' : 'Question désactivée (déjà utilisée dans un quiz ou des réponses)', { redirectTo: result.deleted && input.redirectTo ? input.redirectTo : undefined })
   })
 }
 
-export async function duplicateQuestion(input: { questionId: string }): Promise<ActionState> {
+export async function duplicateQuestion(input: { questionId: string; openCopy?: boolean }): Promise<ActionState> {
   return runAction(async (principal, meta) => {
     const question = await questionBank.duplicate(principal, idSchema.parse(input.questionId), meta)
     revalidatePath('/admin/questions')
-    return successState('Question dupliquée', { id: question.id })
+    return successState('Question dupliquée', { id: question.id, redirectTo: input.openCopy ? `/admin/questions/${question.id}` : undefined })
   })
 }
 
@@ -148,19 +151,19 @@ export async function saveCertificateTemplate(_previous: ActionState, formData: 
   return runAction(async (principal, meta) => {
     const templateId = formOptional(formData, 'templateId')
     const data = templateInputFromForm(formData)
-    if (templateId) await certification.updateTemplate(principal, idSchema.parse(templateId), data, meta)
-    else await certification.createTemplate(principal, data, meta)
+    const template = templateId ? await certification.updateTemplate(principal, idSchema.parse(templateId), data, meta) : await certification.createTemplate(principal, data, meta)
     revalidatePath('/admin/certificats')
+    revalidatePath(`/admin/certificats/${template.id}`)
     revalidatePath('/coordination/certificats')
-    return successState(templateId ? 'Modèle enregistré' : 'Modèle de certificat créé')
+    return successState(templateId ? 'Modèle enregistré' : 'Modèle de certificat créé', { id: template.id })
   })
 }
 
-export async function removeCertificateTemplate(input: { templateId: string }): Promise<ActionState> {
+export async function removeCertificateTemplate(input: { templateId: string; redirectTo?: string }): Promise<ActionState> {
   return runAction(async (principal, meta) => {
     await certification.removeTemplate(principal, idSchema.parse(input.templateId), meta)
     revalidatePath('/admin/certificats')
-    return successState('Modèle supprimé')
+    return successState('Modèle supprimé', { redirectTo: input.redirectTo })
   })
 }
 
@@ -168,12 +171,22 @@ export async function removeCertificateTemplate(input: { templateId: string }): 
 // Utilisateurs et rôles LMS
 // -----------------------------------------------------------------------------
 
-function assertRoleManager(principal: Parameters<typeof can>[0]) {
+function assertRoleManager(principal: Principal | null | undefined) {
   if (!principal || (!can(principal, 'roles.manage') && !isSuperAdmin(principal))) throw new ForbiddenError('Gestion des rôles réservée à l’administration')
 }
 
-/** Rôles que la coordination (sans être super administrateur) peut attribuer. */
-const COORDINATION_GRANTABLE = new Set(['LEARNER', 'ORG_MANAGER', 'TRAINER'])
+/**
+ * Exception à `roles.manage` (BUILD_BRIEF §4) : la coordination peut désigner un formateur
+ * sur un cours ou une cohorte (portée limitée), rien d'autre.
+ */
+function isCoordinationOnly(principal: Principal | null | undefined): boolean {
+  if (!principal) return false
+  return can(principal, 'training_request.decide') && !isSuperAdmin(principal) && !can(principal, 'roles.manage')
+}
+
+function coordinationMayHandle(role: string, scopeType: string): boolean {
+  return role === 'TRAINER' && (scopeType === 'COURSE' || scopeType === 'COHORT')
+}
 
 export async function grantRole(_previous: ActionState, formData: FormData): Promise<ActionState> {
   return runAction(async (principal, meta) => {
@@ -184,9 +197,8 @@ export async function grantRole(_previous: ActionState, formData: FormData): Pro
       scopeId: formString(formData, 'scopeId'),
       expiresAt: formOptional(formData, 'expiresAt'),
     })
-    const coordinator = can(principal, 'training_request.decide') && !isSuperAdmin(principal) && !can(principal, 'roles.manage')
-    if (coordinator) {
-      if (!COORDINATION_GRANTABLE.has(data.role)) throw new ForbiddenError('La coordination ne peut attribuer que les rôles apprenant, responsable d’organisation et formateur')
+    if (isCoordinationOnly(principal)) {
+      if (!coordinationMayHandle(data.role, data.scopeType)) throw new ForbiddenError('La coordination ne peut attribuer que le rôle Formateur sur un cours ou une cohorte')
     } else {
       assertRoleManager(principal)
     }
@@ -221,9 +233,8 @@ export async function revokeRole(input: { assignmentId: string }): Promise<Actio
   return runAction(async (principal, meta) => {
     const assignment = await prisma.roleAssignment.findUnique({ where: { id: idSchema.parse(input.assignmentId) } })
     if (!assignment) throw new NotFoundError('Attribution de rôle', input.assignmentId)
-    const coordinator = can(principal, 'training_request.decide') && !isSuperAdmin(principal) && !can(principal, 'roles.manage')
-    if (coordinator) {
-      if (!COORDINATION_GRANTABLE.has(assignment.role)) throw new ForbiddenError('Retrait de ce rôle réservé à l’administration')
+    if (isCoordinationOnly(principal)) {
+      if (!coordinationMayHandle(assignment.role, assignment.scopeType)) throw new ForbiddenError('Retrait de ce rôle réservé à l’administration')
     } else {
       assertRoleManager(principal)
     }
@@ -270,9 +281,17 @@ export async function saveSetting(_previous: ActionState, formData: FormData): P
     if (!can(principal, 'settings.manage')) throw new ForbiddenError('Modification des paramètres réservée à l’administration')
     const data = settingSchema.parse({ key: formString(formData, 'key'), value: formString(formData, 'value'), description: formOptional(formData, 'description') })
     const value = parseSettingValue(data.value)
+    if (data.key === 'certificates.sequence') throw new PreconditionError('Le compteur des certificats est géré automatiquement et ne peut pas être modifié')
     if (data.key === 'training.participantLimit') {
       const limit = z.number().int().min(1).max(500).safeParse(value)
       if (!limit.success) return failureState('La limite de participants doit être un entier entre 1 et 500.', { value: 'Entier attendu (1 à 500)' })
+    }
+    if (data.key === 'quiz.partialCredit' && typeof value !== 'boolean') {
+      return failureState('Le crédit partiel attend « true » ou « false ».', { value: 'Booléen attendu' })
+    }
+    if (data.key === 'lms.welcomeMessage') {
+      const message = z.string().max(2000).safeParse(value)
+      if (!message.success) return failureState('Le message d’accueil doit être un texte de 2000 caractères au plus.', { value: 'Texte attendu (2000 caractères au plus)' })
     }
     const existing = await prisma.systemSetting.findUnique({ where: { key: data.key } })
     const json = value as Parameters<typeof prisma.systemSetting.create>[0]['data']['value']
@@ -284,7 +303,52 @@ export async function saveSetting(_previous: ActionState, formData: FormData): P
     await audit('settings.updated', { type: 'SystemSetting', id: setting.key }, auditContext(principal, meta), { before: { value: existing?.value ?? null }, after: { value } })
     revalidatePath('/admin/parametres')
     revalidatePath('/demande-formation')
+    revalidatePath('/dashboard')
     return successState(`Paramètre « ${setting.key} » enregistré`)
+  })
+}
+
+// -----------------------------------------------------------------------------
+// File de jobs (recette)
+// -----------------------------------------------------------------------------
+
+/**
+ * Traite immédiatement un lot de jobs (recette hors Vercel Cron). Réservé à la super administration
+ * et à la coordination ; les jobs sont idempotents et le traitement est journalisé par le package jobs.
+ */
+export async function processJobsNow(): Promise<ActionState> {
+  return runAction(async (principal) => {
+    if (!isSuperAdmin(principal) && !can(principal, 'settings.manage') && !hasGlobalRole(principal, 'COORDINATOR')) {
+      throw new ForbiddenError('Traitement manuel des jobs réservé à l’administration')
+    }
+    await registerDefaultHandlers()
+    try {
+      // Le package paiements enregistre le traitement des webhooks (jobs ne peut pas l'importer : cycle).
+      const payments: Record<string, unknown> = await import('@fetrag/payments')
+      if (typeof payments.registerPaymentJobHandlers === 'function') (payments.registerPaymentJobHandlers as () => void)()
+    } catch {
+      // Sans le module paiements, les jobs webhook.process restent en file : le cron les traitera.
+    }
+    const result = await processJobs({ limit: 10, workerId: `admin-${principal.id.slice(0, 8)}` })
+    revalidatePath('/admin/parametres')
+    revalidatePath('/admin')
+    return successState(`${result.processed} job(s) traité(s), ${result.failed} en échec, ${result.remaining} restant(s)`, { payload: { processed: result.processed, failed: result.failed, remaining: result.remaining } })
+  })
+}
+
+// -----------------------------------------------------------------------------
+// Inscriptions d'un cours (onglet Inscriptions du builder)
+// -----------------------------------------------------------------------------
+
+export async function setEnrollmentStatusAdmin(input: { enrollmentId: string; courseId: string; status: string; comment?: string }): Promise<ActionState> {
+  return runAction(async (principal, meta) => {
+    const enrollmentId = idSchema.parse(input.enrollmentId)
+    const status = z.enum(enrollmentStatuses).parse(input.status)
+    const enrollment = await enrollments.setStatus(principal, enrollmentId, status, { comment: input.comment?.trim() || undefined }, meta)
+    revalidatePath(`/admin/cours/${input.courseId}`)
+    revalidatePath('/coordination/cohortes')
+    revalidatePath('/mes-formations')
+    return successState(`Inscription ${enrollment.status === 'ACTIVE' ? 'activée' : enrollment.status === 'COMPLETED' ? 'marquée terminée' : enrollment.status === 'SUSPENDED' ? 'suspendue' : enrollment.status === 'CANCELLED' ? 'annulée' : 'mise à jour'}`)
   })
 }
 

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useActionState, useId, useState, useTransition } from 'react'
 import { ArrowDown, ArrowUp, BookOpen, ChevronDown, ChevronRight, Layers, Lock, Pencil, Plus, Trash2 } from 'lucide-react'
-import { activityTypeLabels, completionRules as completionRuleValues } from '@fetrag/contracts'
+import { activityTypeLabels, type completionRules as completionRuleValues } from '@fetrag/contracts'
 import { Badge, Button, Checkbox, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, FormField, Input, Textarea, cn, toast } from '@fetrag/ui'
 import { idleState, type ActionState } from '@/server/staff/action-state'
 import { moveActivity, moveLesson, moveModule, removeActivity, removeLesson, removeModule, saveLesson, saveModule } from '@/server/staff/admin-course-actions'

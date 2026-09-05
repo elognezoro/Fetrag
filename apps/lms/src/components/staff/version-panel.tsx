@@ -135,7 +135,15 @@ export function VersionPanel({ courseId, currentVersionId, selectedVersionId, ve
   )
 }
 
-function VersionDialog({ mode, courseId, version, completionRules }: { mode: 'create' | 'duplicate' | 'edit'; courseId: string; version?: VersionSummary; completionRules?: { passScore: number; minAttendanceRate: number; requireAllActivities: boolean } | null }) {
+/**
+ * Bouton « Créer une nouvelle version » (LMS-17) : duplique la version figée affichée pour la rendre modifiable.
+ * Utilisé par l'onglet Structure lorsque la version est publiée ou déjà suivie.
+ */
+export function DuplicateVersionButton({ courseId, version }: { courseId: string; version: VersionSummary }) {
+  return <VersionDialog mode="duplicate" courseId={courseId} version={version} prominent />
+}
+
+function VersionDialog({ mode, courseId, version, completionRules, prominent = false }: { mode: 'create' | 'duplicate' | 'edit'; courseId: string; version?: VersionSummary; completionRules?: { passScore: number; minAttendanceRate: number; requireAllActivities: boolean } | null; prominent?: boolean }) {
   const action = mode === 'create' ? createVersion : mode === 'duplicate' ? duplicateVersion : updateVersion
   const [state, formAction] = useActionState(action, idleState)
   const [open, setOpen] = useState(false)
@@ -150,8 +158,8 @@ function VersionDialog({ mode, courseId, version, completionRules }: { mode: 'cr
           Nouvelle version
         </Button>
       ) : mode === 'duplicate' ? (
-        <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(true)} leftIcon={<Copy aria-hidden="true" />}>
-          Dupliquer
+        <Button type="button" variant={prominent ? 'primary' : 'ghost'} size="sm" onClick={() => setOpen(true)} leftIcon={<Copy aria-hidden="true" />}>
+          {prominent ? 'Créer une nouvelle version' : 'Dupliquer'}
         </Button>
       ) : (
         <Button type="button" variant="ghost" size="sm" onClick={() => setOpen(true)}>

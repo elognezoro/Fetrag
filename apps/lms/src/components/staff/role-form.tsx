@@ -14,15 +14,18 @@ const scopeLabels: Record<ScopeTypeName, string> = { GLOBAL: 'Globale (toute la 
 export interface RoleFormProps {
   userId: string
   grantableRoles: RoleName[]
+  /** Portées autorisées (la coordination ne désigne des formateurs que sur un cours ou une cohorte). */
+  allowedScopeTypes?: ScopeTypeName[]
   organizations: Array<{ id: string; name: string; acronym: string | null }>
   courses: Array<{ id: string; code: string; title: string }>
   cohorts: Array<{ id: string; code: string; name: string }>
 }
 
 /** Attribution d'un rôle LMS avec portée (globale, organisation, cours, cohorte) et expiration facultative. */
-export function RoleForm({ userId, grantableRoles, organizations, courses, cohorts }: RoleFormProps) {
+export function RoleForm({ userId, grantableRoles, allowedScopeTypes, organizations, courses, cohorts }: RoleFormProps) {
   const [state, formAction] = useActionState(grantRole, idleState)
-  const [scopeType, setScopeType] = useState<ScopeTypeName>('GLOBAL')
+  const availableScopes = (allowedScopeTypes?.length ? allowedScopeTypes : [...scopeTypes]) as ScopeTypeName[]
+  const [scopeType, setScopeType] = useState<ScopeTypeName>(availableScopes[0] ?? 'GLOBAL')
   const id = useId()
   useActionFeedback(state)
   const errors = state.status === 'error' ? state.fieldErrors ?? {} : {}
@@ -41,7 +44,7 @@ export function RoleForm({ userId, grantableRoles, organizations, courses, cohor
           <NativeSelect name="role" required options={grantableRoles.map((r) => ({ value: r, label: roleLabels[r] }))} />
         </FormField>
         <FormField label="Portée" htmlFor={`${id}-scopeType`} error={errors.scopeType}>
-          <NativeSelect name="scopeType" value={scopeType} onChange={(event) => setScopeType(event.target.value as ScopeTypeName)} options={scopeTypes.map((s) => ({ value: s, label: scopeLabels[s] }))} />
+          <NativeSelect name="scopeType" value={scopeType} onChange={(event) => setScopeType(event.target.value as ScopeTypeName)} options={availableScopes.map((s) => ({ value: s, label: scopeLabels[s] }))} />
         </FormField>
         <FormField label="Cible de la portée" htmlFor={`${id}-scopeId`} required={scopeType !== 'GLOBAL'} error={errors.scopeId}>
           <NativeSelect name="scopeId" disabled={scopeType === 'GLOBAL'} options={[{ value: '', label: scopeType === 'GLOBAL' ? 'Sans objet' : 'Choisir...' }, ...scopeOptions]} />

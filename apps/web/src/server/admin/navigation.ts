@@ -95,6 +95,7 @@ const sections: AdminNavSection[] = [
     title: 'Administration',
     items: [
       { label: 'Utilisateurs et rôles', href: '/admin/utilisateurs', icon: 'users', actions: ['users.read'] },
+      { label: 'Organisations', href: '/admin/organisations', icon: 'handshake', actions: ['organization.read'] },
       { label: 'Finance', href: '/admin/finance', icon: 'finance', actions: ['finance.read'] },
       { label: 'Rapports', href: '/admin/rapports', icon: 'reports', actions: ['reports.read'] },
       { label: 'Journal d’audit', href: '/admin/audit', icon: 'audit', actions: ['audit.read'] },

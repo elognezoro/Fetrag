@@ -1,6 +1,7 @@
 'use client'
 
-import { useActionState, useId, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useActionState, useCallback, useId, useState } from 'react'
 import { Copy, FileUp, Pencil, Plus, Save, Trash2 } from 'lucide-react'
 import { questionTypeLabels, questionTypes, type QuestionTypeName } from '@fetrag/contracts'
 import { Alert, AlertDescription, AlertTitle, Badge, Button, Checkbox, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, FormField, Input, NativeSelect, Textarea } from '@fetrag/ui'
@@ -46,9 +47,19 @@ function cfg(config: Record<string, unknown>, key: string): unknown {
   return config[key]
 }
 
+export interface QuestionEditorProps {
+  question?: QuestionValue
+  categories: string[]
+  /** Ouvre la boîte de dialogue dès le montage (page dédiée /admin/questions/nouvelle). */
+  defaultOpen?: boolean
+  /** Redirection après enregistrement ; `{id}` est remplacé par l'identifiant de la question. */
+  successHref?: string
+}
+
 /** Éditeur d'une question de la banque (création ou modification) avec options selon le type. */
-export function QuestionEditor({ question, categories }: { question?: QuestionValue; categories: string[] }) {
-  const [open, setOpen] = useState(false)
+export function QuestionEditor({ question, categories, defaultOpen = false, successHref }: QuestionEditorProps) {
+  const router = useRouter()
+  const [open, setOpen] = useState(defaultOpen)
   const [state, formAction] = useActionState(saveQuestion, idleState)
   const [type, setType] = useState<QuestionTypeName>(question?.type ?? 'SINGLE_CHOICE')
   const [options, setOptions] = useState<QuestionOptionValue[]>(question?.options ?? [{ label: '', isCorrect: true, feedback: null, matchValue: null }, { label: '', isCorrect: false, feedback: null, matchValue: null }])
@@ -57,7 +68,14 @@ export function QuestionEditor({ question, categories }: { question?: QuestionVa
     return Array.isArray(raw) ? raw.map((r) => ({ label: String((r as { label?: string; criterion?: string }).label ?? (r as { criterion?: string }).criterion ?? ''), points: Number((r as { points?: number; maxPoints?: number }).points ?? (r as { maxPoints?: number }).maxPoints ?? 0) })) : []
   })
   const id = useId()
-  useActionFeedback(state, { onSuccess: () => setOpen(false) })
+  const onSuccess = useCallback(
+    (result: { id?: string }) => {
+      setOpen(false)
+      if (successHref && result.id) router.push(successHref.replace('{id}', result.id))
+    },
+    [router, successHref],
+  )
+  useActionFeedback(state, { onSuccess })
   const errors = state.status === 'error' ? state.fieldErrors ?? {} : {}
   const hasOptions = type === 'SINGLE_CHOICE' || type === 'MULTIPLE_CHOICE' || type === 'MATCHING' || type === 'ORDERING'
   const config = question?.config ?? {}
@@ -252,18 +270,28 @@ export function QuestionEditor({ question, categories }: { question?: QuestionVa
   )
 }
 
+export interface QuestionRowActionsProps {
+  questionId: string
+  prompt: string
+  usage: number
+  /** Ouvre la copie créée dans sa fiche (page de détail). */
+  openCopy?: boolean
+  /** Redirection après suppression effective (page de détail). */
+  redirectAfterRemove?: string
+}
+
 /** Actions d'une ligne de la banque : dupliquer, supprimer / désactiver. */
-export function QuestionRowActions({ questionId, prompt, usage }: { questionId: string; prompt: string; usage: number }) {
+export function QuestionRowActions({ questionId, prompt, usage, openCopy = false, redirectAfterRemove }: QuestionRowActionsProps) {
   return (
     <div className="flex items-center gap-1">
-      <ActionButton variant="ghost" size="sm" action={() => duplicateQuestion({ questionId })} aria-label={`Dupliquer la question ${prompt.slice(0, 40)}`}>
+      <ActionButton variant="ghost" size="sm" action={() => duplicateQuestion({ questionId, openCopy })} aria-label={`Dupliquer la question ${prompt.slice(0, 40)}`}>
         <Copy aria-hidden="true" />
         Dupliquer
       </ActionButton>
       <ActionButton
         variant="ghost"
         size="sm"
-        action={() => removeQuestion({ questionId })}
+        action={() => removeQuestion({ questionId, redirectTo: redirectAfterRemove })}
         confirm={{ title: 'Supprimer la question', description: usage ? `Cette question est utilisée dans ${usage} quiz : elle sera désactivée plutôt que supprimée.` : 'La question sera supprimée définitivement de la banque.', confirmLabel: usage ? 'Désactiver' : 'Supprimer', destructive: true }}
         aria-label={`Supprimer la question ${prompt.slice(0, 40)}`}
       >
