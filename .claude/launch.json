@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@fetrag/web", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "lms",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@fetrag/lms", "dev"],
+      "port": 3001
+    }
+  ]
+}

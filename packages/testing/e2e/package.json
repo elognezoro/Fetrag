@@ -1,0 +1,6 @@
+{
+  "name": "@fetrag/testing-e2e",
+  "private": true,
+  "description": "Scénarios Playwright (hors espace de travail pnpm). Type CommonJS : Playwright transpile les .spec.ts en CJS et résout @playwright/test via NODE_PATH (scripts/e2e.mjs), le package parent étant en ESM.",
+  "type": "commonjs"
+}

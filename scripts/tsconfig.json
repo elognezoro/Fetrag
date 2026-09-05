@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@fetrag/tsconfig/node.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "incremental": false,
+    "types": ["node"],
+    "typeRoots": ["../packages/db/node_modules/@types"],
+    "paths": {
+      "@prisma/client": ["../packages/db/node_modules/@prisma/client"]
+    }
+  },
+  "include": ["./*.ts"]
+}
