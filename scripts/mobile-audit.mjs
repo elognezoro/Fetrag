@@ -107,7 +107,8 @@ const findOverflow = () => {
 }
 
 const testMobileMenu = async (page) => {
-  const trigger = page.locator('header button[aria-expanded], header button[aria-controls], header button[aria-label*="menu" i], header button[aria-label*="navigation" i]').first()
+  // le bouton du tiroir de navigation d'abord (aria-controls) : connecté, le menu utilisateur a aussi aria-expanded
+  const trigger = page.locator('header button[aria-controls="menu-mobile"], header button[aria-controls], header button[aria-label*="menu" i], header button[aria-label*="navigation" i], header button[aria-expanded]').first()
   if ((await trigger.count()) === 0) return { present: false }
   const visible = await trigger.isVisible()
   if (!visible) return { present: true, visible: false }

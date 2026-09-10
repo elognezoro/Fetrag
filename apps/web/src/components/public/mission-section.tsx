@@ -19,7 +19,7 @@ export function MissionSection() {
             }
           />
           <GradientDivider className="mt-6" width="lg" />
-          <p className="mt-6 font-display text-2xl leading-snug text-navy sm:text-[1.7rem]">{MISSION_TEXT}</p>
+          <p className="mt-6 font-display text-xl leading-snug text-navy sm:text-2xl lg:text-[1.7rem]">{MISSION_TEXT}</p>
           <p className="mt-5 text-base leading-relaxed text-neutral-600">
             Fédération intersectorielle, la FETRAG représente ses organisations affiliées auprès des pouvoirs publics, des employeurs et des
             instances de dialogue social. Elle forme ses responsables, appuie juridiquement les sections syndicales et privilégie la négociation
