@@ -1,4 +1,4 @@
-import { Role, ScopeType, ConsentKind, NotificationChannel } from '@prisma/client'
+import { Role, ScopeType, ConsentKind, NotificationChannel } from '../../generated/client'
 import { prisma } from '../../src/client'
 import { DEMO_PASSWORD, demoAccounts, learnerAccounts, staffAccounts, type DemoAccount } from '../../src/seed-data'
 import { hashDemoPassword, inBatches, log, stableId } from './helpers'

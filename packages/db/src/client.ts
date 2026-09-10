@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../generated/client'
 
 declare global {
-   
+  // eslint-disable-next-line no-var
   var __fetragPrisma: PrismaClient | undefined
 }
 
@@ -13,6 +13,8 @@ function createClient(): PrismaClient {
 
 /**
  * Client Prisma singleton (évite l'épuisement des connexions en dev / serverless).
+ * Le client est généré dans packages/db/generated/client (voir schema.prisma) afin que
+ * Next.js embarque le moteur natif dans les fonctions serverless Vercel.
  * Utiliser la chaîne poolée (Neon pgbouncer) dans DATABASE_URL.
  */
 export const prisma: PrismaClient = globalThis.__fetragPrisma ?? createClient()

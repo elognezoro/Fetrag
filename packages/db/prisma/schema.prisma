@@ -7,7 +7,11 @@
 // =============================================================================
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Client généré dans le dépôt (hors node_modules/.pnpm) : chemin stable pour le traçage des fichiers
+  // de Next.js sur Vercel. Le moteur Linux est toujours produit pour les fonctions serverless.
+  output        = "../generated/client"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

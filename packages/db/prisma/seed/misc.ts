@@ -1,4 +1,4 @@
-import { JobStatus, NotificationChannel, NotificationStatus } from '@prisma/client'
+import { JobStatus, NotificationChannel, NotificationStatus } from '../../generated/client'
 import { prisma } from '../../src/client'
 import type { SeededCommerce } from './commerce'
 import { at, daysFromNow, inBatches, json, log, stableId } from './helpers'

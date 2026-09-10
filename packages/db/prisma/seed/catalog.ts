@@ -1,4 +1,4 @@
-import { ActivityType, CompletionRule, ContentStatus } from '@prisma/client'
+import { ActivityType, CompletionRule, ContentStatus } from '../../generated/client'
 import { prisma } from '../../src/client'
 import { COURSE_SUBTITLE, courses, pillarColor, type CourseContent } from './course-content'
 import { fixedDate, json, log, stableId } from './helpers'

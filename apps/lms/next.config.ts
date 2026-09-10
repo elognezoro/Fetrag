@@ -98,6 +98,10 @@ const nextConfig: NextConfig = {
   ],
   serverExternalPackages: ['@prisma/client', 'prisma', 'bcryptjs', 'nodemailer', 'pdf-lib'],
   outputFileTracingRoot: monorepoRoot,
+  // Le moteur Prisma (fichier .node) doit accompagner chaque fonction serverless (Vercel).
+  outputFileTracingIncludes: {
+    '/**': ['../../packages/db/generated/client/**/*.node', '../../packages/db/generated/client/schema.prisma'],
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

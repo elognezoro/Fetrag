@@ -1,4 +1,4 @@
-import type { CourseLevel, EnrollmentPolicy } from '@prisma/client'
+import type { CourseLevel, EnrollmentPolicy } from '../../generated/client'
 import { list, paragraphs } from './helpers'
 
 /**

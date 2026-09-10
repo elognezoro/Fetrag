@@ -1,4 +1,4 @@
-import { CouponType, OfferKind, OrderStatus, PaymentMethod, PaymentStatus, PricingTier, RefundStatus } from '@prisma/client'
+import { CouponType, OfferKind, OrderStatus, PaymentMethod, PaymentStatus, PricingTier, RefundStatus } from '../../generated/client'
 import { prisma } from '../../src/client'
 import type { SeededCatalog } from './catalog'
 import type { SeededCms } from './cms'

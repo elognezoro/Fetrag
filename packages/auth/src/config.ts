@@ -103,7 +103,9 @@ export function createAuthConfig(app: AppKind): NextAuthConfig {
   }
 
   return {
-    adapter: PrismaAdapter(prisma),
+    // Le client Prisma est généré dans packages/db/generated (traçage Vercel) : structurellement identique
+    // au type attendu par l'adaptateur, mais résolu depuis un autre chemin, d'où le cast.
+    adapter: PrismaAdapter(prisma as unknown as Parameters<typeof PrismaAdapter>[0]),
     providers,
     secret: env.AUTH_SECRET,
     trustHost: true,

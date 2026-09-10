@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import bcrypt from 'bcryptjs'
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from '../../generated/client'
 
 /**
  * Utilitaires communs du seed : identifiants stables, dates relatives,

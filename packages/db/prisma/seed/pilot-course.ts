@@ -13,7 +13,7 @@ import {
   ResourceKind,
   SessionMode,
   SubmissionStatus,
-} from '@prisma/client'
+} from '../../generated/client'
 import { prisma } from '../../src/client'
 import type { SeededCatalog, SeededCourse, SeededLesson } from './catalog'
 import { addMinutes, at, certificateNumber, daysFromNow, get, inBatches, json, log, stableId } from './helpers'

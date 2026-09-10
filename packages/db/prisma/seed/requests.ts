@@ -1,4 +1,4 @@
-import { SessionMode, TrainingRequestStatus } from '@prisma/client'
+import { SessionMode, TrainingRequestStatus } from '../../generated/client'
 import { prisma } from '../../src/client'
 import type { SeededCatalog } from './catalog'
 import { at, daysFromNow, get, inBatches, json, log, stableId } from './helpers'

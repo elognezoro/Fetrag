@@ -10,7 +10,7 @@ import {
   ResourceKind,
   ServiceRequestStatus,
   SessionMode,
-} from '@prisma/client'
+} from '../../generated/client'
 import { prisma } from '../../src/client'
 import type { SeededCatalog } from './catalog'
 import { at, daysFromNow, excerptOf, fixedDate, get, inBatches, json, list, log, paragraphs, readingTimeMinutes, stableId } from './helpers'
