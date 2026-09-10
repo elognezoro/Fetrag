@@ -11,6 +11,14 @@ Vercel détecte `pnpm-lock.yaml` à la racine, installe tout le monorepo et buil
 
 Paramètres recommandés : Node 22, région `cdg1` (Paris) au plus proche de Neon `us-east-1` sinon `iad1`, « Include source files outside of the Root Directory » activé (valeur par défaut pour les monorepos).
 
+### Le Root Directory est obligatoire
+
+Si le journal de build affiche `Packages in scope: @fetrag/api-server` (ou tout autre nom que `@fetrag/web` / `@fetrag/lms`), le projet Vercel pointe sur le mauvais dossier : Vercel construit alors le serveur API Node (`apps/api`), qui n'est pas destiné à Vercel, et le déploiement échoue faute de sortie Next.js.
+
+Correction : Vercel → projet → Settings → General → **Root Directory** → saisir `apps/web` (site) ou `apps/lms` (formation), enregistrer, puis relancer le déploiement (Deployments → Redeploy). Le framework détecté doit être « Next.js » et le journal doit montrer `Packages in scope: @fetrag/web` (ou `@fetrag/lms`) puis `▲ Next.js 15.5`.
+
+Pour la plateforme de formation, créer un second projet Vercel sur le même dépôt avec Root Directory `apps/lms` : un projet Vercel ne construit qu'une application.
+
 ## 2. Variables d'environnement (identiques sur les deux projets sauf mention)
 
 | Variable | Valeur recette | Production |
