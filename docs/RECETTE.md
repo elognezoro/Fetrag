@@ -38,3 +38,14 @@ Référence : chapitre 30 « Critères de recette globale » du cahier des charg
 - Le stockage `local` n'est pas disponible sur Vercel : utiliser `vercel-blob` (créer un store Blob) ou `s3`.
 - Le navigateur intégré de l'outil de développement n'exécute pas les scripts de streaming React ; les vérifications de rendu ont été faites sur le HTML complet. Une passe visuelle sur mobile réel (360-430 px) reste à faire.
 - Le job `certificate.render` s'exécute via le cron Vercel (5 min) ou le bouton « Générer le PDF » du LMS.
+
+## Revue mobile (10 septembre 2026)
+
+Audit Playwright (`scripts/mobile-audit.mjs`, largeurs 375 et 360 px, sessions admin et coordination) sur les déploiements `fetrag.vercel.app` et `fetrag-academy.vercel.app` après le commit `20d40b4` :
+
+| Périmètre | Routes | Débordement horizontal | Texte coupé | Menu mobile |
+| --- | --- | --- | --- | --- |
+| Site web (public, espace, back-office) | 32 | 0 | 0 | ouvre un tiroir plein écran (vérifié après hydratation) |
+| LMS (apprenant, organisation, formateur, coordination, administration) | 27 | 0 | 0 | idem |
+
+Correctifs livrés : 66 ajustements responsive issus de la revue page par page (grilles en colonne unique, tuiles de chiffres en deux colonnes, filtres et onglets défilables, tableaux avec colonnes secondaires masquées et fondu de défilement, boutons pleine largeur, barre du triptyque empilée, libellés multilignes, coquilles compactes, fil d'Ariane réduit), plus les corrections structurelles : tiroir de navigation rendu dans un portail (le `backdrop-filter` de l'en-tête bloquait `position: fixed`), logo compact, ruban multiligne, grilles Tailwind explicites.
