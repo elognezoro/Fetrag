@@ -89,26 +89,30 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                 <Link href={`${BASE}/${row.id}`} className="font-mono text-sm font-semibold text-navy hover:text-blue-700">
                   {row.reference}
                 </Link>
-                <p className="truncate text-xs text-neutral-500">
+                <p className="line-clamp-1 text-xs text-neutral-500">
                   {row.lines[0]?.label ?? 'Sans ligne'}
                   {row.lines.length > 1 ? ` +${row.lines.length - 1}` : ''}
                 </p>
+                {/* Client et statut rappelés ici tant que leurs colonnes sont masquées (mobile). */}
+                <p className="line-clamp-1 text-xs text-neutral-600 sm:hidden">{clientName(row.user)}</p>
+                <StatusBadge status={row.status} size="sm" className="mt-1 sm:hidden" />
               </div>
             ),
           },
           {
             key: 'client',
             header: 'Client',
+            hideBelow: 'sm',
             cell: (row) => (
               <div className="min-w-0 text-sm">
                 {abilities.readUsers ? (
-                  <Link href={`/admin/utilisateurs/${row.user.id}`} className="truncate font-semibold text-navy hover:text-blue-700">
+                  <Link href={`/admin/utilisateurs/${row.user.id}`} className="line-clamp-1 font-semibold text-navy hover:text-blue-700">
                     {clientName(row.user)}
                   </Link>
                 ) : (
-                  <p className="truncate font-semibold text-navy">{clientName(row.user)}</p>
+                  <p className="line-clamp-1 font-semibold text-navy">{clientName(row.user)}</p>
                 )}
-                <p className="truncate text-xs text-neutral-500">
+                <p className="line-clamp-1 break-all text-xs text-neutral-500">
                   {row.user.email}
                   {row.organization ? ` · ${row.organization.name}` : ''}
                 </p>
@@ -126,7 +130,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
               </span>
             ),
           },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           {
             key: 'payment',
             header: 'Paiement',
@@ -138,7 +142,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                   <Badge variant="outline" size="sm">
                     {methodLabel(payment.method)}
                   </Badge>
-                  <span className="truncate text-xs text-neutral-500">
+                  <span className="line-clamp-1 break-all text-xs text-neutral-500">
                     {payment.provider}
                     {payment.providerRef ? ` · ${payment.providerRef}` : ''}
                   </span>

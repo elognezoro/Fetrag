@@ -17,7 +17,7 @@ interface StepsListProps {
 export function StepsList({ steps, columns = 4, className }: StepsListProps) {
   const cols = columns === 2 ? 'sm:grid-cols-2' : columns === 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-4'
   return (
-    <Stagger as="ol" className={cn('relative grid gap-5', cols, className)}>
+    <Stagger as="ol" className={cn('relative grid grid-cols-1 gap-5', cols, className)}>
       <span aria-hidden="true" className="absolute inset-x-8 top-9 hidden h-0.5 rounded-full bg-gradient-to-r from-blue-500 via-green-500 to-gold-500 lg:block" />
       {steps.map((step, index) => {
         const tone = toneAt(index)

@@ -61,12 +61,14 @@ export default async function AdminPagesPage({ searchParams }: { searchParams: P
                 <Link href={`${BASE}/${row.id}`} className="font-semibold text-navy hover:text-blue-700">
                   {row.title}
                 </Link>
-                <p className="truncate font-mono text-xs text-neutral-500">/{row.slug}</p>
+                <p className="line-clamp-1 break-all font-mono text-xs text-neutral-500">/{row.slug}</p>
+                {/* Statut rappelé ici tant que sa colonne est masquée (mobile). */}
+                <StatusBadge status={row.status} size="sm" className="mt-1 sm:hidden" />
               </div>
             ),
           },
           { key: 'template', header: 'Gabarit', hideBelow: 'md', cell: (row) => <Badge variant="outline" size="sm">{row.template}</Badge> },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           { key: 'version', header: 'Version', hideBelow: 'lg', align: 'center', cell: (row) => <span className="font-mono text-xs">v{row.version}</span> },
           {
             key: 'updatedAt',

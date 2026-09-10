@@ -177,8 +177,8 @@ export function DecisionPanel(props: DecisionPanelProps) {
         </div>
       ) : null}
 
-      <div className="flex justify-end border-t border-neutral-100 pt-4">
-        <SubmitButton variant={active?.tone === 'danger' ? 'danger' : 'primary'} pendingLabel="Enregistrement de la décision..." disabled={!decision}>
+      <div className="flex flex-col border-t border-neutral-100 pt-4 sm:flex-row sm:justify-end">
+        <SubmitButton variant={active?.tone === 'danger' ? 'danger' : 'primary'} pendingLabel="Enregistrement de la décision..." disabled={!decision} className="w-full sm:w-auto">
           <Send aria-hidden="true" />
           {active ? active.label : 'Enregistrer'}
         </SubmitButton>

@@ -72,11 +72,15 @@ export default async function AdminPartnersPage({ searchParams }: { searchParams
                   <Link href={`${BASE}/${row.id}`} className="font-semibold text-navy hover:text-blue-700">
                     {row.name}
                   </Link>
-                  <p className="truncate text-xs text-neutral-500">
+                  <p className="line-clamp-1 text-xs text-neutral-500">
                     {row.acronym ? `${row.acronym} · ` : ''}
                     {row.sector ?? partnerKindLabels[row.kind]}
                     {row.city ? ` · ${row.city}` : ''}
                   </p>
+                  {/* Visibilité rappelée ici tant que sa colonne est masquée (mobile). */}
+                  <Badge variant={row.isActive ? 'success' : 'neutral'} size="sm" dot className="mt-1 sm:hidden">
+                    {row.isActive ? 'Visible' : 'Masqué'}
+                  </Badge>
                 </div>
               </div>
             ),
@@ -86,6 +90,7 @@ export default async function AdminPartnersPage({ searchParams }: { searchParams
           {
             key: 'active',
             header: 'Visibilité',
+            hideBelow: 'sm',
             cell: (row) => (
               <Badge variant={row.isActive ? 'success' : 'neutral'} size="sm" dot>
                 {row.isActive ? 'Visible' : 'Masqué'}
@@ -97,7 +102,8 @@ export default async function AdminPartnersPage({ searchParams }: { searchParams
             header: <span className="sr-only">Actions</span>,
             align: 'right',
             cell: (row) => (
-              <div className="flex items-center justify-end gap-1">
+              // Mobile : boutons empilés (icône + libellé) ; à partir de `sm` : rangée.
+              <div className="flex flex-col items-end gap-1 sm:flex-row sm:items-center sm:justify-end">
                 <Button asChild variant="ghost" size="sm">
                   <Link href={`${BASE}/${row.id}`}>
                     <Pencil aria-hidden="true" />

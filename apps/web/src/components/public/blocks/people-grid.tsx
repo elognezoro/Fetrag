@@ -54,7 +54,7 @@ export function PeopleGrid({ id, title = 'Gouvernance', eyebrow = 'Les responsab
       <Reveal>
         <SectionHeading eyebrow={eyebrow} title={title} description={description} size="md" className="mb-10" />
       </Reveal>
-      <Stagger as="ul" className={cn('grid gap-5', featured ? 'max-w-3xl' : 'sm:grid-cols-2 lg:grid-cols-3')}>
+      <Stagger as="ul" className={cn('grid grid-cols-1 gap-5', featured ? 'max-w-3xl' : 'sm:grid-cols-2 lg:grid-cols-3')}>
         {items.map((person, index) => (
           <StaggerItem key={`${person.name}-${index}`} as="li" className="h-full">
             <article className={cn('flex h-full gap-5 rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft', featured ? 'flex-col sm:flex-row sm:items-start' : 'flex-col items-start')}>

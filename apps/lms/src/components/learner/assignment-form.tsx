@@ -113,6 +113,7 @@ export function AssignmentForm(props: AssignmentFormProps) {
         <Button
           type="submit"
           variant="outline"
+          className="w-full sm:w-auto"
           loading={pending && intentRef.current === 'draft'}
           disabled={pending}
           onClick={() => {
@@ -125,6 +126,7 @@ export function AssignmentForm(props: AssignmentFormProps) {
         <Button
           type="submit"
           variant="accent"
+          className="w-full sm:w-auto"
           loading={pending && intentRef.current === 'submit'}
           disabled={pending}
           onClick={() => {

@@ -68,11 +68,13 @@ export default async function AdminServicesPage({ searchParams }: { searchParams
                 <Link href={`${BASE}/${row.id}`} className="font-semibold text-navy hover:text-blue-700">
                   {row.name}
                 </Link>
-                <p className="truncate text-xs text-neutral-500">
+                <p className="line-clamp-1 text-xs text-neutral-500">
                   {row.category?.name ?? 'Sans catégorie'}
                   {row.slaDays ? ` · délai ${row.slaDays} j` : ''}
                   {row.requiresAccount ? '' : ' · sans compte'}
                 </p>
+                {/* Statut rappelé ici tant que sa colonne est masquée (mobile). */}
+                <StatusBadge status={row.status} size="sm" className="mt-1 sm:hidden" />
               </div>
             ),
           },
@@ -93,7 +95,7 @@ export default async function AdminServicesPage({ searchParams }: { searchParams
           },
           { key: 'requests', header: 'Demandes', hideBelow: 'lg', align: 'center', cell: (row) => <span className="tabular-nums text-neutral-700">{row._count.requests}</span> },
           { key: 'position', header: 'Ordre', hideBelow: 'lg', align: 'center', cell: (row) => <span className="font-mono text-xs text-neutral-500">{row.position}</span> },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           {
             key: 'actions',
             header: <span className="sr-only">Actions</span>,

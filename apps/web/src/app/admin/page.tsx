@@ -59,7 +59,8 @@ export default async function AdminDashboardPage() {
         </Alert>
       ) : null}
 
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      {/* Mobile : deux tuiles par ligne ; la tuile monétaire (valeur longue) occupe toute la largeur. */}
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         {data.web ? (
           <StaggerItem>
             <StatTile value={data.web.visits.totalViews} label="Pages vues sur 30 jours" icon={Eye} tone="blue" description={`${data.web.visits.uniqueVisitors} visiteurs uniques`} />
@@ -76,12 +77,12 @@ export default async function AdminDashboardPage() {
           </StaggerItem>
         ) : null}
         {data.finance ? (
-          <StaggerItem>
+          <StaggerItem className="col-span-2 sm:col-span-1">
             <StatTile value={formatMoney(data.finance.revenue, data.finance.currency)} label="Chiffre d’affaires sur 12 mois" icon={HandCoins} tone="navy" description={`${data.finance.ordersPaid} commande${data.finance.ordersPaid > 1 ? 's' : ''} payée${data.finance.ordersPaid > 1 ? 's' : ''}`} />
           </StaggerItem>
         ) : null}
         {!data.web && !data.finance && openRequests === null ? (
-          <StaggerItem className="sm:col-span-2 xl:col-span-4">
+          <StaggerItem className="col-span-2 xl:col-span-4">
             <Alert variant="info">
               <AlertDescription>Vos permissions ne donnent accès à aucun indicateur global ; utilisez la navigation pour rejoindre votre section.</AlertDescription>
             </Alert>
@@ -130,7 +131,7 @@ export default async function AdminDashboardPage() {
         {abilities.readDrafts ? (
           <Reveal>
             <Card pillar="defense" className="h-full">
-              <CardHeader className="flex-row items-center justify-between">
+              <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
                 <CardTitle as="h2">Contenus en relecture</CardTitle>
                 <Badge variant={data.reviewContents.length > 0 ? 'gold' : 'neutral'} size="sm">
                   {data.reviewContents.length}
@@ -144,7 +145,7 @@ export default async function AdminDashboardPage() {
                     {data.reviewContents.map((item) => (
                       <li key={`${item.entityType}-${item.id}`} className="flex items-center justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
                         <div className="min-w-0">
-                          <Link href={item.href} className="truncate font-semibold text-navy hover:text-blue-700">
+                          <Link href={item.href} className="block truncate font-semibold text-navy hover:text-blue-700">
                             {item.title}
                           </Link>
                           <p className="text-xs text-neutral-500">
@@ -170,7 +171,7 @@ export default async function AdminDashboardPage() {
                     <ul className="flex flex-col gap-1.5 text-sm">
                       {data.scheduled.slice(0, 5).map((item) => (
                         <li key={`${item.entityType}-${item.id}`} className="flex items-center justify-between gap-3">
-                          <Link href={item.entityType === 'page' ? `/admin/pages/${item.id}` : `/admin/actualites/${item.id}`} className="truncate font-semibold text-navy hover:text-blue-700">
+                          <Link href={item.entityType === 'page' ? `/admin/pages/${item.id}` : `/admin/actualites/${item.id}`} className="min-w-0 truncate font-semibold text-navy hover:text-blue-700">
                             {item.title}
                           </Link>
                           <span className="shrink-0 text-xs text-neutral-500">{item.scheduledAt ? formatDateTime(item.scheduledAt) : '—'}</span>
@@ -187,7 +188,7 @@ export default async function AdminDashboardPage() {
         {abilities.handleRequests ? (
           <Reveal delay={0.08}>
             <Card pillar="protection" className="h-full">
-              <CardHeader className="flex-row items-center justify-between">
+              <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
                 <CardTitle as="h2">Dernières demandes de service</CardTitle>
                 <Button asChild variant="link" size="sm">
                   <Link href="/admin/demandes">Toutes les demandes</Link>
@@ -201,7 +202,7 @@ export default async function AdminDashboardPage() {
                     {data.latestRequests.map((request) => (
                       <li key={request.id} className="flex items-center justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
                         <div className="min-w-0">
-                          <Link href={`/admin/demandes/${request.id}`} className="truncate font-semibold text-navy hover:text-blue-700">
+                          <Link href={`/admin/demandes/${request.id}`} className="block truncate font-semibold text-navy hover:text-blue-700">
                             {request.service.name}
                           </Link>
                           <p className="truncate text-xs text-neutral-500">
@@ -221,7 +222,7 @@ export default async function AdminDashboardPage() {
         {abilities.readForms ? (
           <Reveal>
             <Card pillar="prevention" className="h-full">
-              <CardHeader className="flex-row items-center justify-between">
+              <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
                 <CardTitle as="h2">Messages reçus</CardTitle>
                 <Button asChild variant="link" size="sm">
                   <Link href="/admin/messages">Boîte de réception</Link>
@@ -235,7 +236,7 @@ export default async function AdminDashboardPage() {
                     {data.latestMessages.map((message) => (
                       <li key={message.id} className="flex items-center justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
                         <div className="min-w-0">
-                          <Link href={`/admin/messages/${message.id}`} className="truncate font-semibold text-navy hover:text-blue-700">
+                          <Link href={`/admin/messages/${message.id}`} className="block truncate font-semibold text-navy hover:text-blue-700">
                             {message.subject || formKindLabels[message.kind] || message.kind}
                           </Link>
                           <p className="truncate text-xs text-neutral-500">
@@ -255,7 +256,7 @@ export default async function AdminDashboardPage() {
         {data.finance ? (
           <Reveal delay={0.08}>
             <Card pillar="defense" className="h-full">
-              <CardHeader className="flex-row items-center justify-between">
+              <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
                 <CardTitle as="h2">Ventes mensuelles</CardTitle>
                 <Button asChild variant="link" size="sm">
                   <Link href="/admin/finance">Finance</Link>
@@ -367,7 +368,7 @@ export default async function AdminDashboardPage() {
                       <dd className="font-display text-2xl font-semibold text-gold-400">{data.lms.certificates.last30d}</dd>
                     </div>
                   </dl>
-                  <Button asChild variant="gold" size="sm" className="self-start">
+                  <Button asChild variant="gold" size="sm" className="w-full sm:w-auto sm:self-start">
                     <a href={`${publicEnv.lmsUrl}/coordination`}>
                       Coordination LMS
                       <ArrowUpRight aria-hidden="true" />
@@ -382,9 +383,9 @@ export default async function AdminDashboardPage() {
 
       {abilities.readUsers || abilities.readDrafts ? (
         <Reveal>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-1 gap-2 sm:flex sm:flex-wrap">
             {abilities.write ? (
-              <Button asChild variant="secondary" size="sm">
+              <Button asChild variant="secondary" size="sm" className="w-full sm:w-auto">
                 <Link href="/admin/actualites/nouveau">
                   <Newspaper aria-hidden="true" />
                   Nouvelle actualité
@@ -392,14 +393,14 @@ export default async function AdminDashboardPage() {
               </Button>
             ) : null}
             {abilities.readUsers ? (
-              <Button asChild variant="secondary" size="sm">
+              <Button asChild variant="secondary" size="sm" className="w-full sm:w-auto">
                 <Link href="/admin/utilisateurs">
                   <Users aria-hidden="true" />
                   Utilisateurs
                 </Link>
               </Button>
             ) : null}
-            <Button asChild variant="ghost" size="sm">
+            <Button asChild variant="ghost" size="sm" className="w-full sm:w-auto">
               <Link href="/" target="_blank" rel="noopener">
                 Voir le site
                 <ArrowUpRight aria-hidden="true" />

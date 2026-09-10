@@ -69,10 +69,10 @@ export default async function PaymentsPage({ searchParams }: PageProps) {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Commande</TableHead>
-                    <TableHead>Contenu</TableHead>
+                    <TableHead className="hidden md:table-cell">Contenu</TableHead>
                     <TableHead>Montant</TableHead>
-                    <TableHead>Paiement</TableHead>
-                    <TableHead>Statut</TableHead>
+                    <TableHead className="hidden lg:table-cell">Paiement</TableHead>
+                    <TableHead className="hidden sm:table-cell">Statut</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -84,8 +84,18 @@ export default async function PaymentsPage({ searchParams }: PageProps) {
                         <TableCell>
                           <span className="font-mono text-xs font-semibold text-navy">{order.reference}</span>
                           <span className="block text-xs text-neutral-500">{formatDateTime(order.createdAt)}</span>
+                          {/* Contenu et statut rappelés sous la référence tant que leurs colonnes sont masquées. */}
+                          <span className="mt-1 block md:hidden">
+                            {order.lines.map((line) => (
+                              <span key={line.id} className="line-clamp-1 text-xs text-navy">
+                                {line.quantity > 1 ? `${line.quantity} × ` : ''}
+                                {line.label}
+                              </span>
+                            ))}
+                          </span>
+                          <StatusBadge status={order.status} size="sm" className="mt-1.5 sm:hidden" />
                         </TableCell>
-                        <TableCell className="max-w-[16rem]">
+                        <TableCell className="hidden max-w-[16rem] md:table-cell">
                           {order.lines.map((line) => (
                             <span key={line.id} className="block truncate text-sm text-navy">
                               {line.quantity > 1 ? `${line.quantity} × ` : ''}
@@ -97,12 +107,12 @@ export default async function PaymentsPage({ searchParams }: PageProps) {
                           {formatMoney(order.totalAmount, order.currency)}
                           {order.discountAmount > 0 ? <span className="block text-xs font-normal text-green-700">Remise {formatMoney(order.discountAmount, order.currency)}</span> : null}
                         </TableCell>
-                        <TableCell className="text-sm text-neutral-600">{payment ? paymentMethodLabels[payment.method] : '—'}</TableCell>
-                        <TableCell>
+                        <TableCell className="hidden text-sm text-neutral-600 lg:table-cell">{payment ? paymentMethodLabels[payment.method] : '—'}</TableCell>
+                        <TableCell className="hidden sm:table-cell">
                           <StatusBadge status={order.status} size="sm" />
                         </TableCell>
                         <TableCell className="text-right">
-                          <div className="flex justify-end gap-1">
+                          <div className="flex flex-wrap justify-end gap-1">
                             {order.status === 'PENDING' || order.status === 'FAILED' ? (
                               <Button asChild variant="primary" size="sm">
                                 <Link href={`/paiement/${order.id}`}>Payer</Link>

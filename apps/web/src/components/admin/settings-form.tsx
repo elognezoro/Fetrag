@@ -73,7 +73,7 @@ export function SettingsForm({ values }: { values: SettingsFormValues }) {
       </EditorSection>
 
       <div className="flex justify-end">
-        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" leftIcon={<Save aria-hidden="true" />}>
+        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" className="w-full sm:w-auto" leftIcon={<Save aria-hidden="true" />}>
           Enregistrer les paramètres
         </SubmitButton>
       </div>

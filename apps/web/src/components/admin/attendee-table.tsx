@@ -59,7 +59,7 @@ export function AttendeeTable({ eventId, attendees, canMark, exportHref }: Atten
             cell: (row) => (
               <div className="min-w-0">
                 <p className="font-semibold text-navy">{row.fullName || row.email}</p>
-                <p className="truncate text-xs text-neutral-500">
+                <p className="line-clamp-1 break-all text-xs text-neutral-500">
                   {row.email}
                   {row.phone ? ` · ${row.phone}` : ''}
                 </p>

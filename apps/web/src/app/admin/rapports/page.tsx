@@ -51,11 +51,11 @@ export default async function AdminReportsPage() {
 
       <section aria-labelledby="rapports-web" className="flex flex-col gap-4">
         <h2 id="rapports-web" className="font-display text-2xl font-semibold text-navy">
-          Site institutionnel <span className="text-base font-normal text-neutral-500">· 30 derniers jours</span>
+          Site institutionnel <span className="whitespace-nowrap text-base font-normal text-neutral-500">· 30 derniers jours</span>
         </h2>
         {web ? (
           <>
-            <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
               <StaggerItem>
                 <StatTile value={web.visits.totalViews} label="Pages vues" icon={Eye} tone="blue" description={`${plural(web.visits.uniqueVisitors, 'visiteur unique', 'visiteurs uniques')}`} />
               </StaggerItem>
@@ -135,7 +135,7 @@ export default async function AdminReportsPage() {
         </h2>
         {lms ? (
           <>
-            <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
               <StaggerItem>
                 <StatTile value={lms.activeLearners30d} label="Apprenants actifs sur 30 jours" icon={Users} tone="blue" description={`${plural(lms.enrollments.total, 'inscription')} au total`} />
               </StaggerItem>

@@ -63,7 +63,7 @@ function EmbedFrame({ src, title, className }: { src: string; title: string; cla
 function TextActivity({ result }: ActivityRendererProps) {
   const html = readTextHtml(result.rawContent)
   if (!html.trim()) return <p className="rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">Le contenu de cette lecture sera publié prochainement.</p>
-  return <Prose html={sanitizeHtml(html)} as="article" size="lg" className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-8" />
+  return <Prose html={sanitizeHtml(html)} as="article" size="lg" className="rounded-2xl border border-neutral-200 bg-white p-4 sm:p-8" />
 }
 
 function VideoActivity({ result }: ActivityRendererProps) {
@@ -232,50 +232,53 @@ function QuizActivity({ result }: ActivityRendererProps) {
   const exhausted = attempts !== null && attempts.remaining === 0
   const intro = readString(result.rawContent, 'intro')
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft">
+    <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft sm:p-6">
       <div className="flex items-start gap-4">
         <ActivityIcon type={survey ? 'SURVEY' : 'QUIZ'} badge className="size-11 bg-gold-50 text-gold-800" />
         <div className="min-w-0 flex-1">
           <h3 className="text-xl">{survey ? 'Questionnaire de satisfaction' : 'Évaluation'}</h3>
           {quiz?.description ? <p className="mt-1 text-sm text-neutral-600">{quiz.description}</p> : null}
           {intro ? <p className="mt-1 text-sm text-neutral-600">{intro}</p> : null}
-          <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-            <div className="rounded-xl bg-neutral-50 p-3">
-              <dt className="text-xs text-neutral-500">Questions</dt>
-              <dd className="font-display text-2xl text-navy">{quiz?._count.questions ?? 0}</dd>
-            </div>
-            <div className="rounded-xl bg-neutral-50 p-3">
-              <dt className="text-xs text-neutral-500">Durée</dt>
-              <dd className="font-display text-2xl text-navy">{quiz?.timeLimitMinutes ? `${quiz.timeLimitMinutes} min` : 'Libre'}</dd>
-            </div>
-            {!survey ? (
-              <div className="rounded-xl bg-neutral-50 p-3">
-                <dt className="text-xs text-neutral-500">Seuil de réussite</dt>
-                <dd className="font-display text-2xl text-navy">{quiz?.passScore ?? 60} %</dd>
-              </div>
-            ) : null}
-            <div className="rounded-xl bg-neutral-50 p-3">
-              <dt className="text-xs text-neutral-500">Tentatives restantes</dt>
-              <dd className="font-display text-2xl text-navy">
-                {attempts ? attempts.remaining : quiz?.maxAttempts ?? '-'}
-                <span className="text-sm text-neutral-500"> / {quiz?.maxAttempts ?? '-'}</span>
-              </dd>
-            </div>
-          </dl>
-          {attempts?.best !== null && attempts?.best !== undefined && !survey ? (
-            <p className="mt-3 text-sm text-neutral-700">
-              Meilleur score : <span className="font-semibold text-navy">{attempts.best} %</span>
-              {result.view.completion?.completed ? <Badge variant="success" size="sm" className="ml-2">Validée</Badge> : null}
-            </p>
-          ) : null}
-          <div className="mt-5 flex flex-wrap gap-2">
-            <Button asChild variant={exhausted ? 'outline' : 'primary'} size="md">
-              <Link href={`/evaluations/${result.view.activity.id}`}>
-                <ClipboardCheck aria-hidden="true" />
-                {exhausted ? 'Consulter mes résultats' : attempts && attempts.total > 0 ? 'Nouvelle tentative' : survey ? 'Répondre au questionnaire' : 'Commencer l’évaluation'}
-              </Link>
-            </Button>
+        </div>
+      </div>
+      {/* Indicateurs et action en pleine largeur sur mobile ; alignés sous le titre dès sm (pastille 44 px + espace 16 px). */}
+      <div className="sm:pl-[3.75rem]">
+        <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+          <div className="rounded-xl bg-neutral-50 p-3">
+            <dt className="text-xs text-neutral-500">Questions</dt>
+            <dd className="whitespace-nowrap font-display text-2xl text-navy">{quiz?._count.questions ?? 0}</dd>
           </div>
+          <div className="rounded-xl bg-neutral-50 p-3">
+            <dt className="text-xs text-neutral-500">Durée</dt>
+            <dd className="whitespace-nowrap font-display text-2xl text-navy">{quiz?.timeLimitMinutes ? `${quiz.timeLimitMinutes} min` : 'Libre'}</dd>
+          </div>
+          {!survey ? (
+            <div className="rounded-xl bg-neutral-50 p-3">
+              <dt className="text-xs text-neutral-500">Seuil de réussite</dt>
+              <dd className="whitespace-nowrap font-display text-2xl text-navy">{quiz?.passScore ?? 60} %</dd>
+            </div>
+          ) : null}
+          <div className="rounded-xl bg-neutral-50 p-3">
+            <dt className="text-xs text-neutral-500">Tentatives restantes</dt>
+            <dd className="whitespace-nowrap font-display text-2xl text-navy">
+              {attempts ? attempts.remaining : quiz?.maxAttempts ?? '-'}
+              <span className="text-sm text-neutral-500"> / {quiz?.maxAttempts ?? '-'}</span>
+            </dd>
+          </div>
+        </dl>
+        {attempts?.best !== null && attempts?.best !== undefined && !survey ? (
+          <p className="mt-3 text-sm text-neutral-700">
+            Meilleur score : <span className="font-semibold text-navy">{attempts.best} %</span>
+            {result.view.completion?.completed ? <Badge variant="success" size="sm" className="ml-2">Validée</Badge> : null}
+          </p>
+        ) : null}
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Button asChild variant={exhausted ? 'outline' : 'primary'} size="md" className="w-full sm:w-auto">
+            <Link href={`/evaluations/${result.view.activity.id}`}>
+              <ClipboardCheck aria-hidden="true" />
+              {exhausted ? 'Consulter mes résultats' : attempts && attempts.total > 0 ? 'Nouvelle tentative' : survey ? 'Répondre au questionnaire' : 'Commencer l’évaluation'}
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
@@ -287,37 +290,39 @@ function AssignmentActivity({ result }: ActivityRendererProps) {
   const state = result.assignmentState
   const stateLabels: Record<string, string> = { todo: 'À faire', draft: 'Brouillon', submitted: 'Remis', late: 'Remis en retard', graded: 'Corrigé', returned: 'À reprendre' }
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft">
+    <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft sm:p-6">
       <div className="flex items-start gap-4">
         <ActivityIcon type="ASSIGNMENT" badge className="size-11" />
         <div className="min-w-0 flex-1">
           <h3 className="text-xl">Devoir</h3>
           {assignment?.description ? <p className="mt-1 text-sm text-neutral-600">{assignment.description}</p> : null}
-          <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
-            <div className="rounded-xl bg-neutral-50 p-3">
-              <dt className="text-xs text-neutral-500">Date limite</dt>
-              <dd className="font-semibold text-navy">{state?.dueAt ? formatDateTime(state.dueAt) : 'Aucune'}</dd>
-            </div>
-            <div className="rounded-xl bg-neutral-50 p-3">
-              <dt className="text-xs text-neutral-500">Barème</dt>
-              <dd className="font-semibold text-navy">/{assignment?.maxScore ?? 20}</dd>
-            </div>
-            <div className="rounded-xl bg-neutral-50 p-3">
-              <dt className="text-xs text-neutral-500">Statut</dt>
-              <dd className="font-semibold text-navy">
-                {state ? stateLabels[state.state] ?? state.state : 'À faire'}
-                {state?.score !== null && state?.score !== undefined ? ` · ${state.score}/${state.maxScore}` : ''}
-              </dd>
-            </div>
-          </dl>
-          <div className="mt-5">
-            <Button asChild variant="primary" size="md">
-              <Link href={`/devoirs/${assignment?.id ?? ''}`}>
-                <ClipboardList aria-hidden="true" />
-                {state?.state === 'graded' ? 'Voir la correction' : state?.state === 'submitted' || state?.state === 'late' ? 'Voir ma remise' : 'Ouvrir le devoir'}
-              </Link>
-            </Button>
+        </div>
+      </div>
+      <div className="sm:pl-[3.75rem]">
+        <dl className="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-3">
+          <div className="rounded-xl bg-neutral-50 p-3">
+            <dt className="text-xs text-neutral-500">Date limite</dt>
+            <dd className="font-semibold text-navy">{state?.dueAt ? formatDateTime(state.dueAt) : 'Aucune'}</dd>
           </div>
+          <div className="rounded-xl bg-neutral-50 p-3">
+            <dt className="text-xs text-neutral-500">Barème</dt>
+            <dd className="font-semibold text-navy">/{assignment?.maxScore ?? 20}</dd>
+          </div>
+          <div className="rounded-xl bg-neutral-50 p-3">
+            <dt className="text-xs text-neutral-500">Statut</dt>
+            <dd className="font-semibold text-navy">
+              {state ? stateLabels[state.state] ?? state.state : 'À faire'}
+              {state?.score !== null && state?.score !== undefined ? ` · ${state.score}/${state.maxScore}` : ''}
+            </dd>
+          </div>
+        </dl>
+        <div className="mt-5">
+          <Button asChild variant="primary" size="md" className="w-full sm:w-auto">
+            <Link href={`/devoirs/${assignment?.id ?? ''}`}>
+              <ClipboardList aria-hidden="true" />
+              {state?.state === 'graded' ? 'Voir la correction' : state?.state === 'submitted' || state?.state === 'late' ? 'Voir ma remise' : 'Ouvrir le devoir'}
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
@@ -327,26 +332,28 @@ function AssignmentActivity({ result }: ActivityRendererProps) {
 function ForumActivity({ result }: ActivityRendererProps) {
   const prompt = readString(result.rawContent, 'prompt') ?? readString(result.rawContent, 'intro')
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft">
+    <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft sm:p-6">
       <div className="flex items-start gap-4">
         <ActivityIcon type="FORUM" badge className="size-11 bg-green-50 text-green-800" />
         <div className="min-w-0 flex-1">
           <h3 className="text-xl">Espace d’échange</h3>
-          {prompt ? (
-            <blockquote className="mt-3 rounded-xl border-l-4 border-gold-500 bg-gold-50 px-4 py-3 font-display text-lg text-navy">{prompt}</blockquote>
-          ) : null}
-          <div className="mt-5 flex flex-wrap gap-2">
-            {result.forumSlug ? (
-              <Button asChild variant="primary" size="md">
-                <Link href={`/forums/${result.forumSlug}`}>
-                  <MessagesSquare aria-hidden="true" />
-                  Participer au forum
-                </Link>
-              </Button>
-            ) : (
-              <p className="text-sm text-neutral-600">Le forum de cette formation sera ouvert à l’ouverture de votre cohorte.</p>
-            )}
-          </div>
+        </div>
+      </div>
+      <div className="sm:pl-[3.75rem]">
+        {prompt ? (
+          <blockquote className="mt-3 rounded-xl border-l-4 border-gold-500 bg-gold-50 px-4 py-3 font-display text-lg text-navy">{prompt}</blockquote>
+        ) : null}
+        <div className="mt-5 flex flex-wrap gap-2">
+          {result.forumSlug ? (
+            <Button asChild variant="primary" size="md" className="w-full sm:w-auto">
+              <Link href={`/forums/${result.forumSlug}`}>
+                <MessagesSquare aria-hidden="true" />
+                Participer au forum
+              </Link>
+            </Button>
+          ) : (
+            <p className="text-sm text-neutral-600">Le forum de cette formation sera ouvert à l’ouverture de votre cohorte.</p>
+          )}
         </div>
       </div>
     </div>
@@ -370,7 +377,7 @@ function LiveSessionActivity({ result }: ActivityRendererProps) {
   return (
     <div className="flex flex-col gap-4">
       {agenda.length > 0 || formatLabel ? (
-        <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft">
+        <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft sm:p-6">
           <div className="flex items-center gap-3">
             <ActivityIcon type="LIVE_SESSION" badge className="size-11 bg-gold-50 text-gold-800" />
             <div>

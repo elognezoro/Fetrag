@@ -83,7 +83,7 @@ export function ContinueCard({ item }: { item: ContinueItem }) {
           <ActivityIcon type={next.type} className="mt-0.5 text-blue-600" />
           <span className="min-w-0">
             <span className="block text-[11px] font-bold uppercase tracking-wider text-neutral-500">Prochaine activité</span>
-            <span className="block truncate font-semibold text-navy">{next.title}</span>
+            <span className="line-clamp-2 font-semibold text-navy sm:line-clamp-1">{next.title}</span>
           </span>
         </p>
       ) : null}
@@ -126,7 +126,7 @@ export function DeadlineList({ deadlines }: { deadlines: Deadline[] }) {
                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-semibold text-navy">{deadline.title}</span>
+                <span className="line-clamp-2 font-semibold text-navy sm:line-clamp-1">{deadline.title}</span>
                 <span className="block truncate text-xs text-neutral-500">{deadline.courseTitle}</span>
               </span>
               <span className="shrink-0 text-right">
@@ -165,7 +165,7 @@ export function ResultList({ results }: { results: Result[] }) {
                 <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-semibold text-navy">{result.title}</span>
+                <span className="line-clamp-2 font-semibold text-navy sm:line-clamp-1">{result.title}</span>
                 <span className="block truncate text-xs text-neutral-500">
                   {result.kind === 'quiz' ? 'Évaluation' : 'Devoir'}
                   {result.courseTitle ? ` · ${result.courseTitle}` : ''}
@@ -204,7 +204,7 @@ export function CertificateMiniList({ certificates }: { certificates: Certificat
               <Award className="size-5" strokeWidth={1.75} aria-hidden="true" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate font-semibold text-navy">{certificate.courseTitle}</span>
+              <span className="line-clamp-2 font-semibold text-navy sm:line-clamp-1">{certificate.courseTitle}</span>
               <span className="block text-xs text-neutral-500">
                 {certificate.number} · {formatDate(certificate.issuedAt)}
               </span>
@@ -232,7 +232,7 @@ export function PendingEnrollments({ enrollments }: { enrollments: Enrollment[] 
         <li key={enrollment.id} className="flex items-center gap-3 rounded-2xl border border-gold-200 bg-gold-50/50 p-4">
           <span className="font-display text-2xl font-semibold text-gold-700">{padNumber(moduleNumber(enrollment.course.code))}</span>
           <span className="min-w-0 flex-1">
-            <Link href={`/cours/${enrollment.course.slug}`} className="block truncate font-semibold text-navy hover:underline">
+            <Link href={`/cours/${enrollment.course.slug}`} className="line-clamp-2 font-semibold text-navy hover:underline sm:line-clamp-1">
               {enrollment.course.title}
             </Link>
             <span className="block text-xs text-neutral-600">Demande transmise à la coordination</span>

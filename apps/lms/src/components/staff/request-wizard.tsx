@@ -70,6 +70,9 @@ export interface RequestWizardProps {
   attachments?: WizardAttachment[]
 }
 
+/** Espace insécable : évite « 12 » et « h » sur deux lignes dans les cartes de module (mobile). */
+const NBSP = String.fromCharCode(160)
+
 function pillarOf(value: string | null, index: number): PillarName | Tone {
   return value && (pillars as readonly string[]).includes(value) ? (value as PillarName) : toneAt(index)
 }
@@ -204,33 +207,33 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
         </Alert>
       ) : null}
 
-      <ol className="mb-8 grid grid-cols-3 gap-2 sm:grid-cols-6" aria-label="Étapes de la demande">
+      <ol className="mb-6 grid grid-cols-3 gap-1.5 sm:mb-8 sm:grid-cols-6 sm:gap-2" aria-label="Étapes de la demande">
         {STEPS.map((item, index) => {
           const n = index + 1
           const state = n === step ? 'current' : n < step ? 'done' : 'todo'
           const tone = toneAt(index)
           const textTone = tone === 'green' ? 'text-green-700' : tone === 'gold' ? 'text-gold-700' : 'text-blue-600'
           return (
-            <li key={item.number}>
+            <li key={item.number} className="min-w-0">
               <button
                 type="button"
                 onClick={() => (state === 'done' ? setStep(n) : undefined)}
                 disabled={state === 'todo'}
                 aria-current={state === 'current' ? 'step' : undefined}
                 className={cn(
-                  'flex w-full flex-col items-start gap-1 rounded-xl border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40',
+                  'flex h-full w-full flex-col items-start gap-1 rounded-xl border p-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40 sm:p-3',
                   state === 'current' && 'border-blue-500 bg-blue-50 shadow-soft',
                   state === 'done' && 'border-neutral-200 bg-white hover:border-blue-300',
                   state === 'todo' && 'border-neutral-200 bg-neutral-50 opacity-70',
                 )}
               >
                 <span className="flex items-center gap-2">
-                  <span aria-hidden="true" className={cn('font-display text-2xl font-semibold leading-none', textTone)}>
+                  <span aria-hidden="true" className={cn('font-display text-xl font-semibold leading-none sm:text-2xl', textTone)}>
                     {item.number}
                   </span>
                   {state === 'done' ? <Check className="size-4 text-green-700" strokeWidth={2.5} aria-label="Étape validée" /> : null}
                 </span>
-                <span className="text-sm font-semibold text-navy">{item.label}</span>
+                <span className="text-xs font-semibold leading-tight text-navy sm:text-sm">{item.label}</span>
                 <span className="hidden text-xs text-neutral-500 lg:block">{item.description}</span>
               </button>
             </li>
@@ -310,7 +313,7 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
                     >
                       <Check className="size-4" strokeWidth={3} />
                     </span>
-                    <ModuleCard number={module.number} title={module.title} items={module.items} pillar={pillarOf(module.pillar, index)} duration={`${module.durationHours} h`} className="h-full" />
+                    <ModuleCard number={module.number} title={module.title} items={module.items} pillar={pillarOf(module.pillar, index)} duration={`${module.durationHours}${NBSP}h`} className="h-full" />
                   </div>
                 )
               })}
@@ -335,60 +338,46 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
                 {errors.participants.message ?? errors.participants.root?.message}
               </p>
             ) : null}
-            <div className="overflow-x-auto rounded-xl border border-neutral-200">
-              <table className="w-full text-sm">
-                <caption className="sr-only">Participants désignés</caption>
-                <thead className="bg-neutral-50">
-                  <tr>
-                    <th scope="col" className="eyebrow px-3 py-2 text-left text-[11px] text-neutral-600">Nom complet</th>
-                    <th scope="col" className="eyebrow px-3 py-2 text-left text-[11px] text-neutral-600">Email</th>
-                    <th scope="col" className="eyebrow px-3 py-2 text-left text-[11px] text-neutral-600">Téléphone</th>
-                    <th scope="col" className="eyebrow px-3 py-2 text-left text-[11px] text-neutral-600">Fonction</th>
-                    <th scope="col" className="px-3 py-2"><span className="sr-only">Actions</span></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {participants.fields.map((field, index) => {
-                    const rowErrors = Array.isArray(errors.participants) ? errors.participants[index] : undefined
-                    return (
-                      <tr key={field.id} className="border-t border-neutral-100 align-top">
-                        <td className="p-2">
-                          <FormField label={`Nom du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-name`} error={rowErrors?.fullName?.message} className="[&>label]:sr-only">
-                            <Input {...register(`participants.${index}.fullName` as const)} placeholder="Prénom Nom" />
-                          </FormField>
-                        </td>
-                        <td className="p-2">
-                          <FormField label={`Email du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-email`} error={rowErrors?.email?.message} className="[&>label]:sr-only">
-                            <Input type="email" {...register(`participants.${index}.email` as const)} placeholder="prenom.nom@exemple.ga" />
-                          </FormField>
-                        </td>
-                        <td className="p-2">
-                          <FormField label={`Téléphone du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-phone`} error={rowErrors?.phone?.message} className="[&>label]:sr-only">
-                            <Input type="tel" {...register(`participants.${index}.phone` as const)} placeholder="066 00 00 00" />
-                          </FormField>
-                        </td>
-                        <td className="p-2">
-                          <FormField label={`Fonction du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-job`} error={rowErrors?.jobTitle?.message} className="[&>label]:sr-only">
-                            <Input {...register(`participants.${index}.jobTitle` as const)} placeholder="Délégué du personnel" />
-                          </FormField>
-                        </td>
-                        <td className="p-2">
-                          <Button type="button" variant="ghost" size="icon" aria-label={`Retirer le participant ${index + 1}`} onClick={() => participants.remove(index)}>
-                            <Trash2 aria-hidden="true" />
-                          </Button>
-                        </td>
-                      </tr>
-                    )
-                  })}
-                  {participants.fields.length === 0 ? (
-                    <tr>
-                      <td colSpan={5} className="p-6 text-center text-sm text-neutral-500">
-                        Aucun participant pour le moment : ajoutez une ligne ou collez une liste.
-                      </td>
-                    </tr>
-                  ) : null}
-                </tbody>
-              </table>
+            {/* Mobile : une carte par participant (libellés visibles) ; dès `sm` : grille alignée en colonnes avec en-têtes. */}
+            <div className="rounded-xl border border-neutral-200">
+              <div aria-hidden="true" className="hidden gap-2 rounded-t-xl bg-neutral-50 px-3 py-2 sm:grid sm:grid-cols-[1.1fr_1.3fr_0.9fr_1fr_2.75rem]">
+                <span className="eyebrow text-[11px] text-neutral-600">Nom complet</span>
+                <span className="eyebrow text-[11px] text-neutral-600">Email</span>
+                <span className="eyebrow text-[11px] text-neutral-600">Téléphone</span>
+                <span className="eyebrow text-[11px] text-neutral-600">Fonction</span>
+                <span />
+              </div>
+              <ul className="divide-y divide-neutral-100" aria-label="Participants désignés">
+                {participants.fields.map((field, index) => {
+                  const rowErrors = Array.isArray(errors.participants) ? errors.participants[index] : undefined
+                  return (
+                    <li key={field.id} className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-[1.1fr_1.3fr_0.9fr_1fr_2.75rem] sm:items-start sm:gap-2 sm:p-2">
+                      <p className="eyebrow text-[11px] text-neutral-500 sm:hidden">Participant {index + 1}</p>
+                      <FormField label={`Nom du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-name`} error={rowErrors?.fullName?.message} className="min-w-0 sm:[&>label]:sr-only">
+                        <Input {...register(`participants.${index}.fullName` as const)} placeholder="Prénom Nom" />
+                      </FormField>
+                      <FormField label={`Email du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-email`} error={rowErrors?.email?.message} className="min-w-0 sm:[&>label]:sr-only">
+                        <Input type="email" {...register(`participants.${index}.email` as const)} placeholder="prenom.nom@exemple.ga" />
+                      </FormField>
+                      <FormField label={`Téléphone du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-phone`} error={rowErrors?.phone?.message} className="min-w-0 sm:[&>label]:sr-only">
+                        <Input type="tel" {...register(`participants.${index}.phone` as const)} placeholder="066 00 00 00" />
+                      </FormField>
+                      <FormField label={`Fonction du participant ${index + 1}`} htmlFor={`${baseId}-p-${index}-job`} error={rowErrors?.jobTitle?.message} className="min-w-0 sm:[&>label]:sr-only">
+                        <Input {...register(`participants.${index}.jobTitle` as const)} placeholder="Délégué du personnel" />
+                      </FormField>
+                      <div className="flex justify-end sm:justify-center">
+                        <Button type="button" variant="ghost" size="sm" aria-label={`Retirer le participant ${index + 1}`} onClick={() => participants.remove(index)}>
+                          <Trash2 aria-hidden="true" />
+                          <span className="sm:sr-only">Retirer</span>
+                        </Button>
+                      </div>
+                    </li>
+                  )
+                })}
+                {participants.fields.length === 0 ? (
+                  <li className="p-6 text-center text-sm text-neutral-500">Aucun participant pour le moment : ajoutez une ligne ou collez une liste.</li>
+                ) : null}
+              </ul>
             </div>
             <div className="flex flex-wrap gap-2">
               <Button
@@ -539,22 +528,22 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
         ) : null}
 
         <div className="mt-8 flex flex-col-reverse gap-3 border-t border-neutral-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             {step > 1 ? (
-              <Button type="button" variant="ghost" onClick={previous} leftIcon={<ArrowLeft aria-hidden="true" />}>
+              <Button type="button" variant="ghost" onClick={previous} leftIcon={<ArrowLeft aria-hidden="true" />} className="w-full sm:w-auto">
                 Précédent
               </Button>
             ) : null}
-            <Button type="button" variant="outline" onClick={saveAndQuit} loading={saving} leftIcon={<Save aria-hidden="true" />}>
+            <Button type="button" variant="outline" onClick={saveAndQuit} loading={saving} leftIcon={<Save aria-hidden="true" />} className="w-full sm:w-auto">
               Enregistrer et quitter
             </Button>
           </div>
           {step < 6 ? (
-            <Button type="button" variant="primary" onClick={next} loading={saving} rightIcon={<ArrowRight aria-hidden="true" />}>
+            <Button type="button" variant="primary" onClick={next} loading={saving} rightIcon={<ArrowRight aria-hidden="true" />} className="w-full sm:w-auto">
               Continuer
             </Button>
           ) : (
-            <Button type="button" variant="accent" size="lg" onClick={onSubmit} loading={submitting} disabled={!canSubmit} leftIcon={<Send aria-hidden="true" />}>
+            <Button type="button" variant="accent" size="lg" onClick={onSubmit} loading={submitting} disabled={!canSubmit} leftIcon={<Send aria-hidden="true" />} className="w-full sm:w-auto">
               Transmettre à la coordination
             </Button>
           )}

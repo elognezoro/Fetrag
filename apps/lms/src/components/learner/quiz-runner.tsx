@@ -93,24 +93,24 @@ function IntroScreen({ entry, onStart, starting, error }: { entry: QuizEntry; on
   const exhausted = entry.remainingAttempts === 0 && !entry.inProgressAttemptId
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
           <p className="text-xs text-neutral-500">Questions</p>
-          <p className="font-display text-3xl text-navy">{entry.quiz.questionCount}</p>
+          <p className="whitespace-nowrap font-display text-2xl text-navy sm:text-3xl">{entry.quiz.questionCount}</p>
         </div>
         <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
           <p className="text-xs text-neutral-500">Temps imparti</p>
-          <p className="font-display text-3xl text-navy">{entry.quiz.timeLimitMinutes ? `${entry.quiz.timeLimitMinutes} min` : 'Libre'}</p>
+          <p className="whitespace-nowrap font-display text-2xl text-navy sm:text-3xl">{entry.quiz.timeLimitMinutes ? `${entry.quiz.timeLimitMinutes} min` : 'Libre'}</p>
         </div>
         {!survey ? (
           <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
             <p className="text-xs text-neutral-500">Seuil de réussite</p>
-            <p className="font-display text-3xl text-navy">{entry.quiz.passScore} %</p>
+            <p className="whitespace-nowrap font-display text-2xl text-navy sm:text-3xl">{entry.quiz.passScore} %</p>
           </div>
         ) : null}
         <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
           <p className="text-xs text-neutral-500">Tentatives restantes</p>
-          <p className="font-display text-3xl text-navy">
+          <p className="whitespace-nowrap font-display text-2xl text-navy sm:text-3xl">
             {entry.remainingAttempts}
             <span className="text-base text-neutral-500"> / {entry.quiz.maxAttempts}</span>
           </p>
@@ -154,7 +154,7 @@ function IntroScreen({ entry, onStart, starting, error }: { entry: QuizEntry; on
 
       {entry.enrolled && entry.activity.isAvailable && !exhausted ? (
         <div>
-          <Button type="button" variant="accent" size="lg" loading={starting} onClick={onStart} leftIcon={entry.inProgressAttemptId ? <RotateCcw aria-hidden="true" /> : <Play aria-hidden="true" />}>
+          <Button type="button" variant="accent" size="lg" className="w-full sm:w-auto" loading={starting} onClick={onStart} leftIcon={entry.inProgressAttemptId ? <RotateCcw aria-hidden="true" /> : <Play aria-hidden="true" />}>
             {entry.inProgressAttemptId ? 'Reprendre la tentative en cours' : survey ? 'Répondre au questionnaire' : 'Commencer l’évaluation'}
           </Button>
         </div>
@@ -248,7 +248,7 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
             type="button"
             onClick={() => setMode('single')}
             aria-pressed={mode === 'single'}
-            className={cn('inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold', mode === 'single' ? 'bg-white text-blue-700 shadow-soft' : 'text-neutral-600')}
+            className={cn('inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold pointer-coarse:min-h-11', mode === 'single' ? 'bg-white text-blue-700 shadow-soft' : 'text-neutral-600')}
           >
             <ListOrdered className="size-4" aria-hidden="true" />
             Une par une
@@ -257,7 +257,7 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
             type="button"
             onClick={() => setMode('list')}
             aria-pressed={mode === 'list'}
-            className={cn('inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold', mode === 'list' ? 'bg-white text-blue-700 shadow-soft' : 'text-neutral-600')}
+            className={cn('inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-xs font-semibold pointer-coarse:min-h-11', mode === 'list' ? 'bg-white text-blue-700 shadow-soft' : 'text-neutral-600')}
           >
             <LayoutList className="size-4" aria-hidden="true" />
             Toutes
@@ -278,7 +278,7 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
                   aria-current={i === index ? 'step' : undefined}
                   aria-label={`Question ${i + 1}${done ? ', répondue' : ''}`}
                   className={cn(
-                    'inline-flex size-9 items-center justify-center rounded-full text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40',
+                    'inline-flex size-9 items-center justify-center rounded-full text-xs font-bold transition-colors focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40 pointer-coarse:size-11',
                     i === index ? 'bg-blue-500 text-white' : done ? 'bg-green-100 text-green-900' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                   )}
                 >
@@ -309,7 +309,7 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
             <QuestionCard key={q.id} question={q} number={i + 1} total={questions.length} value={answers[q.id]} onChange={(r) => setAnswer(q.id, r)} disabled={submitting} />
           ))}
           <div className="flex justify-end">
-            <Button type="button" variant="accent" size="lg" loading={submitting} onClick={requestSubmit} leftIcon={<Send aria-hidden="true" />}>
+            <Button type="button" variant="accent" size="lg" className="w-full sm:w-auto" loading={submitting} onClick={requestSubmit} leftIcon={<Send aria-hidden="true" />}>
               Soumettre mes réponses
             </Button>
           </div>
@@ -422,14 +422,14 @@ function ResultScreen({ result, entry, onRetry }: { result: QuizSubmission; entr
               : `Score : ${result.score ?? 0}/${result.maxScore ?? 0} points (${percent} %) · seuil de réussite ${result.passScore} %.`}
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
-            <Button asChild variant="primary">
+            <Button asChild variant="primary" className="w-full sm:w-auto">
               <Link href={`/apprendre/${entry.course.id}/${entry.lesson.id}?activite=${entry.activity.id}`}>
                 <ArrowLeft aria-hidden="true" />
                 Retour à la leçon
               </Link>
             </Button>
             {!passed && !pending && remaining > 0 ? (
-              <Button type="button" variant="accent" onClick={onRetry} leftIcon={<RotateCcw aria-hidden="true" />}>
+              <Button type="button" variant="accent" className="w-full sm:w-auto" onClick={onRetry} leftIcon={<RotateCcw aria-hidden="true" />}>
                 Nouvelle tentative ({remaining} restante{remaining > 1 ? 's' : ''})
               </Button>
             ) : null}

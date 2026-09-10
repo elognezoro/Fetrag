@@ -83,7 +83,7 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
             <TableBody>
               {list.items.map((q) => (
                 <TableRow key={q.id}>
-                  <TableCell>
+                  <TableCell className="min-w-[15rem]">
                     <Link href={`/admin/questions/${q.id}`} className="line-clamp-2 max-w-md font-semibold text-navy hover:underline">
                       {q.prompt}
                     </Link>
@@ -100,7 +100,7 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
                     {questionTypeLabels[q.type]}
                     {q.options.length ? <span className="block text-xs text-neutral-500">{q.options.length} option(s)</span> : null}
                   </TableCell>
-                  <TableCell className="text-neutral-700">{q.category ?? '-'}</TableCell>
+                  <TableCell className="min-w-[10rem] text-neutral-700">{q.category ?? '-'}</TableCell>
                   <TableCell>
                     {q.points} pt
                     <span className="block text-xs text-neutral-500">difficulté {q.difficulty}/5</span>

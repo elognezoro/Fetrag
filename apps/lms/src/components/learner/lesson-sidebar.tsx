@@ -165,7 +165,9 @@ export function LessonSidebar(props: LessonSidebarProps) {
           >
             <DialogTitle className="sr-only">Sommaire du cours</DialogTitle>
             <DialogDescription className="sr-only">Modules, leçons et activités du cours avec leur état d’avancement.</DialogDescription>
-            <SidebarHeader {...props} />
+            <div className="pr-10">
+              <SidebarHeader {...props} />
+            </div>
             <Tree {...props} onNavigate={() => setOpen(false)} />
           </DialogContent>
         </Dialog>

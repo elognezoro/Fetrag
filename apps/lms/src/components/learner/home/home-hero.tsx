@@ -31,19 +31,19 @@ export function HomeHero({ stats, authenticated }: HomeHeroProps) {
             attestations et certificats vérifiables.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild variant="accent" size="lg">
+            <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
               <Link href="/catalogue">
                 Découvrir les 10 modules
                 <ArrowRight aria-hidden="true" />
               </Link>
             </Button>
             {authenticated ? (
-              <Button asChild variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10">
+              <Button asChild variant="outline" size="lg" className="w-full border-white/60 text-white hover:bg-white/10 sm:w-auto">
                 <Link href="/dashboard">Mon tableau de bord</Link>
               </Button>
             ) : (
               <>
-                <Button asChild variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10">
+                <Button asChild variant="outline" size="lg" className="w-full border-white/60 text-white hover:bg-white/10 sm:w-auto">
                   <Link href="/connexion">
                     <LogIn aria-hidden="true" />
                     Connexion

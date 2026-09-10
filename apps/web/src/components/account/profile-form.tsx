@@ -62,7 +62,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
         </FormField>
       </div>
       <div className="flex justify-end">
-        <SubmitButton variant="primary">Enregistrer mon profil</SubmitButton>
+        <SubmitButton variant="primary" className="w-full sm:w-auto">
+          Enregistrer mon profil
+        </SubmitButton>
       </div>
     </form>
   )

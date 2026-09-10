@@ -96,7 +96,7 @@ export function SimpleBarChart({ data, xKey, series, height = 240, xFormat = 'ra
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data} margin={{ top: 8, right: 8, left: -10, bottom: 0 }} barCategoryGap={series.length > 1 ? '25%' : '35%'}>
           <CartesianGrid stroke="#eef0f6" vertical={false} />
-          <XAxis dataKey={xKey} tickFormatter={tick} tick={axisStyle} axisLine={false} tickLine={false} />
+          <XAxis dataKey={xKey} tickFormatter={tick} tick={axisStyle} axisLine={false} tickLine={false} minTickGap={16} />
           <YAxis tick={axisStyle} axisLine={false} tickLine={false} allowDecimals={false} tickFormatter={(v) => (valueFormat === 'money' ? `${Math.round(Number(v) / 1000)}k` : String(v))} />
           <Tooltip
             contentStyle={tooltipStyle}

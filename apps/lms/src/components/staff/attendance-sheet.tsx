@@ -137,7 +137,7 @@ export function AttendanceSheet({ sheet, sessions, baseHref }: AttendanceSheetPr
               const name = personName(row.user)
               return (
                 <tr key={row.user.id} className="border-t border-neutral-100 align-middle">
-                  <td className="px-4 py-3">
+                  <td className="min-w-[12rem] px-4 py-3">
                     <div className="flex items-center gap-3">
                       <Avatar size="sm">
                         <AvatarFallback>{initials(name)}</AvatarFallback>
@@ -148,7 +148,7 @@ export function AttendanceSheet({ sheet, sessions, baseHref }: AttendanceSheetPr
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="min-w-[16rem] px-4 py-3">
                     <div role="radiogroup" aria-label={`Statut de ${name}`} className="inline-flex flex-wrap gap-1">
                       {attendanceStatuses.map((status) => (
                         <button
@@ -160,7 +160,7 @@ export function AttendanceSheet({ sheet, sessions, baseHref }: AttendanceSheetPr
                           disabled={!sheet.canRecord}
                           onClick={() => setOne(row.user.id, { status })}
                           className={cn(
-                            'min-h-9 rounded-full border border-neutral-300 bg-white px-3 text-xs font-semibold text-neutral-700 transition-colors hover:border-blue-300 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60',
+                            'min-h-11 rounded-full border border-neutral-300 bg-white px-3 text-xs font-semibold text-neutral-700 transition-colors hover:border-blue-300 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40 disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-9',
                             statusStyles[status],
                           )}
                         >
@@ -196,8 +196,8 @@ export function AttendanceSheet({ sheet, sessions, baseHref }: AttendanceSheetPr
       </div>
 
       {sheet.canRecord && sheet.rows.length ? (
-        <div className="flex justify-end">
-          <Button type="button" variant="primary" onClick={save} loading={pending} leftIcon={<Save aria-hidden="true" />}>
+        <div className="flex flex-col sm:flex-row sm:justify-end">
+          <Button type="button" variant="primary" onClick={save} loading={pending} leftIcon={<Save aria-hidden="true" />} className="w-full sm:w-auto">
             Enregistrer la feuille
           </Button>
         </div>

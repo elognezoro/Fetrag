@@ -17,7 +17,9 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(function Tab
   return (
     <div
       className={cn(
-        'relative w-full overflow-x-auto',
+        'relative w-full overflow-x-auto overscroll-x-contain',
+        // indice de défilement horizontal sur mobile : fondu du bord droit tant que le contenu dépasse
+        !bare && '[mask-image:linear-gradient(to_right,black_calc(100%-1.25rem),transparent)] sm:[mask-image:none]',
         !bare && 'rounded-xl border border-neutral-200 bg-white shadow-soft',
         wrapperClassName,
       )}

@@ -42,7 +42,7 @@ export default async function AdminSponsorshipsPage({ searchParams }: { searchPa
         actions={options ? <SponsorshipDialog organizations={options.organizations} courses={options.courses} events={options.events} /> : undefined}
       />
       <FinanceSubnav current={BASE} />
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4">
         <StaggerItem>
           <StatTile value={result.active} label="Prises en charge en cours de validité" icon={HandHeart} tone="green" />
         </StaggerItem>
@@ -79,17 +79,22 @@ export default async function AdminSponsorshipsPage({ searchParams }: { searchPa
                 ) : (
                   <span className="font-semibold text-navy">{beneficiaryName(row.beneficiary)}</span>
                 )}
-                <p className="truncate text-xs text-neutral-500">{row.beneficiary.email}</p>
+                <p className="line-clamp-1 break-all text-xs text-neutral-500">{row.beneficiary.email}</p>
+                {/* Libellé rappelé ici tant que sa colonne est masquée (mobile). */}
+                <p className="mt-1 text-xs text-neutral-600 md:hidden">
+                  {row.label} · {row.target ?? 'Toute l’offre'}
+                </p>
               </div>
             ),
           },
           {
             key: 'label',
             header: 'Prise en charge',
+            hideBelow: 'md',
             cell: (row) => (
               <div className="min-w-0 text-sm">
                 <p className="font-semibold text-navy">{row.label}</p>
-                <p className="truncate text-xs text-neutral-500">{row.target ?? 'Toute l’offre'}</p>
+                <p className="line-clamp-1 text-xs text-neutral-500">{row.target ?? 'Toute l’offre'}</p>
               </div>
             ),
           },
@@ -148,7 +153,7 @@ export default async function AdminSponsorshipsPage({ searchParams }: { searchPa
             cell: (row) => (
               <span className="text-xs text-neutral-600" title={formatDateTime(row.createdAt)}>
                 {formatRelative(row.createdAt)}
-                {row.grantedBy ? <span className="block truncate">{row.grantedBy.name ?? row.grantedBy.email}</span> : null}
+                {row.grantedBy ? <span className="line-clamp-1 break-all">{row.grantedBy.name ?? row.grantedBy.email}</span> : null}
               </span>
             ),
           },

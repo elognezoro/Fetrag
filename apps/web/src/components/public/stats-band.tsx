@@ -18,7 +18,7 @@ export function StatsBand({ stats }: StatsBandProps) {
     <div className="relative border-t border-neutral-200 bg-neutral-50/80">
       <Container className="py-10">
         <h2 className="sr-only">Chiffres clés de la Fédération</h2>
-        <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4" as="ul">
+        <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4" as="ul">
           {tiles.map((tile) => (
             <StaggerItem key={tile.label} as="li">
               <StatTile value={tile.value} label={tile.label} icon={tile.icon} tone={tile.tone} />

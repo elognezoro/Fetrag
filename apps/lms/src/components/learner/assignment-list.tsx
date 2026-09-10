@@ -81,8 +81,8 @@ export function AssignmentList({ rows, filter }: AssignmentListProps) {
                 {row.overdue ? <AlertTriangle className="size-5" strokeWidth={1.75} aria-hidden="true" /> : <ClipboardList className="size-5" strokeWidth={1.75} aria-hidden="true" />}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block truncate font-semibold text-navy">{row.activity.title}</span>
-                <span className="block truncate text-xs text-neutral-500">
+                <span className="block font-semibold text-navy sm:truncate">{row.activity.title}</span>
+                <span className="block text-xs text-neutral-500 sm:truncate">
                   {row.course.title} · {row.activity.moduleTitle}
                 </span>
               </span>

@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
-import { Emblem, MottoStrip } from '@fetrag/ui'
+import { Emblem, MottoStrip, cn } from '@fetrag/ui'
 import { footerNavigation, legalNavigation, lmsHref, siteConfig, type NavItem } from '@/lib/site'
 
 function FooterLink({ item }: { item: NavItem }) {
-  const className = 'inline-flex items-center gap-1 text-sm text-white/75 transition hover:text-white hover:underline'
+  const className = 'inline-flex items-start gap-1 text-sm leading-snug text-white/75 transition hover:text-white hover:underline'
   if (item.external) {
     return (
       <a href={item.href} className={className}>
         {item.label}
-        <ArrowUpRight className="h-3.5 w-3.5 opacity-60" aria-hidden="true" />
+        <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-60" aria-hidden="true" />
       </a>
     )
   }
@@ -20,9 +20,9 @@ function FooterLink({ item }: { item: NavItem }) {
   )
 }
 
-function FooterColumn({ title, items }: { title: string; items: NavItem[] }) {
+function FooterColumn({ title, items, className }: { title: string; items: NavItem[]; className?: string }) {
   return (
-    <div>
+    <div className={cn('min-w-0', className)}>
       <h2 className="eyebrow mb-4 text-gold-400">{title}</h2>
       <ul className="space-y-2.5">
         {items.map((item) => (
@@ -47,8 +47,9 @@ export function SiteFooter() {
 
       <MottoStrip />
 
-      <div className="container-fetrag relative grid grid-cols-1 gap-10 py-14 md:grid-cols-2 lg:grid-cols-6">
-        <div className="lg:col-span-2">
+      {/* Mobile : marque sur toute la largeur, puis liens sur deux colonnes ; à partir de lg, six colonnes. */}
+      <div className="container-fetrag relative grid grid-cols-2 gap-x-6 gap-y-10 py-12 sm:py-14 lg:grid-cols-6">
+        <div className="col-span-2">
           <div className="flex items-center gap-3">
             <Emblem size={56} variant="white" decorative />
             <div>
@@ -67,9 +68,9 @@ export function SiteFooter() {
 
         <FooterColumn title={footerNavigation.institution.title} items={footerNavigation.institution.items} />
         <FooterColumn title={footerNavigation.formation.title} items={footerNavigation.formation.items} />
-        <FooterColumn title={footerNavigation.services.title} items={footerNavigation.services.items} />
+        <FooterColumn title={footerNavigation.services.title} items={footerNavigation.services.items} className="col-span-2 md:col-span-1" />
 
-        <div>
+        <div className="col-span-2 min-w-0 md:col-span-1">
           <h2 className="eyebrow mb-4 text-gold-400">Contact</h2>
           <address className="space-y-3 text-sm not-italic text-white/80">
             <p className="flex items-start gap-2">

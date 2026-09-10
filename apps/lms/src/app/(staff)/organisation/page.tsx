@@ -133,7 +133,7 @@ export default async function OrganisationDashboardPage() {
                 {requestList.items.map((r) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-semibold text-navy">{r.reference}</TableCell>
-                    <TableCell>
+                    <TableCell className="min-w-[12rem]">
                       <span className="line-clamp-2 max-w-xs">{r.modules.map((m) => m.course.title).join(', ')}</span>
                     </TableCell>
                     <TableCell>{r._count.participants}</TableCell>
@@ -179,7 +179,7 @@ export default async function OrganisationDashboardPage() {
                     <div className="min-w-0">
                       <p className="font-display text-lg font-semibold leading-tight text-navy">{c.name}</p>
                       <p className="text-xs text-neutral-500">
-                        {c.code} · {c.course.title}
+                        <span className="whitespace-nowrap">{c.code} ·</span> {c.course.title}
                       </p>
                     </div>
                     <StatusBadge status={c.status} size="sm" />

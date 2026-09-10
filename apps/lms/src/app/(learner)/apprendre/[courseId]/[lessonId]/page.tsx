@@ -63,7 +63,17 @@ export default async function LessonPage({ params, searchParams }: PageProps) {
 
   return (
     <div className="container-fetrag py-6 sm:py-8">
+      {/* Sur mobile, fil d'Ariane réduit aux liens parents (module, leçon et activité sont rappelés dans la carte). */}
       <Breadcrumbs
+        className="lg:hidden"
+        items={[
+          { label: 'Mes formations', href: '/mes-formations' },
+          { label: summary.course.title, href: `/cours/${summary.course.slug}` },
+        ]}
+        homeHref="/dashboard"
+      />
+      <Breadcrumbs
+        className="hidden lg:block"
         items={[
           { label: 'Mes formations', href: '/mes-formations' },
           { label: summary.course.title, href: `/cours/${summary.course.slug}` },
@@ -87,12 +97,12 @@ export default async function LessonPage({ params, searchParams }: PageProps) {
         />
 
         <div className="flex min-w-0 flex-col gap-6">
-          <article className={cn('rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft sm:p-8', classes.topRule)} aria-labelledby="activity-title">
+          <article className={cn('rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft sm:p-8', classes.topRule)} aria-labelledby="activity-title">
             <header>
               <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-neutral-500">
                 <span className={cn('eyebrow text-[11px]', classes.text)}>Leçon {lessonLabel}</span>
-                <span aria-hidden="true">·</span>
-                <span className="truncate">{moduleTitle}</span>
+                <span aria-hidden="true" className="hidden sm:inline">·</span>
+                <span className="w-full truncate sm:w-auto sm:min-w-0 sm:flex-1">{moduleTitle}</span>
               </p>
               <p className="mt-2 text-sm font-semibold text-neutral-700">{lesson.title}</p>
               <h1 id="activity-title" className="mt-2 flex items-start gap-3 text-2xl sm:text-3xl">

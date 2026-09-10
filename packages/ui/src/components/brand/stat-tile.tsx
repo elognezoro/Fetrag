@@ -45,7 +45,7 @@ export function StatTile({
   return (
     <div
       className={cn(
-        'relative flex flex-col gap-3 rounded-2xl border p-5 shadow-soft sm:p-6',
+        'relative flex flex-col gap-2.5 rounded-2xl border p-4 shadow-soft sm:gap-3 sm:p-6',
         classes.topRule,
         inverted ? 'border-white/15 bg-white/5 text-white' : 'border-neutral-200 bg-white text-ink',
         className,
@@ -62,7 +62,7 @@ export function StatTile({
           <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
         </span>
       ) : null}
-      <p className={cn('font-display text-4xl font-semibold leading-none tracking-tight tabular-nums sm:text-5xl', inverted ? 'text-white' : 'text-navy')}>
+      <p className={cn('font-display text-3xl font-semibold leading-none tracking-tight tabular-nums sm:text-4xl lg:text-5xl', inverted ? 'text-white' : 'text-navy')}>
         {isNumeric && animate ? (
           <Counter to={value} prefix={prefix} suffix={suffix} decimals={decimals} />
         ) : (

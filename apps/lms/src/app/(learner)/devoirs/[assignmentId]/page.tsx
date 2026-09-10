@@ -47,7 +47,17 @@ export default async function AssignmentPage({ params }: PageProps) {
 
   return (
     <div className="container-fetrag py-6 sm:py-8">
+      {/* Sur mobile, fil d'Ariane réduit aux liens parents (le titre du devoir est rappelé juste dessous). */}
       <Breadcrumbs
+        className="lg:hidden"
+        items={[
+          { label: 'Mes devoirs', href: '/devoirs' },
+          { label: course.title, href: `/cours/${course.slug}` },
+        ]}
+        homeHref="/dashboard"
+      />
+      <Breadcrumbs
+        className="hidden lg:block"
         items={[
           { label: 'Mes devoirs', href: '/devoirs' },
           { label: course.title, href: `/cours/${course.slug}` },

@@ -89,7 +89,7 @@ export function OrganizationForm() {
                 <p className="text-xs text-neutral-500">Les organisations inactives n’apparaissent plus dans les listes de choix.</p>
               </div>
             </div>
-            <SubmitButton variant="primary" size="lg" pendingLabel="Création" leftIcon={<Save aria-hidden="true" />}>
+            <SubmitButton variant="primary" size="lg" pendingLabel="Création" className="w-full sm:w-auto sm:self-end" leftIcon={<Save aria-hidden="true" />}>
               Créer l’organisation
             </SubmitButton>
           </EditorSection>

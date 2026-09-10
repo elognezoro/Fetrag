@@ -67,11 +67,13 @@ export default async function AdminResourcesPage({ searchParams }: { searchParam
                 <Link href={`${BASE}/${row.id}`} className="font-semibold text-navy hover:text-blue-700">
                   {row.title}
                 </Link>
-                <p className="truncate text-xs text-neutral-500">
+                <p className="line-clamp-1 break-all text-xs text-neutral-500">
                   {resourceKindLabels[row.kind]}
                   {row.category ? ` · ${row.category.name}` : ''}
                   {row.fileName ? ` · ${row.fileName}` : row.externalUrl ? ' · lien externe' : ''}
                 </p>
+                {/* Statut rappelé ici tant que sa colonne est masquée (mobile). */}
+                <StatusBadge status={row.status} size="sm" className="mt-1 sm:hidden" />
               </div>
             ),
           },
@@ -86,7 +88,7 @@ export default async function AdminResourcesPage({ searchParams }: { searchParam
               </Badge>
             ),
           },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           { key: 'downloads', header: 'Téléch.', hideBelow: 'lg', align: 'right', cell: (row) => <span className="tabular-nums text-xs text-neutral-600">{row.downloadCount}</span> },
           { key: 'date', header: 'Document daté', hideBelow: 'lg', cell: (row) => <span className="text-xs text-neutral-600">{row.publishedOn ? formatDate(row.publishedOn) : '—'}</span> },
           {

@@ -43,14 +43,14 @@ export default async function AdminNewsletterPage({ searchParams }: { searchPara
           </Button>
         }
       />
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         <StaggerItem>
           <StatTile value={stats.confirmed} label="Abonnés confirmés" icon={Send} tone="green" />
         </StaggerItem>
         <StaggerItem>
           <StatTile value={stats.pending} label="En attente de confirmation" tone="gold" />
         </StaggerItem>
-        <StaggerItem>
+        <StaggerItem className="col-span-2 sm:col-span-1">
           <StatTile value={stats.unsubscribed} label="Désinscrits" tone="navy" />
         </StaggerItem>
       </Stagger>
@@ -67,10 +67,26 @@ export default async function AdminNewsletterPage({ searchParams }: { searchPara
         empty={{ icon: Send, title: 'Aucun abonné', description: 'Les inscriptions depuis le pied de page et le formulaire de contact apparaîtront ici.' }}
         pagination={{ page: list.page, totalPages: list.totalPages, total: list.total, pageSize: list.pageSize, hrefFor: pageHref(BASE, params) }}
         columns={[
-          { key: 'email', header: 'Email', cell: (row) => <span className="break-all font-semibold text-navy">{row.email}</span> },
+          {
+            key: 'email',
+            header: 'Email',
+            cell: (row) => {
+              const meta = stateLabels[row.state] ?? { label: row.state, variant: 'neutral' as const }
+              return (
+                <div className="min-w-0">
+                  <span className="break-all font-semibold text-navy">{row.email}</span>
+                  {/* État rappelé ici tant que sa colonne est masquée (mobile). */}
+                  <Badge variant={meta.variant} size="sm" dot className="mt-1 sm:hidden">
+                    {meta.label}
+                  </Badge>
+                </div>
+              )
+            },
+          },
           {
             key: 'state',
             header: 'État',
+            hideBelow: 'sm',
             cell: (row) => {
               const meta = stateLabels[row.state] ?? { label: row.state, variant: 'neutral' as const }
               return (

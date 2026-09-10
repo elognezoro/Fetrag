@@ -18,7 +18,15 @@ interface StatusFilterTabsProps {
 /** Onglets de filtre par liens (fonctionnent sans JavaScript) dans une capsule, avec compteurs. */
 export function StatusFilterTabs({ tabs, active, label, className }: StatusFilterTabsProps) {
   return (
-    <nav aria-label={label} className={cn('-mx-5 overflow-x-auto px-5 scrollbar-none sm:mx-0 sm:px-0', className)}>
+    <nav
+      aria-label={label}
+      className={cn(
+        '-mx-5 overflow-x-auto px-5 scrollbar-none sm:mx-0 sm:px-0',
+        // Fondu du bord droit sur mobile : indique que la rangée d'onglets se poursuit hors écran.
+        '[mask-image:linear-gradient(to_right,black_calc(100%-2.5rem),transparent)] sm:[mask-image:none]',
+        className,
+      )}
+    >
       <ul className="inline-flex min-w-max items-center gap-1 rounded-full bg-neutral-100 p-1">
         {tabs.map((tab) => {
           const isActive = tab.value === active

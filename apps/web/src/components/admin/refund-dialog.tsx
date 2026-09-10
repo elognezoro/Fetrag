@@ -59,7 +59,7 @@ export function RefundDialog({ paymentId, orderId, remaining, currency, referenc
             <Textarea id={`${id}-reason`} name="reason" rows={3} maxLength={500} required />
           </FormField>
           <div className="flex justify-end">
-            <SubmitButton variant="danger" pendingLabel="Remboursement en cours">
+            <SubmitButton variant="danger" pendingLabel="Remboursement en cours" className="w-full sm:w-auto">
               Confirmer le remboursement
             </SubmitButton>
           </div>

@@ -134,7 +134,7 @@ export function ServiceForm({ service, categories }: ServiceFormProps) {
         </TabsContent>
       </Tabs>
       <div className="flex justify-end">
-        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" leftIcon={<Save aria-hidden="true" />}>
+        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" className="w-full sm:w-auto" leftIcon={<Save aria-hidden="true" />}>
           {service?.id ? 'Enregistrer le service' : 'Créer le service'}
         </SubmitButton>
       </div>

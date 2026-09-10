@@ -43,7 +43,7 @@ function EventChip({ event }: { event: CalendarEvent }) {
 export function CalendarGrid({ weeks, eventsByDay, monthLabel }: CalendarGridProps) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white shadow-soft">
-      <table className="w-full min-w-[22rem] table-fixed border-collapse">
+      <table className="w-full min-w-[20rem] table-fixed border-collapse">
         <caption className="sr-only">Calendrier de {monthLabel} : séances de formation et échéances de devoirs</caption>
         <thead>
           <tr className="border-b border-neutral-200 bg-neutral-50">

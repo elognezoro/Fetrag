@@ -55,7 +55,7 @@ export default async function AdminServiceRequestsPage({ searchParams }: { searc
           </Button>
         }
       />
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={counts.NEW} label="Nouvelles" tone="gold" description="À attribuer" />
         </StaggerItem>
@@ -95,7 +95,9 @@ export default async function AdminServiceRequestsPage({ searchParams }: { searc
                 <Link href={`${BASE}/${row.id}`} className="font-semibold text-navy hover:text-blue-700">
                   {row.service.name}
                 </Link>
-                <p className="truncate font-mono text-xs text-neutral-500">{row.reference}</p>
+                <p className="font-mono text-xs text-neutral-500">{row.reference}</p>
+                {/* Statut rappelé ici tant que sa colonne est masquée (mobile). */}
+                <StatusBadge status={row.status} size="sm" className="mt-1 sm:hidden" />
               </div>
             ),
           },
@@ -104,15 +106,15 @@ export default async function AdminServiceRequestsPage({ searchParams }: { searc
             header: 'Demandeur',
             cell: (row) => (
               <div className="min-w-0 text-sm">
-                <p className="truncate font-semibold text-navy">{row.fullName}</p>
-                <p className="truncate text-xs text-neutral-500">
+                <p className="line-clamp-1 font-semibold text-navy">{row.fullName}</p>
+                <p className="line-clamp-1 break-all text-xs text-neutral-500">
                   {row.email}
                   {row.organization ? ` · ${row.organization}` : ''}
                 </p>
               </div>
             ),
           },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           {
             key: 'sla',
             header: 'Échéance',

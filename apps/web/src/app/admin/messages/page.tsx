@@ -38,7 +38,7 @@ export default async function AdminMessagesPage({ searchParams }: { searchParams
           </Button>
         }
       />
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={counts.NEW} label="Nouveaux" tone="gold" description="À lire" />
         </StaggerItem>
@@ -79,6 +79,8 @@ export default async function AdminMessagesPage({ searchParams }: { searchParams
                   {row.subject || formKindLabels[row.kind]}
                 </Link>
                 <p className="line-clamp-1 text-xs text-neutral-500">{row.message}</p>
+                {/* Statut rappelé ici tant que sa colonne est masquée (mobile). */}
+                <StatusBadge status={row.status} size="sm" className="mt-1 sm:hidden" />
               </div>
             ),
           },
@@ -88,12 +90,12 @@ export default async function AdminMessagesPage({ searchParams }: { searchParams
             header: 'Expéditeur',
             cell: (row) => (
               <div className="min-w-0 text-sm">
-                <p className="truncate font-semibold text-navy">{row.fullName}</p>
-                <p className="truncate text-xs text-neutral-500">{row.email}</p>
+                <p className="line-clamp-1 font-semibold text-navy">{row.fullName}</p>
+                <p className="line-clamp-1 break-all text-xs text-neutral-500">{row.email}</p>
               </div>
             ),
           },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           {
             key: 'createdAt',
             header: 'Reçu',

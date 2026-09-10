@@ -76,7 +76,7 @@ export async function RequestDetail({ request, cohortHref, actions, children }: 
               <div className="min-w-0">
                 <p className="font-semibold text-navy">{m.course.title}</p>
                 <p className="text-xs text-neutral-500">
-                  {m.course.code} · {m.course.durationHours} h {m.course.status !== 'PUBLISHED' ? <Badge variant="warning" size="sm" className="ml-1">Non publié</Badge> : null}
+                  {m.course.code} · <span className="whitespace-nowrap">{m.course.durationHours} h</span> {m.course.status !== 'PUBLISHED' ? <Badge variant="warning" size="sm" className="ml-1">Non publié</Badge> : null}
                   {!m.course.currentVersionId ? <Badge variant="danger" size="sm" className="ml-1">Sans version publiée</Badge> : null}
                 </p>
               </div>
@@ -100,10 +100,10 @@ export async function RequestDetail({ request, cohortHref, actions, children }: 
             <TableBody>
               {request.participants.map((p) => (
                 <TableRow key={p.id}>
-                  <TableCell className="font-medium text-ink">{p.fullName}</TableCell>
-                  <TableCell>{p.email ?? <span className="text-gold-800">Sans email</span>}</TableCell>
-                  <TableCell>{p.phone ?? '-'}</TableCell>
-                  <TableCell>{p.jobTitle ?? '-'}</TableCell>
+                  <TableCell className="min-w-[10rem] font-medium text-ink">{p.fullName}</TableCell>
+                  <TableCell className="min-w-[12rem] break-all">{p.email ?? <span className="text-gold-800">Sans email</span>}</TableCell>
+                  <TableCell className="whitespace-nowrap">{p.phone ?? '-'}</TableCell>
+                  <TableCell className="min-w-[10rem]">{p.jobTitle ?? '-'}</TableCell>
                   <TableCell>{p.enrolled ? <Badge variant="success" size="sm">Inscrit</Badge> : p.userId ? <Badge variant="blue" size="sm">Compte existant</Badge> : <Badge variant="neutral" size="sm">À créer</Badge>}</TableCell>
                 </TableRow>
               ))}

@@ -102,7 +102,7 @@ export function PageForm({ page }: { page?: PageFormValues }) {
         </TabsContent>
       </Tabs>
       <div className="flex justify-end">
-        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" leftIcon={<Save aria-hidden="true" />}>
+        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" className="w-full sm:w-auto" leftIcon={<Save aria-hidden="true" />}>
           {page?.id ? 'Enregistrer la page' : 'Créer la page'}
         </SubmitButton>
       </div>

@@ -76,7 +76,7 @@ export default async function AdminCertificatesPage() {
                 const criteria = (t.criteria ?? {}) as { minScore?: number; minAttendanceRate?: number; requireCompletion?: boolean }
                 return (
                   <TableRow key={t.id}>
-                    <TableCell>
+                    <TableCell className="min-w-[14rem]">
                       <Link href={`/admin/certificats/${t.id}`} className="font-semibold text-navy hover:underline">
                         {t.name}
                       </Link>
@@ -92,14 +92,14 @@ export default async function AdminCertificatesPage() {
                         ) : null}
                       </span>
                     </TableCell>
-                    <TableCell className="text-neutral-700">{t.course ? `${t.course.code} · ${t.course.title}` : <span className="text-neutral-400">Tous les cours</span>}</TableCell>
-                    <TableCell className="text-sm text-neutral-700">
+                    <TableCell className="min-w-[12rem] text-neutral-700">{t.course ? `${t.course.code} · ${t.course.title}` : <span className="text-neutral-400">Tous les cours</span>}</TableCell>
+                    <TableCell className="min-w-[12rem] text-sm text-neutral-700">
                       Score ≥ {criteria.minScore ?? 60} %
                       <span className="block text-xs text-neutral-500">
                         Assiduité ≥ {criteria.minAttendanceRate ?? 0} %{criteria.requireCompletion === false ? '' : ' · formation terminée'}
                       </span>
                     </TableCell>
-                    <TableCell className="text-neutral-700">{t.validityMonths ? `${t.validityMonths} mois` : 'Sans expiration'}</TableCell>
+                    <TableCell className="whitespace-nowrap text-neutral-700">{t.validityMonths ? `${t.validityMonths} mois` : 'Sans expiration'}</TableCell>
                     <TableCell>{t._count.certificates}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex flex-wrap justify-end gap-1">
@@ -159,17 +159,17 @@ export default async function AdminCertificatesPage() {
             <TableBody>
               {recent.items.map((c) => (
                 <TableRow key={c.id}>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap">
                     <Link href={`/certificats/${c.id}`} className="font-semibold text-navy hover:underline">
                       {c.number}
                     </Link>
                   </TableCell>
-                  <TableCell>{c.holderName}</TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-[10rem]">{c.holderName}</TableCell>
+                  <TableCell className="min-w-[14rem]">
                     {c.courseTitle}
                     {c.cohort ? <span className="block text-xs text-neutral-500">{c.cohort.name}</span> : null}
                   </TableCell>
-                  <TableCell className="text-neutral-600">{formatDate(c.issuedAt)}</TableCell>
+                  <TableCell className="whitespace-nowrap text-neutral-600">{formatDate(c.issuedAt)}</TableCell>
                   <TableCell>
                     <StatusBadge status={c.status} labels={certificateStatusLabels} size="sm" />
                   </TableCell>

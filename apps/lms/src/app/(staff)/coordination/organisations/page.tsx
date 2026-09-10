@@ -70,7 +70,7 @@ export default async function CoordinationOrganizationsPage({ searchParams }: Pa
             <TableBody>
               {list.items.map((o) => (
                 <TableRow key={o.id}>
-                  <TableCell>
+                  <TableCell className="min-w-[16rem]">
                     <Link href={`/coordination/organisations/${o.id}`} className="font-semibold text-navy hover:underline">
                       {o.acronym ? `${o.acronym} - ` : ''}
                       {o.name}
@@ -80,8 +80,8 @@ export default async function CoordinationOrganizationsPage({ searchParams }: Pa
                       {!o.isActive ? <Badge variant="danger" size="sm">Inactive</Badge> : null}
                     </span>
                   </TableCell>
-                  <TableCell className="text-neutral-700">{o.sector ?? '-'}</TableCell>
-                  <TableCell className="text-neutral-700">{o.city ?? '-'}</TableCell>
+                  <TableCell className="min-w-[9rem] text-neutral-700">{o.sector ?? '-'}</TableCell>
+                  <TableCell className="whitespace-nowrap text-neutral-700">{o.city ?? '-'}</TableCell>
                   <TableCell>{o._count.memberships}</TableCell>
                   <TableCell>{o._count.trainingRequests}</TableCell>
                   <TableCell>{o._count.cohorts}</TableCell>

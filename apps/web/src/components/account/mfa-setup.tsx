@@ -90,7 +90,7 @@ export function MfaSetup({ enabled, backupCodesLeft }: MfaSetupProps) {
             <Input id="disable-code" name="code" inputMode="numeric" autoComplete="one-time-code" maxLength={12} required />
           </FormField>
           <div className="flex justify-end">
-            <SubmitButton variant="danger" size="sm" pendingLabel="Désactivation en cours" leftIcon={<ShieldOff aria-hidden="true" />}>
+            <SubmitButton variant="danger" size="sm" pendingLabel="Désactivation en cours" className="w-full sm:w-auto" leftIcon={<ShieldOff aria-hidden="true" />}>
               Désactiver la vérification
             </SubmitButton>
           </div>
@@ -106,7 +106,7 @@ export function MfaSetup({ enabled, backupCodesLeft }: MfaSetupProps) {
           La vérification en deux étapes ajoute un code temporaire généré par une application d’authentification (Google Authenticator, Microsoft Authenticator, Aegis, FreeOTP) à votre mot de passe. Elle est obligatoire pour les rôles administratifs.
         </p>
         <div>
-          <Button type="button" variant="primary" onClick={begin} loading={starting} loadingLabel="Préparation" leftIcon={<ShieldCheck aria-hidden="true" />}>
+          <Button type="button" variant="primary" className="w-full sm:w-auto" onClick={begin} loading={starting} loadingLabel="Préparation" leftIcon={<ShieldCheck aria-hidden="true" />}>
             Activer la vérification en deux étapes
           </Button>
         </div>
@@ -131,11 +131,11 @@ export function MfaSetup({ enabled, backupCodesLeft }: MfaSetupProps) {
           <FormField label="Code à 6 chiffres affiché par l’application" htmlFor="confirm-code" required error={confirmState.fieldErrors?.code}>
             <Input id="confirm-code" name="code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9 ]*" maxLength={8} required className="font-mono text-lg tracking-[0.3em]" />
           </FormField>
-          <div className="flex flex-wrap gap-2">
-            <SubmitButton variant="primary" pendingLabel="Vérification en cours">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <SubmitButton variant="primary" pendingLabel="Vérification en cours" className="w-full sm:w-auto">
               Confirmer et activer
             </SubmitButton>
-            <Button type="button" variant="ghost" onClick={() => setSetup(null)}>
+            <Button type="button" variant="ghost" className="w-full sm:w-auto" onClick={() => setSetup(null)}>
               Annuler
             </Button>
           </div>

@@ -99,7 +99,7 @@ export default async function OrganisationReportsPage({ searchParams }: PageProp
       <StaffSection number="01" title="Rapport par module" className="mt-10" description="Inscriptions, achèvement, score moyen et certificats pour chaque module suivi par vos membres.">
         <ReportTable
           columns={[
-            { key: 'module', label: 'Module' },
+            { key: 'module', label: 'Module', className: 'min-w-[13rem]' },
             { key: 'enrolled', label: 'Inscrits', align: 'right' },
             { key: 'completed', label: 'Terminés', align: 'right' },
             { key: 'completion', label: 'Achèvement' },
@@ -160,7 +160,7 @@ export default async function OrganisationReportsPage({ searchParams }: PageProp
             </nav>
             {cohortReport ? (
               <>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                   <SummaryTile label="Membres" value={String(cohortReport.stats.members)} />
                   <SummaryTile label="Achèvement" value={`${cohortReport.stats.completionRate} %`} />
                   <SummaryTile label="Assiduité moyenne" value={cohortReport.stats.averageAttendance === null ? '-' : `${cohortReport.stats.averageAttendance} %`} />
@@ -172,7 +172,7 @@ export default async function OrganisationReportsPage({ searchParams }: PageProp
                 </p>
                 <ReportTable
                   columns={[
-                    { key: 'name', label: 'Participant' },
+                    { key: 'name', label: 'Participant', className: 'min-w-[11rem]' },
                     { key: 'status', label: 'Statut' },
                     { key: 'progress', label: 'Progression' },
                     { key: 'score', label: 'Score', align: 'right' },
@@ -210,9 +210,9 @@ export default async function OrganisationReportsPage({ searchParams }: PageProp
 
 function SummaryTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
+    <div className="min-w-0 rounded-2xl border border-neutral-200 bg-white p-3 shadow-soft sm:p-4">
       <p className="eyebrow text-[11px] text-neutral-500">{label}</p>
-      <p className="mt-1 font-display text-2xl font-semibold text-navy">{value}</p>
+      <p className="mt-1 font-display text-xl font-semibold text-navy sm:text-2xl">{value}</p>
     </div>
   )
 }

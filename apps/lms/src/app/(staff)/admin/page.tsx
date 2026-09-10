@@ -78,16 +78,16 @@ export default async function AdminHomePage() {
         ]}
       />
 
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-4 sm:grid-cols-3 sm:gap-4">
         <Card>
-          <CardContent className="p-5">
+          <CardContent className="p-4 sm:p-5">
             <p className="eyebrow text-[11px] text-neutral-500">Utilisateurs</p>
             <p className="mt-1 font-display text-3xl font-semibold text-navy">{overview.users.total}</p>
             <p className="text-sm text-neutral-600">{overview.users.active30Days} actif(s) sur 30 jours</p>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-5">
+          <CardContent className="p-4 sm:p-5">
             <p className="eyebrow text-[11px] text-neutral-500">Inscriptions</p>
             <p className="mt-1 font-display text-3xl font-semibold text-navy">{overview.enrollments.active}</p>
             <p className="text-sm text-neutral-600">
@@ -96,8 +96,8 @@ export default async function AdminHomePage() {
             </p>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-5">
+        <Card className="col-span-2 sm:col-span-1">
+          <CardContent className="p-4 sm:p-5">
             <p className="eyebrow text-[11px] text-neutral-500">File de jobs</p>
             {overview.jobs ? (
               <>

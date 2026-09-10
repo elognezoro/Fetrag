@@ -82,16 +82,16 @@ export default async function AdminSettingsPage() {
           <TableBody>
             {managed.map((m) => (
               <TableRow key={m.key}>
-                <TableCell>
+                <TableCell className="min-w-[12rem]">
                   <span className="font-semibold text-navy">{m.label}</span>
-                  <span className="block font-mono text-[11px] text-neutral-500">{m.key}</span>
+                  <span className="block break-all font-mono text-[11px] text-neutral-500">{m.key}</span>
                 </TableCell>
-                <TableCell>
+                <TableCell className="min-w-[10rem]">
                   <span className={m.kind === 'text' ? 'line-clamp-2 max-w-xs text-sm text-neutral-700' : 'font-mono text-sm font-semibold text-navy'}>{formatSettingValue(m.value, m.kind)}</span>
                   {!m.exists ? <Badge variant="neutral" size="sm" className="mt-1">Valeur par défaut</Badge> : null}
                 </TableCell>
-                <TableCell className="max-w-sm text-sm text-neutral-600">{m.storedDescription ?? m.description}</TableCell>
-                <TableCell className="text-neutral-600">{m.updatedAt ? formatDateTime(m.updatedAt) : '-'}</TableCell>
+                <TableCell className="min-w-[16rem] max-w-sm text-sm text-neutral-600">{m.storedDescription ?? m.description}</TableCell>
+                <TableCell className="whitespace-nowrap text-neutral-600">{m.updatedAt ? formatDateTime(m.updatedAt) : '-'}</TableCell>
                 <TableCell className="text-right">
                   {m.readOnly ? (
                     <Badge variant="outline" size="sm">
@@ -127,10 +127,10 @@ export default async function AdminSettingsPage() {
             <TableBody>
               {others.map((s) => (
                 <TableRow key={s.key}>
-                  <TableCell className="font-mono text-sm font-semibold text-navy">{s.key}</TableCell>
-                  <TableCell className="max-w-xs truncate font-mono text-xs text-neutral-700">{s.key === 'api.keys' ? '(masqué)' : formatOtherValue(s.value)}</TableCell>
-                  <TableCell className="max-w-sm text-sm text-neutral-600">{s.description ?? '-'}</TableCell>
-                  <TableCell className="text-neutral-600">{formatDateTime(s.updatedAt)}</TableCell>
+                  <TableCell className="whitespace-nowrap font-mono text-sm font-semibold text-navy">{s.key}</TableCell>
+                  <TableCell className="min-w-[10rem] max-w-xs truncate font-mono text-xs text-neutral-700">{s.key === 'api.keys' ? '(masqué)' : formatOtherValue(s.value)}</TableCell>
+                  <TableCell className="min-w-[14rem] max-w-sm text-sm text-neutral-600">{s.description ?? '-'}</TableCell>
+                  <TableCell className="whitespace-nowrap text-neutral-600">{formatDateTime(s.updatedAt)}</TableCell>
                   {canEdit ? (
                     <TableCell className="text-right">
                       <div className="flex flex-wrap justify-end gap-1">
@@ -165,22 +165,22 @@ export default async function AdminSettingsPage() {
             <TableBody>
               {jobs.items.map((j) => (
                 <TableRow key={j.id}>
-                  <TableCell>
-                    <span className="font-mono text-sm font-semibold text-navy">{j.type}</span>
+                  <TableCell className="min-w-[13rem]">
+                    <span className="break-all font-mono text-sm font-semibold text-navy">{j.type}</span>
                     <span className="block text-xs text-neutral-500">créé {formatDateTime(j.createdAt)}</span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap">
                     <StatusBadge status={j.status} labels={jobStatusLabels} size="sm" />
                     {j.lockedBy ? <span className="block max-w-[10rem] truncate text-xs text-neutral-500">{j.lockedBy}</span> : null}
                   </TableCell>
-                  <TableCell className="text-neutral-700">
+                  <TableCell className="whitespace-nowrap text-neutral-700">
                     {j.attempts}/{j.maxAttempts}
                   </TableCell>
-                  <TableCell className="text-neutral-600">
+                  <TableCell className="whitespace-nowrap text-neutral-600">
                     {formatDateTime(j.runAt)}
                     {j.completedAt ? <span className="block text-xs text-neutral-500">terminé {formatDateTime(j.completedAt)}</span> : null}
                   </TableCell>
-                  <TableCell className="max-w-xs">{j.lastError ? <span className="line-clamp-2 text-xs text-danger">{j.lastError}</span> : <span className="text-neutral-400">-</span>}</TableCell>
+                  <TableCell className="min-w-[14rem] max-w-xs">{j.lastError ? <span className="line-clamp-2 text-xs text-danger">{j.lastError}</span> : <span className="text-neutral-400">-</span>}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -114,7 +114,7 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
                   <div className="min-w-0">
                     <p className="font-semibold text-navy">{flag.label}</p>
                     <p className="text-xs text-neutral-500">
-                      <span className="font-mono">{flag.key}</span> · {flag.description}
+                      <span className="break-all font-mono">{flag.key}</span> · {flag.description}
                     </p>
                   </div>
                   <Badge variant={flag.enabled ? 'success' : 'neutral'} size="sm" dot>
@@ -170,7 +170,7 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
             </AlertDescription>
           </Alert>
         ) : null}
-        <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
           <StaggerItem>
             <StatTile value={jobs.stats.QUEUED} label="En file d’attente" icon={Timer} tone="blue" description={`${jobs.stats.dueNow} à exécuter maintenant · ${jobs.stats.RUNNING} en cours`} />
           </StaggerItem>
@@ -197,12 +197,12 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
             </label>
             <NativeSelect id="jobs-type" name="type" defaultValue={params.filters.type ?? ''} options={[{ value: '', label: 'Tous' }, ...jobs.types.map((t) => ({ value: t, label: jobLabel(t) }))]} />
           </div>
-          <div className="flex shrink-0 items-center gap-2">
-            <Button type="submit" variant="secondary" size="md">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center lg:shrink-0">
+            <Button type="submit" variant="secondary" size="md" className="w-full sm:w-auto">
               Filtrer
             </Button>
             {hasJobFilters ? (
-              <Button asChild variant="ghost" size="md">
+              <Button asChild variant="ghost" size="md" className="w-full sm:w-auto">
                 <Link href={`${BASE}#jobs`}>
                   <RotateCcw aria-hidden="true" />
                   Réinitialiser
@@ -226,7 +226,7 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
               cell: (row) => (
                 <span className="text-sm">
                   <span className="block font-semibold text-navy">{jobLabel(row.type)}</span>
-                  <span className="block font-mono text-[11px] text-neutral-500">
+                  <span className="block break-all font-mono text-[11px] text-neutral-500">
                     {row.type} · priorité {row.priority}
                   </span>
                 </span>
@@ -273,7 +273,7 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
               header: <span className="sr-only">Actions</span>,
               align: 'right',
               cell: (row) => (
-                <div className="flex flex-wrap items-center justify-end gap-1">
+                <div className="flex flex-col items-end gap-1 sm:flex-row sm:items-center sm:justify-end">
                   {row.status === 'FAILED' || row.status === 'DEAD' ? (
                     <ConfirmDialog
                       trigger={

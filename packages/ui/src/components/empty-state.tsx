@@ -27,7 +27,7 @@ export function EmptyState({
     <div
       className={cn(
         'flex flex-col items-center justify-center text-center',
-        compact ? 'gap-2 px-4 py-8' : 'gap-3 px-6 py-14',
+        compact ? 'gap-2 px-4 py-8' : 'gap-3 px-4 py-10 sm:px-6 sm:py-14',
         className,
       )}
       {...props}

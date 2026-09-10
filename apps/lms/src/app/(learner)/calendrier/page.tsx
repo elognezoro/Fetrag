@@ -44,11 +44,11 @@ function EventRow({ event, showDate }: { event: CalendarEvent; showDate: boolean
           <span className="font-display text-2xl font-semibold leading-none text-navy">{new Intl.DateTimeFormat('fr-GA', { day: 'numeric', timeZone: 'Africa/Libreville' }).format(event.startsAt)}</span>
           <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">{new Intl.DateTimeFormat('fr-GA', { month: 'short', timeZone: 'Africa/Libreville' }).format(event.startsAt).replace('.', '')}</span>
         </span>
-        <span className={cn('inline-flex size-9 shrink-0 items-center justify-center rounded-full', isAssignment ? (event.overdue ? 'bg-danger-soft text-danger' : 'bg-gold-50 text-gold-800') : 'bg-blue-50 text-blue-700')}>
+        <span className={cn('hidden size-9 shrink-0 items-center justify-center rounded-full sm:inline-flex', isAssignment ? (event.overdue ? 'bg-danger-soft text-danger' : 'bg-gold-50 text-gold-800') : 'bg-blue-50 text-blue-700')}>
           <Icon className="size-4" strokeWidth={1.75} aria-hidden="true" />
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block truncate font-semibold text-navy">
+          <span className="line-clamp-2 font-semibold text-navy sm:line-clamp-1">
             {isAssignment ? 'Échéance : ' : ''}
             {event.title}
           </span>

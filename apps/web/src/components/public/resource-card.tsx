@@ -91,21 +91,21 @@ export function ResourceCard({ resource, className }: ResourceCardProps) {
       {resource.summary ? <p className="line-clamp-3 text-sm leading-relaxed text-neutral-600">{resource.summary}</p> : null}
       <dl className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-neutral-500">
         {resource.source ? (
-          <div className="inline-flex gap-1">
-            <dt className="font-semibold">Source :</dt>
-            <dd>{resource.source}</dd>
+          <div className="flex max-w-full gap-1">
+            <dt className="shrink-0 font-semibold">Source&nbsp;:</dt>
+            <dd className="min-w-0 break-words">{resource.source}</dd>
           </div>
         ) : null}
         {resource.publishedOn ? (
-          <div className="inline-flex gap-1">
-            <dt className="font-semibold">Publié le :</dt>
-            <dd>{formatDate(resource.publishedOn)}</dd>
+          <div className="flex max-w-full gap-1">
+            <dt className="shrink-0 font-semibold">Publié le&nbsp;:</dt>
+            <dd className="min-w-0">{formatDate(resource.publishedOn)}</dd>
           </div>
         ) : null}
         {size ? (
-          <div className="inline-flex gap-1">
-            <dt className="font-semibold">Taille :</dt>
-            <dd>{size}</dd>
+          <div className="flex max-w-full gap-1">
+            <dt className="shrink-0 font-semibold">Taille&nbsp;:</dt>
+            <dd className="min-w-0">{size}</dd>
           </div>
         ) : null}
       </dl>

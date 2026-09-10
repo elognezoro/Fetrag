@@ -79,7 +79,7 @@ export function RoleGrantDialog({ userId, userLabel, scopeOptions }: RoleGrantDi
             <Input id={`${id}-expires`} name="expiresAt" type="datetime-local" />
           </FormField>
           <div className="flex justify-end">
-            <SubmitButton variant="primary" pendingLabel="Attribution">
+            <SubmitButton variant="primary" pendingLabel="Attribution" className="w-full sm:w-auto">
               Attribuer
             </SubmitButton>
           </div>

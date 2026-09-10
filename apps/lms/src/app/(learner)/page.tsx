@@ -114,13 +114,13 @@ function CtaSection({ authenticated }: { authenticated: boolean }) {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {authenticated ? (
               <>
-                <Button asChild variant="accent" size="lg">
+                <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
                   <Link href="/dashboard">
                     <LayoutDashboard aria-hidden="true" />
                     Mon tableau de bord
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10">
+                <Button asChild variant="outline" size="lg" className="w-full border-white/60 text-white hover:bg-white/10 sm:w-auto">
                   <Link href="/catalogue">
                     <BookOpen aria-hidden="true" />
                     Parcourir le catalogue
@@ -129,13 +129,13 @@ function CtaSection({ authenticated }: { authenticated: boolean }) {
               </>
             ) : (
               <>
-                <Button asChild variant="accent" size="lg">
+                <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
                   <Link href="/connexion">
                     <LogIn aria-hidden="true" />
                     Se connecter
                   </Link>
                 </Button>
-                <Button asChild variant="gold" size="lg">
+                <Button asChild variant="gold" size="lg" className="w-full sm:w-auto">
                   <a href={webHref('/inscription')}>
                     <UserPlus aria-hidden="true" />
                     Créer un compte

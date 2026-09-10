@@ -39,14 +39,14 @@ export default async function AdminOrganizationsPage({ searchParams }: { searchP
           ) : undefined
         }
       />
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         <StaggerItem>
           <StatTile value={result.counts.affiliates} label="Organisations affiliées" icon={Building2} tone="blue" />
         </StaggerItem>
         <StaggerItem>
           <StatTile value={result.counts.partners} label="Partenaires actifs" icon={Handshake} tone="green" />
         </StaggerItem>
-        <StaggerItem>
+        <StaggerItem className="col-span-2 sm:col-span-1">
           <StatTile value={result.counts.inactive} label="Organisations inactives" icon={Users} tone="gold" description="Masquées des listes de choix" />
         </StaggerItem>
       </Stagger>
@@ -78,7 +78,7 @@ export default async function AdminOrganizationsPage({ searchParams }: { searchP
                   <Link href={`${BASE}/${row.id}`} className="font-semibold text-navy hover:text-blue-700">
                     {row.name}
                   </Link>
-                  <p className="truncate text-xs text-neutral-500">
+                  <p className="line-clamp-1 text-xs text-neutral-500">
                     {row.acronym ? `${row.acronym} · ` : ''}
                     {row.sector ?? 'Secteur non renseigné'}
                     {row.city ? ` · ${row.city}` : ''}

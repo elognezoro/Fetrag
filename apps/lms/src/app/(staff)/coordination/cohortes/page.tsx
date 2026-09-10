@@ -85,7 +85,7 @@ export default async function CoordinationCohortsPage({ searchParams }: PageProp
             <TableBody>
               {list.items.map((c) => (
                 <TableRow key={c.id}>
-                  <TableCell>
+                  <TableCell className="min-w-[14rem]">
                     <Link href={`/coordination/cohortes/${c.id}`} className="font-semibold text-navy hover:underline">
                       {c.name}
                     </Link>
@@ -93,11 +93,11 @@ export default async function CoordinationCohortsPage({ searchParams }: PageProp
                       {c.code} · {sessionModeLabels[c.mode]}
                     </span>
                   </TableCell>
-                  <TableCell>{c.course.title}</TableCell>
+                  <TableCell className="min-w-[12rem]">{c.course.title}</TableCell>
                   <TableCell>{c.organization ? (c.organization.acronym ?? c.organization.name) : <span className="text-neutral-400">Individuels</span>}</TableCell>
-                  <TableCell>{c.trainer ? personName(c.trainer) : <Badge variant="warning" size="sm">À désigner</Badge>}</TableCell>
-                  <TableCell className="text-neutral-600">{c.startsAt ? `${formatDate(c.startsAt)}${c.endsAt ? ` - ${formatDate(c.endsAt)}` : ''}` : '-'}</TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-[10rem]">{c.trainer ? personName(c.trainer) : <Badge variant="warning" size="sm">À désigner</Badge>}</TableCell>
+                  <TableCell className="whitespace-nowrap text-neutral-600">{c.startsAt ? `${formatDate(c.startsAt)}${c.endsAt ? ` - ${formatDate(c.endsAt)}` : ''}` : '-'}</TableCell>
+                  <TableCell className="whitespace-nowrap">
                     {c._count.members}
                     {c.capacity ? ` / ${c.capacity}` : ''} · {c._count.sessions} session(s)
                   </TableCell>

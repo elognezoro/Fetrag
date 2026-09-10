@@ -49,7 +49,9 @@ export function ConsentsForm({ consents }: ConsentsFormProps) {
         Chaque modification est horodatée conformément à notre politique de confidentialité. Les emails essentiels (sécurité, paiements, compte) restent envoyés.
       </p>
       <div className="flex justify-end">
-        <SubmitButton variant="outline">Enregistrer mes consentements</SubmitButton>
+        <SubmitButton variant="outline" className="w-full sm:w-auto">
+          Enregistrer mes consentements
+        </SubmitButton>
       </div>
     </form>
   )
@@ -75,7 +77,9 @@ export function NotificationPreferencesForm({ categories, preferences }: Notific
         ))}
       </ul>
       <div className="flex justify-end">
-        <SubmitButton variant="outline">Enregistrer mes préférences</SubmitButton>
+        <SubmitButton variant="outline" className="w-full sm:w-auto">
+          Enregistrer mes préférences
+        </SubmitButton>
       </div>
     </form>
   )

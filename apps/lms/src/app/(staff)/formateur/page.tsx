@@ -122,7 +122,7 @@ export default async function TrainerDashboardPage() {
                           {c.name}
                         </Link>
                         <p className="text-xs text-neutral-500">
-                          {c.code} · {c.course.title}
+                          <span className="whitespace-nowrap">{c.code} ·</span> {c.course.title}
                         </p>
                       </div>
                       <StatusBadge status={c.status} size="sm" />
@@ -234,7 +234,8 @@ export default async function TrainerDashboardPage() {
       ) : null}
 
       <div className="mt-12">
-        <TriptychStrip variant="bar" />
+        <TriptychStrip variant="inline" className="sm:hidden" />
+        <TriptychStrip variant="bar" className="hidden sm:block" />
       </div>
     </>
   )

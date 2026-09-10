@@ -88,7 +88,7 @@ export default async function ResourcesPage({ searchParams }: PageProps) {
         }
         actions={
           !viewer ? (
-            <Button asChild variant="outline" size="md">
+            <Button asChild variant="outline" size="md" className="h-auto min-h-11 max-w-full whitespace-normal py-2.5 text-center sm:h-11 sm:whitespace-nowrap sm:py-0">
               <Link href={`/connexion?callbackUrl=${encodeURIComponent(BASE)}`}>
                 <LogIn aria-hidden="true" />
                 Se connecter pour les documents réservés

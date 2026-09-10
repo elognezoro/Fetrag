@@ -64,12 +64,14 @@ export default async function CoursePage({ params }: PageProps) {
         homeHref="/"
         meta={<CourseMeta modality={course.modality} level={course.level} durationHours={course.durationHours} isFree={course.isFree} priceAmount={offer?.amount ?? course.priceAmount} currency={offer?.currency ?? course.currency} inverted />}
         aside={
-          <ArcRing size={168} stroke={12} tone={tone} track={false} className="drop-shadow-[0_0_24px_rgba(156,193,2,0.35)]">
-            <span className="flex flex-col items-center">
-              <span className="font-display text-6xl font-semibold leading-none text-white">{padNumber(number)}</span>
-              <span className="mt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">sur 10</span>
-            </span>
-          </ArcRing>
+          <div className="flex justify-center lg:justify-end">
+            <ArcRing size={168} stroke={12} tone={tone} track={false} className="drop-shadow-[0_0_24px_rgba(156,193,2,0.35)]">
+              <span className="flex flex-col items-center">
+                <span className="font-display text-6xl font-semibold leading-none text-white">{padNumber(number)}</span>
+                <span className="mt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">sur 10</span>
+              </span>
+            </ArcRing>
+          </div>
         }
       />
 

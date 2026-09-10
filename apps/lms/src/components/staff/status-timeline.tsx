@@ -39,9 +39,18 @@ export function StatusTimeline({ status, history = [], className }: StatusTimeli
           const current = !terminal && step === status
           const pending = !done && !current
           const date = dateOf(step)
+          const last = index === MAIN_PATH.length - 1
           return (
-            <li key={step} className="relative flex flex-col gap-2">
-              <div className="flex items-center gap-2">
+            <li
+              key={step}
+              className={cn(
+                // Mobile : pastille à gauche, libellé à droite, trait vertical entre les étapes ; dès `sm` : colonne, trait horizontal en `lg`.
+                'relative flex items-start gap-3 sm:flex-col sm:gap-2',
+                !last && "before:absolute before:-bottom-3 before:left-[15px] before:top-9 before:w-0.5 before:rounded-full before:content-[''] sm:before:hidden",
+                !last && (done && !current ? 'before:bg-blue-500' : 'before:bg-neutral-200'),
+              )}
+            >
+              <div className="flex shrink-0 items-center gap-2 sm:w-full">
                 <span
                   aria-hidden="true"
                   className={cn(
@@ -53,11 +62,11 @@ export function StatusTimeline({ status, history = [], className }: StatusTimeli
                 >
                   {done && !current ? <Check className="size-4" strokeWidth={2.5} /> : index + 1}
                 </span>
-                {index < MAIN_PATH.length - 1 ? (
+                {!last ? (
                   <span aria-hidden="true" className={cn('hidden h-0.5 flex-1 rounded-full lg:block', done && !current ? 'bg-blue-500' : 'bg-neutral-200')} />
                 ) : null}
               </div>
-              <div>
+              <div className="min-w-0 pt-1.5 sm:pt-0">
                 <p className={cn('text-sm font-semibold', current ? 'text-green-800' : done ? 'text-navy' : 'text-neutral-500')}>
                   {trainingRequestStatusLabels[step]}
                   {current ? <span className="sr-only"> (étape actuelle)</span> : null}

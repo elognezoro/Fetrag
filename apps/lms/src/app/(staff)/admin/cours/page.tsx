@@ -91,7 +91,7 @@ export default async function AdminCoursesPage({ searchParams }: PageProps) {
             <TableBody>
               {list.items.map((c) => (
                 <TableRow key={c.id}>
-                  <TableCell>
+                  <TableCell className="min-w-[15rem]">
                     <div className="flex items-start gap-3">
                       <span aria-hidden="true" className="font-display text-2xl font-semibold leading-none text-blue-600">
                         {String(c.position).padStart(2, '0')}
@@ -135,7 +135,7 @@ export default async function AdminCoursesPage({ searchParams }: PageProps) {
                     {c._count.enrollments}
                     <span className="block text-xs text-neutral-500">{c._count.cohorts} cohorte(s)</span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-[10rem]">
                     {c.trainerNames.length ? (
                       <ul className="text-sm">
                         {c.trainerNames.slice(0, 3).map((t) => (

@@ -117,7 +117,7 @@ export function CheckoutForm({ orderId, totalLabel, defaultMethod, defaultPhone,
           <p className="text-sm text-neutral-600">
             Montant à régler : <span className="font-display text-xl font-semibold text-navy">{totalLabel}</span>
           </p>
-          <SubmitButton variant="primary" size="lg" pendingLabel="Connexion au fournisseur de paiement" disabled={!paymentsEnabled} leftIcon={<Label className="sr-only">Payer</Label>}>
+          <SubmitButton variant="primary" size="lg" pendingLabel="Connexion au fournisseur de paiement" disabled={!paymentsEnabled} className="w-full sm:w-auto" leftIcon={<Label className="sr-only">Payer</Label>}>
             Payer {totalLabel}
           </SubmitButton>
         </div>

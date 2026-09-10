@@ -34,14 +34,18 @@ export default async function CertificatesPage() {
         description="Chaque module validé donne lieu à un document numéroté, signé par le Secrétaire Général et vérifiable publiquement grâce à son code QR."
         breadcrumbs={[{ label: 'Tableau de bord', href: '/dashboard' }, { label: 'Certificats' }]}
         homeHref="/"
-        aside={<CertificateSeal size={150} label="CERTIFICAT" title="Sceau des certificats FETRAG" className="drop-shadow-[0_8px_24px_rgba(249,200,4,0.35)]" />}
+        aside={
+          <div className="flex justify-center lg:justify-end">
+            <CertificateSeal size={150} label="CERTIFICAT" title="Sceau des certificats FETRAG" className="drop-shadow-[0_8px_24px_rgba(249,200,4,0.35)]" />
+          </div>
+        }
       />
 
       <div className="container-fetrag flex flex-col gap-10 py-10 sm:py-12">
         {items.length > 0 ? (
           <Reveal>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3" role="list" aria-label="Récapitulatif">
-              <StatTile role="listitem" animate value={valid} label="Documents valides" icon={ShieldCheck} tone="green" />
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3" role="list" aria-label="Récapitulatif">
+              <StatTile role="listitem" animate value={valid} label="Documents valides" icon={ShieldCheck} tone="green" className="col-span-2 sm:col-span-1" />
               <StatTile role="listitem" animate value={certificates} label="Certificats" icon={Award} tone="gold" />
               <StatTile role="listitem" animate value={attestations} label="Attestations" icon={Star} tone="blue" />
             </div>

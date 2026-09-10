@@ -132,7 +132,7 @@ export default async function AdminFinancePage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Reveal>
           <Card pillar="defense" className="h-full">
-            <CardHeader className="flex-row items-center justify-between">
+            <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
               <CardTitle as="h2">Dernières commandes</CardTitle>
               <Button asChild variant="link" size="sm">
                 <Link href={`${BASE}/commandes`}>Toutes les commandes</Link>
@@ -144,9 +144,9 @@ export default async function AdminFinancePage() {
               ) : (
                 <ul className="flex flex-col divide-y divide-neutral-100">
                   {data.recentOrders.map((order) => (
-                    <li key={order.id} className="flex items-center justify-between gap-3 py-2.5 first:pt-0 last:pb-0">
-                      <div className="min-w-0">
-                        <Link href={`${BASE}/commandes/${order.id}`} className="font-mono text-sm font-semibold text-navy hover:text-blue-700">
+                    <li key={order.id} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 py-2.5 first:pt-0 last:pb-0">
+                      <div className="min-w-0 flex-1 basis-40">
+                        <Link href={`${BASE}/commandes/${order.id}`} className="whitespace-nowrap font-mono text-sm font-semibold text-navy hover:text-blue-700">
                           {order.reference}
                         </Link>
                         <p className="truncate text-xs text-neutral-500">
@@ -168,8 +168,8 @@ export default async function AdminFinancePage() {
 
         <Reveal delay={0.08}>
           <Card className="h-full">
-            <CardHeader className="flex-row items-center justify-between">
-              <div>
+            <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-2">
+              <div className="min-w-0">
                 <CardTitle as="h2">Webhooks de paiement</CardTitle>
                 <CardDescription>Notifications reçues des fournisseurs, vérifiées par signature avant traitement.</CardDescription>
               </div>
@@ -233,7 +233,7 @@ export default async function AdminFinancePage() {
             <CardContent className="flex flex-col gap-4">
               <p className="font-display text-4xl font-semibold text-gold-400">{data.sponsorships}</p>
               <p className="text-sm text-white/80">{plural(data.sponsorships, 'prise en charge en cours de validité', 'prises en charge en cours de validité')}</p>
-              <Button asChild variant="gold" size="sm" className="self-start">
+              <Button asChild variant="gold" size="sm" className="w-full sm:w-auto sm:self-start">
                 <Link href={`${BASE}/prises-en-charge`}>
                   <HandHeart aria-hidden="true" />
                   Gérer les prises en charge

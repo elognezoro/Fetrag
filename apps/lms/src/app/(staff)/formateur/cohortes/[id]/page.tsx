@@ -98,7 +98,7 @@ export default async function TrainerCohortPage({ params, searchParams }: PagePr
         tone="green"
       />
 
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <Stat icon={Users} label="Membres" value={String(cohort.stats.members)} tone="blue" />
         <Stat icon={UserCheck} label="Formation terminée" value={`${cohort.stats.completed}`} tone="green" hint={`${cohort.stats.active} en cours`} />
         <Stat icon={ClipboardCheck} label="Corrections en attente" value={String(pendingSubmissions.length + essays.length)} tone="gold" />
@@ -458,12 +458,12 @@ export default async function TrainerCohortPage({ params, searchParams }: PagePr
 function Stat({ icon: Icon, label, value, hint, tone }: { icon: typeof Users; label: string; value: string; hint?: string; tone: 'blue' | 'green' | 'gold' | 'navy' }) {
   const color = tone === 'green' ? 'bg-green-50 text-green-700' : tone === 'gold' ? 'bg-gold-50 text-gold-700' : tone === 'navy' ? 'bg-neutral-100 text-navy' : 'bg-blue-50 text-blue-600'
   return (
-    <div className="flex items-center gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
-      <span className={`flex size-11 shrink-0 items-center justify-center rounded-full ${color}`}>
-        <Icon className="size-5" strokeWidth={1.75} aria-hidden="true" />
+    <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-3 shadow-soft sm:gap-4 sm:p-4">
+      <span className={`flex size-9 shrink-0 items-center justify-center rounded-full sm:size-11 ${color}`}>
+        <Icon className="size-4 sm:size-5" strokeWidth={1.75} aria-hidden="true" />
       </span>
-      <div>
-        <p className="font-display text-2xl font-semibold leading-none text-navy">{value}</p>
+      <div className="min-w-0">
+        <p className="font-display text-xl font-semibold leading-none text-navy sm:text-2xl">{value}</p>
         <p className="mt-1 text-xs text-neutral-500">
           {label}
           {hint ? ` · ${hint}` : ''}

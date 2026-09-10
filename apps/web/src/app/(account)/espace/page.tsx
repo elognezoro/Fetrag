@@ -81,7 +81,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
         </Alert>
       ) : null}
 
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={activeEnrollments.length} label="Formations en cours" icon={BookOpen} tone="blue" description={`${completedCount} terminée${completedCount > 1 ? 's' : ''}`} />
         </StaggerItem>
@@ -99,7 +99,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <Reveal className="lg:col-span-3">
           <Card pillar="protection" className="h-full">
-            <CardHeader className="flex-row items-center justify-between">
+            <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
               <CardTitle as="h2">Mes formations en cours</CardTitle>
               <Button asChild variant="link" size="sm">
                 <Link href="/espace/inscriptions">
@@ -124,16 +124,16 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
               ) : (
                 <ul className="flex flex-col divide-y divide-neutral-100">
                   {activeEnrollments.slice(0, 4).map((enrollment) => (
-                    <li key={enrollment.id} className="flex items-center gap-4 py-3 first:pt-0 last:pb-0">
+                    <li key={enrollment.id} className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-3 py-3 first:pt-0 last:pb-0 sm:flex sm:gap-4">
                       <ProgressArc value={enrollment.progressPercent} size={72} stroke={7} label={undefined} aria-label={`Progression ${enrollment.progressPercent} %`} />
-                      <div className="min-w-0 flex-1">
+                      <div className="min-w-0 sm:flex-1">
                         <p className="eyebrow text-[10px] text-neutral-500">Module {enrollment.course.code}</p>
                         <p className="truncate font-semibold text-navy">{enrollment.course.title}</p>
                         <p className="text-xs text-neutral-500">
-                          {enrollment.cohort ? `Cohorte ${enrollment.cohort.name}` : 'Parcours individuel'} · {enrollment.course.durationHours} h
+                          {enrollment.cohort ? `Cohorte ${enrollment.cohort.name}` : 'Parcours individuel'} · <span className="whitespace-nowrap">{enrollment.course.durationHours} h</span>
                         </p>
                       </div>
-                      <Button asChild variant="secondary" size="sm" className="shrink-0">
+                      <Button asChild variant="secondary" size="sm" className="col-span-2 w-full sm:w-auto sm:shrink-0">
                         <a href={lmsHref(`/cours/${enrollment.course.slug}`)}>
                           Reprendre
                           <ArrowUpRight aria-hidden="true" />
@@ -149,7 +149,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
 
         <Reveal delay={0.08} className="lg:col-span-2">
           <Card pillar="prevention" className="h-full">
-            <CardHeader className="flex-row items-center justify-between">
+            <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
               <CardTitle as="h2">Prochains événements</CardTitle>
               <Button asChild variant="link" size="sm">
                 <Link href="/evenements">Agenda</Link>
@@ -188,7 +188,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Reveal>
           <Card className="h-full">
-            <CardHeader className="flex-row items-center justify-between">
+            <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
               <CardTitle as="h2">Dernières demandes</CardTitle>
               <Button asChild variant="link" size="sm">
                 <Link href="/espace/demandes">Tout voir</Link>
@@ -228,7 +228,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
 
         <Reveal delay={0.08}>
           <Card pillar="defense" className="h-full">
-            <CardHeader className="flex-row items-center justify-between">
+            <CardHeader className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1">
               <CardTitle as="h2">Certificats et reçus</CardTitle>
               <Button asChild variant="link" size="sm">
                 <Link href="/espace/paiements">Paiements</Link>
@@ -266,12 +266,12 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
                   <p className="eyebrow mb-2 text-[10px] text-neutral-500">Dernières commandes</p>
                   <ul className="flex flex-col gap-2">
                     {summary.recentOrders.items.map((order) => (
-                      <li key={order.id} className="flex items-center justify-between gap-3 text-sm">
-                        <Link href={`/espace/paiements/${order.id}`} className="inline-flex items-center gap-2 font-semibold text-navy hover:text-blue-700">
+                      <li key={order.id} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
+                        <Link href={`/espace/paiements/${order.id}`} className="inline-flex items-center gap-2 whitespace-nowrap font-semibold text-navy hover:text-blue-700">
                           <CreditCard className="size-4 text-neutral-400" aria-hidden="true" />
                           {order.reference}
                         </Link>
-                        <span className="flex items-center gap-2">
+                        <span className="flex flex-wrap items-center gap-2">
                           <Badge variant="outline" size="sm">
                             {formatMoney(order.totalAmount, order.currency)}
                           </Badge>

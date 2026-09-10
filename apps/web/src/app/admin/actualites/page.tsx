@@ -74,11 +74,13 @@ export default async function AdminArticlesPage({ searchParams }: { searchParams
                       Communiqué
                     </Badge>
                   ) : null}
+                  {/* Statut rappelé ici tant que sa colonne est masquée (mobile). */}
+                  <StatusBadge status={row.status} size="sm" className="sm:hidden" />
                 </p>
               </div>
             ),
           },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           {
             key: 'publishedAt',
             header: 'Publication',

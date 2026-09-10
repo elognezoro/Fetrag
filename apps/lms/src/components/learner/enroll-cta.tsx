@@ -35,8 +35,8 @@ export function EnrollCta(props: EnrollCtaProps) {
     return (
       <div className="flex flex-wrap items-center gap-5">
         <ProgressArc value={props.enrollment.progressPercent} size={96} label={done ? 'Terminée' : 'Progression'} />
-        <div className="flex flex-col gap-2">
-          <Button asChild variant={done ? 'secondary' : 'accent'} size="lg">
+        <div className="flex min-w-[15rem] flex-1 flex-col gap-2">
+          <Button asChild variant={done ? 'secondary' : 'accent'} size="lg" className="w-full">
             <Link href={props.resumeHref ?? `/apprendre/${props.courseId}`}>
               <Play aria-hidden="true" />
               {done ? 'Revoir la formation' : 'Reprendre'}
@@ -67,13 +67,13 @@ export function EnrollCta(props: EnrollCtaProps) {
     return (
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap gap-2">
-          <Button asChild variant="primary" size="lg">
+          <Button asChild variant="primary" size="lg" className="w-full sm:w-auto">
             <Link href={`/connexion?callbackUrl=${encodeURIComponent(`/cours/${props.slug}`)}`}>
               <LogIn aria-hidden="true" />
               Se connecter pour s’inscrire
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg">
+          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
             <a href={props.webRegisterHref}>Créer un compte</a>
           </Button>
         </div>

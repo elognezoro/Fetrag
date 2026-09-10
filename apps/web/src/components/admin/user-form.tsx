@@ -105,7 +105,7 @@ export function UserForm({ organizations }: UserFormProps) {
       </EditorSection>
 
       <div className="flex justify-end">
-        <SubmitButton variant="primary" size="lg" pendingLabel="Création du compte" leftIcon={<UserPlus aria-hidden="true" />}>
+        <SubmitButton variant="primary" size="lg" pendingLabel="Création du compte" className="w-full sm:w-auto" leftIcon={<UserPlus aria-hidden="true" />}>
           Créer le compte
         </SubmitButton>
       </div>

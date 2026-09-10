@@ -47,7 +47,7 @@ function CreateKeyDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" variant="primary" size="sm" leftIcon={<KeyRound aria-hidden="true" />}>
+        <Button type="button" variant="primary" size="sm" className="w-full sm:w-auto" leftIcon={<KeyRound aria-hidden="true" />}>
           Générer une clé
         </Button>
       </DialogTrigger>
@@ -62,14 +62,14 @@ function CreateKeyDialog() {
               <AlertTitle>Clé générée</AlertTitle>
               <AlertDescription>Copiez-la maintenant : elle ne sera plus jamais affichée.</AlertDescription>
             </Alert>
-            <div className="flex items-center gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
+            <div className="flex flex-col gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-3 sm:flex-row sm:items-center">
               <code className="min-w-0 flex-1 break-all font-mono text-xs text-navy">{secret}</code>
-              <Button type="button" variant="secondary" size="sm" onClick={copy} leftIcon={<Copy aria-hidden="true" />}>
+              <Button type="button" variant="secondary" size="sm" className="w-full sm:w-auto" onClick={copy} leftIcon={<Copy aria-hidden="true" />}>
                 Copier
               </Button>
             </div>
             <div className="flex justify-end">
-              <Button type="button" variant="primary" onClick={() => setOpen(false)}>
+              <Button type="button" variant="primary" className="w-full sm:w-auto" onClick={() => setOpen(false)}>
                 J’ai copié la clé
               </Button>
             </div>
@@ -84,7 +84,7 @@ function CreateKeyDialog() {
               <NativeSelect id={`${id}-scope`} name="scope" defaultValue="read" options={[{ value: 'read', label: 'Lecture seule' }, { value: 'write', label: 'Lecture et écriture' }]} />
             </FormField>
             <div className="flex justify-end">
-              <SubmitButton variant="primary" pendingLabel="Génération">
+              <SubmitButton variant="primary" pendingLabel="Génération" className="w-full sm:w-auto">
                 Générer
               </SubmitButton>
             </div>
@@ -101,7 +101,7 @@ export function ApiKeysPanel({ keys }: { keys: ApiKeyView[] }) {
   const revoked = keys.filter((k) => k.revokedAt)
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-neutral-600">
           {active.length} clé{active.length > 1 ? 's' : ''} active{active.length > 1 ? 's' : ''} · {revoked.length} révoquée{revoked.length > 1 ? 's' : ''}
         </p>
@@ -114,9 +114,9 @@ export function ApiKeysPanel({ keys }: { keys: ApiKeyView[] }) {
           <TableHeader>
             <TableRow>
               <TableHead>Libellé</TableHead>
-              <TableHead>Préfixe</TableHead>
-              <TableHead>Portée</TableHead>
-              <TableHead>Créée</TableHead>
+              <TableHead className="hidden md:table-cell">Préfixe</TableHead>
+              <TableHead className="hidden sm:table-cell">Portée</TableHead>
+              <TableHead className="hidden lg:table-cell">Créée</TableHead>
               <TableHead>État</TableHead>
               <TableHead className="text-right">Action</TableHead>
             </TableRow>
@@ -124,14 +124,17 @@ export function ApiKeysPanel({ keys }: { keys: ApiKeyView[] }) {
           <TableBody>
             {keys.map((key) => (
               <TableRow key={key.id} className={key.revokedAt ? 'opacity-60' : undefined}>
-                <TableCell className="font-semibold text-navy">{key.label}</TableCell>
-                <TableCell className="font-mono text-xs">{key.prefix}…</TableCell>
-                <TableCell>
+                <TableCell className="font-semibold text-navy">
+                  {key.label}
+                  <span className="mt-0.5 block font-mono text-xs font-normal text-neutral-500 md:hidden">{key.prefix}…</span>
+                </TableCell>
+                <TableCell className="hidden font-mono text-xs md:table-cell">{key.prefix}…</TableCell>
+                <TableCell className="hidden sm:table-cell">
                   <Badge variant={key.scope === 'write' ? 'gold' : 'blue'} size="sm">
                     {key.scope === 'write' ? 'Lecture / écriture' : 'Lecture'}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-xs text-neutral-600">
+                <TableCell className="hidden text-xs text-neutral-600 lg:table-cell">
                   {formatDate(key.createdAt)}
                   {key.createdBy ? <span className="block">{key.createdBy}</span> : null}
                 </TableCell>

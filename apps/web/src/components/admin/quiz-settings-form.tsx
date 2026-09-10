@@ -22,7 +22,7 @@ export function QuizSettingsForm({ partialCredit }: { partialCredit: boolean }) 
         </div>
       </div>
       <div className="flex justify-end">
-        <SubmitButton variant="secondary" size="md" pendingLabel="Enregistrement" leftIcon={<Save aria-hidden="true" />}>
+        <SubmitButton variant="secondary" size="md" pendingLabel="Enregistrement" className="w-full sm:w-auto" leftIcon={<Save aria-hidden="true" />}>
           Enregistrer
         </SubmitButton>
       </div>

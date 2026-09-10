@@ -71,7 +71,7 @@ export function SponsorshipDialog({ organizations, courses, events }: Sponsorshi
             <Input id={`${id}-valid`} name="validUntil" type="date" />
           </FormField>
           <div className="flex justify-end">
-            <SubmitButton variant="primary" pendingLabel="Enregistrement">
+            <SubmitButton variant="primary" pendingLabel="Enregistrement" className="w-full sm:w-auto">
               Accorder
             </SubmitButton>
           </div>

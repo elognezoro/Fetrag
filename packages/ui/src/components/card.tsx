@@ -37,9 +37,9 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
   )
 })
 
-export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  function CardHeader({ className, ...props }, ref) {
-    return <div ref={ref} className={cn('flex flex-col gap-1.5 p-6', className)} {...props} />
+export const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { /** Titre et action sur une même ligne, repliable sur mobile. */ inline?: boolean }>(
+  function CardHeader({ className, inline = false, ...props }, ref) {
+    return <div ref={ref} className={cn('flex flex-col gap-1.5 p-6', inline && 'flex-row flex-wrap items-center justify-between gap-x-4 gap-y-1', className)} {...props} />
   },
 )
 

@@ -259,7 +259,7 @@ export function MenuEditor({ location, locationLabel, name, items, maxDepth = 2 
         <Button type="button" variant="outline" size="sm" onClick={() => add(null)} leftIcon={<Plus aria-hidden="true" />}>
           Ajouter une entrée
         </Button>
-        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" leftIcon={<Save aria-hidden="true" />}>
+        <SubmitButton variant="primary" size="lg" pendingLabel="Enregistrement" className="w-full sm:w-auto" leftIcon={<Save aria-hidden="true" />}>
           Enregistrer le menu
         </SubmitButton>
       </div>

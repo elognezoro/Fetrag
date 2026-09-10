@@ -138,13 +138,15 @@ export function CourseSyllabus({ modules, className }: CourseSyllabusProps) {
                           {lesson.activities.map((activity) => {
                             const Icon = activityIcons[activity.type] ?? FileText
                             return (
-                              <li key={activity.id} className="flex items-center gap-2 text-sm text-neutral-700">
-                                <Icon className="size-4 shrink-0 text-green-700" strokeWidth={1.75} aria-hidden="true" />
-                                <span className="min-w-0 flex-1 truncate">{activity.title}</span>
-                                <span className="shrink-0 text-xs text-neutral-500">
-                                  {activityTypeLabels[activity.type]}
-                                  {activity.durationMinutes ? ` · ${minutes(activity.durationMinutes)}` : ''}
-                                  {!activity.isRequired ? ' · facultatif' : ''}
+                              <li key={activity.id} className="flex items-start gap-2 text-sm text-neutral-700">
+                                <Icon className="mt-0.5 size-4 shrink-0 text-green-700" strokeWidth={1.75} aria-hidden="true" />
+                                <span className="flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
+                                  <span className="min-w-0 break-words">{activity.title}</span>
+                                  <span className="shrink-0 text-xs text-neutral-500">
+                                    {activityTypeLabels[activity.type]}
+                                    {activity.durationMinutes ? ` · ${minutes(activity.durationMinutes)}` : ''}
+                                    {!activity.isRequired ? ' · facultatif' : ''}
+                                  </span>
                                 </span>
                               </li>
                             )

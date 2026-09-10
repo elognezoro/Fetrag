@@ -48,7 +48,7 @@ export function PasswordForm() {
         </FormField>
       </div>
       <div className="flex justify-end">
-        <SubmitButton variant="primary" pendingLabel="Modification en cours">
+        <SubmitButton variant="primary" pendingLabel="Modification en cours" className="w-full sm:w-auto">
           Modifier le mot de passe
         </SubmitButton>
       </div>

@@ -47,14 +47,14 @@ export default async function AdminAuditPage({ searchParams }: { searchParams: P
           </Button>
         }
       />
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
         <StaggerItem>
           <StatTile value={result.total} label={hasFilters ? 'Entrées correspondant aux filtres' : 'Entrées journalisées'} icon={ScrollText} tone="blue" />
         </StaggerItem>
         <StaggerItem>
           <StatTile value={result.actions.length} label="Types d’action distincts" icon={ShieldCheck} tone="green" />
         </StaggerItem>
-        <StaggerItem>
+        <StaggerItem className="col-span-2 sm:col-span-1">
           <StatTile value={result.entities.length} label="Types d’entité concernés" icon={Tags} tone="gold" />
         </StaggerItem>
       </Stagger>
@@ -88,7 +88,7 @@ export default async function AdminAuditPage({ searchParams }: { searchParams: P
             key: 'createdAt',
             header: 'Horodatage',
             cell: (row) => (
-              <span className="text-xs text-neutral-600">
+              <span className="block min-w-[7rem] text-xs text-neutral-600">
                 <span className="block font-semibold text-navy" title={formatDateTime(row.createdAt)}>
                   {formatRelative(row.createdAt)}
                 </span>
@@ -102,13 +102,18 @@ export default async function AdminAuditPage({ searchParams }: { searchParams: P
             cell: (row) => (
               <span className="text-sm">
                 <span className="block font-semibold text-navy">{actionLabel(row.action)}</span>
-                <span className="block font-mono text-[11px] text-neutral-500">{row.action}</span>
+                <span className="block break-all font-mono text-[11px] text-neutral-500">{row.action}</span>
+                {/* Entité rappelée ici tant que sa colonne est masquée (mobile). */}
+                <Badge variant="outline" size="sm" className="mt-1 md:hidden">
+                  {entityLabel(row.entityType)}
+                </Badge>
               </span>
             ),
           },
           {
             key: 'entity',
             header: 'Entité',
+            hideBelow: 'md',
             cell: (row) => (
               <span className="text-sm">
                 <Badge variant="outline" size="sm">
@@ -128,7 +133,7 @@ export default async function AdminAuditPage({ searchParams }: { searchParams: P
             hideBelow: 'md',
             cell: (row) => (
               <span className="text-xs text-neutral-600">
-                <span className="block truncate font-semibold text-navy">{row.actorEmail ?? 'Système'}</span>
+                <span className="line-clamp-1 break-all font-semibold text-navy">{row.actorEmail ?? 'Système'}</span>
                 {row.ipHash ? <span className="block font-mono text-[11px]">IP {row.ipHash.slice(0, 12)}…</span> : null}
               </span>
             ),

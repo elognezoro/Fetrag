@@ -64,7 +64,7 @@ export function Reveal({ delay = 0, y = 18, once = true, duration = 0.7, as = 'd
       className={cn('will-change-[opacity,transform]', className)}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once, amount: 0.2, margin: '0px 0px -8% 0px' }}
+      viewport={{ once, amount: 'some', margin: '0px 0px -8% 0px' }}
       transition={{ duration, delay, ease: EASE_OUT_EXPO }}
       {...props}
     >

@@ -26,7 +26,17 @@ export default async function EvaluationPage({ params }: PageProps) {
 
   return (
     <div className="container-fetrag py-6 sm:py-8">
+      {/* Sur mobile, fil d'Ariane réduit aux liens parents (le titre de l'évaluation est rappelé juste dessous). */}
       <Breadcrumbs
+        className="lg:hidden"
+        items={[
+          { label: entry.course.title, href: `/cours/${entry.course.slug}` },
+          { label: entry.lesson.title, href: lessonHref },
+        ]}
+        homeHref="/dashboard"
+      />
+      <Breadcrumbs
+        className="hidden lg:block"
         items={[
           { label: 'Mes formations', href: '/mes-formations' },
           { label: entry.course.title, href: `/cours/${entry.course.slug}` },

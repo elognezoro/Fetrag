@@ -42,7 +42,7 @@ export function Stagger({ stagger = 0.07, delay = 0, once = true, as = 'div', cl
       variants={containerVariants(stagger, delay)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, amount: 0.15, margin: '0px 0px -8% 0px' }}
+      viewport={{ once, amount: 'some', margin: '0px 0px -8% 0px' }}
       {...props}
     >
       {children}

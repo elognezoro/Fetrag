@@ -42,7 +42,7 @@ export function OrganizationMemberForm({ organizationId }: { organizationId: str
         </div>
       </div>
       <div className="flex justify-end">
-        <SubmitButton variant="secondary" size="md" pendingLabel="Rattachement" leftIcon={<UserPlus aria-hidden="true" />}>
+        <SubmitButton variant="secondary" size="md" pendingLabel="Rattachement" className="w-full sm:w-auto" leftIcon={<UserPlus aria-hidden="true" />}>
           Ajouter le membre
         </SubmitButton>
       </div>

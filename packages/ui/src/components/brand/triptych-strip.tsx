@@ -40,8 +40,8 @@ export function TriptychStrip({ variant = 'cards', items, inverted = false, clas
 
   if (variant === 'bar') {
     return (
-      <div className={cn('overflow-hidden rounded-full border border-neutral-200 shadow-soft', className)} {...props}>
-        <ol className="grid grid-cols-3">
+      <div className={cn('overflow-hidden rounded-2xl border border-neutral-200 shadow-soft sm:rounded-full', className)} {...props}>
+        <ol className="grid grid-cols-1 sm:grid-cols-3">
           {entries.map((entry, index) => {
             const tone = pillarTone[entry.pillar]
             return (
@@ -54,7 +54,7 @@ export function TriptychStrip({ variant = 'cards', items, inverted = false, clas
                 )}
               >
                 <span className="font-display text-sm font-semibold normal-case tracking-tight opacity-80">{padNumber(index + 1)}</span>
-                <span className="truncate">{entry.label}</span>
+                <span className="whitespace-normal leading-tight sm:truncate">{entry.label}</span>
               </li>
             )
           })}

@@ -85,7 +85,7 @@ export default async function AdminCoursePage({ params, searchParams }: PageProp
             <span>{course.code}</span>
             <span>{courseModalityLabels[course.modality]}</span>
             <span>{courseLevelLabels[course.level]}</span>
-            <span>{course.durationHours} h</span>
+            <span className="whitespace-nowrap">{course.durationHours} h</span>
             <span className="inline-flex items-center gap-1">
               <GitBranch className="size-4" aria-hidden="true" />
               {currentVersion ? `Version courante ${currentVersion.version}` : 'Aucune version publiée'}

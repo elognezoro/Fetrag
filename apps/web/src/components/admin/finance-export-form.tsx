@@ -33,9 +33,9 @@ export function FinanceExportForm({ action = '/admin/finance/exports' }: { actio
           <Input id="export-au" name="au" type="date" />
         </div>
       </div>
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs text-neutral-500">CSV UTF-8 (séparateur point-virgule), 5 000 lignes au plus ; chaque export est journalisé.</p>
-        <Button type="submit" variant="outline" size="md">
+        <Button type="submit" variant="outline" size="md" className="w-full sm:w-auto sm:shrink-0">
           <Download aria-hidden="true" />
           Exporter
         </Button>

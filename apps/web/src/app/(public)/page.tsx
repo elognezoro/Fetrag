@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { seo } from '@fetrag/cms'
-import { Container, MottoStrip, TriptychStrip } from '@fetrag/ui'
+import { Container, MottoStrip } from '@fetrag/ui'
 import { EventsSection } from '@/components/public/events-section'
 import { HeroHome } from '@/components/public/hero-home'
 import { JsonLd } from '@/components/public/json-ld'
@@ -12,6 +12,7 @@ import { PartnersMarquee } from '@/components/public/partners-marquee'
 import { ProgrammeSection } from '@/components/public/programme-section'
 import { ServicesSection } from '@/components/public/services-section'
 import { SgMessage } from '@/components/public/sg-message'
+import { TriptychBar } from '@/components/public/triptych-bar'
 import { siteConfig } from '@/lib/site'
 import { getHomeData } from '@/server/public/home'
 
@@ -39,7 +40,7 @@ function MottoBand() {
           <MottoStrip variant="ribbon" size="md" tilt />
         </div>
         <div className="w-full max-w-2xl">
-          <TriptychStrip variant="bar" />
+          <TriptychBar />
         </div>
       </Container>
     </div>

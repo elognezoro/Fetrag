@@ -47,7 +47,7 @@ export function ModuleCard({
 
   const content = (
     <>
-      <div className="flex gap-5">
+      <div className="flex gap-4 sm:gap-5">
         <div className="flex shrink-0 flex-col items-center">
           <span aria-hidden="true" className={cn('font-display text-5xl font-semibold leading-none tracking-tight', classes.text)}>
             {padNumber(number)}
@@ -92,7 +92,7 @@ export function ModuleCard({
   )
 
   const cardClass = cn(
-    'group relative flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft',
+    'group relative flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft sm:p-6',
     'transition-[transform,box-shadow] duration-180 ease-out-expo hover:-translate-y-0.5 hover:shadow-lift',
     classes.glow,
   )

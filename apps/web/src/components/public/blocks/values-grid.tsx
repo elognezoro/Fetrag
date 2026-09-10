@@ -39,7 +39,7 @@ export function ValuesGrid({ id, title = 'Nos valeurs', eyebrow = 'Ce qui nous g
       <Reveal>
         <SectionHeading eyebrow={eyebrow} title={title} description={description} size="md" tone="gold" className="mb-10" />
       </Reveal>
-      <Stagger as="ol" className={cn('grid gap-5', items.length >= 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2')}>
+      <Stagger as="ol" className={cn('grid grid-cols-1 gap-5', items.length >= 3 ? 'sm:grid-cols-2 lg:grid-cols-3' : 'sm:grid-cols-2')}>
         {items.map((item, index) => {
           const tone = item.tone ?? toneAt(index)
           const classes = toneClasses[tone]

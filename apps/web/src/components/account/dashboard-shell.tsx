@@ -45,7 +45,8 @@ export function DashboardShell({ eyebrow, brandTitle, brandDescription, nav, foo
   )
 
   return (
-    <div className="relative isolate min-h-[calc(100dvh-var(--header-height))] overflow-hidden bg-neutral-50">
+    // `overflow-x-clip` : un conteneur à défilement (`overflow-hidden`) neutraliserait le `sticky` de la barre latérale.
+    <div className="relative isolate min-h-[calc(100dvh-var(--header-height))] overflow-x-clip bg-neutral-50">
       <RingBackdrop position="top-right" opacity={0.05} className="-z-10" />
       <div className="container-fetrag py-6 lg:grid lg:grid-cols-[var(--dashboard-sidebar,17rem)_minmax(0,1fr)] lg:gap-8 lg:py-8">
         <aside

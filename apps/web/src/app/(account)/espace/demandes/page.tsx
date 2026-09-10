@@ -60,26 +60,29 @@ export default async function RequestsPage({ searchParams }: PageProps) {
                 <Table bare>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Référence</TableHead>
+                      <TableHead className="hidden sm:table-cell">Référence</TableHead>
                       <TableHead>Service</TableHead>
-                      <TableHead>Déposée le</TableHead>
+                      <TableHead className="hidden md:table-cell">Déposée le</TableHead>
                       <TableHead>Statut</TableHead>
-                      <TableHead>Suivi par</TableHead>
+                      <TableHead className="hidden lg:table-cell">Suivi par</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {requests.items.map((request) => (
                       <TableRow key={request.id}>
-                        <TableCell className="font-mono text-xs font-semibold text-navy">{request.reference}</TableCell>
+                        <TableCell className="hidden font-mono text-xs font-semibold text-navy sm:table-cell">{request.reference}</TableCell>
                         <TableCell>
                           <span className="font-semibold text-navy">{request.service.name}</span>
+                          {/* Référence et date rappelées sous le service tant que leurs colonnes sont masquées. */}
+                          <span className="block font-mono text-xs text-neutral-500 sm:hidden">{request.reference}</span>
+                          <span className="block text-xs text-neutral-500 md:hidden">Déposée le {formatDate(request.createdAt)}</span>
                           {request.service.slaDays ? <span className="block text-xs text-neutral-500">Délai indicatif : {request.service.slaDays} jours</span> : null}
                         </TableCell>
-                        <TableCell className="whitespace-nowrap text-neutral-600">{formatDate(request.createdAt)}</TableCell>
+                        <TableCell className="hidden whitespace-nowrap text-neutral-600 md:table-cell">{formatDate(request.createdAt)}</TableCell>
                         <TableCell>
                           <StatusBadge status={request.status} size="sm" />
                         </TableCell>
-                        <TableCell className="text-neutral-600">{request.assignee?.name ?? 'En attente d’attribution'}</TableCell>
+                        <TableCell className="hidden text-neutral-600 lg:table-cell">{request.assignee?.name ?? 'En attente d’attribution'}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -111,7 +114,7 @@ export default async function RequestsPage({ searchParams }: PageProps) {
                         {submission.answeredAt ? ` · répondu le ${formatDate(submission.answeredAt)}` : ''}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <Badge variant="outline" size="sm">
                         {formKindLabels[submission.kind] ?? submission.kind}
                       </Badge>

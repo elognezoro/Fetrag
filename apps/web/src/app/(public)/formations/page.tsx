@@ -2,11 +2,12 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowUpRight, Award, Clock, GraduationCap, Layers, ShieldCheck } from 'lucide-react'
 import { courseModalities, courseModalityLabels, pillarLabels, pillars } from '@fetrag/contracts'
-import { Alert, AlertDescription, AlertTitle, Button, EmptyState, PageHeader, Pagination, Reveal, Section, SectionHeading, Stagger, StaggerItem, StatTile, TriptychStrip } from '@fetrag/ui'
+import { Alert, AlertDescription, AlertTitle, Button, EmptyState, PageHeader, Pagination, Reveal, Section, SectionHeading, Stagger, StaggerItem, StatTile } from '@fetrag/ui'
 import { FilterChips, type FilterChip } from '@/components/public/filter-chips'
 import { ModuleGrid } from '@/components/public/module-grid'
 import { SearchForm } from '@/components/public/search-form'
 import { StepsList } from '@/components/public/steps-list'
+import { TriptychBar } from '@/components/public/triptych-bar'
 import { lmsHref, siteConfig } from '@/lib/site'
 import { getCatalogue, getCatalogueSummary } from '@/server/public/catalogue'
 import { PROGRAMME_SLOGAN } from '@/server/public/programme'
@@ -23,6 +24,12 @@ interface PageProps {
 }
 
 const BASE = '/formations'
+
+/**
+ * Tuiles de chiffres de l'en-tête : sur mobile, une seule colonne de tuiles compactes (icône, chiffre et libellé
+ * sur une même ligne) pour que « 144 h » ne se coupe jamais ; à partir de `sm`, la tuile verticale d'origine.
+ */
+const HEADER_TILE = 'flex-row items-center gap-4 sm:flex-col sm:items-stretch sm:gap-3 [&>p:first-of-type]:whitespace-nowrap'
 
 const enrolSteps = [
   { title: 'Créer un compte', description: 'Un seul compte FETRAG pour le site et la plateforme de formation, en quelques minutes.', icon: GraduationCap },
@@ -90,20 +97,20 @@ export default async function CoursesPage({ searchParams }: PageProps) {
           </>
         }
         aside={
-          <Stagger className="grid grid-cols-3 gap-3 lg:grid-cols-1">
+          <Stagger className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
             <StaggerItem>
-              <StatTile value={summary.courses} label="modules" tone="blue" icon={Layers} />
+              <StatTile value={summary.courses} label="modules" tone="blue" icon={Layers} className={HEADER_TILE} />
             </StaggerItem>
             <StaggerItem>
-              <StatTile value={summary.hours} label="heures de formation" tone="green" icon={Clock} suffix=" h" />
+              <StatTile value={summary.hours} label="heures de formation" tone="green" icon={Clock} suffix=" h" className={HEADER_TILE} />
             </StaggerItem>
             <StaggerItem>
-              <StatTile value={3} label="piliers fondateurs" tone="gold" icon={Award} />
+              <StatTile value={3} label="piliers fondateurs" tone="gold" icon={Award} className={HEADER_TILE} />
             </StaggerItem>
           </Stagger>
         }
       >
-        <TriptychStrip variant="bar" />
+        <TriptychBar />
       </PageHeader>
 
       <Section variant="default" padding="md" containerClassName="flex flex-col gap-8" aria-labelledby="catalogue-title">
@@ -167,8 +174,8 @@ export default async function CoursesPage({ searchParams }: PageProps) {
               dédiée, en présentiel, en classe virtuelle ou en hybride, et crée les comptes des participants.
             </p>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <Button asChild variant="primary" size="lg">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap lg:flex-col">
+            <Button asChild variant="primary" size="lg" className="h-auto min-h-12 whitespace-normal py-3 text-center sm:h-12 sm:whitespace-nowrap sm:py-0">
               <a href={lmsHref('/demande-formation')}>
                 Déposer une demande de formation
                 <ArrowUpRight aria-hidden="true" />

@@ -96,9 +96,9 @@ export function CourseProgramme({ modules, courseId, enrolled }: CourseProgramme
                       {lesson.activities.length > 0 ? (
                         <ul className="mt-3 flex flex-col gap-1.5">
                           {lesson.activities.map((activity) => (
-                            <li key={activity.id} className="flex items-center gap-2 text-sm text-neutral-700">
-                              <ActivityIcon type={activity.type} className="text-blue-600" />
-                              <span className="min-w-0 flex-1 truncate">
+                            <li key={activity.id} className="flex items-start gap-2 text-sm text-neutral-700 sm:items-center">
+                              <ActivityIcon type={activity.type} className="mt-0.5 text-blue-600 sm:mt-0" />
+                              <span className="min-w-0 flex-1 sm:truncate">
                                 {enrolled ? (
                                   <Link href={`/apprendre/${courseId}/${lesson.id}?activite=${activity.id}`} className="hover:text-blue-700 hover:underline">
                                     {activity.title}
@@ -108,8 +108,8 @@ export function CourseProgramme({ modules, courseId, enrolled }: CourseProgramme
                                 )}
                               </span>
                               <span className="hidden text-xs text-neutral-500 sm:inline">{activityLabel(activity.type)}</span>
-                              {activity.durationMinutes ? <span className="text-xs tabular-nums text-neutral-500">{formatDuration(activity.durationMinutes)}</span> : null}
-                              {!activity.isRequired ? <span className="text-[11px] uppercase tracking-wider text-neutral-400">facultatif</span> : null}
+                              {activity.durationMinutes ? <span className="shrink-0 whitespace-nowrap text-xs tabular-nums text-neutral-500">{formatDuration(activity.durationMinutes)}</span> : null}
+                              {!activity.isRequired ? <span className="shrink-0 text-[11px] uppercase tracking-wider text-neutral-400">facultatif</span> : null}
                             </li>
                           ))}
                         </ul>

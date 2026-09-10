@@ -57,7 +57,9 @@ export default async function CataloguePage({ searchParams }: PageProps) {
           </Button>
         }
       >
-        <TriptychStrip variant="bar" className="max-w-3xl" aria-label="Légende des piliers" />
+        {/* Sur mobile, la barre tricolore tronque les libellés : on affiche la variante compacte (pastilles). */}
+        <TriptychStrip variant="inline" className="sm:hidden" aria-label="Légende des piliers" />
+        <TriptychStrip variant="bar" className="hidden max-w-3xl sm:block" aria-label="Légende des piliers" />
       </PageHeader>
 
       <div className="container-fetrag flex flex-col gap-8 py-10 sm:py-12">

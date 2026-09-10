@@ -57,9 +57,9 @@ export default async function CoordinationCertificatesPage({ searchParams }: Pag
 
       <div className="mb-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card pillar="defense" className="lg:col-span-2">
-          <CardContent className="flex items-center gap-5 p-5">
+          <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:gap-5">
             <CertificateSeal size={84} decorative />
-            <div className="text-sm text-neutral-700">
+            <div className="min-w-0 text-sm text-neutral-700">
               <p className="font-display text-lg font-semibold text-navy">{list.total} document(s) au registre</p>
               <p>
                 {toIssue ? (
@@ -129,21 +129,21 @@ export default async function CoordinationCertificatesPage({ searchParams }: Pag
               <TableBody>
                 {list.items.map((c) => (
                   <TableRow key={c.id}>
-                    <TableCell>
+                    <TableCell className="whitespace-nowrap">
                       <Link href={`/certificats/${c.id}`} className="font-semibold text-navy hover:underline">
                         {c.number}
                       </Link>
                       <span className="block text-xs text-neutral-500">{c.kind === 'CERTIFICATE' ? 'Certificat' : 'Attestation'}</span>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="min-w-[12rem]">
                       {c.holderName}
                       {c.enrollment?.organization ? <span className="block text-xs text-neutral-500">{c.enrollment.organization.name}</span> : null}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="min-w-[14rem]">
                       {c.courseTitle}
                       {c.cohort ? <span className="block text-xs text-neutral-500">{c.cohort.name}</span> : null}
                     </TableCell>
-                    <TableCell className="text-neutral-600">
+                    <TableCell className="whitespace-nowrap text-neutral-600">
                       {formatDate(c.issuedAt)}
                       {c.expiresAt ? <span className="block text-xs">Expire le {formatDate(c.expiresAt)}</span> : null}
                     </TableCell>

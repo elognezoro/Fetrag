@@ -49,21 +49,21 @@ export function DashboardHero({ greetingName, stats, resume }: DashboardHeroProp
 
           <div className="mt-7 flex flex-wrap gap-3">
             {resume ? (
-              <Button asChild variant="accent" size="lg">
+              <Button asChild variant="accent" size="lg" className="w-full max-w-full sm:w-auto">
                 <Link href={resume.href}>
                   <Play aria-hidden="true" />
-                  Reprendre : {resume.title}
+                  <span className="min-w-0 truncate">Reprendre : {resume.title}</span>
                 </Link>
               </Button>
             ) : (
-              <Button asChild variant="accent" size="lg">
+              <Button asChild variant="accent" size="lg" className="w-full sm:w-auto">
                 <Link href="/catalogue">
                   <BookOpen aria-hidden="true" />
                   Choisir une formation
                 </Link>
               </Button>
             )}
-            <Button asChild variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10">
+            <Button asChild variant="outline" size="lg" className="w-full border-white/60 text-white hover:bg-white/10 sm:w-auto">
               <Link href="/mes-formations">
                 Mes formations
                 <ArrowRight aria-hidden="true" />

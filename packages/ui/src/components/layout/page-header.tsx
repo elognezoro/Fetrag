@@ -84,9 +84,9 @@ export function PageHeader({
                 {meta}
               </div>
             ) : null}
-            {actions ? <div className={cn('mt-2 flex flex-wrap items-center gap-3', centered && 'justify-center')}>{actions}</div> : null}
+            {actions ? <div className={cn('mt-2 flex flex-wrap items-center gap-3 [&>*]:max-w-full', centered && 'justify-center')}>{actions}</div> : null}
           </div>
-          {aside ? <div className="shrink-0 lg:max-w-sm">{aside}</div> : null}
+          {aside ? <div className="flex shrink-0 justify-center lg:max-w-sm lg:justify-end">{aside}</div> : null}
         </div>
         {children ? <div className="mt-8">{children}</div> : null}
       </Container>

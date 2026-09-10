@@ -59,7 +59,7 @@ export default async function CoordinationSessionsPage({ searchParams }: PagePro
         }
         description="Vue globale des sessions de toutes les cohortes : présentiel, classes virtuelles, hybride. Les sessions se créent depuis la fiche de chaque cohorte."
         actions={
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button asChild variant="outline" size="sm">
               <Link href={weekHref(prev)}>
                 <ChevronLeft aria-hidden="true" />

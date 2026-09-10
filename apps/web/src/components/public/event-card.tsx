@@ -61,16 +61,16 @@ export function EventCard({ event, compact = false, className }: EventCardProps)
           </h3>
           {!compact && event.summary ? <p className="line-clamp-2 text-sm text-neutral-600">{event.summary}</p> : null}
           <ul className="mt-1 flex flex-col gap-1 text-xs font-semibold text-neutral-500">
-            <li className="inline-flex items-center gap-1.5">
-              {event.mode === 'VIRTUAL' ? <Video className="size-3.5" aria-hidden="true" /> : <MapPin className="size-3.5" aria-hidden="true" />}
-              <span className="truncate">
+            <li className="flex items-start gap-1.5">
+              {event.mode === 'VIRTUAL' ? <Video className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" /> : <MapPin className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />}
+              <span className="min-w-0 break-words">
                 {eventPlace(event)} · {formatTime(event.startsAt)} · {sessionModeLabels[event.mode]}
               </span>
             </li>
             {event.speakerName ? (
-              <li className="inline-flex items-center gap-1.5">
-                <Mic2 className="size-3.5" aria-hidden="true" />
-                <span className="truncate">
+              <li className="flex items-start gap-1.5">
+                <Mic2 className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+                <span className="min-w-0 break-words">
                   {event.speakerName}
                   {event.speakerTitle ? `, ${event.speakerTitle}` : ''}
                 </span>

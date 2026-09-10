@@ -147,12 +147,15 @@ export default async function TrainingRequestPage({ searchParams }: PageProps) {
       ) : null}
 
       <div className="mt-12">
-        <div className="mb-4 flex items-center gap-2">
-          <ClipboardList className="size-5 text-blue-600" aria-hidden="true" />
-          <h2 className="font-display text-xl font-semibold text-navy">Le programme s&apos;appuie sur le triptyque fondateur</h2>
+        <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
+          <h2 className="flex min-w-0 items-center gap-2 font-display text-lg font-semibold text-navy sm:text-xl">
+            <ClipboardList className="size-5 shrink-0 text-blue-600" aria-hidden="true" />
+            <span>Le programme s&apos;appuie sur le triptyque fondateur</span>
+          </h2>
           <Badge variant="gold">Session 2026</Badge>
         </div>
-        <TriptychStrip variant="bar" />
+        <TriptychStrip variant="inline" className="sm:hidden" />
+        <TriptychStrip variant="bar" className="hidden sm:block" />
       </div>
     </>
   )

@@ -4,6 +4,7 @@ import { Building2, ClipboardCheck, FileSignature, GraduationCap, HeartHandshake
 import { Button, PageHeader, Reveal, Section, SectionHeading, Stagger, StaggerItem, TriptychStrip, cn, padNumber, toneAt, toneClasses } from '@fetrag/ui'
 import { InquiryForm } from '@/components/public/inquiry-form'
 import { StepsList } from '@/components/public/steps-list'
+import { TriptychBar } from '@/components/public/triptych-bar'
 import { siteConfig } from '@/lib/site'
 import { MISSION_TEXT, PILLAR_DESCRIPTIONS } from '@/server/public/institution'
 import { getViewer } from '@/server/public/viewer'
@@ -69,7 +70,7 @@ export default async function MembershipPage() {
           </>
         }
       >
-        <TriptychStrip variant="bar" />
+        <TriptychBar />
       </PageHeader>
 
       <Section variant="white" padding="lg" rings={{ position: 'left', opacity: 0.05, rings: 3 }} aria-labelledby="benefits-title">

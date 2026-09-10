@@ -34,8 +34,15 @@ export function CourseGrid({ courses, label = 'Formations', emptyTitle = 'Aucune
       />
     )
   }
+  // Liste haute (dix cartes en colonne unique sur mobile) : la cascade démarre dès que la grille entre dans le
+  // viewport plutôt qu'à 15 % de visibilité (≈ 720 px), sans quoi la première carte reste invisible au premier défilement.
   return (
-    <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-label={label}>
+    <Stagger
+      as="ul"
+      className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3"
+      aria-label={label}
+      viewport={{ once: true, amount: 'some', margin: '0px 0px -8% 0px' }}
+    >
       {courses.map((course) => (
         <StaggerItem key={course.id} as="li" className="h-full">
           <ModuleCard

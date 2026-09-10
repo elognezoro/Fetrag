@@ -83,7 +83,8 @@ export function AdminShell({ user, nav, lmsUrl, children }: AdminShellProps) {
 
   return (
     <AppShell className="min-h-0 bg-transparent lg:[&>div]:pl-0">
-      <div className="relative isolate min-h-[calc(100dvh-var(--header-height))] overflow-hidden bg-neutral-50">
+      {/* `overflow-x-clip` (et non `overflow-hidden`) : un conteneur à défilement casserait le `position: sticky` de la barre supérieure mobile. */}
+      <div className="relative isolate min-h-[calc(100dvh-var(--header-height))] overflow-x-clip bg-neutral-50">
         <RingBackdrop position="top-right" opacity={0.04} className="-z-10" />
         <div className="mx-auto flex w-full max-w-[100rem] gap-0 px-0 lg:px-6 lg:py-6">
           <aside
@@ -99,7 +100,8 @@ export function AdminShell({ user, nav, lmsUrl, children }: AdminShellProps) {
           </aside>
 
           <div className="flex min-w-0 flex-1 flex-col lg:pl-8">
-            <div className="sticky top-[var(--header-height)] z-20 flex items-center justify-between gap-3 border-b border-neutral-200 bg-white/90 px-4 py-3 backdrop-blur sm:px-6 lg:static lg:mb-6 lg:rounded-2xl lg:border lg:shadow-soft">
+            {/* Décalage = hauteur de l'en-tête du site (bande tricolore de 4px comprise). */}
+            <div className="sticky top-[calc(var(--header-height)+0.25rem)] z-20 flex min-h-14 items-center justify-between gap-3 border-b border-neutral-200 bg-white/90 px-4 py-2.5 backdrop-blur sm:px-6 lg:static lg:mb-6 lg:rounded-2xl lg:border lg:py-3 lg:shadow-soft">
               <div className="flex min-w-0 items-center gap-3">
                 <IconButton label="Ouvrir la navigation" icon={Menu} variant="outline" className="lg:hidden" onClick={() => setOpen(true)} aria-expanded={open} />
                 <div className="min-w-0">

@@ -28,6 +28,8 @@ export function useAppShell(): AppShellContextValue | null {
 }
 
 export interface AppShellProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Impose min-h-dvh (coquille plein écran). Mettre false quand la coquille est intégrée sous l'en-tête d'un site. */
+  fullHeight?: boolean
   children: React.ReactNode
 }
 
@@ -36,7 +38,7 @@ export interface AppShellProps extends React.HTMLAttributes<HTMLDivElement> {
  * tiroir (Radix Dialog) sur mobile, barre supérieure collante.
  * Structure attendue : `<AppShell><AppShellSidebar/><AppShellTopbar/><AppShellMain/></AppShell>`.
  */
-export function AppShell({ className, children, ...props }: AppShellProps) {
+export function AppShell({ className, children, fullHeight = true, ...props }: AppShellProps) {
   const [open, setOpen] = React.useState(false)
   const value = React.useMemo<AppShellContextValue>(
     () => ({ open, setOpen, close: () => setOpen(false) }),
@@ -45,11 +47,11 @@ export function AppShell({ className, children, ...props }: AppShellProps) {
   return (
     <AppShellContext.Provider value={value}>
       <div
-        className={cn('flex min-h-dvh flex-col bg-neutral-50 text-ink', className)}
+        className={cn('flex flex-col bg-neutral-50 text-ink', fullHeight && 'min-h-dvh', className)}
         style={{ ['--sidebar-width' as string]: `${SIDEBAR_WIDTH}px` }}
         {...props}
       >
-        <div className="flex min-h-dvh flex-col lg:pl-[var(--sidebar-width)]">{children}</div>
+        <div className={cn('flex flex-col lg:pl-[var(--sidebar-width)]', fullHeight && 'min-h-dvh')}>{children}</div>
       </div>
     </AppShellContext.Provider>
   )
@@ -142,7 +144,7 @@ export function AppShellTopbar({ title, children, actions, user, className, ...p
   return (
     <header
       className={cn(
-        'sticky top-0 z-30 flex h-[var(--header-height)] shrink-0 items-center gap-3 border-b border-neutral-200 bg-white/85 px-4 backdrop-blur sm:px-6 lg:px-8',
+        'sticky top-0 z-30 flex h-14 shrink-0 lg:h-[var(--header-height)] items-center gap-3 border-b border-neutral-200 bg-white/85 px-4 backdrop-blur sm:px-6 lg:px-8',
         className,
       )}
       {...props}

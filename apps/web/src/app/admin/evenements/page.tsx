@@ -61,9 +61,9 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
             key: 'title',
             header: 'Événement',
             cell: (row) => (
-              <div className="min-w-0">
+              <div className="min-w-[10rem]">
                 <Link href={`${BASE}/${row.id}`} className="inline-flex items-center gap-1.5 font-semibold text-navy hover:text-blue-700">
-                  {row.isFeatured ? <Star className="size-4 text-gold-500" aria-label="Mis en avant" /> : null}
+                  {row.isFeatured ? <Star className="size-4 shrink-0 text-gold-500" aria-label="Mis en avant" /> : null}
                   {row.title}
                 </Link>
                 <p className="flex flex-wrap items-center gap-1.5 text-xs text-neutral-500">
@@ -71,6 +71,8 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
                     {eventKindLabels[row.kind]}
                   </Badge>
                   {row.speakerName ? <span>{row.speakerName}</span> : null}
+                  {/* Statut rappelé ici tant que sa colonne est masquée (mobile). */}
+                  <StatusBadge status={row.status} size="sm" className="sm:hidden" />
                 </p>
               </div>
             ),
@@ -83,7 +85,11 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
                 <span className="block font-semibold text-navy">{formatDateTime(row.startsAt)}</span>
                 {sessionModeLabels[row.mode]}
                 {row.city ? ` · ${row.city}` : ''}
-                {row.isPast ? <Badge variant="neutral" size="sm" className="ml-1.5">Passé</Badge> : null}
+                {row.isPast ? (
+                  <Badge variant="neutral" size="sm" className="ml-1.5">
+                    Passé
+                  </Badge>
+                ) : null}
               </span>
             ),
           },
@@ -99,7 +105,7 @@ export default async function AdminEventsPage({ searchParams }: { searchParams: 
               </span>
             ),
           },
-          { key: 'status', header: 'Statut', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
+          { key: 'status', header: 'Statut', hideBelow: 'sm', cell: (row) => <StatusBadge status={row.status} size="sm" /> },
           {
             key: 'actions',
             header: <span className="sr-only">Actions</span>,

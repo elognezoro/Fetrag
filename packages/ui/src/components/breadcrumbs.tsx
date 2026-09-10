@@ -36,7 +36,7 @@ export function Breadcrumbs({ items, homeHref, inverted = false, className, ...p
           const isLast = index === all.length - 1
           const isHome = Boolean(homeHref) && index === 0
           return (
-            <li key={index} className="inline-flex items-center gap-1.5">
+            <li key={index} className="inline-flex items-center gap-1.5 max-sm:[&:not(:first-child):not(:nth-last-child(-n+2))]:hidden">
               {index > 0 ? (
                 <ChevronRight
                   aria-hidden="true"

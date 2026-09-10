@@ -97,7 +97,7 @@ export function QuizReview({ review, className }: QuizReviewProps) {
           <li
             key={question.questionId}
             className={cn(
-              'rounded-2xl border bg-white p-5 shadow-soft',
+              'rounded-2xl border bg-white p-4 shadow-soft sm:p-5',
               pending ? 'border-gold-200' : correct === true ? 'border-green-200' : correct === false ? 'border-[#f5c6c6]' : 'border-neutral-200',
             )}
           >
@@ -122,29 +122,32 @@ export function QuizReview({ review, className }: QuizReviewProps) {
                     <BlankText question={question} />
                   </div>
                 ) : null}
-                <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                  <div className="rounded-xl bg-neutral-50 p-3">
-                    <dt className="text-xs text-neutral-500">Votre réponse</dt>
-                    <dd className="mt-0.5 whitespace-pre-wrap text-ink">{renderResponse(question, question.response)}</dd>
-                  </div>
-                  {expected && !pending ? (
-                    <div className="rounded-xl bg-green-50 p-3">
-                      <dt className="text-xs text-green-800">Réponse attendue</dt>
-                      <dd className="mt-0.5 text-green-900">{expected}</dd>
-                    </div>
-                  ) : pending ? (
-                    <div className="rounded-xl bg-gold-50 p-3">
-                      <dt className="text-xs text-gold-800">Correction</dt>
-                      <dd className="mt-0.5 text-gold-900">Votre composition sera notée par le formateur. Vous serez notifié du résultat.</dd>
-                    </div>
-                  ) : null}
-                </dl>
-                {question.feedback || question.explanation ? (
-                  <p className="mt-3 rounded-xl border-l-4 border-blue-400 bg-blue-50/60 px-3 py-2 text-sm text-blue-900">
-                    {question.explanation && question.feedback && !question.feedback.includes(question.explanation) ? `${question.explanation} ${question.feedback}` : question.feedback ?? question.explanation}
-                  </p>
-                ) : null}
               </div>
+            </div>
+            {/* Réponses et explication en pleine largeur sur mobile ; alignées sous l'énoncé dès sm (pastille 36 px + espace 12 px). */}
+            <div className="sm:ml-12">
+              <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+                <div className="rounded-xl bg-neutral-50 p-3">
+                  <dt className="text-xs text-neutral-500">Votre réponse</dt>
+                  <dd className="mt-0.5 whitespace-pre-wrap text-ink">{renderResponse(question, question.response)}</dd>
+                </div>
+                {expected && !pending ? (
+                  <div className="rounded-xl bg-green-50 p-3">
+                    <dt className="text-xs text-green-800">Réponse attendue</dt>
+                    <dd className="mt-0.5 text-green-900">{expected}</dd>
+                  </div>
+                ) : pending ? (
+                  <div className="rounded-xl bg-gold-50 p-3">
+                    <dt className="text-xs text-gold-800">Correction</dt>
+                    <dd className="mt-0.5 text-gold-900">Votre composition sera notée par le formateur. Vous serez notifié du résultat.</dd>
+                  </div>
+                ) : null}
+              </dl>
+              {question.feedback || question.explanation ? (
+                <p className="mt-3 rounded-xl border-l-4 border-blue-400 bg-blue-50/60 px-3 py-2 text-sm text-blue-900">
+                  {question.explanation && question.feedback && !question.feedback.includes(question.explanation) ? `${question.explanation} ${question.feedback}` : question.feedback ?? question.explanation}
+                </p>
+              ) : null}
             </div>
           </li>
         )

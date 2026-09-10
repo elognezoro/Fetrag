@@ -120,8 +120,8 @@ export default async function CoordinationDashboardPage() {
                           {s.location ? ` · ${s.location}` : ''} · {s.cohort.trainer?.name ?? 'formateur à désigner'}
                         </p>
                       </div>
-                      <div className="flex items-center gap-3 text-sm">
-                        <span className="font-medium text-ink">
+                      <div className="flex flex-wrap items-center gap-2 text-sm sm:gap-3">
+                        <span className="whitespace-nowrap font-medium text-ink">
                           {formatTime(s.startsAt)} - {formatTime(s.endsAt)}
                         </span>
                         <Badge variant={s._count.attendances ? 'success' : 'neutral'} size="sm">
@@ -196,9 +196,9 @@ export default async function CoordinationDashboardPage() {
             <TableBody>
               {dashboard.pendingRequests.map((r) => (
                 <TableRow key={r.id}>
-                  <TableCell className="font-semibold text-navy">{r.reference}</TableCell>
+                  <TableCell className="whitespace-nowrap font-semibold text-navy">{r.reference}</TableCell>
                   <TableCell>{r.organization.acronym ?? r.organization.name}</TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-[12rem]">
                     <span className="line-clamp-2 max-w-xs">{r.modules.map((m) => m.course.title).join(', ')}</span>
                   </TableCell>
                   <TableCell>{r._count.participants}</TableCell>

@@ -28,7 +28,11 @@ export default async function SecurityPage() {
         tone="navy"
         title="Protéger mon compte"
         description="Vos données syndicales sont sensibles : activez la vérification en deux étapes et utilisez un mot de passe unique."
-        actions={<Badge variant={security.totpEnabled ? 'success' : 'warning'}>{security.totpEnabled ? 'Vérification en deux étapes active' : 'Vérification en deux étapes inactive'}</Badge>}
+        actions={
+          <div>
+            <Badge variant={security.totpEnabled ? 'success' : 'warning'}>{security.totpEnabled ? 'Vérification en deux étapes active' : 'Vérification en deux étapes inactive'}</Badge>
+          </div>
+        }
       />
 
       <Reveal>
@@ -82,7 +86,7 @@ export default async function SecurityPage() {
                 {security.recentLogins.map((entry) => (
                   <li key={entry.id} className="flex flex-col gap-1 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between">
                     <span className="font-semibold text-navy">{auditLabels[entry.action] ?? entry.action}</span>
-                    <span className="text-xs text-neutral-500">
+                    <span className="break-words text-xs text-neutral-500">
                       {formatDateTime(entry.createdAt)}
                       {entry.userAgent ? ` · ${entry.userAgent.slice(0, 60)}${entry.userAgent.length > 60 ? '…' : ''}` : ''}
                     </span>

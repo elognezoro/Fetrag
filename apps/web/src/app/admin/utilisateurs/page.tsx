@@ -45,7 +45,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
           ) : undefined
         }
       />
-      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={result.total} label={params.q || params.status || Object.keys(params.filters).length ? 'Comptes correspondant aux filtres' : 'Comptes enregistrés'} icon={Users} tone="blue" />
         </StaggerItem>
@@ -86,7 +86,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
                 <Link href={`${BASE}/${row.id}`} className="font-semibold text-navy hover:text-blue-700">
                   {displayName(row)}
                 </Link>
-                <p className="truncate text-xs text-neutral-500">
+                <p className="line-clamp-1 break-all text-xs text-neutral-500">
                   {row.email}
                   {row.employer ? ` · ${row.employer}` : ''}
                 </p>

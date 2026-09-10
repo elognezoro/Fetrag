@@ -64,28 +64,31 @@ export function FilterBar({ action, q, searchPlaceholder = 'Rechercher', selects
           </div>
         ))}
         {dateRange ? (
-          <fieldset className="flex gap-2">
+          <fieldset className="min-w-0">
             <legend className="mb-1 text-xs font-semibold text-neutral-600">{dateRange.label ?? 'Période'}</legend>
-            <div>
-              <label htmlFor={`${action}-${dateRange.fromName}`} className="sr-only">
-                Du
-              </label>
-              <Input id={`${action}-${dateRange.fromName}`} type="date" name={dateRange.fromName} defaultValue={dateRange.fromValue ?? ''} className="w-40" />
-            </div>
-            <div>
-              <label htmlFor={`${action}-${dateRange.toName}`} className="sr-only">
-                Au
-              </label>
-              <Input id={`${action}-${dateRange.toName}`} type="date" name={dateRange.toName} defaultValue={dateRange.toValue ?? ''} className="w-40" />
+            {/* Deux champs de date côte à côte, chacun sur la moitié de la largeur disponible sur mobile. */}
+            <div className="grid grid-cols-2 gap-2 lg:flex">
+              <div className="min-w-0">
+                <label htmlFor={`${action}-${dateRange.fromName}`} className="sr-only">
+                  Du
+                </label>
+                <Input id={`${action}-${dateRange.fromName}`} type="date" name={dateRange.fromName} defaultValue={dateRange.fromValue ?? ''} className="w-full min-w-0 lg:w-40" />
+              </div>
+              <div className="min-w-0">
+                <label htmlFor={`${action}-${dateRange.toName}`} className="sr-only">
+                  Au
+                </label>
+                <Input id={`${action}-${dateRange.toName}`} type="date" name={dateRange.toName} defaultValue={dateRange.toValue ?? ''} className="w-full min-w-0 lg:w-40" />
+              </div>
             </div>
           </fieldset>
         ) : null}
-        <div className="flex shrink-0 items-center gap-2">
-          <Button type="submit" variant="secondary" size="md">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center lg:shrink-0">
+          <Button type="submit" variant="secondary" size="md" className="w-full sm:w-auto">
             Filtrer
           </Button>
           {hasFilters ? (
-            <Button asChild variant="ghost" size="md">
+            <Button asChild variant="ghost" size="md" className="w-full sm:w-auto">
               <Link href={action}>
                 <RotateCcw aria-hidden="true" />
                 Réinitialiser

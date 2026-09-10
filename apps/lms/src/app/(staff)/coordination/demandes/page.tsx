@@ -80,7 +80,7 @@ export default async function CoordinationRequestsPage({ searchParams }: PagePro
                     <span className="block text-xs text-neutral-500">{r.contactName}</span>
                   </TableCell>
                   <TableCell>{r.organization.acronym ?? r.organization.name}</TableCell>
-                  <TableCell>
+                  <TableCell className="min-w-[12rem]">
                     <span className="line-clamp-2 max-w-xs text-sm">{r.modules.map((m) => m.course.title).join(', ')}</span>
                   </TableCell>
                   <TableCell>

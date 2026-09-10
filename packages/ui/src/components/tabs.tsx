@@ -20,7 +20,7 @@ export const TabsList = React.forwardRef<React.ComponentRef<typeof TabsPrimitive
         ref={ref}
         data-variant={variant}
         className={cn(
-          'group/tabs inline-flex max-w-full items-center overflow-x-auto scrollbar-none',
+          'group/tabs inline-flex max-w-full items-center overflow-x-auto scrollbar-none [mask-image:linear-gradient(to_right,black_calc(100%-1.5rem),transparent)] sm:[mask-image:none]',
           variant === 'pill' && 'gap-1 rounded-full bg-neutral-100 p-1',
           variant === 'underline' && 'gap-1 border-b border-neutral-200',
           className,
