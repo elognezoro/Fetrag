@@ -53,7 +53,7 @@ export function HeroHome({ stats }: HeroHomeProps) {
       <RingBackdrop position="right" rings={5} opacity={0.07} sizeClassName="size-[40rem] sm:size-[56rem] lg:size-[64rem]" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 bg-gradient-to-b from-blue-50/70 to-transparent" />
 
-      <div className="container-fetrag relative grid min-h-[calc(100dvh-var(--header-height))] items-center gap-12 py-14 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+      <div className="container-fetrag relative grid grid-cols-1 min-h-[calc(100dvh-var(--header-height))] items-center gap-12 py-14 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
         <div className="max-w-2xl">
           <Reveal>
             <Ribbon tone="blue" size="lg" tilt>

@@ -49,7 +49,7 @@ export default async function NewQuestionPage() {
           <HelpCircle className="size-6 shrink-0 text-gold-700" aria-hidden="true" />
           <div className="text-sm text-neutral-700">
             <p className="font-display text-base font-semibold text-navy">Types de questions disponibles</p>
-            <ul className="mt-2 grid gap-1 sm:grid-cols-2">
+            <ul className="mt-2 grid grid-cols-1 gap-1 sm:grid-cols-2">
               {questionTypes.map((t) => (
                 <li key={t}>
                   <span className="font-semibold text-navy">{questionTypeLabels[t]}</span> : {typeHints[t]}.

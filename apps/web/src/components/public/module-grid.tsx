@@ -12,7 +12,7 @@ interface ModuleGridProps {
 export function ModuleGrid({ modules, hrefFor, columns = 3 }: ModuleGridProps) {
   const resolveHref = hrefFor ?? ((module: ProgrammeModule) => (module.slug ? `/formations/${module.slug}` : undefined))
   return (
-    <Stagger as="ol" className={columns === 3 ? 'grid gap-5 sm:grid-cols-2 xl:grid-cols-3' : 'grid gap-5 sm:grid-cols-2'}>
+    <Stagger as="ol" className={columns === 3 ? 'grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3' : 'grid grid-cols-1 gap-5 sm:grid-cols-2'}>
       {modules.map((module) => (
         <StaggerItem key={module.number + (module.slug ?? module.title)} as="li" className="h-full">
           <ModuleCard

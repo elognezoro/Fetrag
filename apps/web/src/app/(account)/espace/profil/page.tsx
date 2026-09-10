@@ -70,7 +70,7 @@ export default async function ProfilePage() {
         </Card>
       </Reveal>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Reveal>
           <Card pillar="prevention" className="h-full">
             <CardHeader>

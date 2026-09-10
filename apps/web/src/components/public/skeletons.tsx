@@ -64,7 +64,7 @@ export function DetailPageSkeleton({ dark = false }: HeaderSkeletonProps) {
     <div aria-busy="true" aria-live="polite">
       <span className="sr-only">Chargement en cours</span>
       <HeaderSkeleton dark={dark} />
-      <div className="container-fetrag grid gap-10 py-10 lg:grid-cols-[1fr_20rem]">
+      <div className="container-fetrag grid grid-cols-1 gap-10 py-10 lg:grid-cols-[1fr_20rem]">
         <div>
           <Skeleton className="h-64 w-full rounded-2xl" />
           <Skeleton className="mt-8" lines={6} />

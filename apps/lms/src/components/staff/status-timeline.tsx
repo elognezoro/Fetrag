@@ -33,7 +33,7 @@ export function StatusTimeline({ status, history = [], className }: StatusTimeli
 
   return (
     <div className={cn('flex flex-col gap-4', className)}>
-      <ol className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6" aria-label="Avancement de la demande">
+      <ol className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-6" aria-label="Avancement de la demande">
         {MAIN_PATH.map((step, index) => {
           const done = index < lastMainIndex || (index === lastMainIndex && !terminal && step !== status) || (terminal && index <= lastMainIndex)
           const current = !terminal && step === status

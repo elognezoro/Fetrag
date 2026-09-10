@@ -18,7 +18,7 @@ export function HomeHero({ stats, authenticated }: HomeHeroProps) {
         aria-hidden="true"
         className="pointer-events-none absolute -left-24 top-1/2 -z-10 size-[28rem] -translate-y-1/2 rounded-full bg-green-500/25 blur-3xl"
       />
-      <div className="container-fetrag relative grid gap-10 py-16 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-28">
+      <div className="container-fetrag relative grid grid-cols-1 gap-10 py-16 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:py-28">
         <Reveal>
           <Ribbon tone="green" tilt>
             Programme 2026

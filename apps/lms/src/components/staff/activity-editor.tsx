@@ -130,7 +130,7 @@ export function ActivityEditor({ courseId, lessonId, activity, resources, questi
           <input type="hidden" name="rubric" value={JSON.stringify(rubric.filter((r) => r.label.trim()))} />
           <ActionAlert state={state} />
           <fieldset disabled={readOnly} className="flex flex-col gap-5">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField label="Type d'activité" htmlFor={`${id}-type`} required className={activity ? 'hidden' : ''}>
                 <NativeSelect value={type} onChange={(event) => setType(event.target.value as ActivityTypeName)} options={activityTypes.map((t) => ({ value: t, label: activityTypeLabels[t] }))} disabled={Boolean(activity)} />
               </FormField>
@@ -152,11 +152,11 @@ export function ActivityEditor({ courseId, lessonId, activity, resources, questi
                 <TabsTrigger value="lowbandwidth">Bas débit</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="content" className="grid gap-4 sm:grid-cols-2">
+              <TabsContent value="content" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <ContentFields type={type} content={content} id={id} errors={errors} resources={resources} resourceId={activity?.resourceId ?? null} />
               </TabsContent>
 
-              <TabsContent value="rules" className="grid gap-4 sm:grid-cols-2">
+              <TabsContent value="rules" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <FormField label="Règle d'achèvement" htmlFor={`${id}-completion`} error={errors.completionRule}>
                   <NativeSelect name="completionRule" defaultValue={activity?.completionRule ?? defaultCompletion[type] ?? 'VIEW'} options={completionRules.map((r) => ({ value: r, label: completionLabels[r] }))} />
                 </FormField>
@@ -185,7 +185,7 @@ export function ActivityEditor({ courseId, lessonId, activity, resources, questi
 
               {isQuizLike ? (
                 <TabsContent value="quiz" className="flex flex-col gap-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <FormField label="Description" htmlFor={`${id}-quizDesc`} className="sm:col-span-2">
                       <Textarea name="quizDescription" rows={2} defaultValue={activity?.quiz?.description ?? ''} />
                     </FormField>
@@ -221,7 +221,7 @@ export function ActivityEditor({ courseId, lessonId, activity, resources, questi
               ) : null}
 
               {type === 'ASSIGNMENT' ? (
-                <TabsContent value="assignment" className="grid gap-4 sm:grid-cols-2">
+                <TabsContent value="assignment" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField label="Consignes détaillées du devoir" htmlFor={`${id}-aDesc`} className="sm:col-span-2">
                     <Textarea name="assignmentDescription" rows={4} maxLength={10000} defaultValue={activity?.assignment?.description ?? ''} />
                   </FormField>
@@ -252,7 +252,7 @@ export function ActivityEditor({ courseId, lessonId, activity, resources, questi
                     <p className="mb-2 text-sm font-semibold text-navy">Grille de critères</p>
                     <ul className="flex flex-col gap-2">
                       {rubric.map((criterion, index) => (
-                        <li key={index} className="grid gap-2 sm:grid-cols-[1fr_8rem_auto]">
+                        <li key={index} className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_8rem_auto]">
                           <Input aria-label={`Critère ${index + 1}`} value={criterion.label} onChange={(event) => setRubric((prev) => prev.map((c, i) => (i === index ? { ...c, label: event.target.value } : c)))} placeholder="Analyse selon les trois piliers" />
                           <Input aria-label={`Points du critère ${index + 1}`} type="number" min={0} value={criterion.points} onChange={(event) => setRubric((prev) => prev.map((c, i) => (i === index ? { ...c, points: Number.parseInt(event.target.value, 10) || 0 } : c)))} />
                           <Button type="button" variant="ghost" size="sm" onClick={() => setRubric((prev) => prev.filter((_, i) => i !== index))}>
@@ -275,7 +275,7 @@ export function ActivityEditor({ courseId, lessonId, activity, resources, questi
                 </TabsContent>
               ) : null}
 
-              <TabsContent value="lowbandwidth" className="grid gap-4 sm:grid-cols-2">
+              <TabsContent value="lowbandwidth" className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <p className="text-sm text-neutral-600 sm:col-span-2">Alternative pour les connexions lentes : transcription, audio léger, document ou version basse résolution.</p>
                 <FormField label="Type d'alternative" htmlFor={`${id}-lbKind`}>
                   <NativeSelect name="lowBandwidthKind" defaultValue={activity?.lowBandwidthAlternative?.kind ?? 'transcript'} options={[{ value: 'transcript', label: 'Transcription' }, { value: 'audio', label: 'Audio' }, { value: 'document', label: 'Document' }, { value: 'low-res', label: 'Basse résolution' }]} />

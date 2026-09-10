@@ -128,7 +128,7 @@ export default async function OrganizationsPage({ searchParams }: PageProps) {
                 className="mb-8"
               />
             </Reveal>
-            <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {affiliates.map((organization) => (
                 <StaggerItem key={organization.id} as="li" className="h-full">
                   <OrganizationCard organization={organization} />
@@ -159,7 +159,7 @@ export default async function OrganizationsPage({ searchParams }: PageProps) {
                   className="mb-8"
                 />
               </Reveal>
-              <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {group.items.map((partner) => (
                   <StaggerItem key={partner.id} as="li" className="h-full">
                     <OrganizationCard

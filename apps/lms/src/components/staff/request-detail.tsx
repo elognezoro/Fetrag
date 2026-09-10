@@ -67,7 +67,7 @@ export async function RequestDetail({ request, cohortHref, actions, children }: 
       </StaffSection>
 
       <StaffSection number="02" title={`Modules demandés (${request.modules.length})`} tone="green">
-        <ul className="grid gap-3 sm:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {request.modules.map((m, index) => (
             <li key={m.id} className="flex items-start gap-4 rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
               <span aria-hidden="true" className="font-display text-3xl font-semibold leading-none text-green-700">
@@ -188,7 +188,7 @@ export async function RequestDetail({ request, cohortHref, actions, children }: 
 
       <StaffSection number={request.cohort ? '06' : '05'} title={`Pièces jointes (${attachments.length})`} tone="gold">
         {attachments.length ? (
-          <ul className="grid gap-2 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {attachments.map((file) => (
               <li key={file.id} className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-soft">
                 <span className="flex min-w-0 items-center gap-2">

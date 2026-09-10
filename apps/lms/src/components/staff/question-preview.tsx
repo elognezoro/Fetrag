@@ -54,7 +54,7 @@ export function QuestionPreview({ type, prompt, explanation, config, options }: 
       ) : null}
 
       {type === 'FILL_BLANK' ? (
-        <div className="grid gap-3 text-sm sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
           <div>
             <p className="eyebrow mb-1 text-[11px] text-neutral-500">Texte à trous</p>
             <p className="whitespace-pre-line rounded-xl bg-neutral-50 p-3">{typeof config.text === 'string' ? config.text : '-'}</p>
@@ -86,7 +86,7 @@ export function QuestionPreview({ type, prompt, explanation, config, options }: 
       ) : null}
 
       {type === 'ESSAY' ? (
-        <div className="grid gap-3 text-sm sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
           <p>
             Longueur attendue : {typeof config.minWords === 'number' ? `${config.minWords} mots minimum` : 'libre'}
             {typeof config.maxWords === 'number' ? ` · ${config.maxWords} mots maximum` : ''}

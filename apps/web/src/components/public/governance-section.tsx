@@ -14,7 +14,7 @@ const bodies = [
 export function GovernanceSection() {
   return (
     <Section variant="white" padding="md" bordered rings={{ position: 'bottom-left', opacity: 0.05, rings: 3 }} aria-labelledby="governance-title">
-      <div className="grid items-start gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+      <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
         <Reveal>
           <Ribbon tone="navy">Gouvernance</Ribbon>
           <h2 id="governance-title" className="mt-5 font-display text-3xl font-semibold leading-tight text-navy sm:text-4xl">
@@ -22,7 +22,7 @@ export function GovernanceSection() {
           </h2>
           <GradientDivider className="mt-6" width="md" />
           <Prose html={GOVERNANCE_HTML} className="mt-6 text-base" />
-          <ol className="mt-8 grid gap-4 sm:grid-cols-3">
+          <ol className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {bodies.map((body, index) => {
               const tone = (['blue', 'green', 'gold'] as const)[index] ?? 'blue'
               const classes = toneClasses[tone]

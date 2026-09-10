@@ -49,7 +49,7 @@ export default async function SandboxPaymentPage({ params, searchParams }: PageP
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
-            <dl className="grid gap-3 rounded-2xl bg-neutral-50 p-4 text-sm sm:grid-cols-2">
+            <dl className="grid grid-cols-1 gap-3 rounded-2xl bg-neutral-50 p-4 text-sm sm:grid-cols-2">
               <div>
                 <dt className="text-xs uppercase tracking-wide text-neutral-500">Commande</dt>
                 <dd className="font-mono font-semibold text-navy">{order.reference}</dd>

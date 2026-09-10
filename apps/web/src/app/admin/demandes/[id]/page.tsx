@@ -62,7 +62,7 @@ export default async function ServiceRequestDetailPage({ params }: PageProps) {
               <CardHeader>
                 <CardTitle as="h2">Demandeur</CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-4 sm:grid-cols-2">
+              <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <p className="flex items-start gap-2 text-sm">
                   <User className="mt-0.5 size-4 shrink-0 text-blue-600" aria-hidden="true" />
                   <span>
@@ -106,7 +106,7 @@ export default async function ServiceRequestDetailPage({ params }: PageProps) {
                   <CardDescription>Champs spécifiques du formulaire « {request.service.name} ».</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                  <dl className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
                     {fields.map((field) => (
                       <div key={field.name} className="min-w-0">
                         <dt className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{field.label}</dt>

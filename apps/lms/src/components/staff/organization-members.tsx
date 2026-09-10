@@ -22,7 +22,7 @@ export function AddOrganizationMemberForm({ organizationId }: { organizationId: 
         Rattacher un compte
       </h3>
       <ActionAlert state={state} />
-      <div className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
         <FormField label="Email du compte" htmlFor={`${id}-email`} required error={errors.email} hint="Le compte doit exister sur fetrag.ga.">
           <Input name="email" type="email" required placeholder="responsable@organisation.ga" />
         </FormField>

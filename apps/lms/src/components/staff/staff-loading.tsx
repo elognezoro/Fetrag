@@ -8,7 +8,7 @@ export function StaffLoading({ tiles = 4, rows = 6 }: { tiles?: number; rows?: n
       <Skeleton className="h-5 w-32 rounded-full" />
       <Skeleton className="mt-4 h-9 w-2/3 max-w-md" />
       <Skeleton className="mt-3 h-4 w-full max-w-lg" />
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: tiles }, (_, index) => (
           <div key={index} className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft">
             <Skeleton circle className="h-11 w-11" />

@@ -54,7 +54,7 @@ export function FaqFormDialog({ trigger, item, groups = [] }: FaqFormDialogProps
           <FormField label="Réponse" htmlFor="faq-answer" required error={errors.answer} hint="Texte simple ou HTML léger (paragraphes, listes, liens) ; assaini à l’enregistrement.">
             <Textarea id="faq-answer" name="answer" defaultValue={item?.answer ?? ''} rows={6} required />
           </FormField>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <FormField label="Thème" htmlFor="faq-group" error={errors.group} hint="Minuscules, chiffres et tirets.">
               <Input id="faq-group" name="group" defaultValue={item?.group ?? 'general'} list="faq-groups" pattern="[a-z0-9-]+" maxLength={60} />
               <datalist id="faq-groups">

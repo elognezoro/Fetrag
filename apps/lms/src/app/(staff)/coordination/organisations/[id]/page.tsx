@@ -98,7 +98,7 @@ export default async function CoordinationOrganizationPage({ params }: PageProps
         ]}
       />
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card pillar="protection">
           <CardContent className="flex items-center justify-center p-5">
             <ProgressRing value={organization.stats.averageProgress} label="Progression moyenne des inscrits" />
@@ -161,7 +161,7 @@ export default async function CoordinationOrganizationPage({ params }: PageProps
         </div>
       </div>
 
-      <div className="mt-10 grid gap-6 lg:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <StaffSection number="02" title="Demandes récentes" tone="gold">
           {organization.trainingRequests.length ? (
             <ul className="flex flex-col gap-2">

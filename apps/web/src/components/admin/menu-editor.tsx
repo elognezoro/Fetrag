@@ -201,7 +201,7 @@ export function MenuEditor({ location, locationLabel, name, items, maxDepth = 2 
                 <span className="hidden cursor-grab items-center self-center text-neutral-400 lg:flex" aria-hidden="true" title="Glisser pour réordonner">
                   <GripVertical className="size-5" />
                 </span>
-                <div className="grid flex-1 gap-3 sm:grid-cols-[1fr_1fr_8rem]">
+                <div className="grid grid-cols-1 flex-1 gap-3 sm:grid-cols-[1fr_1fr_8rem]">
                   <FormField label="Libellé" htmlFor={`${id}-${node.key}-label`} required>
                     <Input id={`${id}-${node.key}-label`} value={node.label} maxLength={80} onChange={(event) => update(path, { label: event.target.value })} />
                   </FormField>

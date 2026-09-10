@@ -73,7 +73,7 @@ export default async function LessonPage({ params, searchParams }: PageProps) {
         homeHref="/dashboard"
       />
 
-      <div className="mt-5 grid gap-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
+      <div className="mt-5 grid grid-cols-1 gap-6 lg:grid-cols-[320px_minmax(0,1fr)] lg:items-start">
         <LessonSidebar
           modules={summary.modules}
           counts={summary.counts}

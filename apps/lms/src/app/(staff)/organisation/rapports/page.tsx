@@ -61,7 +61,7 @@ export default async function OrganisationReportsPage({ searchParams }: PageProp
         ]}
       />
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Reveal>
           <Card pillar="defense" className="h-full">
             <CardHeader>
@@ -160,7 +160,7 @@ export default async function OrganisationReportsPage({ searchParams }: PageProp
             </nav>
             {cohortReport ? (
               <>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   <SummaryTile label="Membres" value={String(cohortReport.stats.members)} />
                   <SummaryTile label="Achèvement" value={`${cohortReport.stats.completionRate} %`} />
                   <SummaryTile label="Assiduité moyenne" value={cohortReport.stats.averageAttendance === null ? '-' : `${cohortReport.stats.averageAttendance} %`} />

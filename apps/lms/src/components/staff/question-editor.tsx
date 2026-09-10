@@ -116,7 +116,7 @@ export function QuestionEditor({ question, categories, defaultOpen = false, succ
               <AlertDescription>Vérifiez les options et la configuration avant d’enregistrer.</AlertDescription>
             </Alert>
           ) : null}
-          <div className="grid gap-4 sm:grid-cols-[14rem_1fr]">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[14rem_1fr]">
             <FormField label="Type" htmlFor={`${id}-type`} required>
               <NativeSelect value={type} onChange={(event) => setType(event.target.value as QuestionTypeName)} options={questionTypes.map((t) => ({ value: t, label: questionTypeLabels[t] }))} />
             </FormField>
@@ -130,7 +130,7 @@ export function QuestionEditor({ question, categories, defaultOpen = false, succ
               <legend className="px-1 text-sm font-semibold text-navy">{type === 'MATCHING' ? 'Paires à apparier' : type === 'ORDERING' ? 'Éléments dans le bon ordre' : 'Options'}</legend>
               {errors.options ? <p className="text-sm font-medium text-danger">{errors.options}</p> : null}
               {options.map((option, index) => (
-                <div key={index} className="grid gap-2 sm:grid-cols-[auto_1fr_1fr_auto] sm:items-center">
+                <div key={index} className="grid grid-cols-1 gap-2 sm:grid-cols-[auto_1fr_1fr_auto] sm:items-center">
                   {type === 'SINGLE_CHOICE' || type === 'MULTIPLE_CHOICE' ? (
                     <label className="flex items-center gap-2 text-xs text-neutral-600">
                       <Checkbox checked={option.isCorrect} onCheckedChange={(checked) => setCorrect(index, checked === true)} aria-label={`Option ${index + 1} correcte`} />
@@ -203,7 +203,7 @@ export function QuestionEditor({ question, categories, defaultOpen = false, succ
           ) : null}
 
           {type === 'ESSAY' ? (
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <FormField label="Nombre de mots minimal" htmlFor={`${id}-minWords`}>
                 <Input name="minWords" type="number" min={0} defaultValue={typeof cfg(config, 'minWords') === 'number' ? (cfg(config, 'minWords') as number) : ''} />
               </FormField>
@@ -213,7 +213,7 @@ export function QuestionEditor({ question, categories, defaultOpen = false, succ
               <div className="sm:col-span-2">
                 <p className="mb-2 text-sm font-semibold text-navy">Grille de correction</p>
                 {rubric.map((criterion, index) => (
-                  <div key={index} className="mb-2 grid gap-2 sm:grid-cols-[1fr_8rem_auto]">
+                  <div key={index} className="mb-2 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_8rem_auto]">
                     <Input aria-label={`Critère ${index + 1}`} value={criterion.label} onChange={(event) => setRubric((prev) => prev.map((c, i) => (i === index ? { ...c, label: event.target.value } : c)))} placeholder="Argumentation juridique" />
                     <Input aria-label={`Points du critère ${index + 1}`} type="number" min={0} value={criterion.points} onChange={(event) => setRubric((prev) => prev.map((c, i) => (i === index ? { ...c, points: Number.parseInt(event.target.value, 10) || 0 } : c)))} />
                     <Button type="button" variant="ghost" size="sm" onClick={() => setRubric((prev) => prev.filter((_, i) => i !== index))}>
@@ -228,7 +228,7 @@ export function QuestionEditor({ question, categories, defaultOpen = false, succ
             </div>
           ) : null}
 
-          <div className="grid gap-4 sm:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
             <FormField label="Points" htmlFor={`${id}-points`} error={errors.points}>
               <Input name="points" type="number" min={1} max={100} defaultValue={question?.points ?? 1} />
             </FormField>

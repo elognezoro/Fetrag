@@ -63,7 +63,7 @@ export function CertificateResult({ code, result, className }: CertificateResult
 
   return (
     <section aria-live="polite" className={cn('overflow-hidden rounded-2xl border-2 bg-white shadow-lift', meta.ring, className)}>
-      <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[auto_1fr] lg:items-center">
+      <div className="grid grid-cols-1 gap-8 p-6 sm:p-8 lg:grid-cols-[auto_1fr] lg:items-center">
         <div className="mx-auto flex flex-col items-center gap-3">
           <div className={cn('relative', meta.sealClass)}>
             <CertificateSeal size={176} label={kindLabel} variant={outcome === 'valid' ? 'color' : 'mono'} title={meta.label} className={outcome === 'unknown' ? 'opacity-60' : undefined} />
@@ -86,7 +86,7 @@ export function CertificateResult({ code, result, className }: CertificateResult
           <p className="eyebrow text-[11px] text-neutral-500">Résultat de la vérification</p>
           <h2 className="mt-2 font-display text-2xl font-semibold leading-tight text-navy sm:text-3xl">{meta.label}</h2>
           <p className="mt-3 text-sm leading-relaxed text-neutral-600 sm:text-base">{meta.description}</p>
-          <dl className="mt-6 grid gap-3 sm:grid-cols-2">
+          <dl className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="flex items-start gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
               <Hash className="mt-0.5 size-4 shrink-0 text-blue-600" aria-hidden="true" />
               <div className="min-w-0">

@@ -51,7 +51,7 @@ export default async function ContactPage() {
       />
 
       <Section variant="white" padding="md" containerSize="wide" rings={{ position: 'left', opacity: 0.05, rings: 3 }}>
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
           <div className="flex flex-col gap-8">
             <Reveal>
               <SectionHeading eyebrow="Coordonnées" tone="blue" size="md" title="Le siège de la Fédération" className="mb-6" />
@@ -94,7 +94,7 @@ export default async function ContactPage() {
             className="mb-8"
           />
         </Reveal>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <OrientationCard icon={LifeBuoy} title="Demande de service" description="Conseil juridique, médiation, création de section : déposez une demande suivie." href="/services" label="Voir les services" />
           <OrientationCard icon={GraduationCap} title="Formation" description="Inscriptions, demandes de formation groupée et suivi des parcours sur la plateforme." href={lmsHref('/')} label="Plateforme de formation" external />
           <OrientationCard icon={ShieldCheck} title="Vérifier un certificat" description="Contrôlez l'authenticité d'une attestation délivrée par la Fédération." href="/certificats/verifier" label="Vérifier" />

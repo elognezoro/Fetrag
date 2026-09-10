@@ -21,7 +21,7 @@ export default async function AdminMenusPage() {
         title="Menus"
         description="Arborescences de navigation du site et de la plateforme de formation. Deux niveaux au plus ; un menu vide laisse la navigation par défaut."
       />
-      <Stagger className="grid gap-4 sm:grid-cols-2">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {menus.map((menu) => {
           const meta = menuLocationLabels[menu.location] ?? { label: menu.location, description: '', pillar: 'protection' as const }
           return (

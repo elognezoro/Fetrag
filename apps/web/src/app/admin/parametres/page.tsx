@@ -86,7 +86,7 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
 
       <SettingsForm values={values} />
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card pillar="defense">
           <CardHeader>
             <CardTitle as="h2" className="flex items-center gap-2">
@@ -170,7 +170,7 @@ export default async function AdminSettingsPage({ searchParams }: { searchParams
             </AlertDescription>
           </Alert>
         ) : null}
-        <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StaggerItem>
             <StatTile value={jobs.stats.QUEUED} label="En file d’attente" icon={Timer} tone="blue" description={`${jobs.stats.dueNow} à exécuter maintenant · ${jobs.stats.RUNNING} en cours`} />
           </StaggerItem>

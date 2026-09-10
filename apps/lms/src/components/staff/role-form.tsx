@@ -39,7 +39,7 @@ export function RoleForm({ userId, grantableRoles, allowedScopeTypes, organizati
         Attribuer un rôle
       </h3>
       <ActionAlert state={state} />
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <FormField label="Rôle" htmlFor={`${id}-role`} required error={errors.role}>
           <NativeSelect name="role" required options={grantableRoles.map((r) => ({ value: r, label: roleLabels[r] }))} />
         </FormField>

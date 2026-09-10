@@ -64,7 +64,7 @@ export function ArticleForm({ article, categories }: ArticleFormProps) {
         </TabsContent>
         <TabsContent value="reglages">
           <EditorSection title="Classement, image et publication" pillar="prevention">
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <FormField label="Catégorie" htmlFor="categoryId" error={errors.categoryId}>
                 <NativeSelect name="categoryId" defaultValue={article?.categoryId ?? 'none'} options={[{ value: 'none', label: 'Sans catégorie' }, ...categories]} />
               </FormField>
@@ -85,7 +85,7 @@ export function ArticleForm({ article, categories }: ArticleFormProps) {
             <FormField label="Texte alternatif de l’image" htmlFor="coverAlt" error={errors.coverAlt} hint="Obligatoire dès qu’une image est fournie (accessibilité).">
               <Input name="coverAlt" defaultValue={article?.coverAlt ?? ''} maxLength={200} />
             </FormField>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="flex items-start gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
                 <Checkbox id="isCommunique" name="isCommunique" defaultChecked={article?.isCommunique ?? false} className="mt-0.5" />
                 <div>

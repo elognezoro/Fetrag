@@ -68,7 +68,7 @@ export default async function ServicePage({ params }: PageProps) {
           <RingBackdrop position="top-right" rings={4} opacity={0.06} />
           <Container size="wide" className="relative py-10 sm:py-14">
             <Breadcrumbs items={[{ label: 'Services', href: '/services' }, { label: service.name }]} homeHref="/" className="mb-6" />
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
               <Reveal className="flex max-w-3xl flex-col gap-5">
                 <div className="flex flex-wrap items-center gap-2">
                   <Ribbon tone="green">Service</Ribbon>
@@ -120,7 +120,7 @@ export default async function ServicePage({ params }: PageProps) {
         </header>
 
         <Section variant="white" padding="md" containerSize="wide">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14">
             <div className="min-w-0 space-y-12">
               {service.description.trim() ? (
                 <Reveal as="section" aria-labelledby="service-description-title">
@@ -268,7 +268,7 @@ export default async function ServicePage({ params }: PageProps) {
               className="mb-8"
             />
           </Reveal>
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((item, position) => (
               <StaggerItem key={item.id} as="li" className="h-full">
                 <ServiceCard service={item} index={position + 1} />

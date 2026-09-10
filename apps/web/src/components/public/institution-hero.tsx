@@ -14,7 +14,7 @@ export function InstitutionHero() {
     <section className="relative isolate overflow-hidden border-b border-neutral-200 bg-white" aria-labelledby="institution-title">
       <RingBackdrop position="right" rings={5} opacity={0.07} sizeClassName="size-[36rem] sm:size-[52rem]" />
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-56 bg-gradient-to-b from-blue-50/70 to-transparent" />
-      <div className="container-fetrag relative grid gap-12 py-14 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+      <div className="container-fetrag relative grid grid-cols-1 gap-12 py-14 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
         <div className="max-w-2xl">
           <Breadcrumbs items={[{ label: 'La FETRAG' }]} homeHref="/" className="mb-6" />
           <Reveal>

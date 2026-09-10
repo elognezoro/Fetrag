@@ -136,7 +136,7 @@ export function CourseTrainersPanel({ courseId, trainers, candidates, canManage 
             Ajouter un formateur
           </h3>
           {available.length ? (
-            <div className="grid gap-3 sm:grid-cols-[1fr_auto_auto] sm:items-end">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_auto] sm:items-end">
               <FormField label="Compte formateur" htmlFor={`${id}-trainer`} required hint="Comptes disposant du rôle Formateur ou Coordinateur.">
                 <NativeSelect value={selected} onChange={(event) => setSelected(event.target.value)} options={[{ value: '', label: 'Choisir...' }, ...available.map((c) => ({ value: c.id, label: `${c.label} (${c.email})` }))]} required />
               </FormField>

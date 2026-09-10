@@ -61,7 +61,7 @@ export default async function CoordinationReportsPage({ searchParams }: PageProp
         ]}
       />
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card pillar="protection">
           <CardContent className="flex flex-wrap items-center justify-around gap-4 p-5">
             <ProgressRing value={overview.completionRate} label="Taux d'achèvement" tone="blue" size={112} />
@@ -90,7 +90,7 @@ export default async function CoordinationReportsPage({ searchParams }: PageProp
       <StaffSection number="01" title="Rapport par cours" className="mt-10" actions={courseId ? <ExportLinks csvHref={`/coordination/rapports/export?kind=cours&format=csv&course=${courseId}`} pdfHref={`/coordination/rapports/export?kind=cours&format=pdf&course=${courseId}`} /> : null}>
         <FilterBar action="/coordination/rapports" className="mb-4" hidden={{ organisation: params.organisation, cohorte: params.cohorte }} submitLabel="Afficher" fields={[{ name: 'cours', label: 'Module', type: 'select', value: params.cours ?? '', placeholder: 'Choisir un module', options: courses.map((c) => ({ value: c.id, label: `${c.code} · ${c.title}` })) }]} />
         {courseReport ? (
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <ReportTable
               caption={`Indicateurs du cours ${courseReport.course.code}`}
               columns={[
@@ -181,7 +181,7 @@ export default async function CoordinationReportsPage({ searchParams }: PageProp
             ]}
           />
           {finance ? (
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               <Card>
                 <CardContent className="grid grid-cols-2 gap-4 p-5 text-sm">
                   <Kpi label="Revenu encaissé" value={fmtMoney(finance.totals.revenue, finance.currency)} icon={Banknote} />

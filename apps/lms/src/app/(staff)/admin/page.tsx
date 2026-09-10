@@ -78,7 +78,7 @@ export default async function AdminHomePage() {
         ]}
       />
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Card>
           <CardContent className="p-5">
             <p className="eyebrow text-[11px] text-neutral-500">Utilisateurs</p>
@@ -119,7 +119,7 @@ export default async function AdminHomePage() {
       </div>
 
       <StaffSection number="01" title="Accès rapides" className="mt-10" tone="navy">
-        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {links.map((item, index) => {
             const Icon = quickLinkIcons[item.href] ?? Shield
             const tone: Tone = (['blue', 'green', 'gold'] as const)[index % 3] ?? 'blue'
@@ -145,7 +145,7 @@ export default async function AdminHomePage() {
         </Stagger>
       </StaffSection>
 
-      <div className="grid gap-6 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <StaffSection
           number="02"
           title="Cours récemment modifiés"

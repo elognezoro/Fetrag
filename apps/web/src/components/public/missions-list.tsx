@@ -21,7 +21,7 @@ export function MissionsList() {
           className="mb-10"
         />
       </Reveal>
-      <Stagger as="ol" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <Stagger as="ol" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {MISSIONS.map((mission, index) => {
           const tone = toneAt(index)
           const classes = toneClasses[tone]

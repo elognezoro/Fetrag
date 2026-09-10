@@ -70,7 +70,7 @@ export default async function PaymentReturnPage({ params }: PageProps) {
         </Card>
       </Reveal>
 
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
         {paid ? (
           <Reveal>
             <Card pillar="defense" className="h-full">

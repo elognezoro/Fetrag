@@ -79,7 +79,7 @@ export default async function TrainerCohortsPage({ searchParams }: PageProps) {
       ).map(([number, title, items, pillar]) =>
         items.length ? (
           <StaffSection key={number} number={number} title={title} tone={pillar === 'prevention' ? 'green' : pillar === 'defense' ? 'gold' : 'blue'}>
-            <Stagger className="grid gap-4 md:grid-cols-2">
+            <Stagger className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {items.map((c) => (
                 <StaggerItem key={c.id}>
                   <Card pillar={pillar} interactive className="h-full">
@@ -122,7 +122,7 @@ export default async function TrainerCohortsPage({ searchParams }: PageProps) {
 
       {corrections.submissions.length || corrections.essays.length ? (
         <StaffSection number="04" title="File de corrections" tone="gold" description="Toutes cohortes confondues.">
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <Card>
               <CardContent className="p-5">
                 <h3 className="mb-3 font-display text-base font-semibold text-navy">Devoirs remis</h3>

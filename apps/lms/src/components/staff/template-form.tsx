@@ -64,7 +64,7 @@ export function TemplateForm({ template, courses, defaultOpen = false, successHr
           <DialogTitle>{template ? `Modèle « ${template.name} »` : 'Nouveau modèle de certificat'}</DialogTitle>
           <DialogDescription>Le PDF reprend le sceau FETRAG, le numéro séquentiel et le code QR de vérification publique.</DialogDescription>
         </DialogHeader>
-        <form action={formAction} className="grid gap-4 sm:grid-cols-2">
+        <form action={formAction} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {template ? <input type="hidden" name="templateId" value={template.id} /> : null}
           <div className="sm:col-span-2">
             <ActionAlert state={state} />
@@ -90,7 +90,7 @@ export function TemplateForm({ template, courses, defaultOpen = false, successHr
           <FormField label="Qualité du signataire" htmlFor={`${id}-signatoryTitle`} required error={errors.signatoryTitle}>
             <Input name="signatoryTitle" defaultValue={template?.signatoryTitle ?? 'Secrétaire Général de la FETRAG'} required maxLength={160} />
           </FormField>
-          <fieldset className="grid gap-3 rounded-xl border border-neutral-200 p-4 sm:col-span-2 sm:grid-cols-3">
+          <fieldset className="grid grid-cols-1 gap-3 rounded-xl border border-neutral-200 p-4 sm:col-span-2 sm:grid-cols-3">
             <legend className="px-1 text-sm font-semibold text-navy">Critères d’éligibilité</legend>
             <FormField label="Score minimal (%)" htmlFor={`${id}-minScore`} error={errors['criteria.minScore']}>
               <Input name="minScore" type="number" min={0} max={100} defaultValue={template?.criteria.minScore ?? 60} />

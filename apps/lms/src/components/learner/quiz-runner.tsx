@@ -93,7 +93,7 @@ function IntroScreen({ entry, onStart, starting, error }: { entry: QuizEntry; on
   const exhausted = entry.remainingAttempts === 0 && !entry.inProgressAttemptId
   return (
     <div className="flex flex-col gap-6">
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-4">
         <div className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
           <p className="text-xs text-neutral-500">Questions</p>
           <p className="font-display text-3xl text-navy">{entry.quiz.questionCount}</p>
@@ -402,7 +402,7 @@ function ResultScreen({ result, entry, onRetry }: { result: QuizSubmission; entr
   const passed = result.passed === true
   return (
     <div className="flex flex-col gap-6">
-      <div className={cn('grid gap-6 rounded-2xl border bg-white p-6 shadow-soft sm:grid-cols-[auto_1fr] sm:items-center sm:p-8', pending ? 'border-gold-200' : passed ? 'border-green-200' : 'border-neutral-200')}>
+      <div className={cn('grid grid-cols-1 gap-6 rounded-2xl border bg-white p-6 shadow-soft sm:grid-cols-[auto_1fr] sm:items-center sm:p-8', pending ? 'border-gold-200' : passed ? 'border-green-200' : 'border-neutral-200')}>
         <ArcRing size={150} stroke={12} progress={pending ? 0 : percent} tone={pending ? 'gold' : passed ? 'green' : 'blue'} className="mx-auto">
           {pending ? (
             <Clock className="size-10 text-gold-700" aria-hidden="true" />

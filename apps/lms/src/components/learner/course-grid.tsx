@@ -35,7 +35,7 @@ export function CourseGrid({ courses, label = 'Formations', emptyTitle = 'Aucune
     )
   }
   return (
-    <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-label={label}>
+    <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-label={label}>
       {courses.map((course) => (
         <StaggerItem key={course.id} as="li" className="h-full">
           <ModuleCard

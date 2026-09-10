@@ -60,7 +60,7 @@ export default async function AdminFinancePage() {
         </Alert>
       ) : null}
 
-      <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={formatMoney(month?.revenue ?? 0, currency)} label="Chiffre d’affaires du mois" icon={HandCoins} tone="blue" description={month ? `${plural(month.ordersPaid, 'commande payée', 'commandes payées')} ce mois-ci` : undefined} />
         </StaggerItem>
@@ -76,7 +76,7 @@ export default async function AdminFinancePage() {
       </Stagger>
 
       {year ? (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Reveal className="lg:col-span-2">
             <Card pillar="protection" className="h-full">
               <CardHeader>
@@ -129,7 +129,7 @@ export default async function AdminFinancePage() {
         </div>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Reveal>
           <Card pillar="defense" className="h-full">
             <CardHeader className="flex-row items-center justify-between">
@@ -208,7 +208,7 @@ export default async function AdminFinancePage() {
         </Reveal>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {abilities.exportFinance ? (
           <Reveal className="lg:col-span-2">
             <Card pillar="protection" className="h-full">

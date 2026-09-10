@@ -129,7 +129,7 @@ export default async function ForumsPage() {
                     <p className="mt-1 text-sm text-neutral-600">{meta.description}</p>
                   </div>
                 </div>
-                <Stagger as="ul" className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-label={meta.title}>
+                <Stagger as="ul" className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-label={meta.title}>
                   {group.forums.map((forum) => (
                     <StaggerItem key={forum.id} as="li" className="h-full">
                       <ForumCard forum={forum} />

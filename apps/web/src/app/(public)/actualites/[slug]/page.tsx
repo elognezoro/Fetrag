@@ -96,7 +96,7 @@ export default async function ArticlePage({ params }: PageProps) {
         </header>
 
         <Section variant="white" padding="md" containerSize="wide">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-14">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-14">
             <div className="min-w-0">
               {article.coverImageUrl ? (
                 <Reveal className="mb-8 overflow-hidden rounded-2xl border border-neutral-200 shadow-soft">
@@ -165,7 +165,7 @@ export default async function ArticlePage({ params }: PageProps) {
               className="mb-8"
             />
           </Reveal>
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <StaggerItem key={item.id} as="li" className="h-full">
                 <ArticleCard article={item} />

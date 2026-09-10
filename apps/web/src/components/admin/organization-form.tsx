@@ -24,7 +24,7 @@ export function OrganizationForm() {
         main={
           <>
             <EditorSection title="Identité" pillar="protection">
-              <div className="grid gap-5 sm:grid-cols-[1fr_10rem]">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1fr_10rem]">
                 <FormField label="Nom" htmlFor="name" required error={errors.name}>
                   <Input name="name" value={name} onChange={(event) => setName(event.target.value)} maxLength={160} required />
                 </FormField>
@@ -32,7 +32,7 @@ export function OrganizationForm() {
                   <Input name="acronym" value={acronym} onChange={(event) => setAcronym(event.target.value.toUpperCase())} maxLength={30} className="uppercase" />
                 </FormField>
               </div>
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                 <FormField label="Secteur" htmlFor="sector" error={errors.sector} hint="Ex. énergie et pétrole, enseignement, transports.">
                   <Input name="sector" maxLength={120} />
                 </FormField>
@@ -48,7 +48,7 @@ export function OrganizationForm() {
               <FormField label="Adresse" htmlFor="address" error={errors.address}>
                 <Input name="address" maxLength={200} />
               </FormField>
-              <div className="grid gap-5 sm:grid-cols-[1fr_8rem]">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1fr_8rem]">
                 <FormField label="Ville" htmlFor="city" error={errors.city}>
                   <Input name="city" defaultValue="Libreville" maxLength={80} />
                 </FormField>
@@ -56,7 +56,7 @@ export function OrganizationForm() {
                   <Input name="country" defaultValue="GA" maxLength={2} className="uppercase" />
                 </FormField>
               </div>
-              <div className="grid gap-5 sm:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
                 <FormField label="Téléphone" htmlFor="phone" error={errors.phone}>
                   <Input name="phone" type="tel" inputMode="tel" maxLength={20} />
                 </FormField>

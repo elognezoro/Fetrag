@@ -38,7 +38,7 @@ export default async function AdminMessagesPage({ searchParams }: { searchParams
           </Button>
         }
       />
-      <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={counts.NEW} label="Nouveaux" tone="gold" description="À lire" />
         </StaggerItem>

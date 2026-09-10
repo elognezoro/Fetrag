@@ -108,7 +108,7 @@ export default async function EventPage({ params }: PageProps) {
         </header>
 
         <Section variant="white" padding="md" containerSize="wide">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_22rem] lg:gap-14">
             <div className="min-w-0 space-y-12">
               {event.coverImageUrl ? (
                 <Reveal className="overflow-hidden rounded-2xl border border-neutral-200 shadow-soft">
@@ -267,7 +267,7 @@ export default async function EventPage({ params }: PageProps) {
               className="mb-8"
             />
           </Reveal>
-          <Stagger as="ul" className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {others.map((item) => (
               <StaggerItem key={item.id} as="li" className="h-full">
                 <EventCard event={item} compact />

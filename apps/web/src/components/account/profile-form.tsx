@@ -27,7 +27,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
   return (
     <form action={action} className="flex flex-col gap-5" noValidate>
       <FormStatus state={state} />
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Prénom" htmlFor="firstName" required error={errors.firstName}>
           <Input name="firstName" defaultValue={user.firstName ?? ''} autoComplete="given-name" required maxLength={60} />
         </FormField>
@@ -38,7 +38,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
       <FormField label="Adresse email" htmlFor="email" hint="L’adresse email sert d’identifiant de connexion ; contactez le support pour la modifier.">
         <Input name="email" type="email" value={user.email} readOnly />
       </FormField>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Téléphone" htmlFor="phone" error={errors.phone} hint="Format international ou national (ex. 066 23 00 33).">
           <Input name="phone" type="tel" defaultValue={user.phone ?? ''} autoComplete="tel" inputMode="tel" maxLength={20} />
         </FormField>
@@ -53,7 +53,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
           />
         </FormField>
       </div>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Fonction" htmlFor="jobTitle" error={errors.jobTitle} hint="Ex. délégué du personnel, secrétaire de section.">
           <Input name="jobTitle" defaultValue={user.jobTitle ?? ''} autoComplete="organization-title" maxLength={120} />
         </FormField>

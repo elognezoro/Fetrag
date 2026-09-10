@@ -80,7 +80,7 @@ export default async function CheckoutPage({ params }: PageProps) {
         </Alert>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <Reveal className="lg:col-span-3">
           <Card pillar="protection" className="h-full">
             <CardHeader>

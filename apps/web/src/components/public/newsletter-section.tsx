@@ -6,7 +6,7 @@ import { NewsletterForm } from './newsletter-form'
 export function NewsletterSection() {
   return (
     <Section variant="soft" padding="md" bordered aria-labelledby="newsletter-title" rings={{ position: 'bottom-right', opacity: 0.06, rings: 3 }}>
-      <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
+      <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-14">
         <Reveal>
           <Ribbon tone="blue">Lettre d&apos;information</Ribbon>
           <h2 id="newsletter-title" className="mt-4 font-display text-3xl font-semibold leading-tight text-navy sm:text-4xl">

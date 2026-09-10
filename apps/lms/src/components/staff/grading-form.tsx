@@ -125,7 +125,7 @@ export function GradingForm({ submission, cohortId, onDone }: GradingFormProps) 
           </fieldset>
         ) : null}
 
-        <div className="grid gap-4 sm:grid-cols-[10rem_1fr]">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-[10rem_1fr]">
           <FormField label={`Note sur ${maxScore}`} htmlFor={`${id}-score`} required error={state.status === 'error' ? state.fieldErrors?.score : undefined}>
             <Input name="score" type="number" min={0} max={maxScore} step={1} value={score} onChange={(event) => setScore(Number.parseInt(event.target.value, 10) || 0)} required />
           </FormField>
@@ -224,7 +224,7 @@ function EssayQuestionForm({ attemptId, question, cohortId, onDone }: { attemptI
         {config.maxWords ? ` · maximum ${config.maxWords}` : ''}
       </p>
       {rubric.length ? (
-        <ul className="grid gap-1 text-xs text-neutral-600 sm:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-1 text-xs text-neutral-600 sm:grid-cols-2">
           {rubric.map((c) => (
             <li key={c.label} className="rounded-lg border border-dashed border-neutral-200 px-2 py-1">
               {c.label} <span className="font-semibold text-navy">({c.points} pt)</span>
@@ -233,7 +233,7 @@ function EssayQuestionForm({ attemptId, question, cohortId, onDone }: { attemptI
         </ul>
       ) : null}
       <ActionAlert state={state} />
-      <div className="grid gap-3 sm:grid-cols-[9rem_1fr]">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[9rem_1fr]">
         <FormField label={`Note sur ${question.points}`} htmlFor={`${id}-score`} required error={state.status === 'error' ? state.fieldErrors?.score : undefined}>
           <Input name="score" type="number" min={0} max={question.points} step={1} defaultValue={question.score ?? ''} required />
         </FormField>

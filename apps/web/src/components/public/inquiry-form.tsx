@@ -84,7 +84,7 @@ export function InquiryForm({ variant, defaults, className }: InquiryFormProps) 
       <HoneypotField id={`${variant}-website`} />
       <FormStatus state={state} withToast={false} />
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Nom complet" htmlFor={`${variant}-fullName`} error={errors.fullName} required>
           <Input name="fullName" autoComplete="name" leadingIcon={User} defaultValue={values.fullName ?? defaults?.fullName ?? ''} maxLength={120} required />
         </FormField>
@@ -114,7 +114,7 @@ export function InquiryForm({ variant, defaults, className }: InquiryFormProps) 
       </div>
 
       {variant === 'membership' ? (
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Votre démarche" htmlFor="membership-interest" error={errors.interest} required>
             <NativeSelect name="interest" options={interestOptions} defaultValue={values.interest || 'information'} />
           </FormField>

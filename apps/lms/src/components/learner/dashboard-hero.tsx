@@ -33,7 +33,7 @@ export function DashboardHero({ greetingName, stats, resume }: DashboardHeroProp
   return (
     <section className="bg-navy-gradient relative isolate overflow-hidden text-white" aria-labelledby="dashboard-title">
       <RingBackdrop scheme="light" opacity={0.08} position="top-right" rings={4} arc />
-      <div className="container-fetrag relative grid gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+      <div className="container-fetrag relative grid grid-cols-1 gap-8 py-10 sm:py-14 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
         <Reveal>
           <p className="eyebrow text-[11px] text-green-300">Tableau de bord</p>
           <h1 id="dashboard-title" className="mt-3 text-3xl font-semibold text-white sm:text-4xl lg:text-5xl">

@@ -40,7 +40,7 @@ export default async function CertificatesPage() {
       <div className="container-fetrag flex flex-col gap-10 py-10 sm:py-12">
         {items.length > 0 ? (
           <Reveal>
-            <div className="grid gap-4 sm:grid-cols-3" role="list" aria-label="Récapitulatif">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3" role="list" aria-label="Récapitulatif">
               <StatTile role="listitem" animate value={valid} label="Documents valides" icon={ShieldCheck} tone="green" />
               <StatTile role="listitem" animate value={certificates} label="Certificats" icon={Award} tone="gold" />
               <StatTile role="listitem" animate value={attestations} label="Attestations" icon={Star} tone="blue" />
@@ -63,7 +63,7 @@ export default async function CertificatesPage() {
             }
           />
         ) : (
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-label="Mes certificats">
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-label="Mes certificats">
             {items.map((item) => (
               <StaggerItem key={item.certificate.id} as="li" className="h-full">
                 <CertificateCard item={item} />
@@ -72,7 +72,7 @@ export default async function CertificatesPage() {
           </Stagger>
         )}
 
-        <section aria-labelledby="verification-title" className="grid gap-6 rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft pillar-top-gold sm:grid-cols-[auto_1fr] sm:items-center sm:p-8">
+        <section aria-labelledby="verification-title" className="grid grid-cols-1 gap-6 rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft pillar-top-gold sm:grid-cols-[auto_1fr] sm:items-center sm:p-8">
           <span className="inline-flex size-16 items-center justify-center rounded-full bg-gold-50 text-gold-700">
             <QrCode className="size-8" strokeWidth={1.5} aria-hidden="true" />
           </span>

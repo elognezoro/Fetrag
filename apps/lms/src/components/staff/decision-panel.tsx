@@ -95,7 +95,7 @@ export function DecisionPanel(props: DecisionPanelProps) {
       <ActionAlert state={state} />
       <ActionPayloadSummary state={state} />
 
-      <div role="radiogroup" aria-label="Type de décision" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      <div role="radiogroup" aria-label="Type de décision" className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {allowed.map((option) => {
           const Icon = option.icon
           const isActive = option.value === decision
@@ -123,7 +123,7 @@ export function DecisionPanel(props: DecisionPanelProps) {
       </div>
 
       {active ? (
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {active.value === 'RESCHEDULED' || active.value === 'SCHEDULED' ? (
             <>
               <FormField label={active.value === 'SCHEDULED' ? 'Date de démarrage' : 'Date proposée'} htmlFor={`${id}-start`} required={active.value === 'SCHEDULED'} error={errors.proposedStart} hint={props.preferredStart ? `Souhait de l'organisation : ${toInputDate(props.preferredStart)}` : 'Aucune date souhaitée.'}>

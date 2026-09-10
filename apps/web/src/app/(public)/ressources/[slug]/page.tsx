@@ -91,7 +91,7 @@ export default async function ResourcePage({ params, searchParams }: PageProps) 
           <RingBackdrop position="top-right" rings={4} opacity={0.06} />
           <Container size="wide" className="relative py-10 sm:py-14">
             <Breadcrumbs items={[{ label: 'Ressources', href: '/ressources' }, { label: resource.title }]} homeHref="/" className="mb-6" />
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
               <Reveal className="flex max-w-3xl flex-col gap-5">
                 <div className="flex flex-wrap items-center gap-2">
                   <Ribbon tone={tone}>{resourceKindLabels[resource.kind]}</Ribbon>
@@ -120,7 +120,7 @@ export default async function ResourcePage({ params, searchParams }: PageProps) 
         </header>
 
         <Section variant="white" padding="md" containerSize="wide">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-14">
             <div className="min-w-0">
               {notice ? (
                 <Alert variant={notice.variant} className="mb-8">
@@ -131,7 +131,7 @@ export default async function ResourcePage({ params, searchParams }: PageProps) 
 
               <Reveal>
                 <h2 className="font-display text-2xl font-semibold text-navy">À propos de ce document</h2>
-                <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+                <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <MetaItem icon={FileType2} label="Type" value={resourceKindLabels[resource.kind]} />
                   <MetaItem icon={Lock} label="Niveau d'accès" value={accessLevelLabels[resource.accessLevel]} />
                   {resource.authorName ? <MetaItem icon={User} label="Auteur" value={resource.authorName} /> : null}
@@ -271,7 +271,7 @@ export default async function ResourcePage({ params, searchParams }: PageProps) 
               className="mb-8"
             />
           </Reveal>
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((item) => (
               <StaggerItem key={item.id} as="li" className="h-full">
                 <ResourceCard resource={item} />

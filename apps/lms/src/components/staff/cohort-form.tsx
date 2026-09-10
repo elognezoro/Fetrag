@@ -53,7 +53,7 @@ export function CohortForm({ courses, organizations, trainers, cohort, defaultOr
   const errors = state.status === 'error' ? state.fieldErrors ?? {} : {}
 
   return (
-    <form action={formAction} className="grid gap-5 rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft sm:grid-cols-2 sm:p-6">
+    <form action={formAction} className="grid grid-cols-1 gap-5 rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft sm:grid-cols-2 sm:p-6">
       {cohort ? <input type="hidden" name="cohortId" value={cohort.id} /> : null}
       <div className="sm:col-span-2">
         <ActionAlert state={state} />

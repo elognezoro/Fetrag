@@ -156,7 +156,7 @@ export default async function CoursesPage({ searchParams }: PageProps) {
           />
         </Reveal>
         <StepsList steps={enrolSteps} />
-        <Reveal delay={0.1} className="mt-10 grid gap-6 rounded-2xl border border-blue-100 bg-blue-50 p-6 sm:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+        <Reveal delay={0.1} className="mt-10 grid grid-cols-1 gap-6 rounded-2xl border border-blue-100 bg-blue-50 p-6 sm:p-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
           <div>
             <p className="eyebrow text-[11px] text-blue-700">Organisations affiliées</p>
             <h3 className="mt-2 font-display text-2xl font-semibold leading-tight text-navy">Former vos responsables en groupe</h3>

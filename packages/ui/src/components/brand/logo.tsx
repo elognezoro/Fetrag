@@ -61,7 +61,7 @@ export function Logo({ size = 44, withText = true, href, inverted = false, prior
             {fr.common.appName}
           </span>
           <span
-            className={cn('eyebrow mt-1 truncate text-[10px] tracking-[0.14em]', inverted ? 'text-white/70' : 'text-neutral-500')}
+            className={cn('eyebrow mt-1 hidden truncate text-[10px] tracking-[0.14em] sm:block', inverted ? 'text-white/70' : 'text-neutral-500')}
           >
             {fr.common.fullName}
           </span>

@@ -16,7 +16,7 @@ export function SeoFields({ seo, error }: SeoFieldsProps) {
       <FormField label="Méta-description" htmlFor="seoDescription" hint="200 caractères maximum ; par défaut l’extrait.">
         <Textarea name="seoDescription" defaultValue={seo?.description ?? ''} maxLength={200} rows={3} />
       </FormField>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="URL canonique" htmlFor="seoCanonical" hint="À renseigner seulement si le contenu existe ailleurs.">
           <Input name="seoCanonical" type="url" defaultValue={seo?.canonical ?? ''} placeholder="https://" />
         </FormField>

@@ -54,7 +54,7 @@ export default async function VerifyCertificatePage({ searchParams }: PageProps)
       />
 
       <Section variant="white" padding="md" rings={{ position: 'left', opacity: 0.05, rings: 3 }}>
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
           <Reveal className="rounded-2xl border border-gold-200 bg-white p-6 shadow-lift pillar-top-gold sm:p-8">
             <SectionHeading eyebrow="Vérification" tone="gold" size="md" title="Saisir le code du document" className="mb-6" />
             <CertificateVerifyForm defaultCode={raw} error={error} />

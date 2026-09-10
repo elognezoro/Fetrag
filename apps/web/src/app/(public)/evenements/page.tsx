@@ -108,7 +108,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
             />
           ) : null}
           {upcoming.length > 0 ? (
-            <Stagger as="ul" className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <Stagger as="ul" className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
               {upcoming.map((event) => (
                 <StaggerItem key={event.id} as="li" className="h-full">
                   <EventCard event={event} />
@@ -137,7 +137,7 @@ export default async function EventsPage({ searchParams }: PageProps) {
         {past.items.length === 0 ? (
           <EmptyState icon={History} title="Aucun événement passé" description="Les archives s'enrichiront au fil des rencontres de la Fédération." compact />
         ) : (
-          <Stagger as="ul" className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
             {past.items.map((event) => (
               <StaggerItem key={event.id} as="li" className="h-full">
                 <EventCard event={event} compact />

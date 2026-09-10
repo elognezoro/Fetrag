@@ -90,7 +90,7 @@ export default async function CoordinationSessionsPage({ searchParams }: PagePro
       />
 
       {sessions.length ? (
-        <ol className="grid gap-4 lg:grid-cols-7">
+        <ol className="grid grid-cols-1 gap-4 lg:grid-cols-7">
           {days.map((day) => {
             const key = isoDate(new Date(day.getTime() - 3600 * 1000))
             const items = sessions.filter((s) => isoDate(new Date(s.startsAt.getTime())) === key)

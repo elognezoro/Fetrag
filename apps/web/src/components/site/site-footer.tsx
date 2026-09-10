@@ -47,7 +47,7 @@ export function SiteFooter() {
 
       <MottoStrip />
 
-      <div className="container-fetrag relative grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-6">
+      <div className="container-fetrag relative grid grid-cols-1 gap-10 py-14 md:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-2">
           <div className="flex items-center gap-3">
             <Emblem size={56} variant="white" decorative />

@@ -151,7 +151,7 @@ export default async function AdminUserPage({ params }: PageProps) {
         ) : null}
       </StaffSection>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <StaffSection number="02" title="Organisations" tone="green" description="Appartenances déclarées ; les gestionnaires déposent les demandes de formation.">
           {user.memberships.length ? (
             <ul className="flex flex-col gap-2">

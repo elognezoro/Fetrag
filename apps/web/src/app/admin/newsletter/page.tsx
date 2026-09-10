@@ -43,7 +43,7 @@ export default async function AdminNewsletterPage({ searchParams }: { searchPara
           </Button>
         }
       />
-      <Stagger className="grid gap-4 sm:grid-cols-3">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StaggerItem>
           <StatTile value={stats.confirmed} label="Abonnés confirmés" icon={Send} tone="green" />
         </StaggerItem>

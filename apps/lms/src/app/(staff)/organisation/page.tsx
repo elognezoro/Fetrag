@@ -59,7 +59,7 @@ export default async function OrganisationDashboardPage() {
         ]}
       />
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Reveal>
           <Card pillar="prevention" className="h-full">
             <CardHeader>
@@ -171,7 +171,7 @@ export default async function OrganisationDashboardPage() {
 
       <StaffSection number="02" title="Cohortes de l'organisation" tone="green">
         {orgCohorts.length ? (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {orgCohorts.map((c) => (
               <Card key={c.id} pillar={c.status === 'RUNNING' ? 'prevention' : c.status === 'CLOSED' ? 'defense' : 'protection'} interactive>
                 <CardContent className="flex flex-col gap-3 p-5">
@@ -216,7 +216,7 @@ export default async function OrganisationDashboardPage() {
 
       {dashboard.recentDecisions.length ? (
         <StaffSection number="03" title="Dernières décisions" tone="gold">
-          <ul className="grid gap-2 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {dashboard.recentDecisions.map((d) => (
               <li key={d.id} className="rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-soft">
                 <div className="flex flex-wrap items-center gap-2">

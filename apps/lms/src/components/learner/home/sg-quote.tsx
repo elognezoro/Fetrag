@@ -8,7 +8,7 @@ export function SgQuote() {
   return (
     <section className="relative isolate overflow-hidden border-t border-neutral-200 bg-neutral-50 py-16 sm:py-20">
       <RingBackdrop position="bottom-left" opacity={0.05} rings={3} />
-      <div className="container-fetrag grid gap-10 lg:grid-cols-[minmax(0,320px)_1fr] lg:items-center">
+      <div className="container-fetrag grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,320px)_1fr] lg:items-center">
         <Reveal className="mx-auto w-full max-w-xs lg:mx-0">
           <div className="relative overflow-hidden rounded-[2rem] border-4 border-white shadow-lift">
             <Image src="/brand/sg-ngoma-600.webp" alt={`Portrait de ${siteConfig.secretaryGeneral}, Secrétaire Général de la FETRAG`} width={600} height={900} className="h-auto w-full object-cover" sizes="(min-width: 1024px) 320px, 80vw" />

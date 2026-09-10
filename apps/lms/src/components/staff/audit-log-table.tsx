@@ -125,7 +125,7 @@ export function AuditLogTable({ rows, compact = false, className }: { rows: Audi
                         <span className="group-open:hidden">Voir le détail</span>
                         <span className="hidden group-open:inline">Masquer</span>
                       </summary>
-                      <div className="mt-2 grid w-[min(36rem,80vw)] gap-3 sm:grid-cols-2">
+                      <div className="mt-2 grid grid-cols-1 w-[min(36rem,80vw)] gap-3 sm:grid-cols-2">
                         <JsonBlock label="Avant" value={row.before} />
                         <JsonBlock label="Après" value={row.after} />
                         {row.correlationId ? <p className="text-[11px] text-neutral-500 sm:col-span-2">Corrélation : {row.correlationId}</p> : null}

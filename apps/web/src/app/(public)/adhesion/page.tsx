@@ -86,7 +86,7 @@ export default async function MembershipPage() {
             className="mb-10"
           />
         </Reveal>
-        <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {benefits.map((benefit, index) => {
             const tone = toneAt(index)
             const classes = toneClasses[tone]
@@ -112,7 +112,7 @@ export default async function MembershipPage() {
       </Section>
 
       <Section variant="muted" padding="md" bordered aria-labelledby="profiles-title">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <Reveal>
             <SectionHeading
               eyebrow="Qui peut adhérer"
@@ -176,7 +176,7 @@ export default async function MembershipPage() {
       </Section>
 
       <Section variant="soft" padding="lg" bordered id="formulaire" className="scroll-mt-24" rings={{ position: 'bottom-right', opacity: 0.06, rings: 4 }} aria-labelledby="form-title">
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
           <Reveal>
             <SectionHeading
               eyebrow="Formulaire"

@@ -71,7 +71,7 @@ export function PageForm({ page }: { page?: PageFormValues }) {
         </TabsContent>
         <TabsContent value="reglages">
           <EditorSection title="Réglages" pillar="defense">
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <FormField label="Slug (adresse)" htmlFor="slug" error={errors.slug} hint={`Aperçu : /${previewSlug(title) || 'titre-de-la-page'}`}>
                 <Input name="slug" defaultValue={page?.slug ?? ''} placeholder="Généré depuis le titre si vide" maxLength={120} pattern="[a-z0-9]+(?:-[a-z0-9]+)*" />
               </FormField>

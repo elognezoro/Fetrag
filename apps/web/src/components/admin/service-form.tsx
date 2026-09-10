@@ -57,7 +57,7 @@ export function ServiceForm({ service, categories }: ServiceFormProps) {
         </TabsList>
         <TabsContent value="presentation">
           <EditorSection title="Présentation du service" pillar="protection">
-            <div className="grid gap-5 sm:grid-cols-[1fr_12rem]">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1fr_12rem]">
               <FormField label="Nom du service" htmlFor="name" required error={errors.name}>
                 <Input name="name" value={name} onChange={(event) => setName(event.target.value)} maxLength={160} required />
               </FormField>
@@ -72,7 +72,7 @@ export function ServiceForm({ service, categories }: ServiceFormProps) {
             <FormField label="Conditions d’accès" htmlFor="conditions" error={errors.conditions} hint="Qui peut solliciter ce service, pièces à fournir, délais.">
               <Textarea name="conditions" defaultValue={service?.conditions ?? ''} rows={5} maxLength={50000} />
             </FormField>
-            <div className="grid gap-5 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
               <FormField label="Catégorie" htmlFor="categoryId" error={errors.categoryId}>
                 <NativeSelect name="categoryId" defaultValue={service?.categoryId ?? 'none'} options={[{ value: 'none', label: 'Sans catégorie' }, ...categories]} />
               </FormField>
@@ -87,7 +87,7 @@ export function ServiceForm({ service, categories }: ServiceFormProps) {
         </TabsContent>
         <TabsContent value="modalites">
           <EditorSection title="Modalités et tarif" pillar="prevention">
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div className="flex items-start gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
                 <Checkbox id="requiresAccount" name="requiresAccount" defaultChecked={service?.requiresAccount ?? true} className="mt-0.5" />
                 <div>

@@ -46,7 +46,7 @@ export function PartnerForm({ partner }: { partner?: PartnerFormValues }) {
       {partner?.id ? <input type="hidden" name="id" value={partner.id} /> : null}
       <FormStatus state={state} />
       <EditorSection title="Identité" pillar="protection">
-        <div className="grid gap-5 sm:grid-cols-[1fr_10rem]">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1fr_10rem]">
           <FormField label="Nom" htmlFor="name" required error={errors.name}>
             <Input name="name" value={name} onChange={(e) => setName(e.target.value)} maxLength={160} required />
           </FormField>
@@ -54,7 +54,7 @@ export function PartnerForm({ partner }: { partner?: PartnerFormValues }) {
             <Input name="acronym" defaultValue={partner?.acronym ?? ''} maxLength={30} className="uppercase" />
           </FormField>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Type" htmlFor="kind" error={errors.kind}>
             <NativeSelect name="kind" defaultValue={partner?.kind ?? 'PARTNER'} options={optionsFrom(partnerKindLabels)} />
           </FormField>
@@ -74,7 +74,7 @@ export function PartnerForm({ partner }: { partner?: PartnerFormValues }) {
       </EditorSection>
       <EditorSection title="Logo et coordonnées" pillar="prevention">
         <FileUpload name="logoUrl" label="Logo" defaultValue={partner?.logoUrl} accept="image/*" folder="partenaires" error={errors.logoUrl} hint="PNG ou WebP sur fond transparent ou blanc ; défile dans le bandeau des partenaires." />
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <FormField label="Site web" htmlFor="website" error={errors.website}>
             <Input name="website" type="url" defaultValue={partner?.website ?? ''} placeholder="https://" />
           </FormField>

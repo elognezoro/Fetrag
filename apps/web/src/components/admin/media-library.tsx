@@ -109,7 +109,7 @@ function UploadDialog({ folders, defaultFolder }: { folders: string[]; defaultFo
               className="block w-full text-sm text-neutral-600 file:mr-3 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
             />
           </FormField>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField label="Dossier" htmlFor={`${id}-folder`} hint="Minuscules, chiffres, tirets.">
               <Input id={`${id}-folder`} name="folder" defaultValue={defaultFolder ?? 'uploads'} list={`${id}-folders`} pattern="[a-z0-9][a-z0-9/_-]*" maxLength={80} />
               <datalist id={`${id}-folders`}>
@@ -218,7 +218,7 @@ export function MediaLibrary({ items, folders, defaultFolder }: MediaLibraryProp
           <EmptyState icon={ImageIcon} title="Aucun média" description="Envoyez des images, documents et vidéos pour les réutiliser dans les pages, actualités et ressources." />
         </div>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {items.map((item) => {
             const isImage = item.mimeType.startsWith('image/') && item.visibility === 'PUBLIC'
             return (

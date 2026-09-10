@@ -31,7 +31,7 @@ export function OrganizationForm({ organization }: { organization?: Organization
   const errors = state.status === 'error' ? state.fieldErrors ?? {} : {}
 
   return (
-    <form action={formAction} className="grid gap-5 rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft sm:grid-cols-2 sm:p-6">
+    <form action={formAction} className="grid grid-cols-1 gap-5 rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft sm:grid-cols-2 sm:p-6">
       {organization ? <input type="hidden" name="organizationId" value={organization.id} /> : null}
       <div className="sm:col-span-2">
         <ActionAlert state={state} />

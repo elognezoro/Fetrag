@@ -73,7 +73,7 @@ export default async function ServicesPage() {
           />
         ) : null}
         {services.length > 0 ? (
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service, position) => (
               <StaggerItem key={service.id} as="li" className="h-full">
                 <ServiceCard service={service} index={position} />

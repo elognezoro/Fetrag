@@ -29,7 +29,7 @@ export function EventsSection({ events }: EventsSectionProps) {
       {events.length === 0 ? (
         <EmptyState icon={CalendarDays} title="Aucun événement programmé" description="L'agenda de la Fédération sera mis à jour prochainement." />
       ) : (
-        <Stagger as="ul" className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <Stagger as="ul" className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
           {events.map((event) => (
             <StaggerItem key={event.id} as="li" className="h-full">
               <EventCard event={event} compact />

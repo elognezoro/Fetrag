@@ -47,7 +47,7 @@ export default async function AdminAuditPage({ searchParams }: { searchParams: P
           </Button>
         }
       />
-      <Stagger className="grid gap-4 sm:grid-cols-3">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StaggerItem>
           <StatTile value={result.total} label={hasFilters ? 'Entrées correspondant aux filtres' : 'Entrées journalisées'} icon={ScrollText} tone="blue" />
         </StaggerItem>

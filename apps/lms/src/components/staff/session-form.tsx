@@ -60,7 +60,7 @@ export function SessionForm({ cohortId, liveActivities, session, defaultTrainerN
           <DialogTitle>{session ? 'Modifier la session' : 'Nouvelle session de formation'}</DialogTitle>
           <DialogDescription>Les membres de la cohorte reçoivent une convocation (notification et email) si l’option est cochée.</DialogDescription>
         </DialogHeader>
-        <form action={formAction} className="grid gap-4 sm:grid-cols-2">
+        <form action={formAction} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <input type="hidden" name="cohortId" value={cohortId} />
           {session?.id ? <input type="hidden" name="sessionId" value={session.id} /> : null}
           <input type="hidden" name="startsAt" value={fromInputDateTime(startsAt)} />

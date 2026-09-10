@@ -50,7 +50,7 @@ export default async function TrainerDashboardPage() {
         ]}
       />
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Reveal>
           <Card pillar="prevention" className="h-full">
             <CardHeader>
@@ -111,7 +111,7 @@ export default async function TrainerDashboardPage() {
         }
       >
         {dashboard.cohorts.length ? (
-          <Stagger className="grid gap-4 md:grid-cols-2">
+          <Stagger className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {dashboard.cohorts.slice(0, 6).map((c) => (
               <StaggerItem key={c.id}>
                 <Card pillar={c.status === 'RUNNING' ? 'prevention' : c.status === 'CLOSED' ? 'defense' : 'protection'} interactive className="h-full">
@@ -152,7 +152,7 @@ export default async function TrainerDashboardPage() {
 
       <StaffSection number="02" title="Corrections en attente" tone="gold" description="Devoirs remis et compositions soumises par vos participants, du plus ancien au plus récent.">
         {dashboard.pendingSubmissions.length || dashboard.pendingEssays.length ? (
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle as="h3">Devoirs ({dashboard.pendingSubmissions.length})</CardTitle>
@@ -218,7 +218,7 @@ export default async function TrainerDashboardPage() {
 
       {dashboard.recentThreads.length ? (
         <StaffSection number="03" title="Activité des forums" tone="navy">
-          <ul className="grid gap-2 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {dashboard.recentThreads.map((t) => (
               <li key={t.id} className="rounded-xl border border-neutral-200 bg-white p-3 text-sm shadow-soft">
                 <Link href={`/forums/${t.forum.slug}/${t.id}`} className="font-semibold text-navy hover:underline">

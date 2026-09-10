@@ -20,7 +20,7 @@ export function SandboxSimulator({ orderId, paymentId }: SandboxSimulatorProps) 
       <input type="hidden" name="orderId" value={orderId} />
       <input type="hidden" name="paymentId" value={paymentId} />
       <FormStatus state={state} />
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <SubmitButton name="outcome" value="success" variant="accent" size="lg" pendingLabel="Confirmation en cours" leftIcon={<CheckCircle2 aria-hidden="true" />}>
           Simuler un paiement réussi
         </SubmitButton>

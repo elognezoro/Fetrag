@@ -29,7 +29,7 @@ export function ServicesSection({ services }: ServicesSectionProps) {
       {services.length === 0 ? (
         <EmptyState icon={LifeBuoy} title="Le catalogue des services est en préparation" description="Contactez-nous pour toute demande d'appui en attendant sa publication." />
       ) : (
-        <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, index) => (
             <StaggerItem key={service.id} as="li" className="h-full">
               <ServiceCard service={service} index={index} />

@@ -98,7 +98,7 @@ export default async function TrainerCohortPage({ params, searchParams }: PagePr
         tone="green"
       />
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Stat icon={Users} label="Membres" value={String(cohort.stats.members)} tone="blue" />
         <Stat icon={UserCheck} label="Formation terminée" value={`${cohort.stats.completed}`} tone="green" hint={`${cohort.stats.active} en cours`} />
         <Stat icon={ClipboardCheck} label="Corrections en attente" value={String(pendingSubmissions.length + essays.length)} tone="gold" />
@@ -237,7 +237,7 @@ export default async function TrainerCohortPage({ params, searchParams }: PagePr
               </CardContent>
             </Card>
           ) : null}
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <Card>
               <CardContent className="p-5">
                 <h3 className="mb-3 font-display text-base font-semibold text-navy">Devoirs à noter ({pendingSubmissions.length})</h3>
@@ -317,7 +317,7 @@ export default async function TrainerCohortPage({ params, searchParams }: PagePr
         </TabsContent>
 
         <TabsContent value="messages">
-          <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
             <CohortMessageForm cohortId={cohort.id} memberCount={cohort.members.filter((m) => m.role === 'learner').length} hasForum={Boolean(cohort.forums[0])} />
             <Card pillar="prevention">
               <CardContent className="flex flex-col gap-3 p-5 text-sm text-neutral-700">

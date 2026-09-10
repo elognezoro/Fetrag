@@ -68,7 +68,7 @@ export default async function VerifyResultPage({ params }: PageProps) {
           </Reveal>
         )}
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+        <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
           <Reveal delay={0.1} className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft sm:p-8">
             <SectionHeading eyebrow="Nouvelle vérification" tone="blue" size="md" title="Vérifier un autre document" className="mb-6" />
             <CertificateVerifyForm compact />

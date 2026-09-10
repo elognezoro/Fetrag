@@ -8,7 +8,7 @@ export default function InstitutionLoading() {
       <span className="sr-only">Chargement en cours</span>
       <HeaderSkeleton />
       <div className="container-fetrag py-10">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }, (_, index) => (
             <Skeleton key={index} className="h-32 w-full rounded-2xl" />
           ))}

@@ -18,7 +18,7 @@ export function ListSkeleton({ tiles = 0, rows = 6, label = 'Chargement de la se
         <Skeleton className="mt-3 h-4 w-full max-w-xl" />
       </div>
       {tiles > 0 ? (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {Array.from({ length: tiles }, (_, index) => (
             <div key={index} className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft">
               <Skeleton className="size-11 rounded-full" circle />
@@ -56,7 +56,7 @@ export function EditorSkeleton() {
         <Skeleton className="h-5 w-28 rounded-full" />
         <Skeleton className="mt-4 h-9 w-2/3 max-w-md" />
       </div>
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft">
           <Skeleton className="h-6 w-40" />
           <Skeleton className="mt-6 h-11 w-full" />

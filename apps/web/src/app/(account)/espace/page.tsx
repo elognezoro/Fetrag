@@ -81,7 +81,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
         </Alert>
       ) : null}
 
-      <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={activeEnrollments.length} label="Formations en cours" icon={BookOpen} tone="blue" description={`${completedCount} terminée${completedCount > 1 ? 's' : ''}`} />
         </StaggerItem>
@@ -96,7 +96,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
         </StaggerItem>
       </Stagger>
 
-      <div className="grid gap-6 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <Reveal className="lg:col-span-3">
           <Card pillar="protection" className="h-full">
             <CardHeader className="flex-row items-center justify-between">
@@ -185,7 +185,7 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
         </Reveal>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Reveal>
           <Card className="h-full">
             <CardHeader className="flex-row items-center justify-between">

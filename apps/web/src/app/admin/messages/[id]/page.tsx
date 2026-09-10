@@ -97,7 +97,7 @@ export default async function MessageDetailPage({ params }: PageProps) {
                   <CardTitle as="h2">Informations complémentaires</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                  <dl className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
                     {payloadEntries.map(([key, value]) => (
                       <div key={key} className="min-w-0">
                         <dt className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{payloadLabels[key] ?? key}</dt>

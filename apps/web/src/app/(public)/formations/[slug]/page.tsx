@@ -82,7 +82,7 @@ export default async function CoursePage({ params }: PageProps) {
         <CourseHeader course={course} number={number} pillar={pillar} lmsCourseHref={lmsCourseHref} />
 
         <Section variant="white" padding="md" containerSize="wide">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-14">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-14">
             <div className="min-w-0 space-y-12">
               {course.summary ? (
                 <Reveal>
@@ -93,7 +93,7 @@ export default async function CoursePage({ params }: PageProps) {
               {course.objectives.length > 0 ? (
                 <Reveal as="section" aria-labelledby="objectives-title">
                   <SectionHeading eyebrow="Objectifs pédagogiques" tone={tone} size="md" title={<span id="objectives-title">À l&apos;issue de ce module, vous serez capable de</span>} className="mb-6" />
-                  <ul className="grid gap-3 sm:grid-cols-2">
+                  <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {course.objectives.map((objective) => (
                       <li key={objective} className={cn('flex items-start gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-4 text-sm leading-relaxed text-neutral-700', classes.topRule)}>
                         <Star className={cn('mt-0.5 size-4 shrink-0 fill-current', classes.text)} strokeWidth={1.5} aria-hidden="true" />
@@ -132,7 +132,7 @@ export default async function CoursePage({ params }: PageProps) {
               </Reveal>
 
               {course.prerequisitesText || course.prerequisites.length > 0 || course.audience ? (
-                <Reveal as="section" aria-labelledby="prerequisites-title" className="grid gap-5 sm:grid-cols-2">
+                <Reveal as="section" aria-labelledby="prerequisites-title" className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                   <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft pillar-top-blue sm:col-span-2 lg:col-span-1">
                     <h2 id="prerequisites-title" className="flex items-center gap-2 font-display text-lg font-semibold text-navy">
                       <ListChecks className="size-5 text-blue-600" aria-hidden="true" />
@@ -283,7 +283,7 @@ function CourseHeader({ course, number, pillar, lmsCourseHref }: { course: Cours
       <RingBackdrop position="top-right" rings={5} opacity={0.06} />
       <Container size="wide" className="relative py-10 sm:py-14">
         <Breadcrumbs items={[{ label: 'Formations', href: '/formations' }, { label: course.title }]} homeHref="/" className="mb-6" />
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
           <Reveal className="flex max-w-3xl flex-col gap-5">
             <div className="flex flex-wrap items-center gap-2">
               <Ribbon tone={tone}>{pillarLabels[pillar]}</Ribbon>
@@ -381,7 +381,7 @@ function OtherModules({ modules }: { modules: ProgrammeModule[] }) {
           className="mb-8"
         />
       </Reveal>
-      <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {modules.map((entry) => (
           <StaggerItem key={entry.number} as="li" className="h-full">
             <ModuleCard number={entry.number} title={entry.title} items={entry.items} pillar={entry.pillar} href={entry.slug ? `/formations/${entry.slug}` : undefined} duration={formatHours(entry.durationHours)} />
@@ -404,7 +404,7 @@ function ProgrammeModulePage({ entry, others }: { entry: ProgrammeModule; others
           <RingBackdrop position="top-right" rings={5} opacity={0.06} />
           <Container size="wide" className="relative py-10 sm:py-14">
             <Breadcrumbs items={[{ label: 'Formations', href: '/formations' }, { label: entry.title }]} homeHref="/" className="mb-6" />
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
               <Reveal className="flex max-w-3xl flex-col gap-5">
                 <div className="flex flex-wrap items-center gap-2">
                   <Ribbon tone={tone}>{pillarLabels[entry.pillar]}</Ribbon>
@@ -448,7 +448,7 @@ function ProgrammeModulePage({ entry, others }: { entry: ProgrammeModule; others
         </header>
 
         <Section variant="white" padding="md" containerSize="wide">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-14">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_21rem] lg:gap-14">
             <Reveal>
               <SectionHeading eyebrow="Contenus du module" tone={tone} size="md" title="Ce que vous apprendrez" className="mb-6" />
               <ol className="flex flex-col gap-3">

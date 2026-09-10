@@ -33,7 +33,7 @@ export function Ribbon({ tone = 'blue', size = 'md', as: Tag = 'span', tilt = fa
   return (
     <Tag
       className={cn(
-        'eyebrow inline-flex max-w-full items-center whitespace-nowrap font-bold leading-none',
+        'eyebrow inline-flex max-w-full items-center whitespace-normal font-bold leading-tight sm:whitespace-nowrap sm:leading-none',
         ribbonTones[tone],
         ribbonSizes[size],
         tilt && '-rotate-2',

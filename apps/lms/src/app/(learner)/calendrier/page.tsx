@@ -113,7 +113,7 @@ export default async function CalendarPage({ searchParams }: PageProps) {
         }
       />
 
-      <div className="container-fetrag grid gap-10 py-10 sm:py-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+      <div className="container-fetrag grid grid-cols-1 gap-10 py-10 sm:py-12 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
         <section aria-labelledby="month-title" className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">

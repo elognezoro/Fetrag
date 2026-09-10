@@ -5,7 +5,7 @@ import { Button, Input, NativeSelect } from '@fetrag/ui'
 export function FinanceExportForm({ action = '/admin/finance/exports' }: { action?: string }) {
   return (
     <form method="get" action={action} className="flex flex-col gap-3">
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div>
           <label htmlFor="export-type" className="mb-1 block text-xs font-semibold text-neutral-600">
             Données

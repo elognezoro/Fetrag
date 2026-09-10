@@ -56,7 +56,7 @@ export function RoleGrantDialog({ userId, userLabel, scopeOptions }: RoleGrantDi
         <form action={action} className="flex flex-col gap-4" noValidate>
           <input type="hidden" name="userId" value={userId} />
           <FormStatus state={state} withToast={false} />
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField label="Rôle" htmlFor={`${id}-role`} required error={errors.role}>
               <NativeSelect id={`${id}-role`} name="role" defaultValue="LEARNER" options={roles.map((role) => ({ value: role, label: roleLabels[role] }))} />
             </FormField>

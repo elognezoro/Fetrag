@@ -73,7 +73,7 @@ export default async function CoursePage({ params }: PageProps) {
         }
       />
 
-      <div className="container-fetrag grid gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-12 lg:py-14">
+      <div className="container-fetrag grid grid-cols-1 gap-8 py-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-12 lg:py-14">
         <div className="flex min-w-0 flex-col gap-12">
           {course.objectives.length > 0 ? (
             <Reveal as="section" aria-labelledby="objectifs-title">
@@ -81,7 +81,7 @@ export default async function CoursePage({ params }: PageProps) {
               <h2 id="objectifs-title" className="mt-4 text-2xl sm:text-3xl">
                 À l&apos;issue de ce module, vous saurez
               </h2>
-              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+              <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {course.objectives.map((objective, index) => (
                   <li key={index} className="flex items-start gap-3 rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft">
                     <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-gold-50 text-gold-700">
@@ -101,7 +101,7 @@ export default async function CoursePage({ params }: PageProps) {
                 Le module en détail
               </h2>
               {descriptionHtml ? <Prose html={descriptionHtml} className="mt-5" size="lg" /> : null}
-              <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+              <dl className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {course.audience ? (
                   <div className={cn('rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft', classes.topRule)}>
                     <dt className="eyebrow text-[11px] text-neutral-500">Public visé</dt>
@@ -164,7 +164,7 @@ export default async function CoursePage({ params }: PageProps) {
               <h2 id="formateurs-title" className="mt-4 text-2xl sm:text-3xl">
                 Vos formateurs
               </h2>
-              <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+              <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {course.trainers.map((trainer) => {
                   const name = trainerName(trainer)
                   return (

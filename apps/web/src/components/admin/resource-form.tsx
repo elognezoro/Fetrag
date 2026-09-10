@@ -63,7 +63,7 @@ export function ResourceForm({ resource, categories, organizations }: ResourceFo
         <FormField label="Résumé" htmlFor="summary" error={errors.summary} hint="Présente le document en quelques phrases (1 000 caractères maximum).">
           <Textarea name="summary" defaultValue={resource?.summary ?? ''} maxLength={1000} rows={4} />
         </FormField>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Type de ressource" htmlFor="kind" error={errors.kind}>
             <NativeSelect name="kind" defaultValue={resource?.kind ?? 'DOCUMENT'} options={optionsFrom(resourceKindLabels)} />
           </FormField>
@@ -93,7 +93,7 @@ export function ResourceForm({ resource, categories, organizations }: ResourceFo
           error={errors.fileUrl}
           hint={isPrivate ? 'Stocké en privé : servi uniquement par lien signé aux ayants droit.' : 'Stocké en public.'}
         />
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="URL externe" htmlFor="externalUrl" error={errors.externalUrl} hint="Si le document est hébergé ailleurs (site officiel, vidéo en ligne).">
             <Input name="externalUrl" type="url" defaultValue={resource?.externalUrl ?? ''} placeholder="https://" />
           </FormField>
@@ -104,7 +104,7 @@ export function ResourceForm({ resource, categories, organizations }: ResourceFo
       </EditorSection>
 
       <EditorSection title="Accès et métadonnées" pillar="defense">
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Niveau d’accès" htmlFor="accessLevel" required error={errors.accessLevel} hint="Membres : compte connecté ; Organisation : membres de l’organisation rattachée ; Premium : achat.">
             <NativeSelect name="accessLevel" value={accessLevel} onChange={(event) => setAccessLevel(event.target.value)} options={optionsFrom(accessLevelLabels)} />
           </FormField>

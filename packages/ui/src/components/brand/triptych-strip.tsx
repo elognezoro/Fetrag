@@ -80,7 +80,7 @@ export function TriptychStrip({ variant = 'cards', items, inverted = false, clas
   }
 
   return (
-    <ol className={cn('grid gap-4 sm:grid-cols-3 sm:gap-6', className)} {...props}>
+    <ol className={cn('grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6', className)} {...props}>
       {entries.map((entry, index) => {
         const tone = pillarTone[entry.pillar]
         const classes = toneClasses[tone]

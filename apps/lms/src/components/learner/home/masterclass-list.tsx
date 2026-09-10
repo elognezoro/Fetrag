@@ -41,7 +41,7 @@ export function MasterclassList({ events }: MasterclassListProps) {
             className="mt-8"
           />
         ) : (
-          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             {events.map((event, index) => (
               <Reveal key={event.id} delay={index * 0.08}>
                 <Card as="article" pillar="navy" interactive className="flex h-full flex-col">

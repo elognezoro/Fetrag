@@ -21,7 +21,7 @@ export function MembershipCta({
 }: MembershipCtaProps) {
   return (
     <Section variant="dark" padding="lg" aria-labelledby="membership-title" rings={{ scheme: 'light', opacity: 0.12, position: 'top-right', rings: 5 }}>
-      <div className="grid items-center gap-12 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.2fr_0.8fr]">
         <Reveal>
           <Ribbon tone="gold" size="lg" tilt>
             {eyebrow}

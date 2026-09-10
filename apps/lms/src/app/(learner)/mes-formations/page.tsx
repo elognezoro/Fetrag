@@ -81,7 +81,7 @@ export default async function MyCoursesPage({ searchParams }: PageProps) {
             }
           />
         ) : (
-          <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-label={`Inscriptions : ${enrollmentFilterLabels[filter].toLowerCase()}`}>
+          <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3" aria-label={`Inscriptions : ${enrollmentFilterLabels[filter].toLowerCase()}`}>
             {view.items.map((item) => (
               <StaggerItem key={item.enrollment.id} as="li" className="h-full">
                 <EnrollmentCard enrollment={item.enrollment} nextHref={item.nextHref} />

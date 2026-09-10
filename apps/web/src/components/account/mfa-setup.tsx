@@ -118,7 +118,7 @@ export function MfaSetup({ enabled, backupCodesLeft }: MfaSetupProps) {
     <form action={confirmAction} className="flex flex-col gap-5" noValidate>
       <FormStatus state={confirmState} />
       <input type="hidden" name="secret" value={setup.secret} />
-      <ol className="grid gap-5 md:grid-cols-[auto_1fr] md:items-start">
+      <ol className="grid grid-cols-1 gap-5 md:grid-cols-[auto_1fr] md:items-start">
         <li className="flex flex-col items-center gap-2 rounded-2xl border border-neutral-200 bg-white p-4">
           <p className="eyebrow text-[10px] text-blue-700">Étape 1</p>
           {/* eslint-disable-next-line @next/next/no-img-element */}

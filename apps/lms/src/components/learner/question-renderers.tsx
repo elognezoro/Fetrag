@@ -133,7 +133,7 @@ function Matching({ question, value, onChange, disabled }: QuestionRendererProps
         const id = `${baseId}-${option.id}`
         const current = pairs.find((p) => p.optionId === option.id)?.value ?? ''
         return (
-          <div key={option.id} className="grid gap-2 rounded-xl border border-neutral-200 bg-white p-3 sm:grid-cols-[1fr_1.4fr] sm:items-center">
+          <div key={option.id} className="grid grid-cols-1 gap-2 rounded-xl border border-neutral-200 bg-white p-3 sm:grid-cols-[1fr_1.4fr] sm:items-center">
             <Label htmlFor={id} className="text-sm">
               <span className="mr-2 font-display text-base text-blue-600">{String.fromCharCode(65 + index)}</span>
               {option.label}

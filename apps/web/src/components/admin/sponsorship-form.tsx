@@ -53,7 +53,7 @@ export function SponsorshipDialog({ organizations, courses, events }: Sponsorshi
           <FormField label="Email du bénéficiaire" htmlFor={`${id}-email`} required error={errors.email} hint="Le compte doit déjà exister.">
             <Input id={`${id}-email`} name="email" type="email" inputMode="email" autoComplete="off" required />
           </FormField>
-          <div className="grid gap-4 sm:grid-cols-[1fr_8rem]">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_8rem]">
             <FormField label="Libellé" htmlFor={`${id}-label`} required error={errors.label} hint="Ex. « Bourse FETRAG 2026 », « Prise en charge SYNATEP ».">
               <Input id={`${id}-label`} name="label" maxLength={120} required />
             </FormField>

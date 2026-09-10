@@ -67,7 +67,7 @@ export default async function DashboardPage() {
               }
             />
           ) : (
-            <Stagger as="ul" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-label="Parcours à reprendre">
+            <Stagger as="ul" className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3" aria-label="Parcours à reprendre">
               {dashboard.continueLearning.map((item) => (
                 <StaggerItem key={item.enrollment.id} as="li" className="h-full">
                   <ContinueCard item={item} />
@@ -86,7 +86,7 @@ export default async function DashboardPage() {
           ) : null}
         </DashboardSection>
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-10">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-10">
           <DashboardSection
             id="echeances-title"
             number="02"
@@ -126,7 +126,7 @@ export default async function DashboardPage() {
           </DashboardSection>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-10">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-10">
           <DashboardSection
             id="certificats-title"
             number="04"

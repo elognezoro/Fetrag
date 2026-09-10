@@ -6,7 +6,7 @@ export default function Loading() {
     <div aria-busy="true" aria-live="polite">
       <span className="sr-only">Chargement du tableau de bord</span>
       <div className="bg-navy-gradient py-12 sm:py-14">
-        <div className="container-fetrag grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div className="container-fetrag grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
           <div>
             <Skeleton className="h-4 w-28 rounded-full bg-white/20" />
             <Skeleton className="mt-4 h-10 w-2/3 max-w-md bg-white/20" />
@@ -27,13 +27,13 @@ export default function Loading() {
       <div className="container-fetrag flex flex-col gap-12 py-10">
         <div>
           <Skeleton className="h-8 w-48" />
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {Array.from({ length: 3 }, (_, index) => (
               <Skeleton key={index} className="h-52 rounded-2xl" />
             ))}
           </div>
         </div>
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           {Array.from({ length: 2 }, (_, column) => (
             <div key={column}>
               <Skeleton className="h-8 w-40" />

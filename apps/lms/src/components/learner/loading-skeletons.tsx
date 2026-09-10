@@ -20,7 +20,7 @@ export function HeaderSkeleton({ className }: SkeletonProps) {
 /** Grille de cartes (catalogue, formations, certificats). */
 export function GridSkeleton({ count = 6, className }: SkeletonProps & { count?: number }) {
   return (
-    <div className={cn('grid gap-5 sm:grid-cols-2 xl:grid-cols-3', className)} aria-hidden="true">
+    <div className={cn('grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3', className)} aria-hidden="true">
       {Array.from({ length: count }, (_, index) => (
         <div key={index} className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft">
           <div className="flex gap-5">
@@ -56,7 +56,7 @@ export function DetailSkeleton() {
     <div aria-busy="true" aria-live="polite">
       <span className="sr-only">Chargement en cours</span>
       <HeaderSkeleton />
-      <div className="container-fetrag grid gap-8 py-10 lg:grid-cols-[1fr_340px]">
+      <div className="container-fetrag grid grid-cols-1 gap-8 py-10 lg:grid-cols-[1fr_340px]">
         <div className="flex flex-col gap-6">
           <Skeleton lines={5} />
           <Skeleton className="h-40 w-full rounded-2xl" />
@@ -78,7 +78,7 @@ export function ReaderSkeleton() {
     <div className="container-fetrag py-6" aria-busy="true" aria-live="polite">
       <span className="sr-only">Chargement de la leçon</span>
       <Skeleton className="h-4 w-48 rounded-full" />
-      <div className="mt-6 grid gap-6 lg:grid-cols-[320px_1fr]">
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[320px_1fr]">
         <div className="hidden rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft lg:block">
           <Skeleton className="h-5 w-3/4" />
           <Skeleton className="mt-3 h-2 w-full rounded-full" />

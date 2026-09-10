@@ -30,7 +30,7 @@ export function NewsSection({ articles }: NewsSectionProps) {
       {!first ? (
         <EmptyState icon={Newspaper} title="Aucune actualité publiée pour le moment" description="Les prochaines publications de la Fédération apparaîtront ici." />
       ) : (
-        <Stagger className="grid gap-5 lg:grid-cols-[1.2fr_1fr]">
+        <Stagger className="grid grid-cols-1 gap-5 lg:grid-cols-[1.2fr_1fr]">
           <StaggerItem className="h-full">
             <ArticleCard article={first} featured priority />
           </StaggerItem>

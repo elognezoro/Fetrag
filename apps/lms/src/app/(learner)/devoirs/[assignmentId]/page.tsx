@@ -56,7 +56,7 @@ export default async function AssignmentPage({ params }: PageProps) {
         homeHref="/dashboard"
       />
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+      <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
         <div className="flex min-w-0 flex-col gap-8">
           <header className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft pillar-top-gold sm:p-8">
             <Ribbon tone="gold">Devoir</Ribbon>
@@ -136,7 +136,7 @@ export default async function AssignmentPage({ params }: PageProps) {
           ) : null}
 
           {graded && grade ? (
-            <section aria-labelledby="note-title" className="grid gap-6 rounded-2xl border border-green-200 bg-white p-6 shadow-soft sm:grid-cols-[auto_1fr] sm:items-center sm:p-8">
+            <section aria-labelledby="note-title" className="grid grid-cols-1 gap-6 rounded-2xl border border-green-200 bg-white p-6 shadow-soft sm:grid-cols-[auto_1fr] sm:items-center sm:p-8">
               <ArcRing size={140} stroke={12} progress={percent ?? 0} tone={(percent ?? 0) >= 50 ? 'green' : 'gold'} animate className="mx-auto">
                 <span className="flex flex-col items-center">
                   <span className="font-display text-3xl font-semibold text-navy">

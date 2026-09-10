@@ -115,7 +115,7 @@ export function VersionPanel({ courseId, currentVersionId, selectedVersionId, ve
             <DialogTitle>Comparer les journaux de modifications</DialogTitle>
             <DialogDescription>Chaque version documente ce qui a changé par rapport à la précédente.</DialogDescription>
           </DialogHeader>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {versions.map((v) => (
               <article key={v.id} className="rounded-xl border border-neutral-200 p-3 text-sm">
                 <h3 className="font-semibold text-navy">
@@ -180,7 +180,7 @@ function VersionDialog({ mode, courseId, version, completionRules, prominent = f
           <FormField label="Journal des modifications" htmlFor={`${id}-changelog`} error={errors.changelog}>
             <Textarea name="changelog" rows={4} maxLength={5000} defaultValue={mode === 'edit' ? version?.changelog ?? '' : ''} placeholder="Mise à jour du Code du travail, nouveau quiz sur la médiation, ajout d'une étude de cas." />
           </FormField>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <FormField label="Score minimal (%)" htmlFor={`${id}-pass`} error={errors['completionRules.passScore']}>
               <Input name="passScore" type="number" min={0} max={100} defaultValue={completionRules?.passScore ?? 60} />
             </FormField>

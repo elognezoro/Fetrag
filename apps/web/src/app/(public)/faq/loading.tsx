@@ -7,7 +7,7 @@ export default function FaqLoading() {
     <div aria-busy="true" aria-live="polite">
       <span className="sr-only">Chargement en cours</span>
       <HeaderSkeleton />
-      <div className="container-fetrag grid gap-10 py-10 lg:grid-cols-[16rem_minmax(0,1fr)]">
+      <div className="container-fetrag grid grid-cols-1 gap-10 py-10 lg:grid-cols-[16rem_minmax(0,1fr)]">
         <Skeleton lines={5} />
         <div className="flex flex-col gap-3">
           {Array.from({ length: 6 }, (_, index) => (

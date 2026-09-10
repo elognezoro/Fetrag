@@ -39,7 +39,7 @@ export function HowItWorks() {
         }
         description="Un parcours structuré, pensé pour les responsables syndicaux en activité : accessible sur mobile, en faible connexion, et rythmé par des séances en présentiel au siège de la Fédération."
       />
-      <Stagger className="mt-10 grid gap-5 md:grid-cols-3">
+      <Stagger className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
         {steps.map((step, index) => {
           const tone = toneAt(index)
           const classes = toneClasses[tone]

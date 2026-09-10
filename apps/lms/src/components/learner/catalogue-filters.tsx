@@ -54,7 +54,7 @@ export function CatalogueFilters({ total }: CatalogueFiltersProps) {
         update({ q: query.trim() })
       }}
     >
-      <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
         <FormField label="Rechercher" htmlFor="catalogue-q">
           <Input
             type="search"

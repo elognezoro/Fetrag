@@ -55,7 +55,7 @@ export default async function AdminReportsPage() {
         </h2>
         {web ? (
           <>
-            <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <StaggerItem>
                 <StatTile value={web.visits.totalViews} label="Pages vues" icon={Eye} tone="blue" description={`${plural(web.visits.uniqueVisitors, 'visiteur unique', 'visiteurs uniques')}`} />
               </StaggerItem>
@@ -69,7 +69,7 @@ export default async function AdminReportsPage() {
                 <StatTile value={web.orders.conversionRate} suffix=" %" label="Conversion des commandes" icon={TrendingUp} tone="navy" description={`${web.orders.paid} payée${web.orders.paid > 1 ? 's' : ''} sur ${web.orders.total}`} />
               </StaggerItem>
             </Stagger>
-            <div className="grid gap-6 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               <Reveal className="lg:col-span-2">
                 <Card pillar="protection" className="h-full">
                   <CardHeader>
@@ -135,7 +135,7 @@ export default async function AdminReportsPage() {
         </h2>
         {lms ? (
           <>
-            <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <StaggerItem>
                 <StatTile value={lms.activeLearners30d} label="Apprenants actifs sur 30 jours" icon={Users} tone="blue" description={`${plural(lms.enrollments.total, 'inscription')} au total`} />
               </StaggerItem>
@@ -149,7 +149,7 @@ export default async function AdminReportsPage() {
                 <StatTile value={lms.certificates.last30d} label="Certificats émis sur 30 jours" icon={Award} tone="navy" description={`${lms.certificates.total} valides · ${lms.certificates.revoked} révoqué${lms.certificates.revoked > 1 ? 's' : ''}`} />
               </StaggerItem>
             </Stagger>
-            <div className="grid gap-6 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               <Reveal className="lg:col-span-2">
                 <Card pillar="prevention" className="h-full">
                   <CardHeader>
@@ -239,7 +239,7 @@ export default async function AdminReportsPage() {
         )}
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Reveal className="lg:col-span-2">
           <Card className="h-full">
             <CardHeader>
@@ -248,7 +248,7 @@ export default async function AdminReportsPage() {
             </CardHeader>
             <CardContent>
               {top ? (
-                <div className="grid gap-6 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div>
                     <p className="eyebrow mb-2 text-[10px] text-blue-700">Actualités (vues)</p>
                     <ol className="flex flex-col gap-1.5 text-sm">

@@ -80,7 +80,7 @@ export function CertificatePreview({ view, className }: CertificatePreviewProps)
           ) : null}
         </dl>
 
-        <div className="mt-10 grid items-end gap-6 sm:grid-cols-[1fr_auto_1fr]">
+        <div className="mt-10 grid grid-cols-1 items-end gap-6 sm:grid-cols-[1fr_auto_1fr]">
           <div className="flex flex-col items-center sm:items-start">
             {/* Code QR généré côté serveur en data URL : aucune optimisation next/image possible ni utile. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}

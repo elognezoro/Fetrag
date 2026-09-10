@@ -145,7 +145,7 @@ function BankPicker({ quizId, courseId, categories, excludeIds }: { quizId: stri
   }
   return (
     <div className="flex w-full flex-col gap-3 rounded-xl border border-blue-200 bg-blue-50/40 p-3">
-      <div className="grid gap-2 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
         <label htmlFor={`${id}-q`} className="sr-only">
           Rechercher une question
         </label>
@@ -218,7 +218,7 @@ function QuickCreate({ quizId, courseId, isSurvey }: { quizId: string; courseId:
       <input type="hidden" name="quizId" value={quizId} />
       <input type="hidden" name="courseId" value={courseId} />
       <ActionAlert state={state} />
-      <div className="grid gap-3 sm:grid-cols-[12rem_1fr]">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-[12rem_1fr]">
         <FormField label="Type" htmlFor={`${id}-type`}>
           <NativeSelect name="type" value={type} onChange={(event) => setType(event.target.value as QuestionTypeName)} options={(['SINGLE_CHOICE', 'MULTIPLE_CHOICE', 'TRUE_FALSE', 'SHORT_ANSWER', 'ESSAY'] as QuestionTypeName[]).map((t) => ({ value: t, label: questionTypeLabels[t] }))} />
         </FormField>
@@ -256,7 +256,7 @@ function QuickCreate({ quizId, courseId, isSurvey }: { quizId: string; courseId:
           <Textarea name="options" rows={3} required placeholder={'Inspection du travail\ninspecteur du travail'} />
         </FormField>
       ) : null}
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <FormField label="Points" htmlFor={`${id}-points`}>
           <Input name="points" type="number" min={1} max={100} defaultValue={isSurvey ? 1 : 1} />
         </FormField>

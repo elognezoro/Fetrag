@@ -84,7 +84,7 @@ export default async function AdminCertificateTemplatePage({ params }: PageProps
         }
       />
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <StaffSection number="01" title="Aperçu" tone="gold" className="mb-0" description="Mise en page du PDF : sceau FETRAG, textes imprimés, signataire, numéro séquentiel et code QR de vérification.">
             <CertificatePreview kind={template.kind} titleText={template.titleText} bodyText={template.bodyText} signatoryName={template.signatoryName} signatoryTitle={template.signatoryTitle} courseTitle={template.course?.title ?? null} validityMonths={template.validityMonths} />

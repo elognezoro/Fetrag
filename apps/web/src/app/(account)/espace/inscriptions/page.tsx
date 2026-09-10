@@ -65,7 +65,7 @@ export default async function RegistrationsPage() {
             </CardContent>
           </Card>
         ) : (
-          <Stagger className="grid gap-4 md:grid-cols-2">
+          <Stagger className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {enrollments.map((enrollment) => {
               const pillar = enrollment.course.pillar as PillarName | null
               return (
@@ -115,7 +115,7 @@ export default async function RegistrationsPage() {
         )}
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Reveal>
           <Card pillar="prevention" className="h-full">
             <CardHeader>

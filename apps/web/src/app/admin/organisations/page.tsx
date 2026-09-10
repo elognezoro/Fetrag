@@ -39,7 +39,7 @@ export default async function AdminOrganizationsPage({ searchParams }: { searchP
           ) : undefined
         }
       />
-      <Stagger className="grid gap-4 sm:grid-cols-3">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StaggerItem>
           <StatTile value={result.counts.affiliates} label="Organisations affiliées" icon={Building2} tone="blue" />
         </StaggerItem>

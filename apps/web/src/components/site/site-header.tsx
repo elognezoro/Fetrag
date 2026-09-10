@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowUpRight, GraduationCap, LogIn, Menu, X } from 'lucide-react'
 import { Button, Logo, cn } from '@fetrag/ui'
@@ -120,6 +121,10 @@ interface MobileDrawerProps {
 function MobileDrawer({ open, onClose, user, pathname }: MobileDrawerProps) {
   const reduceMotion = useReducedMotion()
   const closeButtonRef = useRef<HTMLButtonElement>(null)
+  // Rendu dans un portail : l'en-tête (backdrop-filter) créerait sinon un bloc conteneur pour position:fixed
+  // et le tiroir serait réduit à la hauteur de l'en-tête.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
 
   useEffect(() => {
     if (!open) return
@@ -139,13 +144,14 @@ function MobileDrawer({ open, onClose, user, pathname }: MobileDrawerProps) {
 
   const panelTransition = reduceMotion ? { duration: 0 } : { type: 'spring' as const, stiffness: 320, damping: 32 }
 
-  return (
+  if (!mounted) return null
+  return createPortal(
     <AnimatePresence>
       {open ? (
         <motion.div
           key="mobile-menu"
           id="menu-mobile"
-          className="fixed inset-0 z-50 lg:hidden"
+          className="fixed inset-0 z-50 xl:hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -240,6 +246,7 @@ function MobileDrawer({ open, onClose, user, pathname }: MobileDrawerProps) {
           </motion.div>
         </motion.div>
       ) : null}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   )
 }

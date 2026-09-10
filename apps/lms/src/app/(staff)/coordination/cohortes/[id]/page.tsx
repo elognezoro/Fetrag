@@ -84,7 +84,7 @@ export default async function CoordinationCohortPage({ params, searchParams }: P
         tone="green"
       />
 
-      <div className="mb-8 grid gap-6 lg:grid-cols-3">
+      <div className="mb-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card pillar="prevention">
           <CardContent className="flex flex-wrap items-center justify-around gap-4 p-5">
             <ProgressRing value={cohort.stats.averageProgress} label="Progression moyenne" size={112} />

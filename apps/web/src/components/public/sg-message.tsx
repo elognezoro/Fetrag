@@ -30,7 +30,7 @@ export function SgPortrait({ priority = false, className }: { priority?: boolean
 export function SgMessage() {
   return (
     <Section variant="soft" padding="lg" rings={{ position: 'top-right', opacity: 0.06, rings: 4 }} aria-labelledby="sg-title">
-      <div className="grid items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <Reveal y={24} className="order-2 lg:order-1">
           <SgPortrait />
         </Reveal>

@@ -80,7 +80,7 @@ export default async function AdminQuestionPage({ params }: PageProps) {
         }
       />
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <StaffSection number="01" title="Aperçu" tone="gold" className="mb-0" description="Rendu de la question telle qu'elle est corrigée : bonnes réponses, appariements, réponses acceptées, grille.">
             <Card>

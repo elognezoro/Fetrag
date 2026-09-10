@@ -59,7 +59,7 @@ export default async function AdminDashboardPage() {
         </Alert>
       ) : null}
 
-      <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {data.web ? (
           <StaggerItem>
             <StatTile value={data.web.visits.totalViews} label="Pages vues sur 30 jours" icon={Eye} tone="blue" description={`${data.web.visits.uniqueVisitors} visiteurs uniques`} />
@@ -90,7 +90,7 @@ export default async function AdminDashboardPage() {
       </Stagger>
 
       {data.web ? (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Reveal className="lg:col-span-2">
             <Card pillar="protection" className="h-full">
               <CardHeader>
@@ -126,7 +126,7 @@ export default async function AdminDashboardPage() {
         </div>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {abilities.readDrafts ? (
           <Reveal>
             <Card pillar="defense" className="h-full">
@@ -281,7 +281,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {data.top || data.lms ? (
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {data.top ? (
             <Reveal className="lg:col-span-2">
               <Card className="h-full">
@@ -289,7 +289,7 @@ export default async function AdminDashboardPage() {
                   <CardTitle as="h2">Contenus les plus consultés</CardTitle>
                   <CardDescription>Actualités, ressources et formations qui retiennent l’attention.</CardDescription>
                 </CardHeader>
-                <CardContent className="grid gap-6 sm:grid-cols-3">
+                <CardContent className="grid grid-cols-1 gap-6 sm:grid-cols-3">
                   <div>
                     <p className="eyebrow mb-2 text-[10px] text-blue-700">Actualités</p>
                     <ol className="flex flex-col gap-1.5 text-sm">

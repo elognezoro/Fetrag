@@ -83,7 +83,7 @@ export default async function PartnershipPage() {
             className="mb-10"
           />
         </Reveal>
-        <Stagger as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger as="ul" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {partnershipTypes.map((type, index) => {
             const tone = toneAt(index)
             const classes = toneClasses[tone]
@@ -109,7 +109,7 @@ export default async function PartnershipPage() {
       </Section>
 
       <Section variant="dark" padding="lg" aria-labelledby="commitments-title" rings={{ scheme: 'light', opacity: 0.12, position: 'top-right', rings: 5 }}>
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <Reveal>
             <SectionHeading
               eyebrow="Nos engagements"
@@ -153,7 +153,7 @@ export default async function PartnershipPage() {
       </Section>
 
       <Section variant="soft" padding="lg" bordered id="formulaire" className="scroll-mt-24" rings={{ position: 'bottom-right', opacity: 0.06, rings: 4 }} aria-labelledby="form-title">
-        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
           <Reveal>
             <SectionHeading
               eyebrow="Formulaire"

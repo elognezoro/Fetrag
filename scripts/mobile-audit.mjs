@@ -52,11 +52,12 @@ const routes = args.routes ? args.routes.split(',').map((r) => r.trim()) : defau
 
 /** Connexion par le flux Auth.js (credentials) via le contexte de requêtes : pose le cookie de session. */
 async function login(context, email, password) {
-  const csrfRes = await context.request.get(`${base}/api/auth/csrf`)
+  const csrfRes = await context.request.get(`${base}/api/auth/csrf`, { timeout: 180_000 })
   const { csrfToken } = await csrfRes.json()
   const res = await context.request.post(`${base}/api/auth/callback/credentials`, {
     form: { csrfToken, email, password, callbackUrl: `${base}/` },
     maxRedirects: 0,
+    timeout: 180_000,
   })
   const location = res.headers()['location'] ?? ''
   if (location.includes('error=')) throw new Error(`Connexion refusée pour ${email} : ${location}`)
@@ -82,16 +83,23 @@ const findOverflow = () => {
     return `${el.tagName.toLowerCase()}${id}${cls}${text ? ` « ${text} »` : ''}`
   }
   const offenders = []
+  const cutText = []
+  const hasOwnText = (el) => [...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim().length > 0)
   for (const el of document.querySelectorAll('body *')) {
     const r = el.getBoundingClientRect()
     if (r.width === 0 || r.height === 0) continue
-    if ((r.right > vw + 1 || r.left < -1) && !clipped(el)) {
-      offenders.push({ el: describe(el), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) })
+    const s = getComputedStyle(el)
+    if (s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) continue
+    const outside = r.right > vw + 1 || r.left < -1
+    if (!outside) continue
+    if (!clipped(el)) {
+      if (offenders.length < 12) offenders.push({ el: describe(el), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) })
+    } else if (hasOwnText(el) && s.textOverflow !== 'ellipsis' && !el.closest('[class*="marquee"], .sr-only, [aria-hidden="true"]')) {
+      // texte visible coupé par un conteneur overflow-hidden (débordement perçu par l'utilisateur)
+      if (cutText.length < 12) cutText.push({ el: describe(el), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) })
     }
-    if (offenders.length >= 12) break
   }
-  // ne garder que les ancêtres les plus hauts (les enfants d'un élément fautif sont redondants)
-  return { vw, docWidth, overflow: docWidth > vw + 1, offenders }
+  return { vw, docWidth, overflow: docWidth > vw + 1, offenders, cutText }
 }
 
 const testMobileMenu = async (page) => {
@@ -157,6 +165,7 @@ for (const width of widths) {
       const overflow = await page.evaluate(findOverflow)
       entry.overflow = overflow
       if (overflow.overflow) failures++
+      if (overflow.cutText?.length) failures++
       if (route === '/' || route === '/catalogue' || route === '/connexion') {
         entry.menu = await testMobileMenu(page)
         if (entry.menu.present && !(entry.menu.visible && entry.menu.drawerVisible)) failures++
@@ -171,11 +180,15 @@ for (const width of widths) {
       failures++
     }
     report.results.push(entry)
+    const cut = entry.overflow?.cutText?.length ? ` | ${entry.overflow.cutText.length} texte(s) coupé(s)` : ''
     const flag = entry.error ? 'ERREUR' : entry.overflow?.overflow ? `DÉBORDEMENT ${entry.overflow.docWidth}px` : 'ok'
     const menu = entry.menu ? ` | menu: ${entry.menu.present ? (entry.menu.drawerVisible ? 'ok' : 'KO') : 'absent'}` : ''
-    console.log(`[${width}] ${entry.status ?? '---'} ${route} -> ${flag}${menu}${entry.error ? ` (${entry.error})` : ''}`)
+    console.log(`[${width}] ${entry.status ?? '---'} ${route} -> ${flag}${cut}${menu}${entry.error ? ` (${entry.error})` : ''}`)
     if (entry.overflow?.offenders?.length) {
-      for (const o of entry.overflow.offenders.slice(0, 4)) console.log(`      ${o.el} [${o.left}..${o.right}]`)
+      for (const o of entry.overflow.offenders.slice(0, 4)) console.log(`      débordement : ${o.el} [${o.left}..${o.right}]`)
+    }
+    if (entry.overflow?.cutText?.length) {
+      for (const o of entry.overflow.cutText.slice(0, 4)) console.log(`      texte coupé : ${o.el} [${o.left}..${o.right}]`)
     }
   }
   await context.close()

@@ -55,7 +55,7 @@ export default async function AdminServiceRequestsPage({ searchParams }: { searc
           </Button>
         }
       />
-      <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={counts.NEW} label="Nouvelles" tone="gold" description="À attribuer" />
         </StaggerItem>

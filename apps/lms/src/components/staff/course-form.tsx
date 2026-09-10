@@ -65,7 +65,7 @@ export function CourseForm({ course, categories, trainers }: CourseFormProps) {
       <ActionAlert state={state} />
 
       <Section number="01" title="Identité du module">
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField label="Titre" htmlFor={`${id}-title`} required error={errors.title} className="sm:col-span-2">
             <Input name="title" defaultValue={course?.title ?? ''} required maxLength={200} placeholder="Négociation Collective et Dialogue Social" />
           </FormField>
@@ -100,7 +100,7 @@ export function CourseForm({ course, categories, trainers }: CourseFormProps) {
       </Section>
 
       <Section number="02" title="Pédagogie" tone="green">
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField label="Description détaillée" htmlFor={`${id}-description`} error={errors.description} className="sm:col-span-2" hint="Présentation complète (HTML simple accepté).">
             <Textarea name="description" rows={8} defaultValue={course?.description ?? ''} />
           </FormField>
@@ -129,7 +129,7 @@ export function CourseForm({ course, categories, trainers }: CourseFormProps) {
       </Section>
 
       <Section number="03" title="Accès et tarification" tone="gold">
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <FormField label="Politique d'inscription" htmlFor={`${id}-policy`} error={errors.enrollmentPolicy} className="sm:col-span-2">
             <NativeSelect name="enrollmentPolicy" defaultValue={course?.enrollmentPolicy ?? 'SELF'} options={enrollmentPolicies.map((p) => ({ value: p, label: enrollmentPolicyLabels[p] }))} />
           </FormField>
@@ -156,7 +156,7 @@ export function CourseForm({ course, categories, trainers }: CourseFormProps) {
       <Section number="04" title="Formateurs du cours" tone="navy">
         <p className="mb-3 text-sm text-neutral-600">Les formateurs du cours peuvent enseigner toutes ses cohortes, corriger et alimenter la banque de questions.</p>
         {trainers.length ? (
-          <ul className="grid gap-2 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {trainers.map((t) => (
               <li key={t.id}>
                 <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-neutral-200 p-3 text-sm hover:border-blue-300">

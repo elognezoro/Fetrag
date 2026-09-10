@@ -7,7 +7,7 @@ export default function VerifyLoading() {
     <div aria-busy="true" aria-live="polite">
       <span className="sr-only">Vérification en cours</span>
       <HeaderSkeleton />
-      <div className="container-fetrag grid gap-10 py-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <div className="container-fetrag grid grid-cols-1 gap-10 py-10 lg:grid-cols-[1.1fr_0.9fr]">
         <Skeleton className="h-72 w-full rounded-2xl" />
         <Skeleton className="h-72 w-full rounded-2xl" />
       </div>

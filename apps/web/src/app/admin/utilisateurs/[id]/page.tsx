@@ -79,7 +79,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               <CardHeader>
                 <CardTitle as="h2">Profil</CardTitle>
               </CardHeader>
-              <CardContent className="grid gap-4 sm:grid-cols-2">
+              <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <p className="flex items-start gap-2 text-sm">
                   <Mail className="mt-0.5 size-4 shrink-0 text-blue-600" aria-hidden="true" />
                   <span>
@@ -306,7 +306,7 @@ export default async function AdminUserDetailPage({ params }: PageProps) {
               </CardContent>
             </Card>
 
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card>
                 <CardHeader>
                   <CardTitle as="h2">Consentements</CardTitle>

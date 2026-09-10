@@ -59,7 +59,7 @@ export default async function FaqPage() {
       />
 
       <Section variant="white" padding="md" containerSize="wide" rings={{ position: 'left', opacity: 0.05, rings: 3 }}>
-        <div className="grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-14">
           <nav aria-label="Thèmes" className="lg:sticky lg:top-24 lg:self-start">
             <p className="eyebrow text-[11px] text-neutral-500">Thèmes</p>
             <ol className="mt-3 flex flex-wrap gap-2 lg:flex-col">

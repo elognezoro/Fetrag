@@ -7,7 +7,7 @@ export default function Loading() {
     <div aria-busy="true" aria-live="polite">
       <span className="sr-only">Chargement du calendrier</span>
       <HeaderSkeleton />
-      <div className="container-fetrag grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="container-fetrag grid grid-cols-1 gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_360px]">
         <div>
           <div className="flex items-center gap-2">
             <Skeleton circle className="size-11" />

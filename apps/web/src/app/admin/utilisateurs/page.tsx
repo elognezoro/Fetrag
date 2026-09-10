@@ -45,7 +45,7 @@ export default async function AdminUsersPage({ searchParams }: { searchParams: P
           ) : undefined
         }
       />
-      <Stagger className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StaggerItem>
           <StatTile value={result.total} label={params.q || params.status || Object.keys(params.filters).length ? 'Comptes correspondant aux filtres' : 'Comptes enregistrés'} icon={Users} tone="blue" />
         </StaggerItem>

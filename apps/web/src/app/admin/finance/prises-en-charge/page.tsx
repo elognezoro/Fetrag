@@ -42,7 +42,7 @@ export default async function AdminSponsorshipsPage({ searchParams }: { searchPa
         actions={options ? <SponsorshipDialog organizations={options.organizations} courses={options.courses} events={options.events} /> : undefined}
       />
       <FinanceSubnav current={BASE} />
-      <Stagger className="grid gap-4 sm:grid-cols-2">
+      <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StaggerItem>
           <StatTile value={result.active} label="Prises en charge en cours de validité" icon={HandHeart} tone="green" />
         </StaggerItem>

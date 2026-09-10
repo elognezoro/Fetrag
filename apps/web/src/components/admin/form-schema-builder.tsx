@@ -137,7 +137,7 @@ export function FormSchemaBuilder({ name = 'formSchema', defaultValue, error }: 
                   <IconButton label={`Supprimer le champ ${row.label || index + 1}`} icon={Trash2} size="sm" className="text-red-700 hover:bg-red-50" onClick={() => setRows((c) => c.filter((r) => r.key !== row.key))} />
                 </div>
               </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <FormField label="Libellé" htmlFor={`${id}-${row.key}-label`} required>
                   <Input
                     id={`${id}-${row.key}-label`}

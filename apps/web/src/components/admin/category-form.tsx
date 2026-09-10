@@ -57,7 +57,7 @@ export function CategoryFormDialog({ trigger, category, defaultKind = 'article' 
         <form action={action} className="flex flex-col gap-4" noValidate>
           {category?.id ? <input type="hidden" name="id" value={category.id} /> : null}
           <FormStatus state={state} withToast={false} />
-          <div className="grid gap-4 sm:grid-cols-[1fr_11rem]">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-[1fr_11rem]">
             <FormField label="Nom" htmlFor="cat-name" required error={errors.name}>
               <Input id="cat-name" name="name" defaultValue={category?.name ?? ''} maxLength={120} required />
             </FormField>
@@ -73,7 +73,7 @@ export function CategoryFormDialog({ trigger, category, defaultKind = 'article' 
           <FormField label="Description" htmlFor="cat-description" error={errors.description}>
             <Textarea id="cat-description" name="description" defaultValue={category?.description ?? ''} rows={2} maxLength={500} />
           </FormField>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <FormField label="Slug" htmlFor="cat-slug" error={errors.slug} hint="Généré si vide.">
               <Input id="cat-slug" name="slug" defaultValue={category?.slug ?? ''} maxLength={120} pattern="[a-z0-9]+(?:-[a-z0-9]+)*" />
             </FormField>

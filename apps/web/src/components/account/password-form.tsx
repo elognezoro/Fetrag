@@ -39,7 +39,7 @@ export function PasswordForm() {
       <FormField label="Mot de passe actuel" htmlFor="currentPassword" required error={errors.currentPassword}>
         <SecretInput id="currentPassword" name="currentPassword" autoComplete="current-password" />
       </FormField>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Nouveau mot de passe" htmlFor="newPassword" required error={errors.newPassword} hint="8 caractères minimum, dont une majuscule et un chiffre.">
           <SecretInput id="newPassword" name="newPassword" autoComplete="new-password" />
         </FormField>

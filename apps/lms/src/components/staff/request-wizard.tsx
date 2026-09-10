@@ -247,7 +247,7 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
         </div>
 
         {step === 1 ? (
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <FormField label="Organisation" htmlFor={`${baseId}-org`} required error={errors.organizationId?.message} className="sm:col-span-2">
               <NativeSelect
                 {...register('organizationId')}
@@ -280,7 +280,7 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
                 {errors.courseIds.message}
               </p>
             ) : null}
-            <div role="group" aria-label="Modules du programme" className="grid gap-4 md:grid-cols-2">
+            <div role="group" aria-label="Modules du programme" className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {modules.map((module, index) => {
                 const selected = courseIds.includes(module.id)
                 return (
@@ -422,7 +422,7 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
         ) : null}
 
         {step === 4 ? (
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <FormField label="Date de démarrage souhaitée" htmlFor={`${baseId}-preferredStart`} error={errors.preferredStart?.message} hint="Indicative : la coordination proposera un calendrier.">
               <Input type="date" {...register('preferredStart')} min={new Date().toISOString().slice(0, 10)} />
             </FormField>
@@ -506,7 +506,7 @@ export function RequestWizard({ organizations, modules, participantLimit, defaul
               </ul>
             </RecapBlock>
             <RecapBlock title={`Participants (${participants.fields.length})`} number="03" tone="gold">
-              <ul className="grid gap-1 sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2">
                 {(getValues('participants') ?? []).map((p, index) => (
                   <li key={index} className="text-sm">
                     <span className="font-medium text-ink">{p.fullName}</span>
@@ -625,7 +625,7 @@ function AttachmentsPanel({ draftId, attachments, onNeedDraft, saving }: { draft
         </ul>
       ) : null}
       {draftId ? (
-        <form action={formAction} encType="multipart/form-data" className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+        <form action={formAction} encType="multipart/form-data" className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           <input type="hidden" name="requestId" value={draftId} />
           <FormField label="Intitulé" htmlFor={`${id}-label`}>
             <Input name="label" placeholder="Lettre de demande signée" maxLength={160} />

@@ -26,7 +26,7 @@ export function AuditDiff({ before, after, id }: AuditDiffProps) {
         <ChevronDown className="size-3.5 transition-transform group-open:rotate-180" aria-hidden="true" />
         Détail
       </summary>
-      <div className="mt-2 grid gap-2 sm:grid-cols-2" id={`audit-diff-${id}`}>
+      <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2" id={`audit-diff-${id}`}>
         {hasBefore ? (
           <div className="min-w-0">
             <p className="eyebrow mb-1 text-[10px] text-neutral-500">Avant</p>

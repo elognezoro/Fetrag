@@ -171,7 +171,7 @@ export default async function AdminOrganizationDetailPage({ params, searchParams
               </CardContent>
             </Card>
 
-            <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               <Card pillar="prevention">
                 <CardHeader>
                   <CardTitle as="h2">Contacts</CardTitle>

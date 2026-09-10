@@ -25,7 +25,7 @@ export function RegisterForm() {
         <input id="register-website" name="website" type="text" tabIndex={-1} autoComplete="off" defaultValue="" />
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Prénom" htmlFor="register-firstName" required error={errors.firstName}>
           <Input id="register-firstName" name="firstName" autoComplete="given-name" required defaultValue={values.firstName ?? ''} aria-invalid={Boolean(errors.firstName)} />
         </FormField>
@@ -47,7 +47,7 @@ export function RegisterForm() {
         />
       </FormField>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Téléphone" htmlFor="register-phone" error={errors.phone} hint="Facultatif">
           <Input id="register-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" defaultValue={values.phone ?? ''} aria-invalid={Boolean(errors.phone)} placeholder="066 00 00 00" />
         </FormField>
@@ -56,7 +56,7 @@ export function RegisterForm() {
         </FormField>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <FormField label="Mot de passe" htmlFor="register-password" required error={errors.password} hint="8 caractères minimum, une majuscule et un chiffre.">
           <PasswordInput id="register-password" name="password" autoComplete="new-password" required aria-invalid={Boolean(errors.password)} />
         </FormField>

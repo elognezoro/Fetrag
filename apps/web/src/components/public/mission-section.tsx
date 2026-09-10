@@ -7,7 +7,7 @@ import { MISSION_TEXT, PILLAR_DESCRIPTIONS } from '@/server/public/institution'
 export function MissionSection() {
   return (
     <Section variant="white" padding="lg" rings={{ position: 'left', opacity: 0.05, rings: 3 }} aria-labelledby="mission-title">
-      <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <Reveal>
           <SectionHeading
             eyebrow="Notre mission"

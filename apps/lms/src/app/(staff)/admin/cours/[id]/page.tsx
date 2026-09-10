@@ -359,7 +359,7 @@ export default async function AdminCoursePage({ params, searchParams }: PageProp
               {course.objectives.length ? (
                 <div className="mt-4">
                   <p className="eyebrow mb-2 text-[11px] text-neutral-500">Objectifs pédagogiques</p>
-                  <ul className="grid gap-1 text-sm text-neutral-700 sm:grid-cols-2">
+                  <ul className="grid grid-cols-1 gap-1 text-sm text-neutral-700 sm:grid-cols-2">
                     {course.objectives.map((o, i) => (
                       <li key={i} className="flex items-start gap-2">
                         <span aria-hidden="true" className="mt-1 size-1.5 shrink-0 rounded-full bg-gold-500" />

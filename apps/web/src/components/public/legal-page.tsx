@@ -37,7 +37,7 @@ export function LegalPage({ slug, data }: LegalPageProps) {
         }
       />
       <Section variant="white" padding="md" containerSize="wide">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14">
           <Reveal>
             <Prose html={data.html} as="article" size="lg" />
           </Reveal>

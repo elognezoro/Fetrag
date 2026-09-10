@@ -45,7 +45,7 @@ function HeroBlock({ block }: { block: Extract<PageBlock, { type: 'hero' }> }) {
   return (
     <section id={block.anchor} className="relative isolate overflow-hidden border-b border-neutral-200 bg-white" aria-label={block.title ?? 'Introduction'}>
       <RingBackdrop position="right" rings={4} opacity={0.07} sizeClassName="size-[34rem] sm:size-[48rem]" />
-      <div className="container-fetrag relative grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+      <div className="container-fetrag relative grid grid-cols-1 gap-10 py-14 sm:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
         <Reveal>
           {block.eyebrow ? (
             <Ribbon tone={tone} size="lg" tilt>
@@ -121,7 +121,7 @@ function StatsBlock({ block }: { block: Extract<PageBlock, { type: 'stats' }> })
   return (
     <Section id={block.anchor} variant="muted" padding="md" bordered>
       {block.title ? <SectionHeading title={block.title} size="md" align="center" className="mb-10" /> : null}
-      <Stagger as="ul" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <Stagger as="ul" className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {block.items.map((item, index) => (
           <StaggerItem key={`${item.label}-${index}`} as="li">
             <StatTile value={item.value} label={item.label} prefix={item.prefix} suffix={item.suffix} tone={toneOf(item.tone, tones[index % tones.length])} />

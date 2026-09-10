@@ -108,7 +108,7 @@ export function ServiceRequestForm({ serviceId, slug, serviceName, fields, isPai
         </Alert>
       ) : null}
 
-      <fieldset className="grid gap-5 sm:grid-cols-2">
+      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <legend className="mb-1 font-display text-lg font-semibold text-navy sm:col-span-2">Vos coordonnées</legend>
         <FormField label="Nom complet" htmlFor="service-fullName" error={errors.fullName} required>
           <Input name="fullName" autoComplete="name" leadingIcon={User} defaultValue={values.fullName ?? viewer?.name ?? ''} maxLength={120} required />
@@ -125,7 +125,7 @@ export function ServiceRequestForm({ serviceId, slug, serviceName, fields, isPai
       </fieldset>
 
       {fields && fields.length > 0 ? (
-        <fieldset className="grid gap-5 sm:grid-cols-2">
+        <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <legend className="mb-1 font-display text-lg font-semibold text-navy sm:col-span-2">Informations sur votre demande</legend>
           {fields.map((field) => (
             <div key={field.name} className={field.type === 'textarea' ? 'sm:col-span-2' : undefined}>

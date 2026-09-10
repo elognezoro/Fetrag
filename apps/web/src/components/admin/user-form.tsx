@@ -60,7 +60,7 @@ export function UserForm({ organizations }: UserFormProps) {
     <form action={action} className="flex flex-col gap-6" noValidate>
       <FormStatus state={state} />
       <EditorSection title="Identité" description="Le nom complet est composé du prénom et du nom ; l’adresse email sert d’identifiant de connexion." pillar="protection">
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Prénom" htmlFor="firstName" required error={errors.firstName}>
             <Input name="firstName" autoComplete="off" maxLength={60} required />
           </FormField>
@@ -68,7 +68,7 @@ export function UserForm({ organizations }: UserFormProps) {
             <Input name="lastName" autoComplete="off" maxLength={60} required />
           </FormField>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Adresse email" htmlFor="email" required error={errors.email}>
             <Input name="email" type="email" autoComplete="off" inputMode="email" required />
           </FormField>
@@ -76,7 +76,7 @@ export function UserForm({ organizations }: UserFormProps) {
             <Input name="phone" type="tel" autoComplete="off" inputMode="tel" maxLength={20} />
           </FormField>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Fonction" htmlFor="jobTitle" error={errors.jobTitle}>
             <Input name="jobTitle" maxLength={120} />
           </FormField>
@@ -87,7 +87,7 @@ export function UserForm({ organizations }: UserFormProps) {
       </EditorSection>
 
       <EditorSection title="Rattachement et rôle" description="Le rôle initial est global ; les portées limitées (organisation, cours, cohorte) s’attribuent depuis la fiche." pillar="prevention">
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Organisation" htmlFor="organizationId" error={errors.organizationId} hint="Rattache le compte comme membre de l’organisation.">
             <NativeSelect name="organizationId" defaultValue="" options={[{ value: '', label: 'Aucune' }, ...organizations]} />
           </FormField>

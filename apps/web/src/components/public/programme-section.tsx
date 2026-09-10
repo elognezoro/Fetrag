@@ -45,7 +45,8 @@ export function ProgrammeSection({ modules, fromCatalog }: ProgrammeSectionProps
         <Button asChild variant="accent" size="lg" className="shrink-0">
           <a href={lmsHref('/catalogue')}>
             <GraduationCap aria-hidden="true" />
-            S&apos;inscrire sur formation.fetrag.ga
+            <span className="sm:hidden">S&apos;inscrire à la formation</span>
+            <span className="hidden sm:inline">S&apos;inscrire sur formation.fetrag.ga</span>
           </a>
         </Button>
       </Reveal>

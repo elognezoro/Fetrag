@@ -122,7 +122,7 @@ export function QuizReview({ review, className }: QuizReviewProps) {
                     <BlankText question={question} />
                   </div>
                 ) : null}
-                <dl className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+                <dl className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
                   <div className="rounded-xl bg-neutral-50 p-3">
                     <dt className="text-xs text-neutral-500">Votre réponse</dt>
                     <dd className="mt-0.5 whitespace-pre-wrap text-ink">{renderResponse(question, question.response)}</dd>

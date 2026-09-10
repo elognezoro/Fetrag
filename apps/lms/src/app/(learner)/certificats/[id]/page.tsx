@@ -45,7 +45,7 @@ export default async function CertificatePage({ params }: PageProps) {
     <div className="container-fetrag py-6 sm:py-8">
       <Breadcrumbs items={[{ label: 'Certificats', href: '/certificats' }, { label: certificate.number }]} homeHref="/dashboard" />
 
-      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+      <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
         <div className="flex min-w-0 flex-col gap-6">
           <header>
             <Ribbon tone={tone}>{isCertificate ? 'Certificat' : 'Attestation'}</Ribbon>

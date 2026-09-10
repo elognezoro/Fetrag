@@ -62,7 +62,7 @@ export default async function CoordinationDashboardPage() {
           <Alert variant="warning">
             <AlertTitle>{alertCount} point(s) de vigilance</AlertTitle>
             <AlertDescription>
-              <ul className="mt-1 grid gap-1 sm:grid-cols-2">
+              <ul className="mt-1 grid grid-cols-1 gap-1 sm:grid-cols-2">
                 {alerts.staleRequests ? (
                   <li>
                     <Link href="/coordination/demandes?statut=SUBMITTED" className="font-semibold hover:underline">
@@ -101,7 +101,7 @@ export default async function CoordinationDashboardPage() {
         </Reveal>
       ) : null}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Reveal className="lg:col-span-2">
           <Card className="h-full">
             <CardHeader className="flex-row items-center justify-between">
@@ -222,7 +222,7 @@ export default async function CoordinationDashboardPage() {
         )}
       </StaffSection>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <StaffSection number="02" title="Cohortes" tone="green">
           <Card>
             <CardContent className="p-5">

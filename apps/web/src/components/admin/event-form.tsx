@@ -70,7 +70,7 @@ export function EventForm({ event, categories }: EventFormProps) {
         </TabsList>
         <TabsContent value="general">
           <EditorSection title="Présentation" pillar="protection">
-            <div className="grid gap-5 sm:grid-cols-[1fr_14rem]">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-[1fr_14rem]">
               <FormField label="Titre" htmlFor="title" required error={errors.title}>
                 <Input name="title" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={200} required />
               </FormField>
@@ -82,7 +82,7 @@ export function EventForm({ event, categories }: EventFormProps) {
               <Textarea name="summary" defaultValue={event?.summary ?? ''} maxLength={600} rows={3} />
             </FormField>
             <RichTextEditor name="description" label="Programme et description" defaultValue={event?.description ?? ''} error={errors.description} folder="evenements" />
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <FormField label="Catégorie" htmlFor="categoryId" error={errors.categoryId}>
                 <NativeSelect name="categoryId" defaultValue={event?.categoryId ?? 'none'} options={[{ value: 'none', label: 'Sans catégorie' }, ...categories]} />
               </FormField>
@@ -102,7 +102,7 @@ export function EventForm({ event, categories }: EventFormProps) {
         </TabsContent>
         <TabsContent value="logistique">
           <EditorSection title="Dates et lieu" pillar="prevention">
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <FormField label="Début" htmlFor="startsAt" required error={errors.startsAt}>
                 <Input name="startsAt" type="datetime-local" defaultValue={toDateTimeLocal(event?.startsAt)} required />
               </FormField>
@@ -137,7 +137,7 @@ export function EventForm({ event, categories }: EventFormProps) {
         </TabsContent>
         <TabsContent value="intervenant">
           <EditorSection title="Intervenant principal" pillar="defense">
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <FormField label="Nom" htmlFor="speakerName" error={errors.speakerName}>
                 <Input name="speakerName" defaultValue={event?.speakerName ?? ''} maxLength={120} />
               </FormField>
@@ -153,7 +153,7 @@ export function EventForm({ event, categories }: EventFormProps) {
         </TabsContent>
         <TabsContent value="inscriptions">
           <EditorSection title="Inscriptions et tarif">
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <FormField label="Capacité" htmlFor="capacity" error={errors.capacity} hint="Vide = illimitée ; au-delà, liste d’attente automatique.">
                 <Input name="capacity" type="number" min={1} step={1} inputMode="numeric" defaultValue={event?.capacity ?? ''} />
               </FormField>

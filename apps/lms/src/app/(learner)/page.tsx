@@ -24,7 +24,7 @@ function ProgrammeSection() {
     <section className="relative isolate overflow-hidden bg-white py-16 sm:py-20">
       <RingBackdrop position="top-left" opacity={0.05} rings={3} />
       <div className="container-fetrag">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <Reveal>
             <SectionHeading
               eyebrow="Programme 2026"

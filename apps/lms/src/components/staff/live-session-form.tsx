@@ -99,7 +99,7 @@ function LiveSessionForm({ activityId, session, onDone }: { activityId: string; 
   useActionFeedback(state, { onSuccess: onDone })
   const errors = state.status === 'error' ? state.fieldErrors ?? {} : {}
   return (
-    <form action={formAction} className="grid gap-3 sm:grid-cols-2">
+    <form action={formAction} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       <input type="hidden" name="activityId" value={activityId} />
       {session ? <input type="hidden" name="liveSessionId" value={session.id} /> : null}
       <input type="hidden" name="startsAt" value={fromInputDateTime(startsAt)} />

@@ -32,7 +32,7 @@ export function SettingsForm({ values }: { values: SettingsFormValues }) {
         <FormField label="Adresse postale" htmlFor="address" required error={errors.address}>
           <Input name="address" defaultValue={values.address} maxLength={200} required />
         </FormField>
-        <div className="grid gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <FormField label="Email de contact" htmlFor="email" required error={errors.email}>
             <Input name="email" type="email" defaultValue={values.email} required />
           </FormField>
@@ -46,7 +46,7 @@ export function SettingsForm({ values }: { values: SettingsFormValues }) {
       </EditorSection>
 
       <EditorSection title="Règles métier" pillar="prevention">
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <FormField label="Devise des tarifs" htmlFor="currency" required error={errors.currency} hint="Code ISO 4217 (XAF).">
             <Input name="currency" defaultValue={values.currency} maxLength={3} className="uppercase" required />
           </FormField>
