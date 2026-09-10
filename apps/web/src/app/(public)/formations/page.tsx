@@ -75,7 +75,9 @@ export default async function CoursesPage({ searchParams }: PageProps) {
             <Button asChild variant="accent" size="lg">
               <a href={lmsHref('/catalogue')}>
                 <GraduationCap aria-hidden="true" />
-                S&apos;inscrire sur formation.fetrag.ga
+                <span className="sm:hidden">S&apos;inscrire à la formation</span>
+
+                <span className="hidden sm:inline">S&apos;inscrire sur formation.fetrag.ga</span>
                 <ArrowUpRight aria-hidden="true" />
               </a>
             </Button>

@@ -67,15 +67,19 @@ async function login(context, email, password) {
 const findOverflow = () => {
   const vw = window.innerWidth
   const docWidth = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth)
-  const clipped = (el) => {
+  /** 'scroll' = conteneur défilable (tableau large : acceptable), 'hidden' = contenu réellement coupé, null = non rogné. */
+  const clipKind = (el) => {
     let p = el.parentElement
     while (p && p !== document.documentElement) {
       const s = getComputedStyle(p)
-      if (/(hidden|clip|auto|scroll)/.test(s.overflowX) || /(hidden|clip|auto|scroll)/.test(s.overflow)) return true
+      const ox = s.overflowX === 'visible' ? s.overflow : s.overflowX
+      if (/(auto|scroll)/.test(ox)) return 'scroll'
+      if (/(hidden|clip)/.test(ox)) return 'hidden'
       p = p.parentElement
     }
-    return false
+    return null
   }
+  const clipped = (el) => clipKind(el) !== null
   const describe = (el) => {
     const id = el.id ? `#${el.id}` : ''
     const cls = typeof el.className === 'string' && el.className ? '.' + el.className.trim().split(/\s+/).slice(0, 4).join('.') : ''
@@ -94,7 +98,7 @@ const findOverflow = () => {
     if (!outside) continue
     if (!clipped(el)) {
       if (offenders.length < 12) offenders.push({ el: describe(el), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) })
-    } else if (hasOwnText(el) && s.textOverflow !== 'ellipsis' && !el.closest('[class*="marquee"], .sr-only, [aria-hidden="true"]')) {
+    } else if (clipKind(el) === 'hidden' && hasOwnText(el) && s.textOverflow !== 'ellipsis' && !el.closest('[class*="marquee"], .sr-only, [aria-hidden="true"]')) {
       // texte visible coupé par un conteneur overflow-hidden (débordement perçu par l'utilisateur)
       if (cutText.length < 12) cutText.push({ el: describe(el), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width) })
     }
@@ -107,9 +111,15 @@ const testMobileMenu = async (page) => {
   if ((await trigger.count()) === 0) return { present: false }
   const visible = await trigger.isVisible()
   if (!visible) return { present: true, visible: false }
-  await trigger.click()
-  await page.waitForTimeout(500)
-  const expanded = await trigger.getAttribute('aria-expanded')
+  // l'hydratation React peut n'être pas terminée au premier clic : on réessaie quelques fois
+  let expanded = null
+  for (let attempt = 0; attempt < 6; attempt++) {
+    await trigger.click()
+    await page.waitForTimeout(500)
+    expanded = await trigger.getAttribute('aria-expanded')
+    if (expanded === 'true') break
+    await page.waitForTimeout(700)
+  }
   const controls = await trigger.getAttribute('aria-controls')
   let drawer = controls ? page.locator(`#${controls}`) : page.locator('[role="dialog"], nav[aria-label*="mobile" i], #mobile-menu, [data-mobile-menu]').first()
   const drawerVisible = (await drawer.count()) > 0 ? await drawer.first().isVisible() : false

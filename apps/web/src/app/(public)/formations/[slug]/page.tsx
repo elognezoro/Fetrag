@@ -197,7 +197,8 @@ export default async function CoursePage({ params }: PageProps) {
                 <Button asChild variant="accent" size="lg" className="mt-6 w-full">
                   <a href={lmsCourseHref}>
                     <GraduationCap aria-hidden="true" />
-                    S&apos;inscrire sur formation.fetrag.ga
+                    <span className="sm:hidden">S&apos;inscrire à la formation</span>
+                    <span className="hidden sm:inline">S&apos;inscrire sur formation.fetrag.ga</span>
                     <ArrowUpRight aria-hidden="true" />
                   </a>
                 </Button>
@@ -423,7 +424,8 @@ function ProgrammeModulePage({ entry, others }: { entry: ProgrammeModule; others
                   <Button asChild variant="accent" size="lg">
                     <a href={lmsCatalogueHref}>
                       <GraduationCap aria-hidden="true" />
-                      S&apos;inscrire sur formation.fetrag.ga
+                      <span className="sm:hidden">S&apos;inscrire à la formation</span>
+                      <span className="hidden sm:inline">S&apos;inscrire sur formation.fetrag.ga</span>
                       <ArrowUpRight aria-hidden="true" />
                     </a>
                   </Button>
