@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getEnvSafe } from '@fetrag/config'
+import { emailProvider, getEnvSafe } from '@fetrag/config'
 import { prisma } from '@fetrag/db'
 import { runHealthChecks } from '@fetrag/observability'
 
@@ -34,6 +34,8 @@ export async function GET(): Promise<NextResponse> {
       app: 'web',
       version: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? 'dev',
       environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'development',
+      // Diagnostic non sensible : fournisseur email effectif et présence d'un expéditeur configuré.
+      email: { provider: emailProvider(), senderConfigured: Boolean(getEnvSafe().EMAIL_FROM) },
       ...result,
     },
     { status: result.ok ? 200 : 503, headers: { 'Cache-Control': 'no-store' } },
