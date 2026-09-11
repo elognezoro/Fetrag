@@ -34,11 +34,33 @@ Pour la plateforme de formation, créer un second projet Vercel sur le même dé
 | `APP_LMS_URL`, `NEXT_PUBLIC_APP_LMS_URL` | `https://fetrag-lms.vercel.app` | `https://formation.fetrag.ga` |
 | `CRON_SECRET` | aléatoire (Vercel l'ajoute automatiquement à l'en-tête des crons) | idem |
 | `PAYMENT_PROVIDER` / `PAYMENT_WEBHOOK_SECRET` | `sandbox` / aléatoire | PSP retenu |
-| `EMAIL_PROVIDER` + `SMTP_*` | `console` | `smtp` + identifiants |
+| `RESEND_API_KEY` | **obligatoire** : clé API Resend (`re_...`) - sans elle, aucun email ne part (fournisseur `console`) et la validation de compte est impossible | idem |
+| `EMAIL_FROM` | `FETRAG <onboarding@resend.dev>` tant que le domaine n'est pas vérifié (envois limités à l'adresse du compte Resend) | `FETRAG <no-reply@fetrag.ga>` - domaine **vérifié** chez Resend (section 2 bis) |
+| `EMAIL_PROVIDER` | optionnel : `resend`, `smtp` ou `console` ; absent = `resend` si `RESEND_API_KEY` est défini, sinon `smtp` si `SMTP_HOST`, sinon `console` | optionnel |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM` | optionnels : uniquement pour un relais SMTP à la place de Resend | optionnels |
 | `STORAGE_PROVIDER` + `BLOB_READ_WRITE_TOKEN` | `vercel-blob` (créer un store Blob dans Vercel Storage) | `vercel-blob` ou `s3` |
 | `FEATURE_PAYMENTS`, `FEATURE_FORUMS`, `FEATURE_NEWSLETTER` | `true` | selon décision |
 
 Le SSO complet (une seule connexion pour les deux sites) fonctionne uniquement avec `AUTH_COOKIE_DOMAIN=.fetrag.ga` sur les domaines définitifs (ADR-002).
+
+Les variables ne sont lues qu'au démarrage du processus : après toute modification, redéployer les deux projets (Deployments → Redeploy).
+
+## 2 bis. Emails transactionnels avec Resend
+
+Resend (`https://resend.com`) est le fournisseur email principal (ADR-003). Il porte la confirmation d'adresse à l'inscription, la réinitialisation de mot de passe, les invitations de compte, les convocations et les reçus. La procédure complète, à faire une seule fois :
+
+1. **Créer le compte et la clé** : Resend → API Keys → Create API Key (permission « Sending access », domaine « All domains »). Copier la clé (`re_...`) dans `RESEND_API_KEY` sur les deux projets Vercel. Ne jamais la commiter.
+2. **Vérifier temporairement l'envoi sans domaine** (recette) : `EMAIL_FROM="FETRAG <onboarding@resend.dev>"`. Dans ce mode, Resend n'accepte que l'adresse email du compte Resend comme destinataire : suffisant pour valider le parcours inscription → email → confirmation, pas pour des utilisateurs réels.
+3. **Ajouter le domaine** : Resend → Domains → Add Domain → `fetrag.ga` (région Europe, `eu-west-1`). Resend affiche les enregistrements DNS à créer chez le registrar du domaine :
+   - **DKIM** : un enregistrement `TXT` sur `resend._domainkey.fetrag.ga` (valeur `p=MIGf...` fournie par Resend) ;
+   - **SPF** : un enregistrement `MX` sur `send.fetrag.ga` (`feedback-smtp.eu-west-1.amazonses.com`, priorité 10) et un `TXT` sur `send.fetrag.ga` (`v=spf1 include:amazonses.com ~all`) ;
+   - **DMARC** (recommandé) : `TXT` sur `_dmarc.fetrag.ga` avec `v=DMARC1; p=none; rua=mailto:postmaster@fetrag.ga` pour commencer, puis `p=quarantine` une fois les rapports propres.
+   Ces enregistrements s'ajoutent à ceux de la section 5 (Vercel) et ne les remplacent pas.
+4. **Attendre la vérification** : Resend → Domains → bouton « Verify DNS Records ». Le statut passe à « Verified » en quelques minutes à quelques heures selon la propagation DNS.
+5. **Basculer l'expéditeur** : `EMAIL_FROM="FETRAG <no-reply@fetrag.ga>"` sur les deux projets, puis redéployer. `EMAIL_PROVIDER` peut rester vide (Resend est choisi dès que `RESEND_API_KEY` est défini).
+6. **Contrôler** : créer un compte sur `/inscription` avec une adresse réelle, vérifier la réception de l'email « Confirmez votre adresse email », cliquer sur le lien, se connecter. Dans le back-office, la liste des livraisons (`EmailDelivery`) doit montrer `provider = resend`, statut `SENT` et un `providerRef` (identifiant Resend consultable dans Resend → Emails).
+
+En cas de panne ou d'emails non reçus : `docs/runbooks/panne-email.md`.
 
 ## 3. Base de données
 
@@ -59,3 +81,4 @@ Les migrations sont appliquées depuis un poste (ou la CI) avec le `.env` : `pnp
 - `https://<web>/api/health` et `https://<lms>/api/health` → `{ ok: true }`.
 - `https://<web>/api/v1/docs` → documentation OpenAPI.
 - Connexion avec `admin@fetrag.ga` / `Fetrag2026!`, publication d'une actualité, inscription à un cours, quiz, certificat, vérification publique `/certificats/verifier/<code>`, paiement sandbox.
+- Parcours email complet (`docs/RECETTE.md`, section « Emails et validation de compte ») : création de compte sur `/inscription`, réception du lien de confirmation, connexion sur le site puis sur le LMS, réinitialisation depuis `/mot-de-passe-oublie`.

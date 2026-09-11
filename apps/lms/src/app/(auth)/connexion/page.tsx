@@ -31,8 +31,11 @@ export default async function ConnexionPage({ searchParams }: ConnexionPageProps
   const env = getEnvSafe()
   const oidcName = features.oidc() ? (env.OIDC_DISPLAY_NAME ?? 'Compte FETRAG') : null
   const localAuth = features.localAuth()
-  const initialError = authQueryErrorMessage(single(params.error), single(params.code))
+  const errorCode = single(params.code)
+  const initialError = authQueryErrorMessage(single(params.error), errorCode)
   const notice = single(params.deconnecte) === '1' ? 'Vous avez été déconnecté.' : null
+  // Redirection Auth.js avec adresse non confirmée : proposer le renvoi du lien (l'adresse n'est pas connue ici).
+  const initialVerificationHref = initialError && errorCode === 'email_not_verified' ? webHref('/inscription/confirmation') : null
 
   return (
     <AuthCard
@@ -51,6 +54,7 @@ export default async function ConnexionPage({ searchParams }: ConnexionPageProps
         localAuth={localAuth}
         initialError={initialError}
         notice={notice}
+        initialVerificationHref={initialVerificationHref}
         registerHref={webHref('/inscription')}
         forgotHref={webHref('/mot-de-passe-oublie')}
       />

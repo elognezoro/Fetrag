@@ -2,13 +2,13 @@
 
 import Link from 'next/link'
 import { useActionState } from 'react'
-import { LifeBuoy } from 'lucide-react'
+import { Send } from 'lucide-react'
 import { Button, FormField, Input } from '@fetrag/ui'
 import { forgotPasswordAction } from '@/lib/actions/auth'
 import { initialForgotPasswordState } from '@/lib/actions/auth-types'
 import { FormAlert } from './form-alert'
 
-/** Formulaire de demande de réinitialisation (traitée par le support, réponse neutre). */
+/** Formulaire de demande de lien de réinitialisation (réponse neutre, lien valable 30 minutes). */
 export function ForgotPasswordForm() {
   const [state, formAction, pending] = useActionState(forgotPasswordAction, initialForgotPasswordState)
 
@@ -33,11 +33,20 @@ export function ForgotPasswordForm() {
       </div>
 
       <FormField label="Adresse email du compte" htmlFor="forgot-email" required error={state.fieldErrors?.email}>
-        <Input id="forgot-email" name="email" type="email" inputMode="email" autoComplete="email" required aria-invalid={Boolean(state.fieldErrors?.email)} />
+        <Input
+          id="forgot-email"
+          name="email"
+          type="email"
+          inputMode="email"
+          autoComplete="email"
+          required
+          aria-invalid={Boolean(state.fieldErrors?.email)}
+          placeholder="prenom.nom@exemple.ga"
+        />
       </FormField>
 
-      <Button type="submit" variant="primary" size="lg" className="w-full" loading={pending} loadingLabel="Envoi en cours" leftIcon={<LifeBuoy aria-hidden="true" />}>
-        Envoyer la demande
+      <Button type="submit" variant="primary" size="lg" className="w-full" loading={pending} loadingLabel="Envoi en cours" leftIcon={<Send aria-hidden="true" />}>
+        Recevoir le lien de réinitialisation
       </Button>
 
       <p className="text-center text-sm text-neutral-600">

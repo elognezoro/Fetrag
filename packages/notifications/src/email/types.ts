@@ -14,9 +14,9 @@ export interface EmailSendResult {
   providerRef: string
 }
 
-/** Adaptateur d'envoi (ADR-003) : console en développement, SMTP en production. */
+/** Adaptateur d'envoi (ADR-003) : console en développement, Resend ou SMTP en production. */
 export interface EmailProvider {
-  readonly id: 'console' | 'smtp'
+  readonly id: 'console' | 'smtp' | 'resend'
   send(message: EmailMessage): Promise<EmailSendResult>
 }
 

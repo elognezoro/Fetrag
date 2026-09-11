@@ -21,6 +21,10 @@ export class InvalidCredentialsError extends CredentialsSignin {
 export class InactiveAccountError extends CredentialsSignin {
   override code = 'inactive'
 }
+/** Compte local dont l'adresse email n'a pas encore été confirmée par le lien reçu. */
+export class EmailNotVerifiedError extends CredentialsSignin {
+  override code = 'email_not_verified'
+}
 
 /**
  * Configuration Auth.js complète (Node runtime) : adaptateur Prisma, providers, callbacks.
@@ -72,6 +76,7 @@ export function createAuthConfig(app: AppKind): NextAuthConfig {
               name: true,
               image: true,
               passwordHash: true,
+              emailVerified: true,
               isActive: true,
               totpEnabled: true,
               totpSecret: true,
@@ -84,6 +89,8 @@ export function createAuthConfig(app: AppKind): NextAuthConfig {
             throw new InvalidCredentialsError()
           }
           if (!user.isActive) throw new InactiveAccountError()
+          // Inscription locale : l'adresse doit avoir été confirmée par le lien reçu par email.
+          if (!user.emailVerified) throw new EmailNotVerifiedError()
 
           let mfaVerified = !user.totpEnabled
           if (user.totpEnabled) {

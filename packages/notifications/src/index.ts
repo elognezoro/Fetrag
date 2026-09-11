@@ -4,6 +4,8 @@ export type { EmailMessage, EmailProvider, EmailSendResult } from './email/types
 export { maskEmail } from './email/types'
 export { ConsoleEmailProvider } from './email/console'
 export { SmtpEmailProvider } from './email/smtp'
+export { ResendEmailProvider, RESEND_SANDBOX_FROM } from './email/resend'
+export type { ResendOptions } from './email/resend'
 export type { SmtpOptions } from './email/smtp'
 export { getEmailProvider, setEmailProvider } from './email/registry'
 

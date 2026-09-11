@@ -1,7 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
-  "globalEnv": ["NODE_ENV", "CI", "VERCEL", "VERCEL_ENV", "VERCEL_URL"],
+  "globalEnv": [
+    "NODE_ENV",
+    "CI",
+    "VERCEL",
+    "VERCEL_ENV",
+    "VERCEL_URL"
+  ],
   "globalPassThroughEnv": [
     "DATABASE_URL",
     "DATABASE_URL_UNPOOLED",
@@ -38,35 +44,63 @@
     "FEATURE_NEWSLETTER",
     "NEXT_PUBLIC_APP_WEB_URL",
     "NEXT_PUBLIC_APP_LMS_URL",
-    "NEXT_PUBLIC_SITE_NAME"
+    "NEXT_PUBLIC_SITE_NAME",
+    "RESEND_API_KEY",
+    "EMAIL_FROM"
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "^generate"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "dependsOn": [
+        "^build",
+        "^generate"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*"
+      ],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**"
+      ]
     },
     "generate": {
       "cache": false,
-      "outputs": ["node_modules/.prisma/**", "generated/**"]
+      "outputs": [
+        "node_modules/.prisma/**",
+        "generated/**"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["^generate"]
+      "dependsOn": [
+        "^generate"
+      ]
     },
     "lint": {
-      "dependsOn": ["^generate"]
+      "dependsOn": [
+        "^generate"
+      ]
     },
     "typecheck": {
-      "dependsOn": ["^build", "^generate"]
+      "dependsOn": [
+        "^build",
+        "^generate"
+      ]
     },
     "test": {
-      "dependsOn": ["^generate"],
-      "outputs": ["coverage/**"]
+      "dependsOn": [
+        "^generate"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "test:e2e": {
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "cache": false
     },
     "clean": {

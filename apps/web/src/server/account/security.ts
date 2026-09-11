@@ -4,9 +4,10 @@ import { revalidatePath } from 'next/cache'
 import { disableMfa, enableMfa, generateTotpSecret, hashPassword, totpQrDataUrl, verifyMfaForUser, verifyPassword } from '@fetrag/auth'
 import { passwordSchema, z } from '@fetrag/contracts'
 import { prisma } from '@fetrag/db'
-import { audit } from '@fetrag/domain'
+import { audit, formatDateTime } from '@fetrag/domain'
 import { notifyUser } from '@fetrag/notifications'
 import { guards } from '@/lib/auth'
+import { publicEnv } from '@/lib/env'
 import { checkRateLimit, formatRetryDelay } from '@/lib/rate-limit'
 import { firstErrors, requestContext, successState, text, toErrorState, type ActionState } from './common'
 
@@ -131,15 +132,19 @@ export async function changePasswordAction(_previous: ActionState<PasswordField>
     }
     const ok = await verifyPassword(parsed.data.currentPassword, user.passwordHash)
     if (!ok) return { status: 'error', message: 'Le mot de passe actuel est incorrect.', fieldErrors: { currentPassword: 'Mot de passe incorrect' } }
+    const changedAt = new Date()
     await prisma.user.update({ where: { id: principal.id }, data: { passwordHash: await hashPassword(parsed.data.newPassword) } })
     const ctx = await requestContext()
     await audit('auth.password_changed', { type: 'User', id: principal.id }, { actorId: principal.id, actorEmail: principal.email, ip: ctx.ip, userAgent: ctx.userAgent })
+    // Notification interne + email dédié `password-changed` (date en heure de Libreville).
     await notifyUser(principal.id, {
       title: 'Mot de passe modifié',
       body: 'Votre mot de passe FETRAG vient d’être modifié. Si vous n’êtes pas à l’origine de ce changement, contactez immédiatement le support.',
       href: '/espace/securite',
       category: 'security',
       email: true,
+      emailTemplate: 'password-changed',
+      emailVariables: { loginUrl: `${publicEnv.webUrl}/connexion`, changedAt: formatDateTime(changedAt) },
     }).catch(() => undefined)
     revalidatePath('/espace/securite')
     return successState('Votre mot de passe a été modifié.')

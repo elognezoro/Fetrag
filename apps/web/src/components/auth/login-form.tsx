@@ -8,6 +8,7 @@ import { loginAction, oidcSignInAction } from '@/lib/actions/auth'
 import { initialLoginState } from '@/lib/actions/auth-types'
 import { FormAlert } from './form-alert'
 import { PasswordInput } from './password-input'
+import { ResendVerificationForm } from './resend-verification-form'
 
 interface LoginFormProps {
   callbackUrl: string
@@ -54,14 +55,19 @@ export function LoginForm({
   }, [showMfa, state])
 
   const message = state.status === 'error' ? state.message : initialError
+  const emailNotVerified = state.status === 'error' && state.code === 'email_not_verified'
+  const messageTone = state.code === 'mfa_required' ? 'info' : emailNotVerified ? 'warning' : 'danger'
 
   return (
     <div className="space-y-6">
       {notice ? <FormAlert tone="success">{notice}</FormAlert> : null}
       {message ? (
-        <FormAlert tone={state.code === 'mfa_required' ? 'info' : 'danger'} id="login-message">
+        <FormAlert tone={messageTone} id="login-message">
           {message}
         </FormAlert>
+      ) : null}
+      {emailNotVerified ? (
+        <ResendVerificationForm email={state.email ?? email} label="Renvoyer le lien de confirmation" idPrefix="login-resend" variant="secondary" size="md" />
       ) : null}
 
       {localAuth ? (

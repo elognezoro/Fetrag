@@ -1,3 +1,5 @@
+// Import direct du module de jetons (sans passer par l'index de @fetrag/auth qui charge next-auth).
+import { createEmailToken } from '@fetrag/auth/tokens'
 import { resolvePublicUrl } from '@fetrag/config'
 import {
   idSchema,
@@ -42,6 +44,10 @@ export const trainingRequestListQuerySchema = z.object({
 
 /** Statuts considérés comme « en attente d'action de la coordination ». */
 export const pendingCoordinationStatuses: TrainingRequestStatusName[] = ['SUBMITTED', 'RESCHEDULED', 'ACCEPTED']
+
+/** Durée de validité du lien « définir mon mot de passe » envoyé aux participants dont le compte est créé par la coordination. */
+const INVITATION_TTL_DAYS = 7
+const INVITATION_TTL_MINUTES = INVITATION_TTL_DAYS * 24 * 60
 
 const requestInclude = {
   organization: { select: { id: true, name: true, acronym: true, slug: true } },
@@ -285,6 +291,33 @@ interface PreparedAccount {
   passwordHash: string | null
 }
 
+/**
+ * Invitation d'un participant dont le compte vient d'être créé : jeton `reset-password` à usage unique (7 jours)
+ * puis email `account-invitation` avec le lien « définir mon mot de passe ». Le mot de passe provisoire n'est jamais envoyé.
+ * Les échecs sont journalisés sans interrompre la planification.
+ */
+async function inviteCreatedAccount(invitation: { userId: string; email: string; name: string }, context: { organizationName: string; courseTitle: string }): Promise<void> {
+  let token: string
+  try {
+    token = (await createEmailToken(invitation.email, 'reset-password', INVITATION_TTL_MINUTES)).token
+  } catch (error) {
+    console.error('[lms-core] jeton d’invitation impossible', invitation.userId, error)
+    return
+  }
+  await safeSendEmail({
+    to: invitation.email,
+    userId: invitation.userId,
+    template: emailTemplates.invitation,
+    variables: {
+      firstName: splitName(invitation.name).firstName ?? invitation.name,
+      courseTitle: context.courseTitle,
+      organizationName: context.organizationName,
+      setPasswordUrl: `${resolvePublicUrl('web')}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`,
+      expiresDays: String(INVITATION_TTL_DAYS),
+    },
+  })
+}
+
 /** Prépare les comptes hors transaction (recherche par email, hachage bcrypt des mots de passe aléatoires). */
 async function prepareAccounts(participants: Array<{ id: string; fullName: string; email: string | null; phone: string | null; jobTitle: string | null; userId: string | null }>) {
   const prepared: PreparedAccount[] = []
@@ -352,7 +385,10 @@ async function schedule(principal: Principal, request: Awaited<ReturnType<typeof
             phone: account.phone,
             jobTitle: account.jobTitle,
             employer: request.organization.name,
+            // Mot de passe provisoire aléatoire conservé mais jamais communiqué : l'invitation par email permet d'en définir un.
             passwordHash: account.passwordHash,
+            // Compte créé par la coordination à partir d'une adresse fournie par l'organisation : considéré comme validé.
+            emailVerified: new Date(),
             isActive: true,
           },
         })
@@ -442,24 +478,12 @@ async function schedule(principal: Principal, request: Awaited<ReturnType<typeof
 
   // Notifications post-commit
   const lmsUrl = resolvePublicUrl('lms')
+  const courseTitle = request.modules.map((m) => m.course.title).join(', ')
   for (const invitation of invitations) {
-    await safeSendEmail({
-      to: invitation.email,
-      userId: invitation.userId,
-      subject: 'Votre accès à la plateforme de formation FETRAG',
-      template: emailTemplates.invitation,
-      variables: {
-        firstName: splitName(invitation.name).firstName ?? invitation.name,
-        name: invitation.name,
-        email: invitation.email,
-        organizationName: request.organization.name,
-        modules: request.modules.map((m) => m.course.title).join(', '),
-        startsAt,
-        loginUrl: `${lmsUrl}/connexion`,
-        passwordUrl: `${resolvePublicUrl('web')}/mot-de-passe-oublie`,
-        invitation: true,
-      },
+    await audit('user.registered', { type: 'User', id: invitation.userId }, auditContext(principal, meta), {
+      after: { email: invitation.email, source: 'coordination', requestId: request.id, organizationId: request.organizationId, emailVerified: true, invitationDays: INVITATION_TTL_DAYS },
     })
+    await inviteCreatedAccount(invitation, { organizationName: request.organization.name, courseTitle })
   }
   const enrolledUserIds = prepared.map((a) => a.existingUserId).filter((id): id is string => Boolean(id))
   for (const userId of enrolledUserIds) {

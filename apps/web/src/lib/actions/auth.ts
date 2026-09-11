@@ -1,24 +1,28 @@
 'use server'
 
-import { headers } from 'next/headers'
 import { redirect, unstable_rethrow } from 'next/navigation'
 import { CredentialsSignin } from 'next-auth'
-import { hashPassword } from '@fetrag/auth'
+import { consumeEmailToken, hashPassword } from '@fetrag/auth'
 import { features } from '@fetrag/config'
-import { emailSchema, loginSchema, registerSchema, z } from '@fetrag/contracts'
+import { emailSchema, loginSchema, passwordSchema, registerSchema, z } from '@fetrag/contracts'
 import { prisma, type Prisma } from '@fetrag/db'
-import { audit, emit, hashIp, makeReference, referencePrefixes, toDomainError } from '@fetrag/domain'
+import { audit, emit, toDomainError } from '@fetrag/domain'
 import { auth, signIn, signOut } from '@/lib/auth'
-import { publicEnv } from '@/lib/env'
 import { checkRateLimit, formatRetryDelay } from '@/lib/rate-limit'
+import { requestContext, sendPasswordChangedEmail, sendPasswordResetEmail, sendVerificationEmail } from './auth-support'
 import {
+  credentialsErrorCodes,
   loginMessageFor,
+  resendVerificationNeutralMessage,
   safeCallbackUrl,
   type ForgotPasswordState,
   type LoginErrorCode,
   type LoginState,
   type RegisterField,
   type RegisterState,
+  type ResendVerificationState,
+  type ResetPasswordField,
+  type ResetPasswordState,
 } from './auth-types'
 
 const MINUTE = 60_000
@@ -29,25 +33,14 @@ function field(formData: FormData, name: string): string {
   return typeof value === 'string' ? value : ''
 }
 
-/** Contexte réseau de la requête (IP hachée, agent utilisateur) pour l'audit et les consentements. */
-async function requestContext(): Promise<{ ip: string | null; ipHash: string | null; userAgent: string | null }> {
-  const h = await headers()
-  const forwarded = h.get('x-forwarded-for')
-  const ip = forwarded?.split(',')[0]?.trim() || h.get('x-real-ip') || null
-  return { ip, ipHash: hashIp(ip), userAgent: h.get('user-agent') }
-}
-
 /** Extrait le code d'erreur Auth.js d'une exception de connexion. */
 function credentialsErrorCode(error: unknown): LoginErrorCode {
-  const known: LoginErrorCode[] = ['invalid_credentials', 'mfa_required', 'inactive']
-  if (error instanceof CredentialsSignin) {
-    return known.includes(error.code as LoginErrorCode) ? (error.code as LoginErrorCode) : 'invalid_credentials'
-  }
+  const known = (code: unknown): LoginErrorCode =>
+    credentialsErrorCodes.includes(code as LoginErrorCode) ? (code as LoginErrorCode) : 'invalid_credentials'
+  if (error instanceof CredentialsSignin) return known(error.code)
   if (error && typeof error === 'object') {
     const candidate = error as { type?: unknown; code?: unknown }
-    if (candidate.type === 'CredentialsSignin') {
-      return known.includes(candidate.code as LoginErrorCode) ? (candidate.code as LoginErrorCode) : 'invalid_credentials'
-    }
+    if (candidate.type === 'CredentialsSignin') return known(candidate.code)
   }
   return 'unknown'
 }
@@ -69,7 +62,7 @@ function firstErrors<T extends string>(issues: z.ZodIssue[]): Partial<Record<T, 
 /**
  * Server Action de connexion (email + mot de passe + code MFA optionnel).
  * Utilise `signIn('credentials', { redirect: false })` et traduit les codes d'erreur
- * `invalid_credentials`, `mfa_required` et `inactive` en état de formulaire.
+ * `invalid_credentials`, `mfa_required`, `inactive` et `email_not_verified` en état de formulaire.
  */
 export async function loginAction(_previous: LoginState, formData: FormData): Promise<LoginState> {
   const callbackUrl = safeCallbackUrl(field(formData, 'callbackUrl'), '/espace')
@@ -144,37 +137,10 @@ export async function oidcSignInAction(formData: FormData): Promise<void> {
 // Inscription
 // -----------------------------------------------------------------------------
 
-/** Envoie l'email de bienvenue si le package de notifications est disponible (import protégé). */
-async function sendWelcomeEmail(user: { email: string; firstName: string }): Promise<void> {
-  try {
-    const mod: Record<string, unknown> = await import('@fetrag/notifications')
-    const sendEmail = mod.sendEmail
-    if (typeof sendEmail !== 'function') return
-    await (
-      sendEmail as (input: {
-        to: string
-        subject: string
-        template: string
-        variables: Record<string, unknown>
-      }) => Promise<unknown>
-    )({
-      to: user.email,
-      subject: 'Bienvenue à la FETRAG',
-      template: 'welcome',
-      variables: {
-        firstName: user.firstName,
-        loginUrl: `${publicEnv.webUrl}/connexion`,
-        lmsUrl: publicEnv.lmsUrl,
-      },
-    })
-  } catch (error) {
-    console.warn('[auth] email de bienvenue non envoyé', error instanceof Error ? error.message : error)
-  }
-}
-
 /**
- * Server Action d'inscription locale : crée l'utilisateur (rôle LEARNER global), enregistre le consentement
- * aux conditions, journalise l'audit, envoie l'email de bienvenue puis ouvre la session.
+ * Server Action d'inscription locale : crée l'utilisateur (rôle LEARNER global, adresse non confirmée),
+ * enregistre le consentement aux conditions, journalise l'audit puis envoie le lien de confirmation d'adresse.
+ * Aucune session n'est ouverte : la connexion exige une adresse confirmée.
  */
 export async function registerAction(_previous: RegisterState, formData: FormData): Promise<RegisterState> {
   const values = {
@@ -259,6 +225,7 @@ export async function registerAction(_previous: RegisterState, formData: FormDat
         phone: data.phone ? data.phone : null,
         employer: data.organizationName ?? null,
         passwordHash,
+        // emailVerified reste null jusqu'à l'ouverture du lien de confirmation.
         roleAssignments: { create: { role: 'LEARNER', scopeType: 'GLOBAL' } },
         consents: { create: consents },
       },
@@ -295,21 +262,53 @@ export async function registerAction(_previous: RegisterState, formData: FormDat
     'user.registered',
     { type: 'User', id: userId },
     { actorId: userId, actorEmail: data.email, ip: ctx.ip, userAgent: ctx.userAgent },
-    { after: { role: 'LEARNER', newsletter: data.newsletter } },
+    { after: { role: 'LEARNER', newsletter: data.newsletter, emailVerified: false } },
   )
   await emit('user.registered', { userId, email: data.email, firstName: data.firstName }, { actorId: userId })
-  await sendWelcomeEmail({ email: data.email, firstName: data.firstName })
+  await sendVerificationEmail({ email: data.email, firstName: data.firstName })
 
-  let signedIn = false
+  redirect(`/inscription/confirmation?email=${encodeURIComponent(data.email)}`)
+}
+
+// -----------------------------------------------------------------------------
+// Confirmation d'adresse email
+// -----------------------------------------------------------------------------
+
+const resendVerificationSchema = z.object({ email: emailSchema, website: z.string().max(0).optional() })
+
+/**
+ * Renvoie le lien de confirmation d'adresse (3 demandes par heure et par adresse).
+ * Réponse neutre : le résultat ne révèle ni l'existence du compte ni son état de confirmation.
+ */
+export async function resendVerificationAction(
+  _previous: ResendVerificationState,
+  formData: FormData,
+): Promise<ResendVerificationState> {
+  const parsed = resendVerificationSchema.safeParse({ email: field(formData, 'email'), website: field(formData, 'website') })
+  if (!parsed.success) {
+    const fieldErrors = firstErrors<'email' | 'website'>(parsed.error.issues)
+    if (fieldErrors.website) return { status: 'done', message: resendVerificationNeutralMessage }
+    return { status: 'error', message: 'Saisissez une adresse email valide.', fieldErrors: { email: fieldErrors.email } }
+  }
+  if (!features.localAuth()) return { status: 'done', message: resendVerificationNeutralMessage }
+
+  const email = parsed.data.email
+  const limit = checkRateLimit(`verify-resend:${email}`, 3, 60 * MINUTE)
+  if (!limit.allowed) return { status: 'done', message: resendVerificationNeutralMessage }
+
   try {
-    await signIn('credentials', { redirect: false, redirectTo: '/espace', email: data.email, password: data.password })
-    signedIn = true
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true, email: true, firstName: true, emailVerified: true, isActive: true, passwordHash: true },
+    })
+    if (user && user.isActive && user.passwordHash && !user.emailVerified) {
+      await sendVerificationEmail({ email: user.email, firstName: user.firstName })
+    }
   } catch (error) {
-    unstable_rethrow(error)
-    console.warn('[auth] connexion automatique après inscription impossible', error instanceof Error ? error.message : error)
+    console.error('[auth] renvoi du lien de confirmation impossible', error instanceof Error ? error.message : error)
   }
 
-  redirect(signedIn ? '/espace?bienvenue=1' : '/connexion?inscrit=1')
+  return { status: 'done', message: resendVerificationNeutralMessage }
 }
 
 // -----------------------------------------------------------------------------
@@ -319,46 +318,120 @@ export async function registerAction(_previous: RegisterState, formData: FormDat
 const forgotPasswordSchema = z.object({ email: emailSchema, website: z.string().max(0).optional() })
 
 /**
- * Enregistre une demande de réinitialisation auprès du support (FormSubmission SUPPORT, sujet « Réinitialisation »).
+ * Envoie un lien de réinitialisation (valable 30 minutes) aux comptes existants et actifs.
  * La réponse est neutre : elle ne révèle pas si l'adresse correspond à un compte.
  */
 export async function forgotPasswordAction(_previous: ForgotPasswordState, formData: FormData): Promise<ForgotPasswordState> {
   const neutralMessage =
-    'Si un compte est associé à cette adresse, le support de la FETRAG vous contactera pour réinitialiser votre mot de passe.'
+    'Si un compte est associé à cette adresse, un lien de réinitialisation vient de lui être envoyé. Il est valable 30 minutes : pensez à vérifier votre dossier de courrier indésirable.'
   const parsed = forgotPasswordSchema.safeParse({ email: field(formData, 'email'), website: field(formData, 'website') })
   if (!parsed.success) {
     const fieldErrors = firstErrors<'email' | 'website'>(parsed.error.issues)
     if (fieldErrors.website) return { status: 'done', message: neutralMessage }
     return { status: 'error', message: 'Saisissez une adresse email valide.', fieldErrors: { email: fieldErrors.email } }
   }
+  if (!features.localAuth()) return { status: 'done', message: neutralMessage }
 
-  const ctx = await requestContext()
   const limit = checkRateLimit(`forgot:${parsed.data.email}`, 3, 60 * MINUTE)
   if (!limit.allowed) return { status: 'done', message: neutralMessage }
 
   try {
     const user = await prisma.user.findUnique({
       where: { email: parsed.data.email },
-      select: { id: true, name: true, firstName: true, lastName: true },
+      select: { id: true, email: true, firstName: true, isActive: true },
     })
-    const fullName = user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(' ') || parsed.data.email
-    await prisma.formSubmission.create({
-      data: {
-        reference: makeReference(referencePrefixes.form),
-        kind: 'SUPPORT',
-        userId: user?.id ?? null,
-        fullName,
-        email: parsed.data.email,
-        subject: 'Réinitialisation',
-        message: `Demande de réinitialisation du mot de passe pour ${parsed.data.email}.`,
-        payload: { source: 'web:mot-de-passe-oublie', accountFound: Boolean(user), userAgent: ctx.userAgent?.slice(0, 300) ?? null },
-      },
-    })
+    if (user && user.isActive) {
+      await sendPasswordResetEmail({ id: user.id, email: user.email, firstName: user.firstName })
+    }
   } catch (error) {
-    console.error('[auth] demande de réinitialisation non enregistrée', error instanceof Error ? error.message : error)
+    console.error('[auth] envoi du lien de réinitialisation impossible', error instanceof Error ? error.message : error)
   }
 
   return { status: 'done', message: neutralMessage }
+}
+
+// -----------------------------------------------------------------------------
+// Réinitialisation du mot de passe
+// -----------------------------------------------------------------------------
+
+const resetPasswordSchema = z
+  .object({
+    token: z.string().trim().min(16).max(200),
+    password: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((d) => d.password === d.confirmPassword, { path: ['confirmPassword'], message: 'Les mots de passe ne correspondent pas' })
+
+const invalidTokenMessage = 'Ce lien de réinitialisation est invalide ou a expiré. Demandez un nouveau lien pour choisir votre mot de passe.'
+
+/**
+ * Définit un nouveau mot de passe à partir du jeton reçu par email (usage unique, 30 minutes).
+ * La possession de l'adresse est prouvée : l'adresse est confirmée si elle ne l'était pas. La MFA reste inchangée.
+ */
+export async function resetPasswordAction(_previous: ResetPasswordState, formData: FormData): Promise<ResetPasswordState> {
+  const parsed = resetPasswordSchema.safeParse({
+    token: field(formData, 'token'),
+    password: field(formData, 'password'),
+    confirmPassword: field(formData, 'confirmPassword'),
+  })
+  if (!parsed.success) {
+    const fieldErrors = firstErrors<ResetPasswordField | 'token'>(parsed.error.issues)
+    if (fieldErrors.token) return { status: 'error', code: 'invalid_token', message: invalidTokenMessage }
+    return {
+      status: 'error',
+      code: 'validation',
+      message: 'Vérifiez le mot de passe saisi.',
+      fieldErrors: { password: fieldErrors.password, confirmPassword: fieldErrors.confirmPassword },
+    }
+  }
+  if (!features.localAuth()) {
+    return { status: 'error', code: 'unknown', message: 'La connexion par mot de passe est désactivée : utilisez le compte FETRAG.' }
+  }
+
+  const ctx = await requestContext()
+  const limit = checkRateLimit(`reset:${ctx.ipHash ?? 'anonymous'}`, 10, 15 * MINUTE)
+  if (!limit.allowed) {
+    return {
+      status: 'error',
+      code: 'rate_limited',
+      message: `Trop de tentatives. Réessayez dans ${formatRetryDelay(limit.retryAfterSeconds)}.`,
+    }
+  }
+
+  try {
+    // Le mot de passe est validé avant de consommer le jeton : une simple faute de frappe ne l'invalide pas.
+    const email = await consumeEmailToken(parsed.data.token, 'reset-password')
+    if (!email) return { status: 'error', code: 'invalid_token', message: invalidTokenMessage }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { id: true, email: true, firstName: true, emailVerified: true, isActive: true },
+    })
+    if (!user) return { status: 'error', code: 'invalid_token', message: invalidTokenMessage }
+    if (!user.isActive) return { status: 'error', code: 'inactive', message: loginMessageFor('inactive') }
+
+    const now = new Date()
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordHash: await hashPassword(parsed.data.password),
+        ...(user.emailVerified ? {} : { emailVerified: now }),
+      },
+    })
+    await audit(
+      'auth.password_changed',
+      { type: 'User', id: user.id },
+      { actorId: user.id, actorEmail: user.email, ip: ctx.ip, userAgent: ctx.userAgent },
+      { after: { reason: 'reset', emailVerified: true } },
+    )
+    await sendPasswordChangedEmail({ id: user.id, email: user.email, firstName: user.firstName }, now)
+  } catch (error) {
+    unstable_rethrow(error)
+    console.error('[auth] réinitialisation du mot de passe impossible', error instanceof Error ? error.message : error)
+    return { status: 'error', code: 'unknown', message: 'La réinitialisation a échoué. Réessayez dans quelques instants.' }
+  }
+
+  redirect('/connexion?reinitialise=1')
 }
 
 // -----------------------------------------------------------------------------

@@ -14,8 +14,8 @@ export type { NotificationCategory, TemplateVars }
 export const emailTemplates = {
   /** Variables : loginUrl (obligatoire). */
   welcome: 'welcome',
-  /** Invitation d'un participant créé par le workflow institutionnel (même gabarit que welcome). */
-  invitation: 'welcome',
+  /** Invitation d'un participant créé par le workflow institutionnel : setPasswordUrl (obligatoire) ; firstName, courseTitle, organizationName, expiresDays. */
+  invitation: 'account-invitation',
   /** Variables : reference, dashboardUrl (obligatoires) ; organizationName, modules, preferredStart. */
   requestSubmitted: 'training-request-submitted',
   /** Variables : reference, dashboardUrl, comment. */

@@ -64,6 +64,15 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     if (typeof mod.runScheduledMaintenance === 'function') {
       await (mod.runScheduledMaintenance as () => Promise<unknown>)()
     }
+    // Purge des jetons de validation d'email et de réinitialisation expirés.
+    try {
+      const tokens: Record<string, unknown> = await import('@fetrag/auth/tokens')
+      if (typeof tokens.purgeExpiredEmailTokens === 'function') {
+        await (tokens.purgeExpiredEmailTokens as () => Promise<number>)()
+      }
+    } catch (error) {
+      logger.warn('cron.tokens.unavailable', { error: error instanceof Error ? error.message : String(error) })
+    }
     const processJobs = mod.processJobs
     if (typeof processJobs !== 'function') {
       return NextResponse.json(

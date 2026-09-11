@@ -32,11 +32,15 @@ export default async function ConnexionPage({ searchParams }: ConnexionPageProps
   const localAuth = features.localAuth()
   const initialError = authQueryErrorMessage(single(params.error), single(params.code))
   const notice =
-    single(params.inscrit) === '1'
-      ? 'Votre compte a été créé. Connectez-vous pour accéder à votre espace.'
-      : single(params.deconnecte) === '1'
-        ? 'Vous avez été déconnecté.'
-        : null
+    single(params.reinitialise) === '1'
+      ? 'Votre mot de passe a été réinitialisé. Connectez-vous avec votre nouveau mot de passe.'
+      : single(params.verifie) === '1'
+        ? 'Votre adresse email est confirmée. Connectez-vous pour accéder à votre espace.'
+        : single(params.inscrit) === '1'
+          ? 'Votre compte a été créé. Connectez-vous pour accéder à votre espace.'
+          : single(params.deconnecte) === '1'
+            ? 'Vous avez été déconnecté.'
+            : null
 
   return (
     <AuthCard

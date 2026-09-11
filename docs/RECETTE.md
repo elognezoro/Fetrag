@@ -34,10 +34,52 @@ Référence : chapitre 30 « Critères de recette globale » du cahier des charg
 
 ## Points d'attention pour la recette FETRAG
 
-- Les emails partent sur la console tant que `EMAIL_PROVIDER=console` ; passer en `smtp` pour la recette réelle.
+- Les emails ne partent que si `RESEND_API_KEY` est défini (fournisseur Resend, ADR-003) ; sans clé, ils sont seulement journalisés (`provider = console`) et la validation de compte à l'inscription est impossible. Configuration : `docs/deployment/VERCEL.md`, section 2 bis ; parcours à vérifier : section « Emails et validation de compte » ci-dessous.
 - Le stockage `local` n'est pas disponible sur Vercel : utiliser `vercel-blob` (créer un store Blob) ou `s3`.
 - Le navigateur intégré de l'outil de développement n'exécute pas les scripts de streaming React ; les vérifications de rendu ont été faites sur le HTML complet. Une passe visuelle sur mobile réel (360-430 px) reste à faire.
 - Le job `certificate.render` s'exécute via le cron Vercel (5 min) ou le bouton « Générer le PDF » du LMS.
+
+## Emails et validation de compte (11 septembre 2026)
+
+Les emails transactionnels partent via Resend (`RESEND_API_KEY`, `EMAIL_FROM`). La connexion locale exige désormais une adresse confirmée (`User.emailVerified`) ; les comptes créés par l'administration ou la coordination sont considérés comme validés et reçoivent une invitation à définir leur mot de passe. Les jetons sont à usage unique, stockés sous forme d'empreinte (`VerificationToken`), et les réponses des formulaires sont neutres (elles ne révèlent jamais si une adresse correspond à un compte). Templates concernés : `email-verification`, `welcome`, `password-reset`, `password-changed`, `account-invitation`.
+
+### Parcours 1 - Inscription, confirmation, connexion
+
+| Étape | Où | Attendu |
+| --- | --- | --- |
+| 1. Créer un compte | `fetrag.ga/inscription` | Formulaire validé (Zod), compte créé sans session ouverte, message invitant à consulter sa messagerie. Limitation de débit par adresse IP. |
+| 2. Email de confirmation | Messagerie | Email « Confirmez votre adresse email - FETRAG » (`email-verification`), lien valable 24 h. `EmailDelivery` : `template = email-verification`, `provider = resend`, statut `SENT`. |
+| 3. Tentative de connexion avant confirmation | `fetrag.ga/connexion` ou `formation.fetrag.ga/connexion` | Refus avec le message « Confirmez d'abord votre adresse email » et un lien « Renvoyer le lien de confirmation » vers `fetrag.ga/inscription/confirmation?email=<adresse>`. Aucune session ouverte. |
+| 4. Renvoyer le lien | `fetrag.ga/inscription/confirmation` | Réponse neutre (« Si un compte est associé à cette adresse... »), limitation de débit, nouveau jeton qui invalide le précédent. |
+| 5. Confirmer | Lien de l'email | `emailVerified` renseigné, jeton consommé (un second clic sur le même lien est refusé : lien expiré ou déjà utilisé), email de bienvenue (`welcome`), audit. |
+| 6. Se connecter | `fetrag.ga/connexion` puis `formation.fetrag.ga` | Connexion acceptée ; le même compte fonctionne sur les deux sites (SSO avec `AUTH_COOKIE_DOMAIN=.fetrag.ga`). |
+| 7. Lien expiré | Lien de plus de 24 h | Page de confirmation en erreur avec proposition de renvoi ; aucun compte activé. |
+
+### Parcours 2 - Mot de passe oublié
+
+| Étape | Où | Attendu |
+| --- | --- | --- |
+| 1. Demander un lien | `fetrag.ga/mot-de-passe-oublie` (le LMS y redirige) | Réponse neutre quelle que soit l'adresse ; limitation de débit (3 demandes par heure et par adresse). |
+| 2. Email | Messagerie | Email « Réinitialisation de votre mot de passe FETRAG » (`password-reset`), lien valable 30 minutes. Aucun email si l'adresse est inconnue, sans que la réponse à l'écran change. |
+| 3. Choisir un nouveau mot de passe | `fetrag.ga/reinitialiser-mot-de-passe?token=...` | Règles de `passwordSchema` appliquées (longueur, majuscule, minuscule, chiffre, symbole), confirmation identique, jeton consommé, sessions existantes fermées, audit `auth.password_changed`. |
+| 4. Confirmation | Messagerie | Email « Votre mot de passe FETRAG a été modifié » (`password-changed`) avec la date et un lien de connexion. |
+| 5. Connexion | `fetrag.ga/connexion` | Ancien mot de passe refusé, nouveau accepté. Un lien de plus de 30 minutes ou déjà utilisé est refusé avec proposition d'en demander un nouveau. |
+
+### Parcours 3 - Comptes créés par l'administration ou la coordination
+
+| Étape | Où | Attendu |
+| --- | --- | --- |
+| 1. Création manuelle | `fetrag.ga/admin/utilisateurs/nouveau` | Compte créé avec `emailVerified` renseigné ; mot de passe temporaire affiché une seule fois (canal de secours) ; email « Votre compte de formation FETRAG est prêt : définissez votre mot de passe » (`account-invitation`) avec un lien valable 7 jours. Audit `user.registered` (`source = admin`, `invitationSent`). |
+| 2. Réinitialisation forcée | Fiche utilisateur → « Mot de passe temporaire » (super administrateur) | Sessions fermées, mot de passe temporaire affiché une seule fois, même email d'invitation (lien 7 jours), audit `user.updated`. Le mot de passe temporaire n'apparaît jamais dans un email. |
+| 3. Planification d'une demande institutionnelle | `formation.fetrag.ga/coordination/demandes/<id>` → décision « Planifier » | Pour chaque participant sans compte : compte créé et validé, rôle LEARNER, adhésion à l'organisation, inscription aux cohortes, email `account-invitation` mentionnant la formation et l'organisation (lien 7 jours), audit `user.registered` (`source = coordination`). Les participants déjà inscrits reçoivent une notification d'inscription, pas d'invitation. |
+| 4. Définir le mot de passe | Lien de l'email | Même page `reinitialiser-mot-de-passe` que le parcours 2 ; connexion possible ensuite sur les deux sites sans autre confirmation. |
+
+### Vérifications techniques
+
+- `EmailDelivery` : un enregistrement par email avec `template`, `provider = resend`, `providerRef` (identifiant Resend), statut `SENT` ; en cas d'échec, job `email.send` rejoué par le cron (`docs/runbooks/panne-email.md`).
+- `VerificationToken` : une ligne par jeton actif (`identifier = <usage>:<email>`), supprimée à la consommation ; les jetons expirés sont purgés par la maintenance.
+- `AuditLog` : `user.registered`, `auth.password_changed`, `user.updated` avec l'acteur, l'adresse IP et l'agent utilisateur.
+- Aucun mot de passe, temporaire ou non, dans les emails, les journaux ou `EmailDelivery.variables`.
 
 ## Revue mobile (10 septembre 2026)
 

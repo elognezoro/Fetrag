@@ -8,7 +8,8 @@ import { loginSchema, type z } from '@fetrag/contracts'
 import { audit, hashIp } from '@fetrag/domain'
 import { auth, signIn, signOut } from '@/lib/auth'
 import { checkRateLimit, formatRetryDelay } from '@/lib/rate-limit'
-import { loginMessageFor, safeCallbackUrl, type LoginErrorCode, type LoginState } from './auth-types'
+import { webHref } from '@/lib/site'
+import { credentialsErrorCodes, loginMessageFor, safeCallbackUrl, type LoginErrorCode, type LoginState } from './auth-types'
 
 const MINUTE = 60_000
 
@@ -28,7 +29,7 @@ async function requestContext(): Promise<{ ip: string | null; ipHash: string | n
 
 /** Extrait le code d'erreur Auth.js d'une exception de connexion. */
 function credentialsErrorCode(error: unknown): LoginErrorCode {
-  const known: LoginErrorCode[] = ['invalid_credentials', 'mfa_required', 'inactive']
+  const known = credentialsErrorCodes
   if (error instanceof CredentialsSignin) {
     return known.includes(error.code as LoginErrorCode) ? (error.code as LoginErrorCode) : 'invalid_credentials'
   }
@@ -39,6 +40,11 @@ function credentialsErrorCode(error: unknown): LoginErrorCode {
     }
   }
   return 'unknown'
+}
+
+/** Page du site institutionnel qui propose de renvoyer le lien de confirmation (adresse pré-remplie). */
+function verificationHrefFor(email: string): string {
+  return webHref(`/inscription/confirmation?email=${encodeURIComponent(email)}`)
 }
 
 /** Première erreur Zod par champ. */
@@ -54,7 +60,7 @@ function firstErrors<T extends string>(issues: z.ZodIssue[]): Partial<Record<T, 
 /**
  * Server Action de connexion (email + mot de passe + code MFA optionnel).
  * Utilise `signIn('credentials', { redirect: false })` et traduit les codes d'erreur
- * `invalid_credentials`, `mfa_required` et `inactive` en état de formulaire.
+ * `invalid_credentials`, `mfa_required`, `inactive` et `email_not_verified` en état de formulaire.
  */
 export async function loginAction(_previous: LoginState, formData: FormData): Promise<LoginState> {
   const callbackUrl = safeCallbackUrl(field(formData, 'callbackUrl'), '/dashboard')
@@ -112,6 +118,7 @@ export async function loginAction(_previous: LoginState, formData: FormData): Pr
       message: loginMessageFor(code, mfaCode.length > 0),
       email: parsed.data.email,
       mfaRequired: code === 'mfa_required',
+      ...(code === 'email_not_verified' ? { verificationHref: verificationHrefFor(parsed.data.email) } : {}),
     }
   }
 

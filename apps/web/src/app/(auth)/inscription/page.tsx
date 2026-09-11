@@ -33,7 +33,8 @@ export default async function InscriptionPage() {
       description="Un compte unique pour le site institutionnel et la plateforme de formation : demandes de services, ressources réservées, inscriptions aux formations et aux événements."
       footer={
         <>
-          Vous représentez une organisation affiliée ? Créez votre compte puis contactez la coordination pour être rattaché à votre organisation.
+          Un lien de confirmation vous sera envoyé par email pour activer votre compte. Vous représentez une organisation affiliée ? Créez votre compte puis
+          contactez la coordination pour être rattaché à votre organisation.
         </>
       }
     >

@@ -18,13 +18,24 @@ interface LoginFormProps {
   initialError?: string | null
   /** Message d'information (déconnexion...). */
   notice?: string | null
+  /** Lien « renvoyer le lien de confirmation » lorsque l'erreur initiale (URL) est `email_not_verified`. */
+  initialVerificationHref?: string | null
   /** Liens absolus vers l'inscription et la réinitialisation (gérées par le site institutionnel). */
   registerHref: string
   forgotHref: string
 }
 
 /** Formulaire de connexion : email, mot de passe, code MFA à la demande, bouton OIDC optionnel. */
-export function LoginForm({ callbackUrl, oidcName, localAuth, initialError = null, notice = null, registerHref, forgotHref }: LoginFormProps) {
+export function LoginForm({
+  callbackUrl,
+  oidcName,
+  localAuth,
+  initialError = null,
+  notice = null,
+  initialVerificationHref = null,
+  registerHref,
+  forgotHref,
+}: LoginFormProps) {
   const [state, formAction, pending] = useActionState(loginAction, initialLoginState)
   // Champs contrôlés : React réinitialise le formulaire après une action, les valeurs sont conservées ici.
   const [email, setEmail] = useState('')
@@ -45,13 +56,23 @@ export function LoginForm({ callbackUrl, oidcName, localAuth, initialError = nul
   }, [showMfa, state])
 
   const message = state.status === 'error' ? state.message : initialError
+  // Adresse non confirmée : le site institutionnel propose de renvoyer le lien de confirmation.
+  const verificationHref = state.status === 'error' ? (state.verificationHref ?? null) : initialVerificationHref
+  const infoTone = state.code === 'mfa_required' || state.code === 'email_not_verified' || Boolean(verificationHref)
 
   return (
     <div className="space-y-6">
       {notice ? <FormAlert tone="success">{notice}</FormAlert> : null}
       {message ? (
-        <FormAlert tone={state.code === 'mfa_required' ? 'info' : 'danger'} id="login-message">
-          {message}
+        <FormAlert tone={infoTone ? 'info' : 'danger'} id="login-message">
+          <p>{message}</p>
+          {verificationHref ? (
+            <p className="mt-1">
+              <a href={verificationHref} className="font-semibold underline underline-offset-2 hover:no-underline">
+                Renvoyer le lien de confirmation
+              </a>
+            </p>
+          ) : null}
         </FormAlert>
       ) : null}
 

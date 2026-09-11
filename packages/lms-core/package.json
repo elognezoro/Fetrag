@@ -16,6 +16,7 @@
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
+    "@fetrag/auth": "workspace:*",
     "@fetrag/config": "workspace:*",
     "@fetrag/contracts": "workspace:*",
     "@fetrag/db": "workspace:*",

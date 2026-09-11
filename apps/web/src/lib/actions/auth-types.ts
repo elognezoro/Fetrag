@@ -3,7 +3,17 @@
  * Ce fichier ne porte pas la directive « use server » : il peut exporter des constantes et des types.
  */
 
-export type LoginErrorCode = 'invalid_credentials' | 'mfa_required' | 'inactive' | 'validation' | 'rate_limited' | 'unknown'
+export type LoginErrorCode =
+  | 'invalid_credentials'
+  | 'mfa_required'
+  | 'inactive'
+  | 'email_not_verified'
+  | 'validation'
+  | 'rate_limited'
+  | 'unknown'
+
+/** Codes renvoyés par Auth.js (CredentialsSignin.code) et traduits en état de formulaire. */
+export const credentialsErrorCodes: readonly LoginErrorCode[] = ['invalid_credentials', 'mfa_required', 'inactive', 'email_not_verified']
 
 export interface LoginState {
   status: 'idle' | 'error'
@@ -49,6 +59,39 @@ export interface ForgotPasswordState {
 
 export const initialForgotPasswordState: ForgotPasswordState = { status: 'idle' }
 
+/** Renvoi du lien de confirmation d'adresse (réponse neutre : ne révèle jamais l'existence d'un compte). */
+export interface ResendVerificationState {
+  status: 'idle' | 'done' | 'error'
+  message?: string
+  fieldErrors?: Partial<Record<'email', string>>
+}
+
+export const initialResendVerificationState: ResendVerificationState = { status: 'idle' }
+
+/** Message neutre affiché après une demande de renvoi du lien de confirmation. */
+export const resendVerificationNeutralMessage =
+  'Si un compte en attente de confirmation est associé à cette adresse, un nouveau lien vient de lui être envoyé. Pensez à vérifier votre dossier de courrier indésirable.'
+
+export type ResetPasswordErrorCode = 'validation' | 'invalid_token' | 'rate_limited' | 'inactive' | 'unknown'
+
+export type ResetPasswordField = 'password' | 'confirmPassword'
+
+export interface ResetPasswordState {
+  status: 'idle' | 'error'
+  code?: ResetPasswordErrorCode
+  message?: string
+  fieldErrors?: Partial<Record<ResetPasswordField, string>>
+}
+
+export const initialResetPasswordState: ResetPasswordState = { status: 'idle' }
+
+/** Règles du mot de passe (miroir de `passwordSchema` de @fetrag/contracts) pour l'indicateur en direct. */
+export const passwordRules: ReadonlyArray<{ id: string; label: string; test: (value: string) => boolean }> = [
+  { id: 'length', label: 'Au moins 8 caractères', test: (value) => value.length >= 8 },
+  { id: 'upper', label: 'Au moins une lettre majuscule', test: (value) => /[A-Z]/.test(value) },
+  { id: 'digit', label: 'Au moins un chiffre', test: (value) => /[0-9]/.test(value) },
+]
+
 /**
  * N'accepte qu'un chemin relatif interne (protection contre les redirections ouvertes).
  * Tout autre format (URL absolue, « // », caractères de contrôle) retombe sur la valeur par défaut.
@@ -73,6 +116,8 @@ export function loginMessageFor(code: LoginErrorCode, hasMfaCode = false): strin
         : 'Ce compte est protégé par une vérification en deux étapes : saisissez le code de votre application d’authentification.'
     case 'inactive':
       return 'Ce compte est désactivé. Contactez le support de la FETRAG pour le réactiver.'
+    case 'email_not_verified':
+      return 'Confirmez d’abord votre adresse email : ouvrez le lien reçu lors de votre inscription. Vous ne le retrouvez pas ? Demandez un nouvel envoi ci-dessous.'
     case 'validation':
       return 'Vérifiez les informations saisies.'
     case 'rate_limited':
@@ -90,7 +135,7 @@ export function authQueryErrorMessage(error?: string, code?: string): string | n
   if (!error) return null
   switch (error) {
     case 'CredentialsSignin':
-      if (code === 'invalid_credentials' || code === 'mfa_required' || code === 'inactive') return loginMessageFor(code)
+      if (credentialsErrorCodes.includes(code as LoginErrorCode)) return loginMessageFor(code as LoginErrorCode)
       return loginMessageFor('invalid_credentials')
     case 'AccessDenied':
       return 'L’accès a été refusé par le fournisseur d’identité.'

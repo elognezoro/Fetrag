@@ -2,13 +2,46 @@
 
 import { randomInt } from 'node:crypto'
 import { revalidatePath } from 'next/cache'
-import { hashPassword } from '@fetrag/auth'
+import { createEmailToken, hashPassword } from '@fetrag/auth'
+import { resolvePublicUrl } from '@fetrag/config'
 import { emailSchema, idSchema, phoneSchema, roleLabels, roleSchema, z } from '@fetrag/contracts'
 import { prisma } from '@fetrag/db'
 import { audit, ConflictError, isSuperAdmin, PreconditionError } from '@fetrag/domain'
-import { notifyUser } from '@fetrag/notifications'
+import { notifyUser, sendEmail } from '@fetrag/notifications'
 import { adminRequestContext, requireActionCan, type ActionState } from './context'
 import { bool, firstErrors, nullableText, relationId, successState, text, toErrorState } from './form-helpers'
+
+// -----------------------------------------------------------------------------
+// Invitation par email (lien « définir mon mot de passe »)
+// -----------------------------------------------------------------------------
+
+/** Durée de validité du lien d'invitation envoyé aux comptes créés ou réinitialisés par l'administration. */
+const INVITATION_TTL_DAYS = 7
+
+/**
+ * Crée un jeton `reset-password` à usage unique (7 jours) et envoie le template `account-invitation`.
+ * Le mot de passe temporaire n'est jamais transmis par email. Renvoie `true` si l'envoi a été accepté
+ * (immédiat ou mis en file) ; les échecs sont journalisés sans faire échouer l'action.
+ */
+async function sendAccountInvitation(user: { email: string; firstName: string | null }, organizationName: string | null): Promise<boolean> {
+  try {
+    const { token } = await createEmailToken(user.email, 'reset-password', INVITATION_TTL_DAYS * 24 * 60)
+    const result = await sendEmail({
+      to: user.email,
+      template: 'account-invitation',
+      variables: {
+        firstName: user.firstName,
+        organizationName,
+        setPasswordUrl: `${resolvePublicUrl('web')}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`,
+        expiresDays: String(INVITATION_TTL_DAYS),
+      },
+    })
+    return result.status === 'SENT' || result.status === 'QUEUED'
+  } catch (error) {
+    console.error('[admin] invitation par email impossible', error instanceof Error ? error.message : error)
+    return false
+  }
+}
 
 // -----------------------------------------------------------------------------
 // Mot de passe temporaire
@@ -55,7 +88,8 @@ const createUserSchema = z.object({
 
 /**
  * Création manuelle d'un compte par l'administration (users.manage + roles.manage pour le rôle initial) :
- * mot de passe temporaire affiché une seule fois, rôle global initial, rattachement facultatif à une organisation.
+ * adresse considérée comme validée, invitation par email pour définir le mot de passe (lien 7 jours),
+ * mot de passe temporaire affiché une seule fois (canal de secours), rôle global initial, rattachement facultatif à une organisation.
  */
 export async function createUserAction(_previous: ActionState<UserCreateField>, formData: FormData): Promise<ActionState<UserCreateField>> {
   const parsed = createUserSchema.safeParse({
@@ -80,9 +114,11 @@ export async function createUserAction(_previous: ActionState<UserCreateField>, 
 
     const existing = await prisma.user.findUnique({ where: { email: data.email }, select: { id: true } })
     if (existing) throw new ConflictError('Un compte existe déjà avec cette adresse email', { fieldErrors: { email: 'Adresse déjà utilisée' } })
+    let organizationName: string | null = null
     if (data.organizationId) {
-      const organization = await prisma.organization.findUnique({ where: { id: data.organizationId }, select: { id: true } })
+      const organization = await prisma.organization.findUnique({ where: { id: data.organizationId }, select: { id: true, name: true } })
       if (!organization) return { status: 'error', message: 'Organisation introuvable.', fieldErrors: { organizationId: 'Organisation inconnue' } }
+      organizationName = organization.name
     }
 
     const temporaryPassword = generateTemporaryPassword()
@@ -99,33 +135,41 @@ export async function createUserAction(_previous: ActionState<UserCreateField>, 
         jobTitle: data.jobTitle,
         employer: data.employer,
         passwordHash,
+        // Adresse saisie par un administrateur : considérée comme validée (pas de lien de confirmation).
+        emailVerified: new Date(),
         isActive: true,
         roleAssignments: { create: { role: data.role, scopeType: 'GLOBAL', grantedById: principal.id } },
         ...(data.organizationId ? { memberships: { create: { organizationId: data.organizationId, isManager: data.isManager } } } : {}),
       },
-      select: { id: true, email: true },
+      select: { id: true, email: true, firstName: true },
     })
+
+    const invitationSent = await sendAccountInvitation(user, organizationName)
 
     const auditCtx = { actorId: principal.id, actorEmail: principal.email, ip: ctx.ip, userAgent: ctx.userAgent }
     await audit('user.registered', { type: 'User', id: user.id }, auditCtx, {
-      after: { email: user.email, source: 'admin', organizationId: data.organizationId, isManager: data.isManager },
+      after: { email: user.email, source: 'admin', organizationId: data.organizationId, isManager: data.isManager, emailVerified: true, invitationSent, invitationDays: INVITATION_TTL_DAYS },
     })
     await audit('role.granted', { type: 'RoleAssignment', id: user.id }, auditCtx, {
       after: { userEmail: user.email, role: data.role, scopeType: 'GLOBAL', scopeId: null, expiresAt: null },
     })
     await notifyUser(user.id, {
       title: 'Bienvenue sur la plateforme FETRAG',
-      body: `Votre compte (${roleLabels[data.role]}) a été créé par l’administration de la fédération. Connectez-vous avec le mot de passe temporaire transmis par votre administrateur, puis modifiez-le depuis « Sécurité ».`,
+      body: `Votre compte (${roleLabels[data.role]}) a été créé par l’administration de la fédération. Un lien pour définir votre mot de passe vous a été envoyé par email (valable ${INVITATION_TTL_DAYS} jours). Vous pourrez le modifier à tout moment depuis « Sécurité ».`,
       href: '/espace/securite',
       category: 'account',
-      email: true,
+      email: false,
     }).catch(() => undefined)
 
     revalidatePath('/admin/utilisateurs')
-    return successState('Compte créé. Transmettez le mot de passe temporaire par un canal sûr : il ne sera plus affiché.', {
+    const message = invitationSent
+      ? `Compte créé. Une invitation à définir son mot de passe (lien valable ${INVITATION_TTL_DAYS} jours) a été envoyée à ${user.email}. Le mot de passe temporaire ci-dessous reste un canal de secours : il ne sera plus affiché.`
+      : `Compte créé, mais l’invitation par email n’a pas pu être envoyée à ${user.email}. Transmettez le mot de passe temporaire par un canal sûr : il ne sera plus affiché.`
+    return successState(message, {
       id: user.id,
       email: user.email,
       temporaryPassword,
+      invitationSent,
     })
   } catch (error) {
     return toErrorState<UserCreateField>(error)
@@ -137,8 +181,9 @@ export async function createUserAction(_previous: ActionState<UserCreateField>, 
 // -----------------------------------------------------------------------------
 
 /**
- * Définit un mot de passe temporaire (affiché une seule fois) et ferme les sessions de l'utilisateur.
- * Réservé au super administrateur ; l'utilisateur est informé sans que le mot de passe transite par email.
+ * Définit un mot de passe temporaire (affiché une seule fois), ferme les sessions de l'utilisateur et lui envoie
+ * une invitation par email pour définir lui-même un nouveau mot de passe (lien 7 jours).
+ * Réservé au super administrateur ; le mot de passe temporaire ne transite jamais par email.
  */
 export async function forceTemporaryPasswordAction(userId: string): Promise<ActionState> {
   const parsed = idSchema.safeParse(userId)
@@ -148,29 +193,37 @@ export async function forceTemporaryPasswordAction(userId: string): Promise<Acti
     if (!isSuperAdmin(principal)) throw new PreconditionError('Réservé au super administrateur')
     if (parsed.data === principal.id) throw new PreconditionError('Modifiez votre propre mot de passe depuis votre espace personnel')
     const ctx = await adminRequestContext()
-    const user = await prisma.user.findUnique({ where: { id: parsed.data }, select: { id: true, email: true, isActive: true, passwordHash: true } })
+    const user = await prisma.user.findUnique({
+      where: { id: parsed.data },
+      select: { id: true, email: true, firstName: true, isActive: true, passwordHash: true, emailVerified: true },
+    })
     if (!user) return { status: 'error', message: 'Utilisateur introuvable.' }
     if (!user.isActive) throw new PreconditionError('Réactivez le compte avant de définir un mot de passe')
 
     const temporaryPassword = generateTemporaryPassword()
     const passwordHash = await hashPassword(temporaryPassword)
     await prisma.$transaction([
-      prisma.user.update({ where: { id: user.id }, data: { passwordHash } }),
+      // Un administrateur qui réinitialise le compte atteste de l'adresse : elle est considérée comme validée.
+      prisma.user.update({ where: { id: user.id }, data: { passwordHash, emailVerified: user.emailVerified ?? new Date() } }),
       prisma.session.deleteMany({ where: { userId: user.id } }),
     ])
+    const invitationSent = await sendAccountInvitation(user, null)
     await audit('user.updated', { type: 'User', id: user.id }, { actorId: principal.id, actorEmail: principal.email, ip: ctx.ip, userAgent: ctx.userAgent }, {
-      before: { hasPassword: Boolean(user.passwordHash) },
-      after: { hasPassword: true, reason: 'temporary_password_by_admin', sessionsClosed: true },
+      before: { hasPassword: Boolean(user.passwordHash), emailVerified: Boolean(user.emailVerified) },
+      after: { hasPassword: true, emailVerified: true, reason: 'temporary_password_by_admin', sessionsClosed: true, invitationSent, invitationDays: INVITATION_TTL_DAYS },
     })
     await notifyUser(user.id, {
-      title: 'Mot de passe temporaire défini',
-      body: 'Un administrateur a défini un mot de passe temporaire sur votre compte et fermé vos sessions. Connectez-vous avec ce mot de passe puis choisissez-en un nouveau depuis « Sécurité ».',
+      title: 'Mot de passe réinitialisé par un administrateur',
+      body: `Un administrateur a réinitialisé le mot de passe de votre compte et fermé vos sessions. Un lien pour définir un nouveau mot de passe vous a été envoyé par email (valable ${INVITATION_TTL_DAYS} jours).`,
       href: '/espace/securite',
       category: 'security',
-      email: true,
+      email: false,
     }).catch(() => undefined)
     revalidatePath(`/admin/utilisateurs/${user.id}`)
-    return successState(`Mot de passe temporaire défini pour ${user.email} ; ses sessions ont été fermées.`, { temporaryPassword, email: user.email })
+    const message = invitationSent
+      ? `Mot de passe temporaire défini pour ${user.email} ; ses sessions ont été fermées et une invitation à définir un nouveau mot de passe lui a été envoyée (lien valable ${INVITATION_TTL_DAYS} jours).`
+      : `Mot de passe temporaire défini pour ${user.email} ; ses sessions ont été fermées. L’invitation par email n’a pas pu être envoyée : transmettez le mot de passe par un canal sûr.`
+    return successState(message, { temporaryPassword, email: user.email, invitationSent })
   } catch (error) {
     return toErrorState(error)
   }

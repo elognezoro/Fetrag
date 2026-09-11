@@ -3,7 +3,10 @@
  * Ce fichier ne porte pas la directive « use server » : il peut exporter des constantes et des types.
  */
 
-export type LoginErrorCode = 'invalid_credentials' | 'mfa_required' | 'inactive' | 'validation' | 'rate_limited' | 'unknown'
+export type LoginErrorCode = 'invalid_credentials' | 'mfa_required' | 'inactive' | 'email_not_verified' | 'validation' | 'rate_limited' | 'unknown'
+
+/** Codes renvoyés par le fournisseur `credentials` de @fetrag/auth (CredentialsSignin.code). */
+export const credentialsErrorCodes: readonly LoginErrorCode[] = ['invalid_credentials', 'mfa_required', 'inactive', 'email_not_verified']
 
 export interface LoginState {
   status: 'idle' | 'error'
@@ -14,6 +17,8 @@ export interface LoginState {
   email?: string
   /** Vrai lorsque le compte exige un code de vérification (MFA). */
   mfaRequired?: boolean
+  /** Lien absolu (site institutionnel) pour renvoyer le lien de confirmation lorsque l'adresse n'est pas validée. */
+  verificationHref?: string
 }
 
 export const initialLoginState: LoginState = { status: 'idle' }
@@ -42,6 +47,8 @@ export function loginMessageFor(code: LoginErrorCode, hasMfaCode = false): strin
         : 'Ce compte est protégé par une vérification en deux étapes : saisissez le code de votre application d’authentification.'
     case 'inactive':
       return 'Ce compte est désactivé. Contactez le support de la FETRAG pour le réactiver.'
+    case 'email_not_verified':
+      return 'Confirmez d’abord votre adresse email : ouvrez le lien reçu lors de votre inscription.'
     case 'validation':
       return 'Vérifiez les informations saisies.'
     case 'rate_limited':
@@ -59,7 +66,7 @@ export function authQueryErrorMessage(error?: string, code?: string): string | n
   if (!error) return null
   switch (error) {
     case 'CredentialsSignin':
-      if (code === 'invalid_credentials' || code === 'mfa_required' || code === 'inactive') return loginMessageFor(code)
+      if (code && credentialsErrorCodes.includes(code as LoginErrorCode)) return loginMessageFor(code as LoginErrorCode)
       return loginMessageFor('invalid_credentials')
     case 'AccessDenied':
       return 'L’accès a été refusé par le fournisseur d’identité.'

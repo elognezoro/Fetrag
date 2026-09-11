@@ -1,6 +1,6 @@
 import { resolvePublicUrl } from '@fetrag/config'
 import { formatDateTime, ValidationError } from '@fetrag/domain'
-import { accountCreated, passwordReset, welcome } from './account'
+import { accountCreated, accountInvitation, emailVerification, passwordChanged, passwordReset, welcome } from './account'
 import { escapeHtml, isTrustedHtml, htmlToText } from './escape'
 import { eventRegistered, formReceived, serviceRequestReceived, serviceRequestStatus } from './forms'
 import { notification } from './generic'
@@ -20,7 +20,10 @@ import type { RenderedTemplate, TemplateDefinition, TemplateValue, TemplateVars 
 const definitions: TemplateDefinition[] = [
   welcome,
   accountCreated,
+  accountInvitation,
+  emailVerification,
   passwordReset,
+  passwordChanged,
   trainingRequestSubmitted,
   trainingRequestInfoRequested,
   trainingRequestAccepted,

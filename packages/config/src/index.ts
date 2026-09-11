@@ -37,12 +37,16 @@ const envSchema = z.object({
   APP_LMS_URL: z.string().url().default('http://localhost:3001'),
   API_URL: optionalString,
 
-  EMAIL_PROVIDER: z.enum(['console', 'smtp']).default('console'),
+  /** console | resend | smtp. Absent : déduit de RESEND_API_KEY puis SMTP_HOST (voir emailProvider()). */
+  EMAIL_PROVIDER: z.enum(['console', 'resend', 'smtp']).optional(),
+  /** Expéditeur commun à tous les fournisseurs, ex. « FETRAG <no-reply@fetrag.ga> » (domaine vérifié chez Resend). */
+  EMAIL_FROM: optionalString,
+  RESEND_API_KEY: optionalString,
   SMTP_HOST: optionalString,
   SMTP_PORT: z.coerce.number().int().positive().default(587),
   SMTP_USER: optionalString,
   SMTP_PASSWORD: optionalString,
-  SMTP_FROM: z.string().default('FETRAG <no-reply@fetrag.ga>'),
+  SMTP_FROM: optionalString,
 
   STORAGE_PROVIDER: z.enum(['local', 'vercel-blob', 's3']).default('local'),
   BLOB_READ_WRITE_TOKEN: optionalString,
@@ -110,6 +114,15 @@ export const features = {
     const e = getEnvSafe()
     return Boolean(e.OIDC_ISSUER && e.OIDC_CLIENT_ID && e.OIDC_CLIENT_SECRET)
   },
+}
+
+/** Fournisseur email effectif : explicite, sinon Resend si sa clé existe, sinon SMTP si un hôte existe, sinon console. */
+export function emailProvider(): 'console' | 'resend' | 'smtp' {
+  const e = getEnvSafe()
+  if (e.EMAIL_PROVIDER) return e.EMAIL_PROVIDER
+  if (e.RESEND_API_KEY) return 'resend'
+  if (e.SMTP_HOST) return 'smtp'
+  return 'console'
 }
 
 /** Constantes produit partagées. */
