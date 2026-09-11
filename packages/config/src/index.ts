@@ -75,8 +75,22 @@ let cached: Env | undefined
  * Lit et valide l'environnement une seule fois par process.
  * Lance une erreur explicite listant les variables manquantes.
  */
+/**
+ * Tolère une variable saisie avec une casse différente dans l'hébergeur (ex. `resend_api_key`) :
+ * la valeur est recopiée sous le nom attendu si celui-ci est absent.
+ */
+function normalizeEnvCase(): void {
+  const expected = ['RESEND_API_KEY', 'EMAIL_FROM', 'EMAIL_PROVIDER', 'CRON_SECRET', 'PAYMENT_WEBHOOK_SECRET', 'BLOB_READ_WRITE_TOKEN']
+  for (const name of expected) {
+    if (process.env[name]) continue
+    const alias = Object.keys(process.env).find((key) => key !== name && key.toUpperCase() === name)
+    if (alias && process.env[alias]) process.env[name] = process.env[alias]
+  }
+}
+
 export function getEnv(): Env {
   if (cached) return cached
+  normalizeEnvCase()
   const parsed = envSchema.safeParse(process.env)
   if (!parsed.success) {
     const issues = parsed.error.issues.map((i) => `  - ${i.path.join('.')}: ${i.message}`).join('\n')
@@ -88,6 +102,7 @@ export function getEnv(): Env {
 
 /** Variante non bloquante pour les contextes de build (Next.js collecte les pages sans env complet). */
 export function getEnvSafe(): Partial<Env> {
+  normalizeEnvCase()
   const parsed = envSchema.safeParse(process.env)
   return parsed.success ? parsed.data : (process.env as unknown as Partial<Env>)
 }
