@@ -134,6 +134,11 @@ export const features = {
 /** Fournisseur email effectif : explicite, sinon Resend si sa clé existe, sinon SMTP si un hôte existe, sinon console. */
 export function emailProvider(): 'console' | 'resend' | 'smtp' {
   const e = getEnvSafe()
+  // En production, un EMAIL_PROVIDER=console laissé par erreur (copie de .env.example) ne doit pas
+  // désactiver les envois quand une clé Resend ou un hôte SMTP est configuré.
+  if (e.EMAIL_PROVIDER === 'console' && e.NODE_ENV === 'production' && (e.RESEND_API_KEY || e.SMTP_HOST)) {
+    return e.RESEND_API_KEY ? 'resend' : 'smtp'
+  }
   if (e.EMAIL_PROVIDER) return e.EMAIL_PROVIDER
   if (e.RESEND_API_KEY) return 'resend'
   if (e.SMTP_HOST) return 'smtp'
