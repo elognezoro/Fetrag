@@ -35,7 +35,12 @@ export async function GET(): Promise<NextResponse> {
       version: process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7) ?? 'dev',
       environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'development',
       // Diagnostic non sensible : fournisseur email effectif et présence d'un expéditeur configuré.
-      email: { provider: emailProvider(), senderConfigured: Boolean(getEnvSafe().EMAIL_FROM) },
+      email: {
+        provider: emailProvider(),
+        senderConfigured: Boolean(getEnvSafe().EMAIL_FROM),
+        // Noms (jamais les valeurs) des variables d'environnement liées aux emails réellement visibles par la fonction.
+        variablesVisibles: Object.keys(process.env).filter((key) => /resend|email_from|email_provider|smtp_host/i.test(key)).sort(),
+      },
       ...result,
     },
     { status: result.ok ? 200 : 503, headers: { 'Cache-Control': 'no-store' } },
