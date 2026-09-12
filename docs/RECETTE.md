@@ -15,7 +15,7 @@ Référence : chapitre 30 « Critères de recette globale » du cahier des charg
 | 9 | Rapports par organisation, session, finance exploitables | Livré | `/organisation/rapports`, `/coordination/rapports`, `/admin/rapports`, `/admin/finance` avec exports CSV (route handlers protégés, audit `export.generated`). |
 | 10 | Sauvegardes et restauration testées | Partiel | Procédure `docs/runbooks/restauration-base.md` (Neon PITR + pg_dump) ; test de restauration à réaliser avant go-live. |
 | 11 | Aucune vulnérabilité critique connue | Partiel | En-têtes de sécurité, CSP, rate limiting, validation Zod, RBAC testé (tests API 36/36, tests lms-core 32). Audit de dépendances et revue externe à faire (SEC-06, SEC-10). |
-| 12 | Accès, guides, runbooks et code source remis | Livré | Dépôt GitHub `elognezoro/Fetrag`, `docs/guides/*` (7 rôles), `docs/runbooks/*` (9), `docs/adr/*` (5), `scripts/export-data.ts` (réversibilité). |
+| 12 | Accès, guides, runbooks et code source remis | Livré | Dépôt GitHub `elognezoro/Fetrag` ; guides d'utilisation par rôle intégrés à l'application (`@fetrag/guides`, chaque rôle ne voit que le sien) et exportés dans `docs/guides/*` (13 guides + README), avec un module d'autoévaluation « Testez votre maîtrise » par guide (tentatives en base `GuideAssessmentAttempt`) ; `docs/runbooks/*` (9), `docs/adr/*` (5), `scripts/export-data.ts` (réversibilité). |
 
 ## Vérifications automatisées exécutées
 

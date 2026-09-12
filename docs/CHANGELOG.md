@@ -2,6 +2,18 @@
 
 Format inspiré de « Keep a Changelog » ; versions sémantiques. Les dates sont celles de la mise à disposition en recette. Chaque version renvoie aux ADR et aux exigences du CDC concernées ; la rubrique « Exploitation » consigne les opérations notables (rotations de secrets, exercices de restauration) sans valeur sensible.
 
+## [Non publié]
+
+### Ajouté
+
+**Guides d'utilisation par rôle**
+
+- Package `@fetrag/guides` : contenu structuré (blocs typés, sans HTML) de 13 guides d'utilisation, un par rôle sur chaque plateforme, rédigés pour un public à culture numérique moyenne (mobile d'abord). Schéma et types dans `@fetrag/contracts` (`guides.ts`).
+- Politique d'accès : chaque rôle ne voit que le guide de son rôle ; le super administrateur les voit tous (`canReadGuide`, `accessibleGuides`).
+- Lecteur `GuideReader` et carte `GuideCard` dans `@fetrag/ui` : sommaire avec recherche, étapes numérotées, encadrés, tableaux, dépannage, statuts, impression ou export PDF ; pages et navigation ajoutées dans `apps/web` (`/espace/guide`, `/admin/guide/[id]`) et `apps/lms` (`/guide`, `/organisation`, `/formateur`, `/coordination`, `/admin`).
+- Module d'autoévaluation « Testez votre maîtrise » par guide : questionnaire (choix unique, choix multiples, vrai/faux) couvrant au moins 60 % des sections, correction et niveau de maîtrise (fonctions pures dans `@fetrag/contracts`), retour immédiat et sections à relire, enregistrement des tentatives en base (`GuideAssessmentAttempt`, migration `20260912120000`) avec contrôle d'accès et limitation de débit ; badge de maîtrise sur les cartes des autres guides.
+- Export Markdown des guides vers `docs/guides/*` (`pnpm --filter @fetrag/guides export:docs`) et script d'audit des accès par rôle (`scripts/guides-audit.mjs`).
+
 ## [0.1.0] - 2026-09-05
 
 Première version de recette de l'écosystème numérique FETRAG : socle monorepo, design system, deux applications Next.js, packages de domaine, seed de démonstration, documentation d'exploitation.

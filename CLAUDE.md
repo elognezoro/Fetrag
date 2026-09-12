@@ -28,6 +28,7 @@ Le fichier `.env` racine (jamais commité) est lu par les apps Next.js via `next
 - `packages/cms`, `packages/lms-core`, `packages/payments`, `packages/storage`, `packages/notifications`, `packages/search`, `packages/analytics` : services métier. **Jamais de logique métier dans les composants React.**
 - `packages/ui` : design system FETRAG (voir `docs/architecture/DESIGN_SYSTEM.md`). `packages/design-tokens` : couleurs/typos/motion issus du logo.
 - `packages/contracts` : schémas Zod et types partagés client/API. Pas de duplication de types entre web, LMS et API.
+- `packages/guides` : contenu structuré des guides d'utilisation par rôle et politique d'accès. **Règle : chaque rôle ne voit que le guide de son rôle** (`canReadGuide`) ; le super administrateur les voit tous. Chaque guide porte un module d'autoévaluation. Le rendu vit dans `packages/ui` (`GuideReader`), les types dans `packages/contracts`. Régénérer `docs/guides` avec `pnpm --filter @fetrag/guides export:docs`.
 
 Règle de dépendance : apps → packages ; packages de domaine → jamais vers apps ; adaptateurs (payments, storage, notifications) → contrats du domaine.
 

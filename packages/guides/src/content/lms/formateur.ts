@@ -1281,7 +1281,7 @@ export const lmsFormateur: Guide = {
   ],
   selfAssessment: {
     intro:
-      'Quinze questions pour vérifier ce que vous avez retenu : où cliquer, ce que signifie un statut, ce qui est définitif, à qui s’adresser. Comptez une dizaine de minutes.',
+      'Vingt-quatre questions pour vérifier ce que vous avez retenu : où cliquer, ce que signifie un statut, ce qui est définitif, à qui s’adresser. Comptez une quinzaine de minutes.',
     passPercent: 70,
     questions: [
       {
@@ -1459,6 +1459,114 @@ export const lmsFormateur: Guide = {
           { id: 'c', text: 'À un autre formateur.', correct: false },
         ],
         explanation: 'L’attribution du rôle relève de la coordination. Voir « Besoin d’aide ? ».',
+      },
+      {
+        id: 'q-role-1',
+        sectionId: 'votre-role',
+        type: 'single',
+        prompt: 'Parmi ces actions, laquelle relève bien de vous, le formateur ?',
+        options: [
+          { id: 'a', text: 'Émarger une séance et corriger les devoirs de vos cohortes.', correct: true },
+          { id: 'b', text: 'Délivrer un certificat de réussite à un participant.', correct: false },
+          { id: 'c', text: 'Ajouter ou retirer un participant d’une cohorte.', correct: false },
+        ],
+        explanation: 'Vous émargez et corrigez ; délivrer un certificat ou inscrire un participant relève de la coordination. Voir « Votre rôle en bref ».',
+      },
+      {
+        id: 'q-tableau-1',
+        sectionId: 'tableau-de-bord',
+        type: 'single',
+        prompt: 'Sur le tableau de bord, comment ouvrez-vous directement la feuille d’émargement d’une séance ?',
+        options: [
+          { id: 'a', text: 'En cliquant sur `Émarger` sur la séance, dans « Sessions à venir ».', correct: true },
+          { id: 'b', text: 'En cliquant sur l’anneau « Score moyen ».', correct: false },
+          { id: 'c', text: 'En cliquant sur `Toutes les cohortes`.', correct: false },
+        ],
+        explanation: 'Le bouton `Émarger` d’une session ouvre la cohorte sur l’onglet `Présence`, la bonne séance sélectionnée. Voir « Comprendre votre tableau de bord ».',
+      },
+      {
+        id: 'q-cohortes-1',
+        sectionId: 'mes-cohortes',
+        type: 'single',
+        prompt: 'Dans « Mes cohortes », quelles cohortes ne sont jamais listées ?',
+        options: [
+          { id: 'a', text: 'Les cohortes annulées.', correct: true },
+          { id: 'b', text: 'Les cohortes clôturées.', correct: false },
+          { id: 'c', text: 'Les cohortes planifiées.', correct: false },
+        ],
+        explanation: 'Les cohortes annulées n’apparaissent plus dans votre espace ; les clôturées et les planifiées restent listées. Voir « Ouvrir et lire une cohorte ».',
+      },
+      {
+        id: 'q-participants-1',
+        sectionId: 'participants',
+        type: 'true-false',
+        prompt: 'Depuis l’onglet `Participants`, vous pouvez ajouter ou retirer un membre de la cohorte.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'L’onglet `Participants` est en lecture seule ; ajouter ou retirer un membre relève de la coordination. Voir « Suivre la progression des participants ».',
+      },
+      {
+        id: 'q-messages-1',
+        sectionId: 'messages',
+        type: 'single',
+        prompt: 'Dans l’onglet `Messages`, que reçoivent les participants si vous laissez les deux cases cochées ?',
+        options: [
+          { id: 'a', text: 'Une notification, un email et un fil publié dans le forum de la cohorte.', correct: true },
+          { id: 'b', text: 'Un simple appel téléphonique de la coordination.', correct: false },
+          { id: 'c', text: 'Rien tant que la cohorte n’est pas clôturée.', correct: false },
+        ],
+        explanation: 'Le message part en notification, en email et crée un fil de forum quand les deux cases restent cochées. Voir « Écrire aux participants d’une cohorte ».',
+      },
+      {
+        id: 'q-stats-1',
+        sectionId: 'statistiques',
+        type: 'single',
+        prompt: 'Dans le rapport de cohorte, que mesure la « Réussite aux évaluations » ?',
+        options: [
+          { id: 'a', text: 'La part des membres notés dont le score atteint au moins 60 %.', correct: true },
+          { id: 'b', text: 'La part des membres présents à la dernière séance.', correct: false },
+          { id: 'c', text: 'Le nombre de certificats déjà délivrés.', correct: false },
+        ],
+        explanation: 'La réussite aux évaluations est la part des membres notés atteignant au moins 60 %. Voir « Consulter les statistiques et exporter le rapport ».',
+      },
+      {
+        id: 'q-calendrier-1',
+        sectionId: 'calendrier',
+        type: 'single',
+        prompt: 'Que faites-vous pour ajouter vos séances à votre agenda personnel ?',
+        options: [
+          { id: 'a', text: 'Vous cliquez sur `Exporter (.ics)` pour télécharger « fetrag-formation.ics ».', correct: true },
+          { id: 'b', text: 'Vous téléchargez le rapport de cohorte au format CSV.', correct: false },
+          { id: 'c', text: 'Vous demandez le fichier à la coordination.', correct: false },
+        ],
+        explanation: 'Le bouton `Exporter (.ics)` produit « fetrag-formation.ics » à importer dans votre agenda. Voir « Suivre votre calendrier ».',
+      },
+      {
+        id: 'q-notifications-1',
+        sectionId: 'notifications',
+        type: 'multiple',
+        prompt: 'Parmi ces actions, lesquelles envoient une notification à l’apprenant ?',
+        options: [
+          { id: 'a', text: 'Noter un devoir.', correct: true },
+          { id: 'b', text: 'Renvoyer un devoir pour révision.', correct: true },
+          { id: 'c', text: 'Émarger une séance.', correct: false },
+          { id: 'd', text: 'Exporter un rapport de cohorte.', correct: false },
+        ],
+        explanation: 'Noter ou renvoyer un devoir prévient l’apprenant ; l’émargement et l’export n’envoient aucune notification. Voir « Notifications et emails ».',
+      },
+      {
+        id: 'q-lexique-1',
+        sectionId: 'lexique',
+        type: 'single',
+        prompt: 'Dans le lexique, comment est définie une « cohorte » ?',
+        options: [
+          { id: 'a', text: 'Un groupe de participants qui suit une même formation ensemble, sur des dates données.', correct: true },
+          { id: 'b', text: 'Un rendez-vous de formation en présentiel ou à distance.', correct: false },
+          { id: 'c', text: 'Une question à rédiger dans une évaluation.', correct: false },
+        ],
+        explanation: 'La cohorte est un groupe suivant une même formation sur des dates données ; le rendez-vous est la « session ». Voir « Lexique ».',
       },
     ],
   },
