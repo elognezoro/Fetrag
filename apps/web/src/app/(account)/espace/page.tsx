@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { ArrowRight, ArrowUpRight, Award, Bell, BookOpen, CalendarDays, CreditCard, Inbox, ShieldAlert } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, Award, Bell, BookOpen, BookOpenCheck, CalendarDays, CreditCard, Inbox, ShieldAlert } from 'lucide-react'
 import { formatMoney, formatDate, formatDateTime } from '@fetrag/domain'
 import {
   Alert,
@@ -53,12 +53,20 @@ export default async function AccountDashboardPage({ searchParams }: PageProps) 
         }
         description="Retrouvez ici l’essentiel de votre activité au sein de la Fédération des Travailleurs du Gabon : formations, demandes de service, événements et documents."
         actions={
-          <Button asChild variant="accent" size="md">
-            <a href={lmsHref('/dashboard')}>
-              Plateforme de formation
-              <ArrowUpRight aria-hidden="true" />
-            </a>
-          </Button>
+          <>
+            <Button asChild variant="ghost" size="md">
+              <Link href="/espace/guide">
+                <BookOpenCheck aria-hidden="true" />
+                Guide d’utilisation
+              </Link>
+            </Button>
+            <Button asChild variant="accent" size="md">
+              <a href={lmsHref('/dashboard')}>
+                Plateforme de formation
+                <ArrowUpRight aria-hidden="true" />
+              </a>
+            </Button>
+          </>
         }
       />
 

@@ -12,6 +12,7 @@ import {
   ChevronDown,
   GraduationCap,
   LayoutDashboard,
+  LifeBuoy,
   Loader2,
   Lock,
   LogOut,
@@ -49,6 +50,7 @@ export type UserMenuIcon =
   | 'award'
   | 'book'
   | 'calendar'
+  | 'help'
 
 export type UserMenuGroup = 'personal' | 'roles' | 'cross'
 
@@ -85,6 +87,7 @@ const icons: Record<UserMenuIcon, LucideIcon> = {
   award: Award,
   book: BookOpen,
   calendar: Calendar,
+  help: LifeBuoy,
 }
 
 const groupOrder: UserMenuGroup[] = ['personal', 'roles', 'cross']

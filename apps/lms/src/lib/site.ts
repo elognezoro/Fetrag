@@ -47,6 +47,7 @@ export const mainNavigation: NavItem[] = [
 /** Liens du pied de page compact (vers le site institutionnel pour les pages légales). */
 export const footerNavigation: NavItem[] = [
   { label: 'Catalogue', href: '/catalogue' },
+  { label: 'Guide d’utilisation', href: '/guide' },
   { label: 'Demande de formation', href: '/demande-formation' },
   { label: 'Vérifier un certificat', href: `${publicEnv.webUrl}/certificats/verifier`, external: true },
   { label: 'Contact', href: `${publicEnv.webUrl}/contact`, external: true },

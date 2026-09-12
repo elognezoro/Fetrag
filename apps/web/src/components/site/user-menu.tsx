@@ -46,6 +46,7 @@ export function toUserMenuUser(principal: Principal, image: string | null): User
     { label: 'Mes inscriptions', href: '/espace/inscriptions', icon: 'book', group: 'personal' },
     { label: 'Notifications', href: '/espace/notifications', icon: 'bell', group: 'personal' },
     { label: 'Sécurité', href: '/espace/securite', icon: 'lock', group: 'personal' },
+    { label: 'Guide d’utilisation', href: '/espace/guide', icon: 'help', group: 'personal' },
   ]
   if (isSuperAdmin(principal) || adminActions.some((action) => can(principal, action))) {
     links.push({ label: 'Administration du site', href: '/admin', icon: 'shield', group: 'roles' })

@@ -87,6 +87,7 @@ const nextConfig: NextConfig = {
     '@fetrag/db',
     '@fetrag/design-tokens',
     '@fetrag/domain',
+    '@fetrag/guides',
     '@fetrag/jobs',
     '@fetrag/lms-core',
     '@fetrag/notifications',

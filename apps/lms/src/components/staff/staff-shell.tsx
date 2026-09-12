@@ -7,6 +7,7 @@ import {
   Award,
   BarChart3,
   BookOpen,
+  BookOpenCheck,
   Building2,
   CalendarDays,
   ClipboardList,
@@ -41,6 +42,7 @@ export type StaffIconKey =
   | 'audit'
   | 'trainer'
   | 'admin'
+  | 'guide'
 
 const icons: Record<StaffIconKey, LucideIcon> = {
   dashboard: LayoutDashboard,
@@ -59,6 +61,7 @@ const icons: Record<StaffIconKey, LucideIcon> = {
   audit: ScrollText,
   trainer: GraduationCap,
   admin: Shield,
+  guide: BookOpenCheck,
 }
 
 export interface StaffNavItem {

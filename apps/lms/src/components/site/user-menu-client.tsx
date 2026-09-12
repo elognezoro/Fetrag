@@ -14,6 +14,7 @@ import {
   Globe,
   GraduationCap,
   LayoutDashboard,
+  LifeBuoy,
   Loader2,
   Lock,
   LogOut,
@@ -53,6 +54,7 @@ export type UserMenuIcon =
   | 'calendar'
   | 'clipboard'
   | 'globe'
+  | 'help'
 
 export type UserMenuGroup = 'personal' | 'roles' | 'cross'
 
@@ -93,6 +95,7 @@ const icons: Record<UserMenuIcon, LucideIcon> = {
   calendar: Calendar,
   clipboard: ClipboardList,
   globe: Globe,
+  help: LifeBuoy,
 }
 
 const groupOrder: UserMenuGroup[] = ['personal', 'roles', 'cross']

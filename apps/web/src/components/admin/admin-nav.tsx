@@ -3,6 +3,7 @@
 import {
   BarChart3,
   BookMarked,
+  BookOpenCheck,
   CalendarDays,
   FileText,
   HandCoins,
@@ -45,6 +46,7 @@ const icons: Record<AdminIconKey, LucideIcon> = {
   reports: BarChart3,
   audit: ScrollText,
   settings: Settings,
+  guide: BookOpenCheck,
 }
 
 export interface AdminNavProps {

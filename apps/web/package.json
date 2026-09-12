@@ -23,6 +23,7 @@
     "@fetrag/db": "workspace:*",
     "@fetrag/design-tokens": "workspace:*",
     "@fetrag/domain": "workspace:*",
+    "@fetrag/guides": "workspace:*",
     "@fetrag/jobs": "workspace:*",
     "@fetrag/lms-core": "workspace:*",
     "@fetrag/notifications": "workspace:*",

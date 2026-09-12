@@ -275,3 +275,55 @@
   min-height: 44px;
   min-width: 44px;
 }
+
+/* --------------------------------------------------------------------------
+   Impression d'un guide d'utilisation (GuideReader) : corps lisible en noir sur blanc,
+   sans navigation ni ombres. L'attribut est posé par le lecteur au clic sur « Imprimer ».
+   -------------------------------------------------------------------------- */
+@media print {
+  html[data-print='guide'] {
+    scroll-behavior: auto;
+  }
+  html[data-print='guide'] body {
+    background: white;
+    color: black;
+  }
+  html[data-print='guide'] header,
+  html[data-print='guide'] footer,
+  html[data-print='guide'] nav,
+  html[data-print='guide'] aside,
+  html[data-print='guide'] [data-print-hide] {
+    display: none !important;
+  }
+  html[data-print='guide'] article[data-guide-id] header {
+    display: flex !important;
+  }
+  html[data-print='guide'] article[data-guide-id] *,
+  html[data-print='guide'] article[data-guide-id] {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  html[data-print='guide'] article[data-guide-id] {
+    color: black;
+  }
+  html[data-print='guide'] article[data-guide-id] [hidden] {
+    display: none !important;
+  }
+  html[data-print='guide'] article[data-guide-id] section,
+  html[data-print='guide'] article[data-guide-id] li {
+    break-inside: avoid;
+  }
+  html[data-print='guide'] article[data-guide-id] h2 {
+    break-after: avoid;
+  }
+  html[data-print='guide'] article[data-guide-id] a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    font-weight: 400;
+    color: #4e5872;
+  }
+}

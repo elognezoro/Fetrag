@@ -1,11 +1,11 @@
 import 'server-only'
 import Link from 'next/link'
 import { loadPrincipal } from '@fetrag/auth'
-import { roleLabels, type RoleName } from '@fetrag/contracts'
 import { can, defaultDashboard, hasGlobalRole, hasRole, isSuperAdmin, type Principal } from '@fetrag/domain'
 import { Button } from '@fetrag/ui'
 import { auth } from '@/lib/auth'
 import { webHref } from '@/lib/site'
+import { dominantRoleLabel } from '@/server/staff/navigation'
 import { UserMenuClient, type UserMenuLink, type UserMenuUser } from './user-menu-client'
 
 /** Correspondance entre l'espace par défaut (`defaultDashboard`) et sa route. */
@@ -15,15 +15,6 @@ const dashboardRoutes: Record<ReturnType<typeof defaultDashboard>, string> = {
   formateur: '/formateur',
   organisation: '/organisation',
   dashboard: '/dashboard',
-}
-
-/** Rôle dominant affiché dans le menu. */
-function dominantRole(principal: Principal): RoleName {
-  const order: RoleName[] = ['SUPER_ADMIN', 'COORDINATOR', 'TRAINER', 'ORG_MANAGER', 'EDITOR', 'SERVICES_MANAGER', 'FINANCE', 'SUPPORT', 'LEARNER']
-  for (const role of order) {
-    if (hasRole(principal, role)) return role
-  }
-  return principal.managedOrganizationIds.length > 0 ? 'ORG_MANAGER' : 'LEARNER'
 }
 
 function initialsOf(name: string, email: string): string {
@@ -43,6 +34,7 @@ export function toUserMenuUser(principal: Principal, image: string | null): User
     { label: 'Mes formations', href: '/mes-formations', icon: 'book', group: 'personal' },
     { label: 'Calendrier', href: '/calendrier', icon: 'calendar', group: 'personal' },
     { label: 'Mes certificats', href: '/certificats', icon: 'award', group: 'personal' },
+    { label: 'Guide d’utilisation', href: '/guide', icon: 'help', group: 'personal' },
   ]
 
   const isOrgManager = hasRole(principal, 'ORG_MANAGER') || principal.managedOrganizationIds.length > 0
@@ -70,7 +62,7 @@ export function toUserMenuUser(principal: Principal, image: string | null): User
     email: principal.email,
     initials: initialsOf(name, principal.email),
     image,
-    roleLabel: roleLabels[dominantRole(principal)],
+    roleLabel: dominantRoleLabel(principal),
     homeHref,
     links,
   }

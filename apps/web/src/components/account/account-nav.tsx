@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowUpRight, Bell, BookOpen, CreditCard, GraduationCap, Inbox, LayoutDashboard, ShieldCheck, User } from 'lucide-react'
+import { ArrowUpRight, Bell, BookOpen, BookOpenCheck, CreditCard, GraduationCap, Inbox, LayoutDashboard, ShieldCheck, User } from 'lucide-react'
 import { SidebarNav, type SidebarNavItem } from '@fetrag/ui'
 
 export interface AccountNavProps {
@@ -19,6 +19,7 @@ export function AccountNav({ unread, pendingOrders, lmsUrl }: AccountNavProps) {
     { label: 'Paiements et reçus', href: '/espace/paiements', icon: CreditCard, badge: pendingOrders > 0 ? pendingOrders : undefined },
     { label: 'Notifications', href: '/espace/notifications', icon: Bell, badge: unread > 0 ? unread : undefined },
     { label: 'Sécurité', href: '/espace/securite', icon: ShieldCheck },
+    { label: 'Guide d’utilisation', href: '/espace/guide', icon: BookOpenCheck },
   ]
   return (
     <div className="flex flex-col gap-6">

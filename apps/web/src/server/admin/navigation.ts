@@ -27,6 +27,7 @@ export type AdminIconKey =
   | 'reports'
   | 'audit'
   | 'settings'
+  | 'guide'
 
 export interface AdminNavItem {
   label: string
@@ -101,6 +102,10 @@ const sections: AdminNavSection[] = [
       { label: 'Journal d’audit', href: '/admin/audit', icon: 'audit', actions: ['audit.read'] },
       { label: 'Paramètres', href: '/admin/parametres', icon: 'settings', actions: ['settings.manage'] },
     ],
+  },
+  {
+    title: 'Aide',
+    items: [{ label: 'Guide de mon rôle', href: '/admin/guide', icon: 'guide', actions: [] }],
   },
 ]
 

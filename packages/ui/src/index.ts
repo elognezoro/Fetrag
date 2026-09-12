@@ -120,3 +120,11 @@ export {
   type AppShellMainProps,
 } from './components/layout/app-shell'
 export { type SidebarNavProps, isActivePath } from './components/layout/sidebar-nav'
+
+// Guides d'utilisation (lecteur, cartes, mise en forme en ligne, icônes)
+export { GuideReader, type GuideReaderProps } from './components/guide/guide-reader'
+export { GuideCard, type GuideCardProps } from './components/guide/guide-card'
+export { renderGuideInline, GuideLink, type GuideBaseUrls, type RenderGuideInlineOptions } from './components/guide/guide-inline'
+export { guideIcons, guideIcon } from './components/guide/guide-icons'
+export { GuideBlockView, type GuideBlockViewProps } from './components/guide/guide-blocks'
+export { formatGuideDate } from './components/guide/guide-text'
