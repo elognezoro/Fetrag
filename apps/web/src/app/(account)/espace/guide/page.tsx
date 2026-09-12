@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { commonGuide } from '@fetrag/guides'
 import { GuideReader } from '@fetrag/ui'
 import { guards } from '@/lib/auth'
-import { guideReaderProps } from '@/server/guides'
+import { loadGuideView } from '@/server/guides'
 
 export const metadata: Metadata = { title: 'Guide d’utilisation' }
 
@@ -13,7 +13,7 @@ export default async function AccountGuidePage() {
 
   return (
     <GuideReader
-      {...guideReaderProps(principal, guide)}
+      {...(await loadGuideView(principal, guide))}
       breadcrumbs={[{ label: 'Espace personnel', href: '/espace' }, { label: 'Guide d’utilisation' }]}
     />
   )

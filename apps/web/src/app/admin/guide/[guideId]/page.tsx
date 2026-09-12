@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { canReadGuide, guideById, guidePath } from '@fetrag/guides'
 import { GuideReader } from '@fetrag/ui'
 import { requireAdmin } from '@/server/admin/context'
-import { guideReaderProps } from '@/server/guides'
+import { loadGuideView } from '@/server/guides'
 
 interface PageProps {
   params: Promise<{ guideId: string }>
@@ -28,7 +28,7 @@ export default async function AdminRoleGuidePage({ params }: PageProps) {
 
   return (
     <GuideReader
-      {...guideReaderProps(principal, guide)}
+      {...(await loadGuideView(principal, guide))}
       breadcrumbs={[{ label: 'Administration', href: '/admin' }, { label: 'Guide d’utilisation' }]}
     />
   )

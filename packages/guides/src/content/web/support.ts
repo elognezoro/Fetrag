@@ -184,8 +184,8 @@ export const webSupport: Guide = {
           title: 'Se déconnecter',
           items: [
             {
-              text: 'Ouvrez le menu de votre compte puis cliquez sur **Se déconnecter**.',
-              where: 'vos initiales, en haut à droite',
+              text: 'Ouvrez le menu de votre compte puis cliquez sur **Déconnexion**.',
+              where: 'vos initiales, en haut à droite ; dernière entrée du menu',
               result: 'La page de connexion affiche « Vous avez été déconnecté. »',
             },
           ],
@@ -1241,7 +1241,8 @@ export const webSupport: Guide = {
               text: 'Si l’état est **En attente de confirmation**, expliquez à la personne qu’elle doit ouvrir le lien reçu par email pour confirmer son abonnement (inscription en deux temps).',
             },
             {
-              text: 'Pour une simple désinscription, indiquez à la personne le lien de désinscription présent en bas de chaque lettre.',
+              text: 'Pour une simple désinscription, indiquez à la personne le lien **Se désinscrire** présent en bas de chaque lettre reçue.',
+              note: 'Le back-office ne propose pas de bouton « Désinscrire » : seule la suppression définitive existe (ci-dessous).',
             },
           ],
         },
@@ -1293,7 +1294,8 @@ export const webSupport: Guide = {
           type: 'steps',
           items: [
             {
-              text: 'Appliquez les filtres souhaités sur la liste (statut, type, période de recherche...) puis cliquez sur `Filtrer`.',
+              text: 'Appliquez les filtres souhaités sur la liste (recherche, statut, type, responsable...) puis cliquez sur `Filtrer`.',
+              note: 'Il n’existe pas de filtre par période : pour limiter l’export à une date, triez ensuite dans votre tableur grâce à la colonne de date.',
             },
             {
               text: 'Cliquez sur `Exporter (CSV)`.',
@@ -1323,7 +1325,7 @@ export const webSupport: Guide = {
             {
               problem: 'Les accents sont mal affichés dans le tableur.',
               cause: 'Le tableur n’a pas reconnu l’encodage du fichier.',
-              solution: 'Ouvrez le fichier par « Importer » en choisissant l’encodage UTF-8 et le séparateur point-virgule ou virgule selon l’aperçu.',
+              solution: 'Ouvrez le fichier par « Importer » en choisissant l’encodage UTF-8 et le séparateur point-virgule.',
             },
           ],
         },
@@ -1646,4 +1648,189 @@ export const webSupport: Guide = {
     { label: 'Guide du membre', href: '/espace/guide', description: 'Votre compte et votre espace personnel : ce que voient tous les utilisateurs que vous aidez.' },
     { label: 'Guide de l’apprenant', href: '{{lms}}/guide', description: 'La plateforme de formation, telle que la voient les apprenants.', external: true },
   ],
+  selfAssessment: {
+    intro:
+      'Quinze questions pour vérifier que vous savez où cliquer, ce que signifie chaque statut, ce qui est définitif et à qui transmettre. Comptez huit minutes ; le corrigé renvoie à la section du guide.',
+    passPercent: 70,
+    questions: [
+      {
+        id: 'q-role-1',
+        sectionId: 'votre-role',
+        type: 'single',
+        prompt: 'Une personne vous demande de réactiver son compte désactivé. Que faites-vous ?',
+        options: [
+          { id: 'a', text: 'J’ouvre sa fiche et je clique sur `Réactiver le compte`.', correct: false },
+          { id: 'b', text: 'Je vérifie son identité, puis je transmets la demande au super administrateur.', correct: true },
+          { id: 'c', text: 'Je lui demande de créer un nouveau compte avec la même adresse.', correct: false },
+        ],
+        explanation: 'Le rôle Support ne modifie jamais un compte : la réactivation est réservée au super administrateur. Voir « Votre rôle en bref ».',
+      },
+      {
+        id: 'q-connexion-1',
+        sectionId: 'avant-de-commencer',
+        type: 'true-false',
+        prompt: 'La vérification en deux étapes est obligatoire pour se connecter avec le rôle Support.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'Elle est recommandée pour le rôle Support, mais l’application ne l’impose qu’aux rôles administration, coordination, finance et communication. Voir « Avant de commencer ».',
+      },
+      {
+        id: 'q-reperer-1',
+        sectionId: 'se-reperer',
+        type: 'single',
+        prompt: 'Sur un téléphone, comment ouvrez-vous le menu du back-office ?',
+        options: [
+          { id: 'a', text: 'Avec le bouton **Ouvrir la navigation** (trois traits) en haut à gauche.', correct: true },
+          { id: 'b', text: 'En cliquant sur **Voir le site** en haut à droite.', correct: false },
+          { id: 'c', text: 'Le menu n’est pas disponible sur téléphone.', correct: false },
+        ],
+        explanation: 'Sur petit écran, le menu de gauche devient un tiroir ouvert par le bouton à trois traits. Voir « Se repérer dans le back-office ».',
+      },
+      {
+        id: 'q-message-1',
+        sectionId: 'messages-repondre',
+        type: 'single',
+        prompt: 'Vous cliquez sur `Marquer répondu` sur un message reçu. Que reçoit l’expéditeur ?',
+        options: [
+          { id: 'a', text: 'Un email automatique contenant votre réponse.', correct: false },
+          { id: 'b', text: 'Rien : la réponse doit partir de votre messagerie via `Répondre par email`.', correct: true },
+          { id: 'c', text: 'Une notification lui demandant de clôturer le message.', correct: false },
+        ],
+        explanation: 'Un changement de statut d’un message n’envoie jamais d’email : seule votre messagerie envoie la réponse. Voir « Répondre et classer le message ».',
+      },
+      {
+        id: 'q-message-2',
+        sectionId: 'messages-supprimer',
+        type: 'multiple',
+        prompt: 'Quels statuts permettent de supprimer un message reçu ?',
+        options: [
+          { id: 'a', text: 'Indésirable', correct: true },
+          { id: 'b', text: 'Clôturé', correct: true },
+          { id: 'c', text: 'Nouveau', correct: false },
+          { id: 'd', text: 'Répondu', correct: false },
+        ],
+        explanation: 'Seuls les messages indésirables ou clôturés peuvent être supprimés, et la suppression est définitive. Voir « Supprimer un message ».',
+      },
+      {
+        id: 'q-demande-1',
+        sectionId: 'demandes-lire-attribuer',
+        type: 'single',
+        prompt: 'Vous attribuez une demande de service au statut **Nouvelle**. Quel statut prend-elle automatiquement ?',
+        options: [
+          { id: 'a', text: 'En traitement', correct: false },
+          { id: 'b', text: 'En examen', correct: true },
+          { id: 'c', text: 'Elle reste Nouvelle jusqu’au premier changement de statut.', correct: false },
+        ],
+        explanation: 'Une demande Nouvelle passe automatiquement En examen lorsqu’elle est attribuée. Voir « Lire une demande et l’attribuer ».',
+      },
+      {
+        id: 'q-demande-2',
+        sectionId: 'demandes-changer-statut',
+        type: 'true-false',
+        prompt: 'Une demande de service **Clôturée** peut être remise En traitement si le demandeur revient.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'Clôturée est un état final : aucune transition n’est possible. C’est la demande Traitée qui peut revenir En traitement. Voir « Changer le statut et informer le demandeur ».',
+      },
+      {
+        id: 'q-demande-3',
+        sectionId: 'demandes-note-interne',
+        type: 'single',
+        prompt: 'Qui peut lire la **Note interne** d’une demande de service ?',
+        options: [
+          { id: 'a', text: 'Le demandeur, dans son espace personnel.', correct: false },
+          { id: 'b', text: 'Uniquement l’équipe des services et le support.', correct: true },
+          { id: 'c', text: 'Toute personne disposant de la référence SRV.', correct: false },
+        ],
+        explanation: 'La note interne n’est jamais transmise au demandeur ; c’est le « Commentaire pour le demandeur » qui lui est envoyé. Voir « Ajouter une note interne ».',
+      },
+      {
+        id: 'q-compte-1',
+        sectionId: 'retrouver-un-compte',
+        type: 'single',
+        prompt: 'Quelle information demandez-vous en priorité pour retrouver le compte d’une personne ?',
+        options: [
+          { id: 'a', text: 'Son mot de passe, pour vérifier qu’il fonctionne.', correct: false },
+          { id: 'b', text: 'L’adresse email exacte de son compte.', correct: true },
+          { id: 'c', text: 'Le nom de son syndicat uniquement.', correct: false },
+        ],
+        explanation: 'L’adresse email est l’identifiant du compte ; un mot de passe ne se demande jamais. Voir « Comment retrouver un compte et lire sa fiche ».',
+      },
+      {
+        id: 'q-aide-connexion-1',
+        sectionId: 'aider-a-la-connexion',
+        type: 'single',
+        prompt: 'Une personne voit « Confirmez d’abord votre adresse email… » à la connexion. Quelle est la solution ?',
+        options: [
+          { id: 'a', text: 'Elle utilise le formulaire **Renvoyer le lien de confirmation** et ouvre le lien reçu (valable 24 heures).', correct: true },
+          { id: 'b', text: 'Vous confirmez l’adresse depuis sa fiche dans le back-office.', correct: false },
+          { id: 'c', text: 'Elle attend 15 minutes puis réessaie avec le même mot de passe.', correct: false },
+        ],
+        explanation: 'L’adresse n’est pas vérifiée : seule la personne peut redemander le lien, le support n’a aucun bouton pour cela. Voir « Comment aider une personne qui n’arrive pas à se connecter ».',
+      },
+      {
+        id: 'q-email-1',
+        sectionId: 'email-non-recu',
+        type: 'single',
+        prompt: 'Combien de temps le lien de réinitialisation du mot de passe reste-t-il valable ?',
+        options: [
+          { id: 'a', text: '30 minutes, à usage unique.', correct: true },
+          { id: 'b', text: '24 heures, à usage unique.', correct: false },
+          { id: 'c', text: '7 jours, réutilisable.', correct: false },
+        ],
+        explanation: 'Réinitialisation : 30 minutes ; confirmation d’adresse : 24 heures ; invitation d’un compte créé par l’administration : 7 jours. Voir « Comment aider quand un email n’arrive pas ».',
+      },
+      {
+        id: 'q-paiement-1',
+        sectionId: 'paiement-non-visible',
+        type: 'single',
+        prompt: 'La commande d’une personne reste **En attente** alors qu’elle vous montre un SMS de débit. Que faites-vous ?',
+        options: [
+          { id: 'a', text: 'Je lui promets que le paiement sera validé dans la journée.', correct: false },
+          { id: 'b', text: 'Je transmets la référence CMD, l’email du compte et la preuve de débit à Finance / contrôle.', correct: true },
+          { id: 'c', text: 'Je change le statut de la commande en Payée depuis sa fiche.', correct: false },
+        ],
+        explanation: 'Le support ne voit pas le détail des paiements et ne peut ni confirmer ni rembourser. Voir « Comment aider quand un paiement n’apparaît pas ».',
+      },
+      {
+        id: 'q-newsletter-1',
+        sectionId: 'lettre-d-information',
+        type: 'true-false',
+        prompt: 'La suppression d’un abonné à la lettre d’information peut être annulée par le super administrateur.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'L’adresse et son historique de consentement sont effacés pour toujours : ne supprimez qu’après une demande explicite et vérifiée. Voir « Comment consulter les abonnés à la lettre d’information ».',
+      },
+      {
+        id: 'q-export-1',
+        sectionId: 'exporter-une-liste',
+        type: 'multiple',
+        prompt: 'Que faites-vous d’un fichier CSV exporté depuis le back-office ?',
+        options: [
+          { id: 'a', text: 'Je ne le transmets jamais hors de la Fédération.', correct: true },
+          { id: 'b', text: 'Je le supprime de mon appareil une fois le travail terminé.', correct: true },
+          { id: 'c', text: 'Je l’envoie par messagerie instantanée à la personne qui le demande.', correct: false },
+        ],
+        explanation: 'Un export contient des données personnelles et est enregistré dans le journal d’audit. Voir « Comment exporter une liste (CSV) ».',
+      },
+      {
+        id: 'q-escalade-1',
+        sectionId: 'escalader',
+        type: 'single',
+        prompt: 'Un apprenant conteste le statut « Révoqué » de son certificat. À qui transmettez-vous ?',
+        options: [
+          { id: 'a', text: 'Au Responsable services.', correct: false },
+          { id: 'b', text: 'À Finance / contrôle.', correct: false },
+          { id: 'c', text: 'À la Coordination, sur la plateforme de formation.', correct: true },
+        ],
+        explanation: 'Les certificats, cohortes et inscriptions relèvent de la coordination ; le support n’a aucune action sur les certificats. Voir « Ce que le support ne peut pas faire : à qui transmettre ».',
+      },
+    ],
+  },
 }

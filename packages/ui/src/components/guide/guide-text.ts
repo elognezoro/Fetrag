@@ -69,3 +69,24 @@ export function formatGuideDate(iso: string): string {
   const dayNumber = Number(day)
   return `${dayNumber === 1 ? '1er' : String(dayNumber)} ${monthLabel} ${year}`
 }
+
+/**
+ * Formate un horodatage ISO (date d'une tentative, en UTC) en date française vue depuis Libreville
+ * (« 12 septembre 2026 »). Une date déjà au format `AAAA-MM-JJ` est formatée telle quelle.
+ */
+export function formatGuideTimestamp(value: string, timeZone = 'Africa/Libreville'): string {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return formatGuideDate(value)
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) return value
+  try {
+    const parts = new Intl.DateTimeFormat('en-CA', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(date)
+    const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((entry) => entry.type === type)?.value
+    const year = part('year')
+    const month = part('month')
+    const day = part('day')
+    if (year && month && day) return formatGuideDate(`${year}-${month}-${day}`)
+  } catch {
+    // Fuseau inconnu du moteur : on retombe sur la date UTC.
+  }
+  return formatGuideDate(date.toISOString().slice(0, 10))
+}

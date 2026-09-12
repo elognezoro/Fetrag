@@ -343,7 +343,12 @@ export const webMembre: Guide = {
                   result: 'La page **Mot de passe oublié** s’affiche.',
                 },
                 {
-                  text: 'Saisissez votre **Adresse email du compte** puis cliquez sur `Recevoir le lien de réinitialisation`.',
+                  text: 'Saisissez votre **Adresse email du compte**.',
+                  note: 'Utilisez exactement l’adresse avec laquelle vous vous connectez.',
+                },
+                {
+                  text: 'Cliquez sur `Recevoir le lien de réinitialisation`.',
+                  where: 'sous le champ',
                   result: 'Le message « Si un compte est associé à cette adresse, un lien de réinitialisation vient de lui être envoyé. » remplace le formulaire.',
                   note: 'Le message est le même que l’adresse existe ou non : c’est une protection. Au plus 3 demandes par heure.',
                 },
@@ -721,7 +726,12 @@ export const webMembre: Guide = {
                   note: 'Ces applications sont gratuites, disponibles sur Android et iPhone, et fonctionnent sans connexion Internet.',
                 },
                 {
-                  text: 'Ouvrez **Sécurité** puis cliquez sur `Activer la vérification en deux étapes`.',
+                  text: 'Ouvrez **Sécurité**.',
+                  where: 'menu de gauche, groupe « Mon compte » ; sur mobile, bouton **Ouvrir la navigation** puis **Sécurité** ; ou avatar en haut à droite puis **Sécurité**',
+                  result: 'La page **Protéger mon compte** s’affiche avec le badge **Vérification en deux étapes inactive**.',
+                },
+                {
+                  text: 'Cliquez sur `Activer la vérification en deux étapes`.',
                   where: 'carte **Vérification en deux étapes**',
                   result: 'L’étape 1 affiche un QR code et une clé en lettres et chiffres.',
                 },
@@ -1017,7 +1027,8 @@ export const webMembre: Guide = {
                 {
                   text: 'Cliquez sur `Payer {montant}`.',
                   where: 'en bas de la carte **Moyen de paiement**',
-                  result: 'En démonstration : la page **Simuler le fournisseur de paiement** s’ouvre. Avec un opérateur réel : une demande de confirmation est envoyée sur votre téléphone.',
+                  result: 'Le bouton affiche « Connexion au fournisseur de paiement », puis la page **Simuler le fournisseur de paiement** s’ouvre (environnement de démonstration).',
+                  note: 'Quand un opérateur réel sera raccordé, la page affichera à la place les instructions de confirmation de l’opérateur ; suivez alors ce qui est écrit à l’écran.',
                 },
                 {
                   text: 'En démonstration, cliquez sur `Simuler un paiement réussi` (ou `Simuler un échec` pour tester).',
@@ -1330,7 +1341,11 @@ export const webMembre: Guide = {
                   result: 'L’agenda « Les rendez-vous de la Fédération » affiche les événements à venir puis les événements passés.',
                 },
                 {
-                  text: 'Filtrez avec les pastilles **Type** (Événement, Master Class, Webinaire, Assemblée, Formation) puis cliquez sur **Détails et inscription** sur la carte de l’événement.',
+                  text: 'Filtrez si besoin avec les pastilles **Type** (Événement, Master Class, Webinaire, Assemblée, Formation).',
+                  note: 'Les cartes indiquent la date, le lieu, l’heure, le prix ou **Gratuit**, et les mentions **Complet** ou **Terminé**.',
+                },
+                {
+                  text: 'Cliquez sur **Détails et inscription** sur la carte de l’événement.',
                   result: 'La fiche affiche la date, les horaires (heure de Libreville), le lieu ou la mention **En ligne**, le programme et l’encadré **Inscription** : participation (**Gratuite** ou prix), places restantes.',
                 },
                 {
@@ -1681,9 +1696,13 @@ export const webMembre: Guide = {
               note: 'Vous pouvez aussi scanner le QR code avec l’appareil photo du téléphone : il ouvre directement la page de résultat.',
             },
             {
-              text: 'Saisissez-le dans **Code de vérification ou numéro du certificat** puis cliquez sur `Vérifier l’authenticité`.',
-              result: 'La page de résultat affiche un sceau et un badge : **Certificat valide**, **Certificat révoqué**, **Certificat expiré** ou **Certificat introuvable**, avec le titulaire, la formation et la date d’émission.',
+              text: 'Saisissez-le dans **Code de vérification ou numéro du certificat**.',
               note: 'Les espaces et les minuscules sont acceptés (4 à 40 caractères, lettres, chiffres et tirets).',
+            },
+            {
+              text: 'Cliquez sur `Vérifier l’authenticité`.',
+              where: 'sous le champ',
+              result: 'La page de résultat affiche un sceau et un badge : **Certificat valide**, **Certificat révoqué**, **Certificat expiré** ou **Certificat introuvable**, avec le titulaire, la formation et la date d’émission.',
             },
             {
               text: 'En cas de doute sur un document, cliquez sur `Signaler un document`.',
@@ -1725,7 +1744,12 @@ export const webMembre: Guide = {
               result: 'La page « Que cherchez-vous ? » s’affiche.',
             },
             {
-              text: 'Saisissez au moins deux caractères dans **Recherche**, choisissez éventuellement un **Type de contenu** (actualités, pages, ressources, formations, services, événements) puis cliquez sur `Rechercher`.',
+              text: 'Saisissez au moins deux caractères dans **Recherche**.',
+              note: 'Vous pouvez restreindre la recherche avec la liste **Type de contenu** (actualités, pages, ressources, formations, services, événements) ; par défaut, tous les contenus sont recherchés.',
+            },
+            {
+              text: 'Cliquez sur `Rechercher`.',
+              where: 'à droite du champ (en dessous sur mobile)',
               result: 'Les résultats sont groupés par type ; le lien **Voir les {n} résultats** ouvre chaque groupe.',
             },
             {
@@ -1961,7 +1985,7 @@ export const webMembre: Guide = {
             { term: 'Référence', definition: 'Code unique d’un dossier : SRV (demande de service), CMD (commande), REC (reçu), MSG (message envoyé), FETRAG-AAAA-NNNNNN (certificat).' },
             { term: 'Commande', definition: 'Ensemble à régler (service payant, événement payant, document premium), identifié par une référence CMD, avec un statut (EN ATTENTE, PAYÉE, ÉCHOUÉ…).' },
             { term: 'Tentative de paiement', definition: 'Chaque essai de règlement d’une commande, avec son moyen, sa date et son résultat (INITIÉ, EN ATTENTE, RÉUSSI, ÉCHOUÉ…).' },
-            { term: 'Mobile Money', definition: 'Paiement par porte-monnaie mobile (Airtel Money, Moov Money) : une demande de confirmation est envoyée sur votre numéro.' },
+            { term: 'Mobile Money', definition: 'Paiement par porte-monnaie mobile (Airtel Money, Moov Money), choisi sur la page de paiement avec le numéro qui servira au règlement. Tant que la Fédération n’a pas raccordé d’opérateur réel, le paiement se termine sur la page de simulation.' },
             { term: 'Environnement de démonstration (bac à sable)', definition: 'Mode de paiement d’essai, sans débit réel, où vous choisissez vous-même l’issue du paiement.' },
             { term: 'Code promotionnel', definition: 'Code transmis par la Fédération ou votre organisation qui réduit le montant d’une commande. Un seul par commande, non retirable.' },
             { term: 'Prise en charge', definition: 'Montant réglé pour vous par la Fédération ou votre organisation, appliqué automatiquement à la commande. Non cumulable avec un code promotionnel.' },
@@ -2041,4 +2065,178 @@ export const webMembre: Guide = {
       external: true,
     },
   ],
+  selfAssessment: {
+    intro:
+      'Quatorze questions pour vérifier que vous savez où cliquer, ce que signifient les statuts et à qui vous adresser. Comptez cinq minutes ; après chaque réponse, le corrigé renvoie à la section du guide.',
+    passPercent: 70,
+    questions: [
+      {
+        id: 'q-compte-1',
+        sectionId: 'confirmer-mon-adresse',
+        type: 'single',
+        prompt: 'Vous venez de cliquer sur `Créer mon compte`. Que devez-vous faire avant de pouvoir vous connecter ?',
+        options: [
+          { id: 'a', text: 'Attendre un appel de la Fédération qui activera le compte.', correct: false },
+          { id: 'b', text: 'Ouvrir l’email « Confirmez votre adresse email - FETRAG » et cliquer sur son lien dans les 24 heures.', correct: true },
+          { id: 'c', text: 'Rien : le compte est actif dès la création.', correct: false },
+        ],
+        explanation: 'Sans confirmation de l’adresse, la connexion est impossible : voir « Confirmer votre adresse email ».',
+      },
+      {
+        id: 'q-compte-2',
+        sectionId: 'creer-un-compte',
+        type: 'multiple',
+        prompt: 'Quelles règles le mot de passe doit-il respecter ?',
+        options: [
+          { id: 'a', text: 'Au moins 8 caractères.', correct: true },
+          { id: 'b', text: 'Au moins une lettre majuscule.', correct: true },
+          { id: 'c', text: 'Au moins un chiffre.', correct: true },
+          { id: 'd', text: 'Au moins un caractère spécial comme # ou !.', correct: false },
+        ],
+        explanation: 'La règle affichée sous le champ est « 8 caractères minimum, une majuscule et un chiffre » : voir « Créer un compte ».',
+      },
+      {
+        id: 'q-mdp-1',
+        sectionId: 'mot-de-passe-oublie',
+        type: 'single',
+        prompt: 'Combien de temps le lien de réinitialisation du mot de passe reste-t-il valable ?',
+        options: [
+          { id: 'a', text: '30 minutes, et il ne sert qu’une fois.', correct: true },
+          { id: 'b', text: '24 heures.', correct: false },
+          { id: 'c', text: 'Sans limite, tant que le mot de passe n’a pas été changé.', correct: false },
+        ],
+        explanation: 'Le lien de réinitialisation expire après 30 minutes ; passé ce délai, cliquez sur `Demander un nouveau lien` : voir « Mot de passe oublié ».',
+      },
+      {
+        id: 'q-deconnexion-1',
+        sectionId: 'se-deconnecter',
+        type: 'true-false',
+        prompt: 'Sur un téléphone prêté, il suffit de fermer le navigateur pour être déconnecté du site.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'La session reste ouverte 14 jours : utilisez **Déconnexion** dans le menu du compte ou en bas du menu mobile : voir « Se déconnecter ».',
+      },
+      {
+        id: 'q-reperer-1',
+        sectionId: 'se-reperer',
+        type: 'single',
+        prompt: 'Sur mobile, comment ouvrir la liste des rubriques de votre espace (Profil, Mes demandes, Paiements et reçus…) ?',
+        options: [
+          { id: 'a', text: 'Avec le bouton **Ouvrir la navigation** (trois traits) dans le bandeau « Espace personnel ».', correct: true },
+          { id: 'b', text: 'En secouant le téléphone.', correct: false },
+          { id: 'c', text: 'Ces rubriques ne sont pas disponibles sur mobile.', correct: false },
+        ],
+        explanation: 'Le menu de gauche de l’ordinateur devient un tiroir ouvert par **Ouvrir la navigation** : voir « Se repérer dans le site et dans votre espace ».',
+      },
+      {
+        id: 'q-profil-1',
+        sectionId: 'profil-informations',
+        type: 'single',
+        prompt: 'Vous voulez changer l’adresse email de votre compte. Que faites-vous ?',
+        options: [
+          { id: 'a', text: 'Je modifie le champ **Adresse email** sur la page **Profil** et j’enregistre.', correct: false },
+          { id: 'b', text: 'J’écris au support depuis la page **Contact** : le champ est en lecture seule.', correct: true },
+          { id: 'c', text: 'Je crée un nouveau compte et je perds mes inscriptions.', correct: false },
+        ],
+        explanation: 'L’adresse sert d’identifiant de connexion et n’est pas modifiable en libre-service : voir « Modifier vos informations ».',
+      },
+      {
+        id: 'q-securite-1',
+        sectionId: 'securite-activer-la-verification',
+        type: 'single',
+        prompt: 'Après l’activation de la vérification en deux étapes, un encadré jaune affiche 8 codes de secours. Que faut-il en faire ?',
+        options: [
+          { id: 'a', text: 'Les ignorer : ils seront affichés à chaque connexion.', correct: false },
+          { id: 'b', text: 'Les copier ou les noter tout de suite et les conserver en lieu sûr : ils ne sont affichés qu’une seule fois.', correct: true },
+          { id: 'c', text: 'Les envoyer par email au support pour qu’il les garde.', correct: false },
+        ],
+        explanation: 'Les codes de secours permettent de se connecter sans téléphone et ne sont plus jamais réaffichés : voir « Activer la vérification en deux étapes ».',
+      },
+      {
+        id: 'q-service-1',
+        sectionId: 'demander-un-service',
+        type: 'true-false',
+        prompt: 'Une demande de service déposée peut être modifiée ou annulée depuis **Mes demandes**.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'La page **Mes demandes** permet seulement de suivre le statut ; pour corriger, écrivez à la Fédération avec la référence SRV : voir « Comment demander un service ».',
+      },
+      {
+        id: 'q-paiement-1',
+        sectionId: 'paiement-page-de-retour',
+        type: 'single',
+        prompt: 'Votre commande affiche le badge **ÉCHOUÉ**. Que signifie-t-il ?',
+        options: [
+          { id: 'a', text: 'Le montant a été débité mais la commande est perdue.', correct: false },
+          { id: 'b', text: 'La dernière tentative n’a pas abouti, rien n’a été débité, et vous pouvez cliquer sur `Réessayer le paiement`.', correct: true },
+          { id: 'c', text: 'La commande est annulée définitivement.', correct: false },
+        ],
+        explanation: 'ÉCHOUÉ n’est pas définitif : une nouvelle tentative remet la commande **EN ATTENTE** : voir « Lire la page de retour ».',
+      },
+      {
+        id: 'q-paiement-2',
+        sectionId: 'paiement-code-promotionnel',
+        type: 'true-false',
+        prompt: 'Un code promotionnel appliqué à une commande peut être retiré ensuite depuis le site.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'Un seul code par commande, non retirable et non cumulable avec une prise en charge : voir « Appliquer un code promotionnel ».',
+      },
+      {
+        id: 'q-recu-1',
+        sectionId: 'suivre-mes-paiements',
+        type: 'single',
+        prompt: 'Où télécharger le reçu d’une commande payée ?',
+        options: [
+          { id: 'a', text: 'Dans **Paiements et reçus**, bouton `Détail` de la commande, puis `Télécharger le PDF` dans la carte **Reçu**.', correct: true },
+          { id: 'b', text: 'Dans **Mes inscriptions**, carte **Certificats**.', correct: false },
+          { id: 'c', text: 'Sur la page **Contact**, en demandant au support.', correct: false },
+        ],
+        explanation: 'Le reçu REC-… est disponible quelques minutes après la confirmation, depuis le détail de la commande : voir « Comment retrouver mes commandes et mes reçus ».',
+      },
+      {
+        id: 'q-evenement-1',
+        sectionId: 'evenement-annuler',
+        type: 'single',
+        prompt: 'Votre inscription à un événement affiche **A PARTICIPÉ**. Pouvez-vous l’annuler ?',
+        options: [
+          { id: 'a', text: 'Oui, avec le bouton `Annuler mon inscription`.', correct: false },
+          { id: 'b', text: 'Non : une participation enregistrée par la Fédération ne peut plus être annulée.', correct: true },
+          { id: 'c', text: 'Oui, mais seulement depuis la plateforme de formation.', correct: false },
+        ],
+        explanation: 'L’annulation n’est possible que tant que la présence n’a pas été pointée : voir « Annuler votre inscription ».',
+      },
+      {
+        id: 'q-formation-1',
+        sectionId: 'm-inscrire-a-une-formation',
+        type: 'single',
+        prompt: 'Sur la fiche d’un module, vous cliquez sur `S’inscrire à ce module`. Que se passe-t-il ?',
+        options: [
+          { id: 'a', text: 'Le cours s’ouvre sur la plateforme de formation, avec votre compte déjà connecté.', correct: true },
+          { id: 'b', text: 'Une commande est créée immédiatement et il faut payer sur le site.', correct: false },
+          { id: 'c', text: 'Un formulaire d’inscription s’affiche sur le site institutionnel.', correct: false },
+        ],
+        explanation: 'Le site ne crée aucune inscription : il renvoie sur la plateforme, où l’inscription se confirme selon la politique du module : voir « Comment m’inscrire à une formation ».',
+      },
+      {
+        id: 'q-aide-1',
+        sectionId: 'besoin-d-aide',
+        type: 'multiple',
+        prompt: 'Que faut-il indiquer dans un message d’aide à la Fédération ?',
+        options: [
+          { id: 'a', text: 'L’adresse email de votre compte.', correct: true },
+          { id: 'b', text: 'Le message d’erreur exact et la page concernée.', correct: true },
+          { id: 'c', text: 'Votre mot de passe, pour que le support puisse vérifier.', correct: false },
+          { id: 'd', text: 'La référence du dossier (SRV, CMD, REC ou MSG).', correct: true },
+        ],
+        explanation: 'La Fédération ne demande jamais votre mot de passe ni vos codes de secours : voir « Besoin d’aide ? ».',
+      },
+    ],
+  },
 }

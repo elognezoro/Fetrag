@@ -316,8 +316,8 @@ export const lmsApprenant: Guide = {
               icon: 'list-tree',
             },
             {
-              name: 'Bloc « Retour sur fetrag.ga »',
-              purpose: 'Ramène au site institutionnel (actualités, services, votre profil).',
+              name: 'Bloc de retour vers le site institutionnel',
+              purpose: 'Ramène au site institutionnel (actualités, services, votre profil). Son libellé cite l’adresse du site.',
               icon: 'globe',
             },
             {
@@ -344,7 +344,7 @@ export const lmsApprenant: Guide = {
             },
             {
               name: 'Liens vers le site institutionnel',
-              purpose: '**Mon profil sur fetrag.ga** (vos informations), **Sécurité du compte** (mot de passe, vérification en deux étapes), **Site institutionnel**. Ils s’ouvrent sur le site, avec la même session.',
+              purpose: '**Mon profil** (vos informations ; le libellé complet du lien cite l’adresse du site institutionnel), **Sécurité du compte** (mot de passe, vérification en deux étapes), **Site institutionnel**. Ils s’ouvrent sur le site, avec la même session.',
               icon: 'external-link',
             },
             {
@@ -422,6 +422,27 @@ export const lmsApprenant: Guide = {
               name: 'Liens',
               purpose: '**Catalogue**, **Demande de formation** (réservé aux responsables d’organisation), **Vérifier un certificat** (page publique du site institutionnel), **Contact**, **Mentions légales**, **Confidentialité** et **Aide** (ouvre votre application email avec l’adresse de contact de la Fédération).',
               icon: 'link',
+            },
+          ],
+        },
+        {
+          type: 'troubleshooting',
+          title: 'Si une page inattendue s’affiche',
+          items: [
+            {
+              problem: 'Page « Accès refusé » avec le texte « Cet espace est réservé à un rôle... ».',
+              cause: 'Vous avez ouvert un espace réservé (formateur, organisation, coordination, administration) que votre compte n’a pas le droit de voir.',
+              solution: 'Cliquez sur `Retour au tableau de bord`. Si vous pensez avoir droit à cet espace, cliquez sur `Contacter la coordination` : un email pré-rempli s’ouvre. Pour changer de compte, cliquez sur `Changer de compte`.',
+            },
+            {
+              problem: 'Page de connexion avec le message « Connectez-vous pour accéder à cette page. »',
+              cause: 'Votre session est fermée ou a expiré.',
+              solution: 'Connectez-vous : vous serez renvoyé automatiquement vers la page demandée.',
+            },
+            {
+              problem: 'Page « Cette page est introuvable » (Erreur 404).',
+              cause: 'L’adresse est erronée ou le contenu n’est plus accessible.',
+              solution: 'Utilisez le champ **Rechercher une formation, un module...** puis `Rechercher`, ou les boutons `Accueil`, `Catalogue` et `Tableau de bord`.',
             },
           ],
         },
@@ -631,7 +652,7 @@ export const lmsApprenant: Guide = {
               items: [
                 {
                   text: 'Sur la fiche, lisez le **Tarif** puis cliquez sur le bouton or `S’inscrire - <prix>`.',
-                  where: 'carte **Tarif** ; la mention « Paiement sécurisé par Mobile Money ou carte sur fetrag.ga. L’accès s’ouvre dès la confirmation du règlement. » figure sous le bouton',
+                  where: 'carte **Tarif** ; sous le bouton, une mention précise que le paiement est sécurisé (Mobile Money ou carte) sur le site institutionnel et que l’accès s’ouvre dès la confirmation du règlement',
                   result: 'Une commande est créée et vous êtes conduit sur la page de paiement du site institutionnel.',
                   note: 'Si un **Tarif membre** est affiché, il est indiqué à titre d’information ; le bouton utilise le tarif standard. Pour toute question de tarif, contactez la coordination avant de payer.',
                 },
@@ -1209,9 +1230,9 @@ export const lmsApprenant: Guide = {
           title: 'Ouvrir un fil de discussion',
           items: [
             {
-              text: 'Ouvrez les forums : dans le lecteur, activité **Forum**, bouton `Participer au forum`.',
-              result: 'La page « Échanger avec la communauté » liste vos forums en trois groupes ; sur chaque carte, `Ouvrir`.',
-              note: 'Un badge « Verrouillé » signifie que le forum est en lecture seule.',
+              text: 'Dans le lecteur, ouvrez l’activité **Forum**, puis cliquez sur `Participer au forum`.',
+              result: 'Le forum de votre cohorte ou de votre formation s’ouvre directement, avec sa liste **Fils de discussion**.',
+              note: 'Pour voir tous vos forums (cohortes, formations, communauté FETRAG), cliquez sur **Forums** dans le fil d’Ariane en haut de la page : la page « Échanger avec la communauté » les liste en trois groupes, avec un bouton `Ouvrir` sur chaque carte. Un badge « Verrouillé » signifie que le forum est en lecture seule.',
             },
             {
               text: 'Ouvrez un forum, puis cliquez sur `Ouvrir un nouveau fil`.',
@@ -1451,7 +1472,7 @@ export const lmsApprenant: Guide = {
             {
               problem: 'Le nom sur le document est mal orthographié.',
               cause: 'Le nom provient de votre profil.',
-              solution: 'Corrigez votre profil sur le site institutionnel (**Mon profil sur fetrag.ga**), puis demandez à la coordination de réémettre le document.',
+              solution: 'Corrigez votre profil sur le site institutionnel (menu du compte › lien **Mon profil**), puis demandez à la coordination de réémettre le document.',
             },
             {
               problem: 'Message « Ce certificat a été révoqué : aucun PDF ne peut être généré. »',
@@ -1480,7 +1501,7 @@ export const lmsApprenant: Guide = {
               where: 'vos initiales en haut à droite (ordinateur et mobile)',
             },
             {
-              text: 'Cliquez sur **Mon profil sur fetrag.ga** pour modifier votre nom, votre téléphone, votre fonction, votre employeur ou votre langue.',
+              text: 'Cliquez sur le lien **Mon profil** (son libellé complet cite l’adresse du site institutionnel) pour modifier votre nom, votre téléphone, votre fonction, votre employeur ou votre langue.',
               result: 'La page de profil du site s’ouvre dans votre navigateur.',
             },
             {
@@ -1741,4 +1762,247 @@ export const lmsApprenant: Guide = {
       external: true,
     },
   ],
+  selfAssessment: {
+    intro:
+      'Vérifiez en une dizaine de minutes que vous savez vous connecter, vous inscrire, suivre une formation, passer une évaluation, remettre un devoir et obtenir votre certificat. Chaque réponse renvoie à la section du guide à relire.',
+    passPercent: 70,
+    questions: [
+      {
+        id: 'q-connexion-1',
+        sectionId: 'se-connecter',
+        type: 'single',
+        prompt: 'Vous n’avez pas encore de compte. Où le créez-vous ?',
+        options: [
+          { id: 'a', text: 'Sur le site institutionnel : le même compte ouvre ensuite la plateforme de formation.', correct: true },
+          { id: 'b', text: 'Sur la plateforme de formation, avec un formulaire d’inscription dédié.', correct: false },
+          { id: 'c', text: 'Auprès de votre formateur, qui crée le compte pour vous.', correct: false },
+        ],
+        explanation: 'Le bouton **Créer un compte** de la plateforme redirige vers le site institutionnel. Un seul compte sert aux deux. Voir « Avant de commencer : compte et connexion ».',
+      },
+      {
+        id: 'q-deconnexion-1',
+        sectionId: 'se-deconnecter',
+        type: 'true-false',
+        prompt: 'Sur un téléphone prêté ou un ordinateur partagé, il faut se déconnecter à la fin : votre progression reste enregistrée.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: true },
+          { id: 'b', text: 'Faux', correct: false },
+        ],
+        explanation: 'La déconnexion protège votre compte et ne fait rien perdre : la progression est conservée sur la plateforme. Voir « Se déconnecter ».',
+      },
+      {
+        id: 'q-reperer-1',
+        sectionId: 'se-reperer',
+        type: 'single',
+        prompt: 'Où lisez-vous vos notifications sur la plateforme de formation ?',
+        options: [
+          { id: 'a', text: 'Dans la section « 05 Notifications » du tableau de bord.', correct: true },
+          { id: 'b', text: 'En cliquant sur une cloche dans la barre du haut.', correct: false },
+          { id: 'c', text: 'Sur la page « Mes formations ».', correct: false },
+        ],
+        explanation: 'Il n’y a pas de cloche dans la barre du haut : les six dernières notifications sont sur le tableau de bord. Voir « Se repérer dans la plateforme ».',
+      },
+      {
+        id: 'q-catalogue-1',
+        sectionId: 'choisir-une-formation',
+        type: 'true-false',
+        prompt: 'Le catalogue et les fiches des modules peuvent être consultés sans être connecté.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: true },
+          { id: 'b', text: 'Faux', correct: false },
+        ],
+        explanation: 'Le catalogue est public ; seules l’inscription et le suivi demandent une connexion. Voir « Comment choisir une formation dans le catalogue ».',
+      },
+      {
+        id: 'q-inscription-1',
+        sectionId: 'inscription-sur-validation',
+        type: 'single',
+        prompt: 'Vous cliquez sur `Demander l’inscription`. Que devient votre inscription ?',
+        options: [
+          { id: 'a', text: 'Elle passe « En attente » jusqu’à la validation par la coordination.', correct: true },
+          { id: 'b', text: 'Elle passe immédiatement « En cours » et la première activité s’ouvre.', correct: false },
+          { id: 'c', text: 'Elle est annulée si vous ne payez pas dans l’heure.', correct: false },
+        ],
+        explanation: 'La demande est transmise à la coordination ; vous recevez « Inscription validée » puis « Inscription confirmée » quand elle est acceptée. Voir « Inscription sur validation ».',
+      },
+      {
+        id: 'q-paiement-1',
+        sectionId: 'formation-payante',
+        type: 'single',
+        prompt: 'Où réglez-vous une formation payante ?',
+        options: [
+          { id: 'a', text: 'Sur le site institutionnel, après avoir cliqué sur `S’inscrire - <prix>` sur la fiche.', correct: true },
+          { id: 'b', text: 'Directement dans la carte « Tarif » de la plateforme, en saisissant votre code Mobile Money.', correct: false },
+          { id: 'c', text: 'En espèces auprès de votre formateur lors de la première séance.', correct: false },
+        ],
+        explanation: 'Le bouton crée une commande et vous conduit sur la page de paiement du site institutionnel ; l’accès s’ouvre à la confirmation du règlement. Voir « Formation payante ».',
+      },
+      {
+        id: 'q-inscriptions-1',
+        sectionId: 'suivre-mes-inscriptions',
+        type: 'multiple',
+        prompt: 'Quels statuts d’inscription se trouvent dans l’onglet `Clôturées` de « Mes formations » ?',
+        options: [
+          { id: 'a', text: 'Suspendue', correct: true },
+          { id: 'b', text: 'Annulée', correct: true },
+          { id: 'c', text: 'Expirée', correct: true },
+          { id: 'd', text: 'En attente', correct: false },
+        ],
+        explanation: 'L’onglet `Clôturées` regroupe Suspendue, Annulée et Expirée ; « En attente » a son propre onglet. Voir « Comment suivre mes inscriptions ».',
+      },
+      {
+        id: 'q-lecteur-1',
+        sectionId: 'avancer-dans-le-parcours',
+        type: 'single',
+        prompt: 'Pour quelles activités le bouton `Marquer comme terminé` est-il affiché ?',
+        options: [
+          { id: 'a', text: 'Les activités validées à la consultation ou au temps passé (lecture, vidéo, document...).', correct: true },
+          { id: 'b', text: 'Les évaluations, une fois le seuil de réussite atteint.', correct: false },
+          { id: 'c', text: 'Les séances en direct, pour confirmer votre présence.', correct: false },
+        ],
+        explanation: 'Une évaluation se valide par son score, une séance par l’émargement du formateur. La règle est écrite dans le bloc de progression. Voir « Avancer dans le parcours ».',
+      },
+      {
+        id: 'q-lecteur-2',
+        sectionId: 'connexion-lente-ou-coupee',
+        type: 'true-false',
+        prompt: 'Sans connexion Internet, les vidéos et les documents d’une formation restent consultables sur la plateforme.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'Seule votre progression (temps, activités terminées) est conservée hors ligne puis envoyée au retour du réseau ; les contenus demandent une connexion. Voir « Connexion lente ou coupée ».',
+      },
+      {
+        id: 'q-evaluation-1',
+        sectionId: 'commencer-une-tentative',
+        type: 'single',
+        prompt: 'Pendant une évaluation chronométrée, le chronomètre arrive à 00:00. Que se passe-t-il ?',
+        options: [
+          { id: 'a', text: 'Vos réponses sont soumises automatiquement.', correct: true },
+          { id: 'b', text: 'Le chronomètre se met en pause jusqu’à votre retour.', correct: false },
+          { id: 'c', text: 'La tentative est effacée et ne compte pas.', correct: false },
+        ],
+        explanation: 'Le message « Temps écoulé : vos réponses ont été soumises automatiquement. » s’affiche et la tentative est définitive. Voir « Commencer et répondre ».',
+      },
+      {
+        id: 'q-evaluation-2',
+        sectionId: 'lire-son-resultat',
+        type: 'single',
+        prompt: 'Vous avez fait plusieurs tentatives à une évaluation. Quel score est retenu pour votre progression ?',
+        options: [
+          { id: 'a', text: 'Le meilleur score de toutes vos tentatives.', correct: true },
+          { id: 'b', text: 'Le score de la dernière tentative.', correct: false },
+          { id: 'c', text: 'La moyenne de toutes les tentatives.', correct: false },
+        ],
+        explanation: 'Le meilleur score est conservé. Voir « Lire son résultat et la correction ».',
+      },
+      {
+        id: 'q-devoir-1',
+        sectionId: 'deposer-un-devoir',
+        type: 'single',
+        prompt: 'Vous avez cliqué sur `Soumettre le devoir`. Jusqu’à quand pouvez-vous encore modifier votre remise ?',
+        options: [
+          { id: 'a', text: 'Jusqu’à la notation par le formateur, avec `Mettre à jour ma remise`.', correct: true },
+          { id: 'b', text: 'Plus jamais : la remise est définitive dès la soumission.', correct: false },
+          { id: 'c', text: 'Pendant 24 heures seulement.', correct: false },
+        ],
+        explanation: 'Seule la notation verrouille le devoir (statut « Noté »). Voir « Comment déposer un devoir ».',
+      },
+      {
+        id: 'q-devoir-2',
+        sectionId: 'deposer-un-devoir',
+        type: 'true-false',
+        prompt: 'Un devoir remis après la date limite est toujours accepté, simplement marqué « Remis en retard ».',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'Cela dépend du devoir : s’il affiche « Aucune remise tardive », la remise est bloquée après la date limite. Voir « Comment déposer un devoir ».',
+      },
+      {
+        id: 'q-forum-1',
+        sectionId: 'participer-aux-forums',
+        type: 'multiple',
+        prompt: 'Dans un forum, que devez-vous éviter ?',
+        options: [
+          { id: 'a', text: 'Publier votre numéro de téléphone ou votre adresse.', correct: true },
+          { id: 'b', text: 'Révéler des informations confidentielles sur une négociation en cours.', correct: true },
+          { id: 'c', text: 'Poser une question à votre formateur.', correct: false },
+          { id: 'd', text: 'Signaler un message déplacé avec `Signaler ce message`.', correct: false },
+        ],
+        explanation: 'Le forum est le canal pour joindre le formateur et le signalement est encouragé ; en revanche, les données personnelles et les informations confidentielles n’y ont pas leur place. Voir « Comment participer aux forums ».',
+      },
+      {
+        id: 'q-seance-1',
+        sectionId: 'assister-a-une-seance',
+        type: 'single',
+        prompt: 'Quand le bouton `Rejoindre la classe virtuelle` devient-il actif ?',
+        options: [
+          { id: 'a', text: '15 minutes avant le début de la séance, jusqu’à sa fin.', correct: true },
+          { id: 'b', text: 'Dès la réception de la convocation.', correct: false },
+          { id: 'c', text: '24 heures avant, au moment du rappel.', correct: false },
+        ],
+        explanation: 'Avant, le bouton affiche « Lien actif 15 min avant ». Voir « Assister à une séance ».',
+      },
+      {
+        id: 'q-calendrier-1',
+        sectionId: 'utiliser-le-calendrier',
+        type: 'true-false',
+        prompt: 'Le fichier obtenu avec `Exporter (.ics)` se met à jour tout seul dans votre agenda après une nouvelle convocation.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'L’export est une photographie à un instant donné : refaites-le après une nouvelle convocation. Voir « Utiliser le calendrier ».',
+      },
+      {
+        id: 'q-certificat-1',
+        sectionId: 'obtenir-mon-certificat',
+        type: 'single',
+        prompt: 'Un employeur veut vérifier l’authenticité de votre certificat. Que lui transmettez-vous ?',
+        options: [
+          { id: 'a', text: 'Le lien **Vérification publique** (ou le code QR du PDF).', correct: true },
+          { id: 'b', text: 'Une capture d’écran de votre tableau de bord.', correct: false },
+          { id: 'c', text: 'Votre adresse email et votre mot de passe pour qu’il vérifie lui-même.', correct: false },
+        ],
+        explanation: 'La page publique du site institutionnel confirme l’authenticité, le titulaire, la formation et la validité. Ne communiquez jamais votre mot de passe. Voir « Comment obtenir, télécharger et faire vérifier mon certificat ».',
+      },
+      {
+        id: 'q-certificat-2',
+        sectionId: 'obtenir-mon-certificat',
+        type: 'true-false',
+        prompt: 'Un certificat « Révoqué » peut encore être téléchargé et présenté à un employeur.',
+        options: [
+          { id: 'a', text: 'Vrai', correct: false },
+          { id: 'b', text: 'Faux', correct: true },
+        ],
+        explanation: 'La révocation est définitive : le PDF est bloqué et la page de vérification publique l’indique. Voir « Comment obtenir, télécharger et faire vérifier mon certificat ».',
+      },
+      {
+        id: 'q-notifications-1',
+        sectionId: 'notifications',
+        type: 'single',
+        prompt: 'Vous ne voulez plus recevoir certains emails de la plateforme. Où réglez-vous cela ?',
+        options: [
+          { id: 'a', text: 'Dans votre espace personnel sur le site institutionnel (lien **préférences** en bas de chaque email).', correct: true },
+          { id: 'b', text: 'Dans la section « 05 Notifications » du tableau de bord.', correct: false },
+          { id: 'c', text: 'En écrivant à votre formateur dans le forum.', correct: false },
+        ],
+        explanation: 'Les préférences d’emails se règlent sur le site ; les emails essentiels (inscription confirmée, convocation, certificat, paiements, compte) restent toujours envoyés. Voir « Notifications et emails que vous recevez ».',
+      },
+      {
+        id: 'q-aide-1',
+        sectionId: 'besoin-d-aide',
+        type: 'single',
+        prompt: 'Vous ne comprenez pas la consigne d’un devoir. À qui vous adressez-vous en premier ?',
+        options: [
+          { id: 'a', text: 'À votre formateur, dans le forum de votre cohorte.', correct: true },
+          { id: 'b', text: 'Au secrétariat général de la Fédération.', correct: false },
+          { id: 'c', text: 'Au support technique, par le formulaire de contact.', correct: false },
+        ],
+        explanation: 'Les questions pédagogiques vont au formateur ; la coordination traite les inscriptions et certificats, le support les problèmes de compte. Voir « Besoin d’aide ? ».',
+      },
+    ],
+  },
 }

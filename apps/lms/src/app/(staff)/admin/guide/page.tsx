@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { staffGuide } from '@fetrag/guides'
 import { GuideReader } from '@fetrag/ui'
 import { guards } from '@/lib/auth'
-import { lmsGuideReaderProps } from '@/server/guides'
+import { loadGuideView } from '@/server/guides'
 
 export const metadata: Metadata = {
   title: 'Guide d’utilisation',
@@ -21,5 +21,5 @@ export default async function AdminGuidePage() {
   const guide = staffGuide(principal, 'lms', ['SUPER_ADMIN', 'COORDINATOR'])
   if (!guide) redirect('/guide')
 
-  return <GuideReader {...lmsGuideReaderProps(principal, guide)} breadcrumbs={[{ label: 'Administration', href: '/admin' }, { label: 'Guide d’utilisation' }]} />
+  return <GuideReader {...(await loadGuideView(principal, guide))} breadcrumbs={[{ label: 'Administration', href: '/admin' }, { label: 'Guide d’utilisation' }]} />
 }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Link from 'next/link'
-import { ArrowUpRight, Clock, ExternalLink } from 'lucide-react'
+import { ArrowUpRight, BadgeCheck, Clock, ExternalLink } from 'lucide-react'
 import { type GuideMeta } from '@fetrag/contracts'
 
 import { cn } from '../../lib/cn'
@@ -8,6 +8,7 @@ import { toneClasses } from '../../lib/tones'
 import { Badge } from '../badge'
 import { Card } from '../card'
 import { guideIcon } from './guide-icons'
+import { formatGuideTimestamp } from './guide-text'
 
 export interface GuideCardProps {
   meta: GuideMeta
@@ -18,11 +19,14 @@ export interface GuideCardProps {
   current?: boolean
   /** Libellé du rôle visé (badge). */
   roleLabel?: string
+  /** Dernier résultat d'autoévaluation de l'utilisateur : badge « Maîtrise : 80 % » (date en ISO ou `AAAA-MM-JJ`). */
+  mastery?: { percent: number; passed: boolean; date: string }
   className?: string
 }
 
 /** Carte d'un guide (liste « Vos autres guides », page d'accueil des guides). Composant serveur. */
-export function GuideCard({ meta, href, external = false, current = false, roleLabel, className }: GuideCardProps) {
+export function GuideCard({ meta, href, external = false, current = false, roleLabel, mastery, className }: GuideCardProps) {
+  const masteryLabel = mastery ? `Maîtrise : ${mastery.percent} %${mastery.passed ? '' : ' (à consolider)'}, évaluée le ${formatGuideTimestamp(mastery.date)}` : undefined
   const t = toneClasses[meta.tone]
   const Icon = guideIcon(meta.icon)
   const platformLabel = meta.platform === 'web' ? 'Site institutionnel' : 'Plateforme de formation'
@@ -53,6 +57,12 @@ export function GuideCard({ meta, href, external = false, current = false, roleL
           {roleLabel ? (
             <Badge variant={meta.tone === 'navy' ? 'navy' : meta.tone} size="sm">
               {roleLabel}
+            </Badge>
+          ) : null}
+          {mastery ? (
+            <Badge variant={mastery.passed ? 'success' : 'warning'} size="sm" title={masteryLabel} aria-label={masteryLabel}>
+              <BadgeCheck aria-hidden="true" strokeWidth={2} />
+              Maîtrise : {mastery.percent} %
             </Badge>
           ) : null}
         </div>

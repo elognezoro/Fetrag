@@ -38,7 +38,7 @@ export const webOrganisation: Guide = {
     {
       text: 'Créez votre compte depuis la page **Inscription**, puis confirmez votre adresse email en cliquant sur le lien reçu.',
       ui: 'Créer mon compte',
-      where: 'bouton `Espace personnel` en haut à droite du site (sur mobile : bouton **Ouvrir le menu**, trois traits en haut à droite, puis `Connexion`), lien vers l’inscription sous le formulaire',
+      where: 'bouton `Espace personnel` en haut à droite du site (sur mobile : bouton **Ouvrir le menu**, trois traits en haut à droite, puis `Connexion`), puis lien `Créer un compte` sous le formulaire de connexion',
       result: 'La page de confirmation s’affiche, puis l’email « Confirmez votre adresse email - FETRAG » arrive dans votre boîte.',
     },
     {
@@ -166,7 +166,8 @@ export const webOrganisation: Guide = {
                   result: 'La page de connexion « Bienvenue à la FETRAG » s’affiche.',
                 },
                 {
-                  text: 'Cliquez sur le lien d’inscription proposé sous le formulaire de connexion.',
+                  text: 'Cliquez sur `Créer un compte`.',
+                  where: 'sous le formulaire de connexion',
                   result: 'Le formulaire d’inscription s’affiche.',
                 },
                 {
@@ -323,6 +324,11 @@ export const webOrganisation: Guide = {
                   where: 'dernier élément du menu, en rouge',
                   result: 'Le site revient à la page d’accueil ; le bouton `Espace personnel` réapparaît en haut à droite.',
                   note: 'Pendant l’action, le bouton affiche « Déconnexion en cours ». La déconnexion vaut aussi pour la plateforme de formation.',
+                },
+                {
+                  text: 'Sur mobile, si la page « Se déconnecter ? » s’affiche, cliquez sur `Confirmer la déconnexion`.',
+                  where: 'le bouton `Déconnexion` du tiroir ouvre cette page de confirmation ; `Annuler et rester connecté` ramène à votre espace',
+                  result: 'La page d’accueil du site s’affiche, sans votre avatar en haut à droite.',
                 },
               ],
             },
@@ -1046,8 +1052,8 @@ export const webOrganisation: Guide = {
             },
             {
               text: 'Repérez sur la fiche de la formation (**Formations**) ou de l’événement le tarif affiché.',
-              where: 'menu du site > **Formations** > fiche du module, bloc **Tarif**',
-              note: 'Le bloc « Inscription » indique aussi la politique d’inscription : « Inscription libre en ligne », « Inscription sur validation de la coordination », « Réservée aux organisations affiliées » ou « Inscription après paiement ».',
+              where: 'menu du site > **Formations** > fiche du module, carte **Fiche du module**, ligne **Tarif** (sur mobile, cette carte se trouve sous la présentation du module)',
+              note: 'La ligne **Inscription** de la même carte indique la politique d’inscription : « Inscription libre en ligne », « Inscription sur validation de la coordination », « Réservée aux organisations affiliées » ou « Inscription après paiement ».',
             },
             {
               text: 'Ouvrez la page **Contact** et renseignez l’**Objet** « Prise en charge de formation ».',
@@ -1075,7 +1081,7 @@ export const webOrganisation: Guide = {
           items: [
             {
               text: 'Il ouvre la fiche de la formation sur le site et clique sur `S’inscrire à ce module`.',
-              where: 'menu du site > **Formations** > fiche du module',
+              where: 'menu du site > **Formations** > fiche du module, bouton vert sous la présentation (sur mobile, le bouton `S’inscrire à la formation` de la carte **Fiche du module** mène au même endroit)',
               result: 'La plateforme de formation s’ouvre sur la page du cours ; son compte FETRAG le connecte automatiquement.',
             },
             {
@@ -1284,16 +1290,17 @@ export const webOrganisation: Guide = {
               result: 'Le catalogue des dix modules s’affiche.',
             },
             {
-              text: 'Ouvrez la fiche d’un module et lisez le bloc « Inscription ».',
+              text: 'Ouvrez la fiche d’un module et lisez la ligne **Inscription** de la carte **Fiche du module**.',
+              where: 'colonne de droite sur ordinateur ; sous la présentation du module sur mobile',
               result: 'La politique s’affiche : « Inscription libre en ligne », « Inscription sur validation de la coordination », « Réservée aux organisations affiliées » ou « Inscription après paiement ».',
             },
             {
-              text: 'Lisez le bloc **Tarif** : « Gratuit », un montant en XAF, « Tarif sur demande », ou « prix · prix membre pour les membres ».',
+              text: 'Lisez la ligne **Tarif** de la même carte : « Gratuit », un montant en XAF, « Tarif sur demande », ou « prix · prix membre pour les membres ».',
               note: 'Le prix membre affiché est indicatif : le tarif effectivement appliqué au paiement est celui de la commande, après code promotionnel ou prise en charge. En cas de doute, demandez confirmation à la Fédération avant de vous inscrire.',
             },
             {
               text: 'Pour vous inscrire vous-même, cliquez sur `S’inscrire à ce module`.',
-              where: 'en bas de la fiche (bouton vert)',
+              where: 'bouton vert sous la présentation du module, à côté de `Voir le programme détaillé` (sur mobile, le bouton `S’inscrire à la formation` de la carte **Fiche du module** mène au même endroit)',
               result: 'La page du cours s’ouvre sur la plateforme de formation, sans nouvelle connexion : « Votre compte FETRAG vous connecte automatiquement à la plateforme. »',
               note: 'Pour un module payant, la plateforme crée la commande puis vous ramène sur la page « Régler la commande » du site.',
             },
@@ -1389,8 +1396,8 @@ export const webOrganisation: Guide = {
               result: 'Le paiement se fait sur le site ; le reçu apparaît ensuite dans **Paiements et reçus**.',
             },
             {
-              text: 'Pour retrouver un reçu, une commande ou une notification du site, revenez sur le site par le lien vers le site institutionnel de la plateforme, puis ouvrez **Mon espace**.',
-              where: 'menu de votre compte, en haut à droite',
+              text: 'Pour retrouver un reçu, une commande ou une notification du site, cliquez sur **Site institutionnel** dans le menu de votre compte sur la plateforme, puis ouvrez **Mon espace**.',
+              where: 'vos initiales, en haut à droite de la plateforme ; puis vos initiales, en haut à droite du site',
               result: 'Votre espace personnel s’affiche avec les rubriques **Paiements et reçus** et **Notifications**.',
             },
           ],

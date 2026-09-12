@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { commonGuide } from '@fetrag/guides'
 import { GuideReader } from '@fetrag/ui'
 import { guards } from '@/lib/auth'
-import { lmsGuideReaderProps } from '@/server/guides'
+import { loadGuideView } from '@/server/guides'
 
 export const metadata: Metadata = {
   title: 'Guide d’utilisation',
@@ -17,7 +17,7 @@ export default async function LearnerGuidePage() {
 
   return (
     <div className="container-fetrag py-8 sm:py-12">
-      <GuideReader {...lmsGuideReaderProps(principal, guide)} breadcrumbs={[{ label: 'Tableau de bord', href: '/dashboard' }, { label: 'Guide d’utilisation' }]} />
+      <GuideReader {...(await loadGuideView(principal, guide))} breadcrumbs={[{ label: 'Tableau de bord', href: '/dashboard' }, { label: 'Guide d’utilisation' }]} />
     </div>
   )
 }

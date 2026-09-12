@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { ChevronDown, ListTree, Search, X } from 'lucide-react'
+import { BadgeCheck, ChevronDown, ListTree, Search, X } from 'lucide-react'
 import { type GuideIconKey, type GuideTone } from '@fetrag/contracts'
 
 import { cn } from '../../lib/cn'
@@ -28,8 +28,48 @@ export interface GuideTocProps {
   onQueryChange: (value: string) => void
   /** Nombre de sections correspondant à la requête (toutes si la requête est vide). */
   total: number
+  /** Entrées de fin de sommaire (autoévaluation), jamais filtrées par la recherche ni comptées dans les sections. */
+  extras?: GuideTocExtraEntry[]
   onNavigate?: (id: string) => void
   className?: string
+}
+
+export interface GuideTocExtraEntry {
+  id: string
+  title: string
+  icon?: GuideIconKey
+}
+
+function TocExtras({ extras, activeId, tone, onNavigate }: { extras: GuideTocExtraEntry[]; activeId?: string | null; tone: GuideTone; onNavigate?: (id: string) => void }) {
+  const t = toneClasses[tone]
+  if (extras.length === 0) return null
+  return (
+    <ul className="flex flex-col gap-0.5 border-t border-neutral-100 pt-2">
+      {extras.map((entry) => {
+        const Icon = guideIcon(entry.icon, BadgeCheck)
+        const active = entry.id === activeId
+        return (
+          <li key={entry.id}>
+            <a
+              href={`#${entry.id}`}
+              aria-current={active ? 'location' : undefined}
+              onClick={() => onNavigate?.(entry.id)}
+              className={cn(
+                'group flex min-h-11 items-center gap-2.5 rounded-xl px-2.5 py-2 text-sm font-semibold text-navy transition-colors',
+                'hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40',
+                active && t.soft,
+              )}
+            >
+              <span aria-hidden="true" className={cn('flex size-6 shrink-0 items-center justify-center rounded-full', t.soft, t.softText)}>
+                <Icon className="size-3.5" strokeWidth={2} />
+              </span>
+              <span className="min-w-0 flex-1 text-wrap leading-snug">{entry.title}</span>
+            </a>
+          </li>
+        )
+      })}
+    </ul>
+  )
 }
 
 function TocSearch({ query, onQueryChange, total, entriesCount, id }: { query: string; onQueryChange: (v: string) => void; total: number; entriesCount: number; id: string }) {
@@ -113,7 +153,7 @@ function TocList({ entries, activeId, tone, onNavigate, query }: Pick<GuideTocPr
  * Sommaire du guide : colonne collante sur grand écran, bloc repliable « Sommaire » sur mobile,
  * recherche accent-insensible dans les sections, section active suivie au défilement.
  */
-export function GuideToc({ entries, activeId, tone, query, onQueryChange, total, onNavigate, className }: GuideTocProps) {
+export function GuideToc({ entries, activeId, tone, query, onQueryChange, total, extras = [], onNavigate, className }: GuideTocProps) {
   const mobileId = React.useId()
   const desktopId = React.useId()
   const entriesCount = entries.length
@@ -133,6 +173,7 @@ export function GuideToc({ entries, activeId, tone, query, onQueryChange, total,
         <nav aria-label="Sommaire du guide" className="flex flex-col gap-4 border-t border-neutral-100 px-3 pb-4 pt-3">
           <TocSearch id={`${mobileId}-search`} query={query} onQueryChange={onQueryChange} total={total} entriesCount={entriesCount} />
           <TocList entries={entries} activeId={activeId} tone={tone} onNavigate={onNavigate} query={query} />
+          <TocExtras extras={extras} activeId={activeId} tone={tone} onNavigate={onNavigate} />
         </nav>
       </details>
 
@@ -148,6 +189,7 @@ export function GuideToc({ entries, activeId, tone, query, onQueryChange, total,
           </p>
           <TocSearch id={`${desktopId}-search`} query={query} onQueryChange={onQueryChange} total={total} entriesCount={entriesCount} />
           <TocList entries={entries} activeId={activeId} tone={tone} onNavigate={onNavigate} query={query} />
+          <TocExtras extras={extras} activeId={activeId} tone={tone} onNavigate={onNavigate} />
         </nav>
       </aside>
     </>

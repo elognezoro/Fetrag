@@ -1,7 +1,7 @@
 'use client'
 
 import * as React from 'react'
-import { ArrowUp, CalendarDays, ClipboardList, Clock, ListChecks, ListTree, Mail, MapPin, Phone, Printer, Rocket, Tag, User, Users } from 'lucide-react'
+import { ArrowUp, BadgeCheck, CalendarDays, ClipboardList, Clock, ListChecks, ListTree, Mail, MapPin, Phone, Printer, Rocket, Tag, User, Users } from 'lucide-react'
 import { guideStats, type Guide, type GuideMeta, type GuideSection } from '@fetrag/contracts'
 
 import { cn } from '../../lib/cn'
@@ -17,8 +17,9 @@ import { GuideBlockView, GuideLinks, GuideList, GuideSteps } from './guide-block
 import { GuideCard } from './guide-card'
 import { guideIcon } from './guide-icons'
 import { renderGuideInline, resolveGuideText, type GuideBaseUrls } from './guide-inline'
+import { GuideSelfAssessment, type GuideAssessmentSummaryView, type GuideSelfAssessmentProps } from './guide-self-assessment'
 import { formatGuideDate, guideOrdinal, normalizeSearchText, sectionSearchText } from './guide-text'
-import { GuideToc, type GuideTocEntry } from './guide-toc'
+import { GuideToc, type GuideTocEntry, type GuideTocExtraEntry } from './guide-toc'
 
 export interface GuideReaderProps {
   guide: Guide
@@ -31,10 +32,18 @@ export interface GuideReaderProps {
   otherGuides?: Array<{ meta: GuideMeta; href: string; external?: boolean }>
   /** Carte de contact affichée en fin de guide. */
   contact?: { email: string; phones: string[]; address?: string }
+  /**
+   * Module « Testez votre maîtrise » : affiché après les sections quand le guide définit `selfAssessment`.
+   * `onSubmit` est l'action serveur qui enregistre la tentative ; `summary` résume les tentatives précédentes.
+   */
+  assessment?: { summary?: GuideAssessmentSummaryView; onSubmit: GuideSelfAssessmentProps['onSubmit'] }
   className?: string
 }
 
 const platformLabels = { web: 'site institutionnel', lms: 'plateforme de formation' } as const
+
+/** Ancre de la section d'autoévaluation (sommaire, suivi de section active). */
+export const GUIDE_ASSESSMENT_ANCHOR = 'autoevaluation'
 
 /** Suit la section visible à l'écran (IntersectionObserver), sans dépendre du routeur. */
 function useActiveSection(ids: string[]): string | null {
@@ -130,15 +139,19 @@ function SectionHeader({
  * Lecteur de guide d'utilisation : en-tête, prise en main, sommaire collant avec recherche,
  * sections à blocs typés, guides liés, autres guides et contact. Imprimable (« Enregistrer en PDF »).
  */
-export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, otherGuides, contact, className }: GuideReaderProps) {
+export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, otherGuides, contact, assessment, className }: GuideReaderProps) {
   const t = toneClasses[guide.tone]
   const stats = React.useMemo(() => guideStats(guide), [guide])
   const Icon = guideIcon(guide.icon)
   const [query, setQuery] = React.useState('')
   const [printing, setPrinting] = React.useState(false)
   const scrolled = useScrolled()
+  const hasAssessment = Boolean(guide.selfAssessment && assessment)
 
-  const sectionIds = React.useMemo(() => guide.sections.map((section) => section.id), [guide.sections])
+  const sectionIds = React.useMemo(
+    () => [...guide.sections.map((section) => section.id), ...(hasAssessment ? [GUIDE_ASSESSMENT_ANCHOR] : [])],
+    [guide.sections, hasAssessment],
+  )
   const activeId = useActiveSection(sectionIds)
 
   const searchIndex = React.useMemo(() => guide.sections.map((section) => sectionSearchText(section)), [guide.sections])
@@ -155,6 +168,14 @@ export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, oth
     () => guide.sections.map((section, index) => ({ id: section.id, title: section.title, icon: section.icon, index })).filter((entry) => matching.has(entry.id)),
     [guide.sections, matching],
   )
+  // L'entrée du test n'est jamais masquée par la recherche.
+  const tocExtras = React.useMemo<GuideTocExtraEntry[]>(
+    () => (hasAssessment ? [{ id: GUIDE_ASSESSMENT_ANCHOR, title: 'Testez votre maîtrise', icon: 'badge-check' }] : []),
+    [hasAssessment],
+  )
+
+  // Un lien « Relire » depuis le test doit atteindre sa section même si la recherche la masquait.
+  const handleNavigateSection = React.useCallback(() => setQuery(''), [])
 
   // Impression : ouvre toutes les questions, marque le document, imprime, puis nettoie.
   React.useEffect(() => {
@@ -238,6 +259,11 @@ export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, oth
                   {stats.steps} {stats.steps > 1 ? 'étapes' : 'étape'}
                 </MetaItem>
               ) : null}
+              {hasAssessment && stats.questions > 0 ? (
+                <MetaItem icon={BadgeCheck}>
+                  {stats.questions} {stats.questions > 1 ? 'questions' : 'question'} d’autoévaluation
+                </MetaItem>
+              ) : null}
             </dd>
           </div>
           <div className="contents">
@@ -308,7 +334,7 @@ export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, oth
 
       {/* Sommaire et sections */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-10">
-        <GuideToc entries={tocEntries} activeId={activeId} tone={guide.tone} query={query} onQueryChange={setQuery} total={matching.size} />
+        <GuideToc entries={tocEntries} extras={tocExtras} activeId={activeId} tone={guide.tone} query={query} onQueryChange={setQuery} total={matching.size} />
 
         <div className="flex min-w-0 flex-col gap-10 sm:gap-14">
           {normalizedQuery && matching.size === 0 ? (
@@ -351,6 +377,29 @@ export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, oth
           ))}
         </div>
       </div>
+
+      {/* Testez votre maîtrise (non imprimé : le guide imprimé reste complet sans le test) */}
+      {hasAssessment && assessment ? (
+        <>
+          <GradientDivider width="lg" data-print-hide="" />
+          <Reveal
+            as="section"
+            id={GUIDE_ASSESSMENT_ANCHOR}
+            aria-labelledby={`${GUIDE_ASSESSMENT_ANCHOR}-titre`}
+            data-print-hide=""
+            className="scroll-mt-[calc(var(--header-height)+1rem)]"
+          >
+            <GuideSelfAssessment
+              guide={guide}
+              baseUrls={baseUrls}
+              summary={assessment.summary}
+              onSubmit={assessment.onSubmit}
+              onNavigateSection={handleNavigateSection}
+              headingId={`${GUIDE_ASSESSMENT_ANCHOR}-titre`}
+            />
+          </Reveal>
+        </>
+      ) : null}
 
       {/* Guides liés, autres guides, contact */}
       {guide.related?.length || otherGuides?.length || contact ? (

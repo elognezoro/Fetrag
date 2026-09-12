@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import { canReadGuide, guideById, guidePath } from '@fetrag/guides'
 import { GuideReader } from '@fetrag/ui'
 import { guards } from '@/lib/auth'
-import { guideReaderProps } from '@/server/guides'
+import { loadGuideView } from '@/server/guides'
 
 interface PageProps {
   params: Promise<{ guideId: string }>
@@ -31,7 +31,7 @@ export default async function AccountRoleGuidePage({ params }: PageProps) {
 
   return (
     <GuideReader
-      {...guideReaderProps(principal, guide)}
+      {...(await loadGuideView(principal, guide))}
       breadcrumbs={[{ label: 'Espace personnel', href: '/espace' }, { label: 'Guide d’utilisation', href: '/espace/guide' }, { label: guide.title }]}
     />
   )

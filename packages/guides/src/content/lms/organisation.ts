@@ -860,7 +860,7 @@ export const lmsOrganisation: Guide = {
               type: 'callout',
               tone: 'warning',
               title: 'Après la transmission, la demande n’est plus modifiable',
-              text: 'Une demande « Soumise » ne peut plus être modifiée par vous : ni modules, ni participants, ni préférences. Seule la coordination peut vous la renvoyer en « Complément demandé ». Vous pouvez encore ajouter une pièce jointe depuis la page de suivi, ou annuler la demande. Relisez bien le récapitulatif avant de transmettre.',
+              text: 'Une demande « Soumise » ne peut plus être modifiée par vous : ni modules, ni participants, ni préférences. Seule la coordination peut vous la renvoyer en « Complément demandé ». Les pièces jointes ne s’ajoutent que depuis l’assistant (étape 05) : après transmission, il ne reste que l’annulation. Relisez bien le récapitulatif avant de transmettre.',
             },
             {
               type: 'troubleshooting',
@@ -990,7 +990,7 @@ export const lmsOrganisation: Guide = {
             {
               text: 'Pour retirer une pièce, cliquez sur `Retirer` à côté de son nom.',
               result: 'Le message « Pièce retirée » s’affiche.',
-              note: 'Le retrait n’est possible que tant que la demande est en « Brouillon », « Soumise » ou « Complément demandé ».',
+              note: 'Le bouton `Retirer` n’existe que dans l’assistant : le retrait se fait donc tant que la demande est en « Brouillon » ou en « Complément demandé » (reprise avec `Reprendre` ou `Compléter la demande`).',
             },
             {
               text: 'Pour consulter une pièce plus tard, ouvrez la page de suivi, section **Pièces jointes**, et cliquez sur `Ouvrir`.',
@@ -1081,7 +1081,7 @@ export const lmsOrganisation: Guide = {
           title: 'Les statuts d’une demande',
           items: [
             { label: 'Brouillon', tone: 'neutral', meaning: 'Enregistrée mais non transmise. La coordination ne la voit pas.', next: 'Reprenez-la avec `Compléter la demande`, puis transmettez-la. Vous pouvez aussi l’annuler.' },
-            { label: 'Soumise', tone: 'info', meaning: 'Transmise à la coordination, en cours d’instruction. Plus modifiable.', next: 'Attendez la réponse (l’accusé de réception annonce un délai indicatif de quelques jours ouvrés). Vous pouvez encore ajouter une pièce ou annuler.' },
+            { label: 'Soumise', tone: 'info', meaning: 'Transmise à la coordination, en cours d’instruction. Plus modifiable.', next: 'Attendez la réponse (l’accusé de réception annonce un délai indicatif de quelques jours ouvrés). Vous pouvez encore annuler la demande ; pour transmettre un document, contactez la coordination.' },
             { label: 'Complément demandé', tone: 'warning', meaning: 'La coordination attend des précisions ; sa note est affichée.', next: 'Cliquez sur `Compléter la demande`, corrigez, puis transmettez à nouveau.' },
             { label: 'Autre date proposée', tone: 'warning', meaning: 'La coordination propose une autre date ou modalité.', next: 'Cliquez sur `Accepter la proposition` pour qu’elle planifie, ou annulez la demande.' },
             { label: 'Acceptée', tone: 'success', meaning: 'Demande validée, en attente de planification par la coordination.', next: 'Rien à faire. Vous pouvez encore annuler.' },
@@ -1680,7 +1680,7 @@ export const lmsOrganisation: Guide = {
             },
             {
               question: 'Puis-je modifier une demande après l’avoir transmise ?',
-              answer: 'Non. Seuls les statuts « Brouillon » et « Complément demandé » sont modifiables. Vous pouvez encore ajouter une pièce jointe depuis la fiche de suivi, ou annuler la demande. Pour un changement de participant, contactez la coordination.',
+              answer: 'Non. Seuls les statuts « Brouillon » et « Complément demandé » sont modifiables, y compris pour les pièces jointes (étape 05 de l’assistant). Après transmission, vous pouvez seulement annuler la demande. Pour un changement de participant ou un document à transmettre, contactez la coordination.',
             },
             {
               question: 'Comment ajouter un participant après la planification ?',
