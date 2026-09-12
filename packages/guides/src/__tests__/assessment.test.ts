@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Guide } from '@fetrag/contracts'
-import { answersSchema, assessmentMinutes, masteryLevel, scoreSelfAssessment } from '../assessment'
+import { answersSchema, assessmentMinutes, masteryLevel, scoreSelfAssessment } from '@fetrag/contracts'
 import { validateGuide } from '../validate'
 
 const sample: Guide = {

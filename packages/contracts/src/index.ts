@@ -666,3 +666,4 @@ export type CertificateVerification = z.infer<typeof certificateVerificationSche
 
 export { z }
 export * from './guides'
+export * from './guides-assessment'
