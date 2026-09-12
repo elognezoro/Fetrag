@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { roles } from './roles'
 
 // -----------------------------------------------------------------------------
 // Primitives partagées
@@ -82,17 +83,7 @@ export type ApiError = z.infer<typeof apiErrorSchema>
 // Enums miroirs (identiques à Prisma, utilisables côté client sans @prisma/client)
 // -----------------------------------------------------------------------------
 
-export const roles = [
-  'LEARNER',
-  'ORG_MANAGER',
-  'TRAINER',
-  'COORDINATOR',
-  'EDITOR',
-  'SERVICES_MANAGER',
-  'FINANCE',
-  'SUPPORT',
-  'SUPER_ADMIN',
-] as const
+export { roles }
 export const roleSchema = z.enum(roles)
 export type RoleName = z.infer<typeof roleSchema>
 
@@ -674,3 +665,4 @@ export const certificateVerificationSchema = z.object({
 export type CertificateVerification = z.infer<typeof certificateVerificationSchema>
 
 export { z }
+export * from './guides'

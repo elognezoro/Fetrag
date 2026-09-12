@@ -886,6 +886,37 @@ importers:
         specifier: ^8.33.1
         version: 8.69.0(eslint@9.39.5(jiti@2.7.0))(typescript@5.9.3)
 
+  packages/guides:
+    dependencies:
+      '@fetrag/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@fetrag/domain':
+        specifier: workspace:*
+        version: link:../domain
+    devDependencies:
+      '@fetrag/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@fetrag/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^22.15.30
+        version: 22.20.1
+      eslint:
+        specifier: ^9.28.0
+        version: 9.39.5(jiti@2.7.0)
+      tsx:
+        specifier: ^4.19.4
+        version: 4.23.13
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.2
+        version: 3.2.7(@types/node@22.20.1)(jiti@2.7.0)(jsdom@26.1.0)(lightningcss@1.32.0)(tsx@4.23.13)(yaml@2.9.0)
+
   packages/jobs:
     dependencies:
       '@fetrag/config':
