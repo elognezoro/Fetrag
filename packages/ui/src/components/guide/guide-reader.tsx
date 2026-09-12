@@ -28,8 +28,8 @@ export interface GuideReaderProps {
   /** « Vous consultez ce guide en tant que … » */
   viewerRoleLabel?: string
   breadcrumbs?: BreadcrumbItem[]
-  /** Cartes « Vos autres guides » affichées en fin de guide. */
-  otherGuides?: Array<{ meta: GuideMeta; href: string; external?: boolean }>
+  /** Cartes « Vos autres guides » affichées en fin de guide (avec, si disponible, la maîtrise du lecteur). */
+  otherGuides?: Array<{ meta: GuideMeta; href: string; external?: boolean; mastery?: { percent: number; passed: boolean; date: string } }>
   /** Carte de contact affichée en fin de guide. */
   contact?: { email: string; phones: string[]; address?: string }
   /**
@@ -426,7 +426,7 @@ export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, oth
                   <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
                     {otherGuides.map((item) => (
                       <li key={item.meta.id} className="min-w-0">
-                        <GuideCard meta={item.meta} href={resolveGuideText(item.href, baseUrls)} external={item.external} current={item.meta.id === guide.id} />
+                        <GuideCard meta={item.meta} href={resolveGuideText(item.href, baseUrls)} external={item.external} current={item.meta.id === guide.id} mastery={item.mastery} />
                       </li>
                     ))}
                   </ul>

@@ -1,7 +1,7 @@
 import 'server-only'
 import type { Principal } from '@fetrag/domain'
 import { accessibleGuides, guidePath, toGuideMeta, type Guide } from '@fetrag/guides'
-import { loadGuideAssessmentSummary, type AttemptSummaryEntry } from '@fetrag/guides/attempts'
+import { loadGuideAssessmentSummaries, loadGuideAssessmentSummary, type AttemptSummaryEntry } from '@fetrag/guides/attempts'
 import type { GuideAssessmentSummaryView, GuideReaderProps } from '@fetrag/ui'
 import { submitGuideAssessmentAction } from '@/lib/actions/guides'
 import { publicEnv } from '@/lib/env'
@@ -24,20 +24,35 @@ export const guideContact: NonNullable<GuideReaderProps['contact']> = {
   address: siteConfig.contact.address,
 }
 
-/** Autres guides de la plateforme accessibles au principal (le guide affiché exclu). */
-export function otherLmsGuides(principal: Principal, current: Pick<Guide, 'id'>): NonNullable<GuideReaderProps['otherGuides']> {
-  return accessibleGuides(principal, 'lms')
-    .filter((guide) => guide.id !== current.id)
-    .map((guide) => ({ meta: toGuideMeta(guide), href: guidePath(guide) }))
+/** Autres guides de la plateforme accessibles au principal (le guide affiché exclu), avec la maîtrise du lecteur. */
+export async function otherLmsGuides(principal: Principal, current: Pick<Guide, 'id'>): Promise<NonNullable<GuideReaderProps['otherGuides']>> {
+  const others = accessibleGuides(principal, 'lms').filter((guide) => guide.id !== current.id)
+  const withAssessment = others.filter((guide) => guide.selfAssessment)
+  let summaries: Awaited<ReturnType<typeof loadGuideAssessmentSummaries>> = {}
+  if (withAssessment.length > 0) {
+    try {
+      summaries = await loadGuideAssessmentSummaries(principal.id, withAssessment.map((guide) => guide.id))
+    } catch (error) {
+      console.warn('[guides] maîtrise des autres guides indisponible', error instanceof Error ? error.message : error)
+    }
+  }
+  return others.map((guide) => {
+    const last = summaries[guide.id]?.last
+    return {
+      meta: toGuideMeta(guide),
+      href: guidePath(guide),
+      mastery: last ? { percent: last.percent, passed: last.passed, date: last.createdAt.toISOString() } : undefined,
+    }
+  })
 }
 
 /** Props du lecteur pour un guide donné (hors fil d'Ariane et hors autoévaluation, propre à chaque espace). */
-export function lmsGuideReaderProps(principal: Principal, guide: Guide): Omit<GuideReaderProps, 'breadcrumbs' | 'className'> {
+export async function lmsGuideReaderProps(principal: Principal, guide: Guide): Promise<Omit<GuideReaderProps, 'breadcrumbs' | 'className'>> {
   return {
     guide,
     baseUrls: guideBaseUrls,
     viewerRoleLabel: dominantRoleLabel(principal),
-    otherGuides: otherLmsGuides(principal, guide),
+    otherGuides: await otherLmsGuides(principal, guide),
     contact: guideContact,
   }
 }
@@ -67,7 +82,7 @@ async function loadAssessmentSummary(principal: Principal, guide: Guide): Promis
  * résumé des tentatives précédentes + action serveur d'enregistrement (`submitGuideAssessmentAction`).
  */
 export async function loadGuideView(principal: Principal, guide: Guide): Promise<Omit<GuideReaderProps, 'breadcrumbs' | 'className'>> {
-  const base = lmsGuideReaderProps(principal, guide)
+  const base = await lmsGuideReaderProps(principal, guide)
   if (!guide.selfAssessment) return base
   const summary = await loadAssessmentSummary(principal, guide)
   return { ...base, assessment: { summary, onSubmit: submitGuideAssessmentAction.bind(null, guide.id) } }
