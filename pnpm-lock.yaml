@@ -103,6 +103,9 @@ importers:
       '@fetrag/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@fetrag/guides':
+        specifier: workspace:*
+        version: link:../../packages/guides
       '@fetrag/jobs':
         specifier: workspace:*
         version: link:../../packages/jobs
@@ -302,6 +305,9 @@ importers:
       '@fetrag/domain':
         specifier: workspace:*
         version: link:../../packages/domain
+      '@fetrag/guides':
+        specifier: workspace:*
+        version: link:../../packages/guides
       '@fetrag/jobs':
         specifier: workspace:*
         version: link:../../packages/jobs
@@ -891,6 +897,9 @@ importers:
       '@fetrag/contracts':
         specifier: workspace:*
         version: link:../contracts
+      '@fetrag/db':
+        specifier: workspace:*
+        version: link:../db
       '@fetrag/domain':
         specifier: workspace:*
         version: link:../domain

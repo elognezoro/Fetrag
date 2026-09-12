@@ -351,28 +351,28 @@ enum MenuLocation {
 // -----------------------------------------------------------------------------
 
 model User {
-  id                String    @id @default(uuid())
-  email             String    @unique
-  emailVerified     DateTime?
-  name              String?
-  firstName         String?
-  lastName          String?
-  image             String?
-  phone             String?
-  jobTitle          String?
-  employer          String?
-  locale            Locale    @default(fr)
-  timezone          String    @default("Africa/Libreville")
+  id            String    @id @default(uuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  firstName     String?
+  lastName      String?
+  image         String?
+  phone         String?
+  jobTitle      String?
+  employer      String?
+  locale        Locale    @default(fr)
+  timezone      String    @default("Africa/Libreville")
   /// Mot de passe local (mode FEATURE_LOCAL_AUTH uniquement) - hash bcrypt, jamais en clair.
-  passwordHash      String?
+  passwordHash  String?
   /// MFA TOTP pour rôles privilégiés lorsque l'IdP externe n'est pas utilisé.
-  totpSecret        String?
-  totpEnabled       Boolean   @default(false)
-  backupCodes       Json?
-  isActive          Boolean   @default(true)
-  lastLoginAt       DateTime?
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
+  totpSecret    String?
+  totpEnabled   Boolean   @default(false)
+  backupCodes   Json?
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   accounts                Account[]
   sessions                Session[]
@@ -410,6 +410,7 @@ model User {
   newsletterSubscriptions NewsletterSubscription[]
   questionsAuthored       Question[]               @relation("QuestionAuthor")
   sponsorshipsGranted     Sponsorship[]            @relation("SponsorshipGranter")
+  guideAssessmentAttempts GuideAssessmentAttempt[]
   sponsorshipsReceived    Sponsorship[]            @relation("SponsorshipBeneficiary")
 
   @@index([email])
@@ -457,14 +458,14 @@ model VerificationToken {
 
 /// RBAC + portées (SHR-02). scopeId est null pour GLOBAL.
 model RoleAssignment {
-  id         String    @id @default(uuid())
-  userId     String
-  role       Role
-  scopeType  ScopeType @default(GLOBAL)
-  scopeId    String?
+  id          String    @id @default(uuid())
+  userId      String
+  role        Role
+  scopeType   ScopeType @default(GLOBAL)
+  scopeId     String?
   grantedById String?
-  expiresAt  DateTime?
-  createdAt  DateTime  @default(now())
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
 
   user      User  @relation("UserRoles", fields: [userId], references: [id], onDelete: Cascade)
   grantedBy User? @relation("RoleGranter", fields: [grantedById], references: [id], onDelete: SetNull)
@@ -507,24 +508,24 @@ model NotificationPreference {
 // -----------------------------------------------------------------------------
 
 model Organization {
-  id            String   @id @default(uuid())
-  slug          String   @unique
-  name          String
-  acronym       String?
-  sector        String?
-  description   String?
-  logoUrl       String?
-  address       String?
-  city          String?
-  country       String   @default("GA")
-  phone         String?
-  email         String?
-  website       String?
-  isAffiliate   Boolean  @default(true)
-  isActive      Boolean  @default(true)
-  memberCount   Int?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  name        String
+  acronym     String?
+  sector      String?
+  description String?
+  logoUrl     String?
+  address     String?
+  city        String?
+  country     String   @default("GA")
+  phone       String?
+  email       String?
+  website     String?
+  isAffiliate Boolean  @default(true)
+  isActive    Boolean  @default(true)
+  memberCount Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   memberships      OrganizationMembership[]
   contacts         OrganizationContact[]
@@ -591,25 +592,25 @@ model Category {
 }
 
 model Page {
-  id              String        @id @default(uuid())
-  slug            String        @unique
-  title           String
-  excerpt         String?
+  id            String        @id @default(uuid())
+  slug          String        @unique
+  title         String
+  excerpt       String?
   /// Contenu HTML riche (éditeur TipTap), assaini côté serveur avant rendu.
-  content         String        @default("")
+  content       String        @default("")
   /// Blocs structurés optionnels (hero, sections, CTA) pour les pages institutionnelles.
-  blocks          Json?
-  template        String        @default("default")
-  status          ContentStatus @default(DRAFT)
-  locale          Locale        @default(fr)
-  publishedAt     DateTime?
-  scheduledAt     DateTime?
-  coverImageUrl   String?
-  authorId        String?
-  version         Int           @default(1)
-  showInSitemap   Boolean       @default(true)
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
+  blocks        Json?
+  template      String        @default("default")
+  status        ContentStatus @default(DRAFT)
+  locale        Locale        @default(fr)
+  publishedAt   DateTime?
+  scheduledAt   DateTime?
+  coverImageUrl String?
+  authorId      String?
+  version       Int           @default(1)
+  showInSitemap Boolean       @default(true)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   author    User?          @relation("PageAuthor", fields: [authorId], references: [id], onDelete: SetNull)
   seo       SeoRecord?
@@ -682,24 +683,24 @@ model Partner {
 }
 
 model Service {
-  id               String        @id @default(uuid())
-  slug             String        @unique
-  name             String
-  summary          String?
-  description      String        @default("")
-  conditions       String?
-  icon             String?
-  categoryId       String?
-  isPaid           Boolean       @default(false)
-  priceAmount      Int?
-  currency         String        @default("XAF")
-  requiresAccount  Boolean       @default(true)
-  formSchema       Json?
-  slaDays          Int?
-  status           ContentStatus @default(DRAFT)
-  position         Int           @default(0)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  id              String        @id @default(uuid())
+  slug            String        @unique
+  name            String
+  summary         String?
+  description     String        @default("")
+  conditions      String?
+  icon            String?
+  categoryId      String?
+  isPaid          Boolean       @default(false)
+  priceAmount     Int?
+  currency        String        @default("XAF")
+  requiresAccount Boolean       @default(true)
+  formSchema      Json?
+  slaDays         Int?
+  status          ContentStatus @default(DRAFT)
+  position        Int           @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 
   category Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   requests ServiceRequest[]
@@ -725,10 +726,10 @@ model ServiceRequest {
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
 
-  service   Service      @relation(fields: [serviceId], references: [id], onDelete: Restrict)
-  requester User?        @relation("ServiceRequester", fields: [requesterId], references: [id], onDelete: SetNull)
-  assignee  User?        @relation("ServiceAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
-  order     Order?       @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  service   Service       @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  requester User?         @relation("ServiceRequester", fields: [requesterId], references: [id], onDelete: SetNull)
+  assignee  User?         @relation("ServiceAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  order     Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
   history   StatusEvent[]
 
   @@index([status])
@@ -771,20 +772,20 @@ model Resource {
 }
 
 model MediaAsset {
-  id          String          @id @default(uuid())
-  key         String          @unique
-  url         String
-  fileName    String
-  mimeType    String
-  size        Int
-  width       Int?
-  height      Int?
-  alt         String?
-  caption     String?
-  visibility  MediaVisibility @default(PUBLIC)
-  folder      String          @default("uploads")
+  id           String          @id @default(uuid())
+  key          String          @unique
+  url          String
+  fileName     String
+  mimeType     String
+  size         Int
+  width        Int?
+  height       Int?
+  alt          String?
+  caption      String?
+  visibility   MediaVisibility @default(PUBLIC)
+  folder       String          @default("uploads")
   uploadedById String?
-  createdAt   DateTime        @default(now())
+  createdAt    DateTime        @default(now())
 
   uploadedBy User? @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
 
@@ -799,13 +800,13 @@ model Menu {
 }
 
 model MenuItem {
-  id       String  @id @default(uuid())
-  menuId   String
-  parentId String?
-  label    String
-  href     String
-  icon     String?
-  position Int     @default(0)
+  id         String  @id @default(uuid())
+  menuId     String
+  parentId   String?
+  label      String
+  href       String
+  icon       String?
+  position   Int     @default(0)
   isExternal Boolean @default(false)
 
   menu     Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
@@ -816,12 +817,12 @@ model MenuItem {
 }
 
 model SeoRecord {
-  id           String  @id @default(uuid())
-  title        String?
-  description  String?
-  canonical    String?
-  ogImageUrl   String?
-  noIndex      Boolean @default(false)
+  id             String  @id @default(uuid())
+  title          String?
+  description    String?
+  canonical      String?
+  ogImageUrl     String?
+  noIndex        Boolean @default(false)
   structuredData Json?
 
   pageId    String? @unique
@@ -885,54 +886,54 @@ model Faq {
 // -----------------------------------------------------------------------------
 
 model Course {
-  id               String           @id @default(uuid())
-  slug             String           @unique
-  code             String           @unique
-  title            String
-  subtitle         String?
-  summary          String?
-  description      String           @default("")
-  objectives       String[]         @default([])
+  id                String           @id @default(uuid())
+  slug              String           @unique
+  code              String           @unique
+  title             String
+  subtitle          String?
+  summary           String?
+  description       String           @default("")
+  objectives        String[]         @default([])
   prerequisitesText String?
-  audience         String?
-  categoryId       String?
-  modality         CourseModality   @default(HYBRID)
-  level            CourseLevel      @default(INITIATION)
-  language         Locale           @default(fr)
-  durationHours    Int              @default(12)
+  audience          String?
+  categoryId        String?
+  modality          CourseModality   @default(HYBRID)
+  level             CourseLevel      @default(INITIATION)
+  language          Locale           @default(fr)
+  durationHours     Int              @default(12)
   /// Pilier du triptyque fondateur (protection | prevention | defense) pour la mise en valeur.
-  pillar           String?
-  coverImageUrl    String?
-  color            String?
-  enrollmentPolicy EnrollmentPolicy @default(SELF)
-  isFree           Boolean          @default(true)
-  priceAmount      Int?
+  pillar            String?
+  coverImageUrl     String?
+  color             String?
+  enrollmentPolicy  EnrollmentPolicy @default(SELF)
+  isFree            Boolean          @default(true)
+  priceAmount       Int?
   memberPriceAmount Int?
-  currency         String           @default("XAF")
-  capacity         Int?
-  status           ContentStatus    @default(DRAFT)
-  isFeatured       Boolean          @default(false)
-  position         Int              @default(0)
-  publishedAt      DateTime?
-  createdById      String?
-  currentVersionId String?          @unique
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  currency          String           @default("XAF")
+  capacity          Int?
+  status            ContentStatus    @default(DRAFT)
+  isFeatured        Boolean          @default(false)
+  position          Int              @default(0)
+  publishedAt       DateTime?
+  createdById       String?
+  currentVersionId  String?          @unique
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 
-  category       Category?       @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  createdBy      User?           @relation("CourseCreator", fields: [createdById], references: [id], onDelete: SetNull)
-  currentVersion CourseVersion?  @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
-  versions       CourseVersion[] @relation("CourseVersions")
-  trainers       CourseTrainer[]
-  enrollments    Enrollment[]
-  cohorts        Cohort[]
-  prerequisites  Prerequisite[]  @relation("CoursePrerequisites")
-  requiredBy     Prerequisite[]  @relation("PrerequisiteOf")
-  requestModules TrainingRequestModule[]
-  offers         Offer[]
+  category             Category?               @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdBy            User?                   @relation("CourseCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  currentVersion       CourseVersion?          @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
+  versions             CourseVersion[]         @relation("CourseVersions")
+  trainers             CourseTrainer[]
+  enrollments          Enrollment[]
+  cohorts              Cohort[]
+  prerequisites        Prerequisite[]          @relation("CoursePrerequisites")
+  requiredBy           Prerequisite[]          @relation("PrerequisiteOf")
+  requestModules       TrainingRequestModule[]
+  offers               Offer[]
   certificateTemplates CertificateTemplate[]
-  forums         Forum[]
-  seo            SeoRecord?
+  forums               Forum[]
+  seo                  SeoRecord?
 
   @@index([status, publishedAt])
   @@index([categoryId])
@@ -951,7 +952,7 @@ model CourseTrainer {
 }
 
 model Prerequisite {
-  id                   String @id @default(uuid())
+  id                   String  @id @default(uuid())
   courseId             String
   prerequisiteCourseId String
   isMandatory          Boolean @default(true)
@@ -964,34 +965,34 @@ model Prerequisite {
 
 /// Version figée du contenu suivi par une cohorte (LMS-17).
 model CourseVersion {
-  id            String   @id @default(uuid())
-  courseId      String
-  version       Int
-  label         String?
-  changelog     String?
-  isPublished   Boolean  @default(false)
+  id              String    @id @default(uuid())
+  courseId        String
+  version         Int
+  label           String?
+  changelog       String?
+  isPublished     Boolean   @default(false)
   /// Règles d'achèvement du cours : { passScore, requireAllActivities, requiredActivityIds, minAttendanceRate }
   completionRules Json?
-  createdAt     DateTime @default(now())
-  publishedAt   DateTime?
+  createdAt       DateTime  @default(now())
+  publishedAt     DateTime?
 
-  course        Course        @relation("CourseVersions", fields: [courseId], references: [id], onDelete: Cascade)
-  currentOf     Course?       @relation("CurrentVersion")
-  modules       CourseModule[]
-  enrollments   Enrollment[]
-  cohorts       Cohort[]
+  course      Course         @relation("CourseVersions", fields: [courseId], references: [id], onDelete: Cascade)
+  currentOf   Course?        @relation("CurrentVersion")
+  modules     CourseModule[]
+  enrollments Enrollment[]
+  cohorts     Cohort[]
 
   @@unique([courseId, version])
 }
 
 model CourseModule {
-  id              String   @id @default(uuid())
+  id              String  @id @default(uuid())
   courseVersionId String
   title           String
   summary         String?
-  position        Int      @default(0)
+  position        Int     @default(0)
   durationMinutes Int?
-  isOptional      Boolean  @default(false)
+  isOptional      Boolean @default(false)
 
   courseVersion CourseVersion @relation(fields: [courseVersionId], references: [id], onDelete: Cascade)
   lessons       Lesson[]
@@ -1000,14 +1001,14 @@ model CourseModule {
 }
 
 model Lesson {
-  id              String   @id @default(uuid())
+  id              String  @id @default(uuid())
   moduleId        String
   slug            String
   title           String
   summary         String?
-  position        Int      @default(0)
+  position        Int     @default(0)
   durationMinutes Int?
-  isPreview       Boolean  @default(false)
+  isPreview       Boolean @default(false)
 
   module     CourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
   activities Activity[]
@@ -1017,33 +1018,33 @@ model Lesson {
 }
 
 model Activity {
-  id              String         @id @default(uuid())
-  lessonId        String
-  type            ActivityType
-  title           String
-  instructions    String?
+  id                      String         @id @default(uuid())
+  lessonId                String
+  type                    ActivityType
+  title                   String
+  instructions            String?
   /// Contenu selon le type : HTML riche, url média, transcription, config H5P/SCORM...
-  content         Json?
-  resourceId      String?
-  position        Int            @default(0)
-  durationMinutes Int?
-  isRequired      Boolean        @default(true)
-  completionRule  CompletionRule @default(VIEW)
-  maxScore        Int?
-  passScore       Int?
-  weight          Int            @default(1)
+  content                 Json?
+  resourceId              String?
+  position                Int            @default(0)
+  durationMinutes         Int?
+  isRequired              Boolean        @default(true)
+  completionRule          CompletionRule @default(VIEW)
+  maxScore                Int?
+  passScore               Int?
+  weight                  Int            @default(1)
   /// Alternative bas débit (audio, transcription, document) pour les médias lourds.
   lowBandwidthAlternative Json?
-  availableFrom   DateTime?
-  dueAt           DateTime?
+  availableFrom           DateTime?
+  dueAt                   DateTime?
 
-  lesson      Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  resource    Resource?            @relation(fields: [resourceId], references: [id], onDelete: SetNull)
-  quiz        Quiz?
-  assignment  Assignment?
-  completions ActivityCompletion[]
+  lesson       Lesson               @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  resource     Resource?            @relation(fields: [resourceId], references: [id], onDelete: SetNull)
+  quiz         Quiz?
+  assignment   Assignment?
+  completions  ActivityCompletion[]
   liveSessions LiveSession[]
-  forum       Forum?
+  forum        Forum?
 
   @@index([lessonId, position])
 }
@@ -1053,32 +1054,32 @@ model Activity {
 // -----------------------------------------------------------------------------
 
 model Enrollment {
-  id              String           @id @default(uuid())
-  userId          String
-  courseId        String
-  courseVersionId String
-  cohortId        String?
-  organizationId  String?
-  status          EnrollmentStatus @default(ACTIVE)
-  source          String           @default("self")
-  orderId         String?
-  progressPercent Int              @default(0)
-  score           Int?
-  timeSpentSeconds Int             @default(0)
-  lastActivityId  String?
-  lastActivityAt  DateTime?
-  startedAt       DateTime?
-  completedAt     DateTime?
-  expiresAt       DateTime?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id               String           @id @default(uuid())
+  userId           String
+  courseId         String
+  courseVersionId  String
+  cohortId         String?
+  organizationId   String?
+  status           EnrollmentStatus @default(ACTIVE)
+  source           String           @default("self")
+  orderId          String?
+  progressPercent  Int              @default(0)
+  score            Int?
+  timeSpentSeconds Int              @default(0)
+  lastActivityId   String?
+  lastActivityAt   DateTime?
+  startedAt        DateTime?
+  completedAt      DateTime?
+  expiresAt        DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
-  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course        Course             @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseVersion CourseVersion      @relation(fields: [courseVersionId], references: [id], onDelete: Restrict)
-  cohort        Cohort?            @relation(fields: [cohortId], references: [id], onDelete: SetNull)
-  organization  Organization?      @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  order         Order?             @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course        Course               @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseVersion CourseVersion        @relation(fields: [courseVersionId], references: [id], onDelete: Restrict)
+  cohort        Cohort?              @relation(fields: [cohortId], references: [id], onDelete: SetNull)
+  organization  Organization?        @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  order         Order?               @relation(fields: [orderId], references: [id], onDelete: SetNull)
   completions   ActivityCompletion[]
   certificates  Certificate[]
   history       StatusEvent[]
@@ -1090,15 +1091,15 @@ model Enrollment {
 }
 
 model ActivityCompletion {
-  id           String    @id @default(uuid())
-  enrollmentId String
-  activityId   String
-  completed    Boolean   @default(false)
-  score        Int?
-  timeSpentSeconds Int   @default(0)
-  progressData Json?
-  completedAt  DateTime?
-  updatedAt    DateTime  @updatedAt
+  id               String    @id @default(uuid())
+  enrollmentId     String
+  activityId       String
+  completed        Boolean   @default(false)
+  score            Int?
+  timeSpentSeconds Int       @default(0)
+  progressData     Json?
+  completedAt      DateTime?
+  updatedAt        DateTime  @updatedAt
 
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
   activity   Activity   @relation(fields: [activityId], references: [id], onDelete: Cascade)
@@ -1107,16 +1108,16 @@ model ActivityCompletion {
 }
 
 model Quiz {
-  id               String   @id @default(uuid())
-  activityId       String   @unique
+  id               String  @id @default(uuid())
+  activityId       String  @unique
   description      String?
   timeLimitMinutes Int?
-  maxAttempts      Int      @default(3)
-  shuffleQuestions Boolean  @default(false)
-  shuffleOptions   Boolean  @default(false)
-  showCorrection   Boolean  @default(true)
-  passScore        Int      @default(60)
-  isSurvey         Boolean  @default(false)
+  maxAttempts      Int     @default(3)
+  shuffleQuestions Boolean @default(false)
+  shuffleOptions   Boolean @default(false)
+  showCorrection   Boolean @default(true)
+  passScore        Int     @default(60)
+  isSurvey         Boolean @default(false)
 
   activity  Activity       @relation(fields: [activityId], references: [id], onDelete: Cascade)
   questions QuizQuestion[]
@@ -1178,20 +1179,20 @@ model QuizQuestion {
 }
 
 model Attempt {
-  id          String        @id @default(uuid())
-  quizId      String
-  userId      String
-  enrollmentId String?
-  number      Int           @default(1)
-  status      AttemptStatus @default(IN_PROGRESS)
-  score       Int?
-  maxScore    Int?
-  percent     Int?
-  passed      Boolean?
-  startedAt   DateTime      @default(now())
-  submittedAt DateTime?
-  gradedAt    DateTime?
-  timeSpentSeconds Int      @default(0)
+  id               String        @id @default(uuid())
+  quizId           String
+  userId           String
+  enrollmentId     String?
+  number           Int           @default(1)
+  status           AttemptStatus @default(IN_PROGRESS)
+  score            Int?
+  maxScore         Int?
+  percent          Int?
+  passed           Boolean?
+  startedAt        DateTime      @default(now())
+  submittedAt      DateTime?
+  gradedAt         DateTime?
+  timeSpentSeconds Int           @default(0)
 
   quiz    Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -1201,7 +1202,7 @@ model Attempt {
 }
 
 model Answer {
-  id         String  @id @default(uuid())
+  id         String   @id @default(uuid())
   attemptId  String
   questionId String
   /// Réponse brute : ids d'options, texte, paires, ordre.
@@ -1217,17 +1218,17 @@ model Answer {
 }
 
 model Assignment {
-  id             String   @id @default(uuid())
-  activityId     String   @unique
-  description    String?
-  allowFile      Boolean  @default(true)
-  allowText      Boolean  @default(true)
-  allowedMimeTypes String[] @default(["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"])
-  maxFileSizeMb  Int      @default(10)
-  dueAt          DateTime?
-  lateAllowed    Boolean  @default(true)
-  maxScore       Int      @default(20)
-  rubric         Json?
+  id               String    @id @default(uuid())
+  activityId       String    @unique
+  description      String?
+  allowFile        Boolean   @default(true)
+  allowText        Boolean   @default(true)
+  allowedMimeTypes String[]  @default(["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"])
+  maxFileSizeMb    Int       @default(10)
+  dueAt            DateTime?
+  lateAllowed      Boolean   @default(true)
+  maxScore         Int       @default(20)
+  rubric           Json?
 
   activity    Activity     @relation(fields: [activityId], references: [id], onDelete: Cascade)
   submissions Submission[]
@@ -1273,30 +1274,30 @@ model Grade {
 // -----------------------------------------------------------------------------
 
 model Cohort {
-  id              String       @id @default(uuid())
-  code            String       @unique
-  name            String
-  courseId        String
-  courseVersionId String
-  organizationId  String?
-  trainerId       String?
-  trainingRequestId String?    @unique
-  status          CohortStatus @default(PLANNED)
-  mode            SessionMode  @default(HYBRID)
-  capacity        Int?
-  startsAt        DateTime?
-  endsAt          DateTime?
-  location        String?
-  description     String?
-  isPrivate       Boolean      @default(false)
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
+  id                String       @id @default(uuid())
+  code              String       @unique
+  name              String
+  courseId          String
+  courseVersionId   String
+  organizationId    String?
+  trainerId         String?
+  trainingRequestId String?      @unique
+  status            CohortStatus @default(PLANNED)
+  mode              SessionMode  @default(HYBRID)
+  capacity          Int?
+  startsAt          DateTime?
+  endsAt            DateTime?
+  location          String?
+  description       String?
+  isPrivate         Boolean      @default(false)
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 
-  course          Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  courseVersion   CourseVersion    @relation(fields: [courseVersionId], references: [id], onDelete: Restrict)
-  organization    Organization?    @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  trainer         User?            @relation("CohortTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
-  trainingRequest TrainingRequest? @relation(fields: [trainingRequestId], references: [id], onDelete: SetNull)
+  course          Course            @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseVersion   CourseVersion     @relation(fields: [courseVersionId], references: [id], onDelete: Restrict)
+  organization    Organization?     @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  trainer         User?             @relation("CohortTrainer", fields: [trainerId], references: [id], onDelete: SetNull)
+  trainingRequest TrainingRequest?  @relation(fields: [trainingRequestId], references: [id], onDelete: SetNull)
   members         CohortMember[]
   sessions        TrainingSession[]
   enrollments     Enrollment[]
@@ -1382,28 +1383,28 @@ model LiveSession {
 // -----------------------------------------------------------------------------
 
 model TrainingRequest {
-  id              String                @id @default(uuid())
-  reference       String                @unique
-  organizationId  String
-  requesterId     String
-  contactName     String
-  contactRole     String?
-  contactEmail    String
-  contactPhone    String?
-  status          TrainingRequestStatus @default(DRAFT)
-  preferredStart  DateTime?
-  preferredMode   SessionMode           @default(HYBRID)
-  participantLimit Int                  @default(10)
-  motivation      String?
-  commitmentsAccepted Boolean           @default(false)
+  id                    String                @id @default(uuid())
+  reference             String                @unique
+  organizationId        String
+  requesterId           String
+  contactName           String
+  contactRole           String?
+  contactEmail          String
+  contactPhone          String?
+  status                TrainingRequestStatus @default(DRAFT)
+  preferredStart        DateTime?
+  preferredMode         SessionMode           @default(HYBRID)
+  participantLimit      Int                   @default(10)
+  motivation            String?
+  commitmentsAccepted   Boolean               @default(false)
   commitmentsAcceptedAt DateTime?
-  coordinatorNote String?
-  proposedStart   DateTime?
-  proposedMode    SessionMode?
-  submittedAt     DateTime?
-  decidedAt       DateTime?
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
+  coordinatorNote       String?
+  proposedStart         DateTime?
+  proposedMode          SessionMode?
+  submittedAt           DateTime?
+  decidedAt             DateTime?
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
 
   organization Organization                 @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   requester    User                         @relation("TrainingRequester", fields: [requesterId], references: [id], onDelete: Restrict)
@@ -1458,14 +1459,14 @@ model Attachment {
 }
 
 model DecisionHistory {
-  id         String                @id @default(uuid())
+  id         String                 @id @default(uuid())
   requestId  String
   actorId    String?
   fromStatus TrainingRequestStatus?
   toStatus   TrainingRequestStatus
   comment    String?
   payload    Json?
-  createdAt  DateTime              @default(now())
+  createdAt  DateTime               @default(now())
 
   request TrainingRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
   actor   User?           @relation(fields: [actorId], references: [id], onDelete: SetNull)
@@ -1475,14 +1476,14 @@ model DecisionHistory {
 
 /// Historisation générique des statuts (inscriptions, demandes de service, commandes).
 model StatusEvent {
-  id               String   @id @default(uuid())
-  entityType       String
-  entityId         String
-  fromStatus       String?
-  toStatus         String
-  actorId          String?
-  comment          String?
-  createdAt        DateTime @default(now())
+  id         String   @id @default(uuid())
+  entityType String
+  entityId   String
+  fromStatus String?
+  toStatus   String
+  actorId    String?
+  comment    String?
+  createdAt  DateTime @default(now())
 
   enrollmentId     String?
   serviceRequestId String?
@@ -1500,50 +1501,50 @@ model StatusEvent {
 // -----------------------------------------------------------------------------
 
 model CertificateTemplate {
-  id            String          @id @default(uuid())
-  name          String
-  kind          CertificateKind @default(ATTESTATION)
-  courseId      String?
-  titleText     String          @default("Attestation de formation")
-  bodyText      String          @default("a suivi avec succès la formation")
-  signatoryName String          @default("Jocelyn Louis NGOMA")
-  signatoryTitle String         @default("Secrétaire Général de la FETRAG")
+  id             String          @id @default(uuid())
+  name           String
+  kind           CertificateKind @default(ATTESTATION)
+  courseId       String?
+  titleText      String          @default("Attestation de formation")
+  bodyText       String          @default("a suivi avec succès la formation")
+  signatoryName  String          @default("Jocelyn Louis NGOMA")
+  signatoryTitle String          @default("Secrétaire Général de la FETRAG")
   /// Critères : { minScore, minAttendanceRate, requireCompletion }
-  criteria      Json?
+  criteria       Json?
   validityMonths Int?
-  isDefault     Boolean         @default(false)
-  createdAt     DateTime        @default(now())
+  isDefault      Boolean         @default(false)
+  createdAt      DateTime        @default(now())
 
   course       Course?       @relation(fields: [courseId], references: [id], onDelete: SetNull)
   certificates Certificate[]
 }
 
 model Certificate {
-  id            String            @id @default(uuid())
+  id             String            @id @default(uuid())
   /// Numéro public unique (ex: FETRAG-2026-000123) vérifiable par QR.
-  number        String            @unique
-  verifyCode    String            @unique
-  kind          CertificateKind   @default(ATTESTATION)
-  status        CertificateStatus @default(ISSUED)
-  userId        String
-  enrollmentId  String?
-  cohortId      String?
-  templateId    String?
-  courseTitle   String
-  holderName    String
-  score         Int?
+  number         String            @unique
+  verifyCode     String            @unique
+  kind           CertificateKind   @default(ATTESTATION)
+  status         CertificateStatus @default(ISSUED)
+  userId         String
+  enrollmentId   String?
+  cohortId       String?
+  templateId     String?
+  courseTitle    String
+  holderName     String
+  score          Int?
   attendanceRate Int?
-  issuedAt      DateTime          @default(now())
-  expiresAt     DateTime?
-  revokedAt     DateTime?
-  revokedReason String?
-  pdfUrl        String?
-  metadata      Json?
+  issuedAt       DateTime          @default(now())
+  expiresAt      DateTime?
+  revokedAt      DateTime?
+  revokedReason  String?
+  pdfUrl         String?
+  metadata       Json?
 
-  user         User                            @relation(fields: [userId], references: [id], onDelete: Restrict)
-  enrollment   Enrollment?                     @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
-  cohort       Cohort?                         @relation(fields: [cohortId], references: [id], onDelete: SetNull)
-  template     CertificateTemplate?            @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  user          User                           @relation(fields: [userId], references: [id], onDelete: Restrict)
+  enrollment    Enrollment?                    @relation(fields: [enrollmentId], references: [id], onDelete: SetNull)
+  cohort        Cohort?                        @relation(fields: [cohortId], references: [id], onDelete: SetNull)
+  template      CertificateTemplate?           @relation(fields: [templateId], references: [id], onDelete: SetNull)
   verifications CertificateVerificationEvent[]
 
   @@index([userId])
@@ -1594,16 +1595,16 @@ model Offer {
 }
 
 model Coupon {
-  id            String     @id @default(uuid())
-  code          String     @unique
-  type          CouponType @default(PERCENT)
-  value         Int
-  maxUses       Int?
-  usedCount     Int        @default(0)
-  validFrom     DateTime?
-  validUntil    DateTime?
-  isActive      Boolean    @default(true)
-  createdAt     DateTime   @default(now())
+  id         String     @id @default(uuid())
+  code       String     @unique
+  type       CouponType @default(PERCENT)
+  value      Int
+  maxUses    Int?
+  usedCount  Int        @default(0)
+  validFrom  DateTime?
+  validUntil DateTime?
+  isActive   Boolean    @default(true)
+  createdAt  DateTime   @default(now())
 
   orders Order[]
 }
@@ -1647,27 +1648,27 @@ model Order {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 
-  user           User            @relation(fields: [userId], references: [id], onDelete: Restrict)
-  organization   Organization?   @relation(fields: [organizationId], references: [id], onDelete: SetNull)
-  coupon         Coupon?         @relation(fields: [couponId], references: [id], onDelete: SetNull)
-  sponsorship    Sponsorship?    @relation(fields: [sponsorshipId], references: [id], onDelete: SetNull)
-  lines          OrderLine[]
-  payments       Payment[]
-  receipt        Receipt?
-  enrollments    Enrollment[]
-  serviceRequest ServiceRequest?
+  user               User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+  organization       Organization?       @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  coupon             Coupon?             @relation(fields: [couponId], references: [id], onDelete: SetNull)
+  sponsorship        Sponsorship?        @relation(fields: [sponsorshipId], references: [id], onDelete: SetNull)
+  lines              OrderLine[]
+  payments           Payment[]
+  receipt            Receipt?
+  enrollments        Enrollment[]
+  serviceRequest     ServiceRequest?
   eventRegistrations EventRegistration[]
-  history        StatusEvent[]
+  history            StatusEvent[]
 
   @@index([userId, status])
 }
 
 model OrderLine {
-  id          String @id @default(uuid())
+  id          String  @id @default(uuid())
   orderId     String
   offerId     String?
   label       String
-  quantity    Int    @default(1)
+  quantity    Int     @default(1)
   unitAmount  Int
   totalAmount Int
 
@@ -1713,11 +1714,11 @@ model Refund {
 }
 
 model Receipt {
-  id        String   @id @default(uuid())
-  orderId   String   @unique
-  number    String   @unique
-  pdfUrl    String?
-  issuedAt  DateTime @default(now())
+  id       String   @id @default(uuid())
+  orderId  String   @unique
+  number   String   @unique
+  pdfUrl   String?
+  issuedAt DateTime @default(now())
 
   order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
@@ -1727,35 +1728,35 @@ model Receipt {
 // -----------------------------------------------------------------------------
 
 model Event {
-  id            String        @id @default(uuid())
-  slug          String        @unique
-  title         String
-  summary       String?
-  description   String        @default("")
-  kind          EventKind     @default(EVENT)
-  categoryId    String?
-  coverImageUrl String?
-  startsAt      DateTime
-  endsAt        DateTime?
-  location      String?
-  city          String?
-  mode          SessionMode   @default(IN_PERSON)
-  meetingUrl    String?
-  replayUrl     String?
-  speakerName   String?
-  speakerTitle  String?
-  speakerBio    String?
-  speakerImageUrl String?
-  capacity      Int?
-  isFree        Boolean       @default(true)
-  priceAmount   Int?
-  currency      String        @default("XAF")
-  issuesCertificate Boolean   @default(false)
-  status        ContentStatus @default(DRAFT)
-  isFeatured    Boolean       @default(false)
-  publishedAt   DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id                String        @id @default(uuid())
+  slug              String        @unique
+  title             String
+  summary           String?
+  description       String        @default("")
+  kind              EventKind     @default(EVENT)
+  categoryId        String?
+  coverImageUrl     String?
+  startsAt          DateTime
+  endsAt            DateTime?
+  location          String?
+  city              String?
+  mode              SessionMode   @default(IN_PERSON)
+  meetingUrl        String?
+  replayUrl         String?
+  speakerName       String?
+  speakerTitle      String?
+  speakerBio        String?
+  speakerImageUrl   String?
+  capacity          Int?
+  isFree            Boolean       @default(true)
+  priceAmount       Int?
+  currency          String        @default("XAF")
+  issuesCertificate Boolean       @default(false)
+  status            ContentStatus @default(DRAFT)
+  isFeatured        Boolean       @default(false)
+  publishedAt       DateTime?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 
   category      Category?           @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   registrations EventRegistration[]
@@ -1767,13 +1768,13 @@ model Event {
 }
 
 model EventRegistration {
-  id        String                  @id @default(uuid())
-  eventId   String
-  userId    String
-  status    EventRegistrationStatus @default(REGISTERED)
-  orderId   String?
+  id         String                  @id @default(uuid())
+  eventId    String
+  userId     String
+  status     EventRegistrationStatus @default(REGISTERED)
+  orderId    String?
   attendedAt DateTime?
-  createdAt DateTime                @default(now())
+  createdAt  DateTime                @default(now())
 
   event Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -1783,14 +1784,14 @@ model EventRegistration {
 }
 
 model WaitingListEntry {
-  id        String   @id @default(uuid())
-  eventId   String
-  email     String
-  fullName  String
-  userId    String?
-  position  Int      @default(0)
+  id         String    @id @default(uuid())
+  eventId    String
+  email      String
+  fullName   String
+  userId     String?
+  position   Int       @default(0)
   notifiedAt DateTime?
-  createdAt DateTime @default(now())
+  createdAt  DateTime  @default(now())
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
@@ -1819,19 +1820,37 @@ model Notification {
   @@index([userId, status, createdAt])
 }
 
+/// Tentative d'autoévaluation d'un guide d'utilisation (module « Testez votre maîtrise »).
+model GuideAssessmentAttempt {
+  id        String   @id @default(uuid())
+  userId    String
+  guideId   String
+  platform  String
+  score     Int
+  total     Int
+  percent   Int
+  passed    Boolean
+  answers   Json
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, guideId, createdAt])
+}
+
 model EmailDelivery {
-  id           String              @id @default(uuid())
-  to           String
-  subject      String
-  template     String
-  variables    Json?
-  status       EmailDeliveryStatus @default(QUEUED)
-  provider     String?
-  providerRef  String?
-  error        String?
-  attempts     Int                 @default(0)
-  sentAt       DateTime?
-  createdAt    DateTime            @default(now())
+  id          String              @id @default(uuid())
+  to          String
+  subject     String
+  template    String
+  variables   Json?
+  status      EmailDeliveryStatus @default(QUEUED)
+  provider    String?
+  providerRef String?
+  error       String?
+  attempts    Int                 @default(0)
+  sentAt      DateTime?
+  createdAt   DateTime            @default(now())
 
   @@index([status, createdAt])
 }
@@ -1884,15 +1903,15 @@ model ForumThread {
 }
 
 model ForumPost {
-  id        String    @id @default(uuid())
-  threadId  String
-  authorId  String
-  content   String
-  isHidden  Boolean   @default(false)
+  id           String   @id @default(uuid())
+  threadId     String
+  authorId     String
+  content      String
+  isHidden     Boolean  @default(false)
   hiddenReason String?
-  parentId  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  parentId     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   thread  ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
   author  User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
@@ -1945,21 +1964,21 @@ model WebhookEvent {
 
 /// File de jobs persistée en base (worker Node ou Vercel Cron) - jobs idempotents.
 model BackgroundJob {
-  id            String    @id @default(uuid())
-  type          String
-  payload       Json
-  status        JobStatus @default(QUEUED)
-  priority      Int       @default(5)
-  attempts      Int       @default(0)
-  maxAttempts   Int       @default(5)
-  idempotencyKey String?  @unique
-  runAt         DateTime  @default(now())
-  lockedAt      DateTime?
-  lockedBy      String?
-  lastError     String?
-  result        Json?
-  completedAt   DateTime?
-  createdAt     DateTime  @default(now())
+  id             String    @id @default(uuid())
+  type           String
+  payload        Json
+  status         JobStatus @default(QUEUED)
+  priority       Int       @default(5)
+  attempts       Int       @default(0)
+  maxAttempts    Int       @default(5)
+  idempotencyKey String?   @unique
+  runAt          DateTime  @default(now())
+  lockedAt       DateTime?
+  lockedBy       String?
+  lastError      String?
+  result         Json?
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
 
   @@index([status, runAt, priority])
   @@index([type])

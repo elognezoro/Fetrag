@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@fetrag/contracts": "workspace:*",
+    "@fetrag/db": "workspace:*",
     "@fetrag/domain": "workspace:*"
   },
   "devDependencies": {

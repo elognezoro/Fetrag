@@ -135,6 +135,25 @@ export function validateGuide(guide: Guide): GuideValidationIssue[] {
   }
   for (const [i, item] of (guide.prerequisites ?? []).entries()) checkText(guide.id, `prerequisites[${i}]`, item, issues)
   for (const field of ['title', 'subtitle', 'audience', 'summary'] as const) checkText(guide.id, field, guide[field], issues)
+
+  if (guide.selfAssessment) {
+    checkText(guide.id, 'selfAssessment.intro', guide.selfAssessment.intro, issues)
+    const questionIds = new Set<string>()
+    for (const [q, question] of guide.selfAssessment.questions.entries()) {
+      const qPath = `selfAssessment.questions[${q}]`
+      if (questionIds.has(question.id)) issues.push({ guideId: guide.id, path: `${qPath}.id`, message: `Question en double : ${question.id}` })
+      questionIds.add(question.id)
+      if (!anchors.has(question.sectionId)) {
+        issues.push({ guideId: guide.id, path: `${qPath}.sectionId`, message: `Section inconnue : ${question.sectionId}` })
+      }
+      checkText(guide.id, `${qPath}.prompt`, question.prompt, issues)
+      checkText(guide.id, `${qPath}.explanation`, question.explanation, issues)
+      for (const [o, option] of question.options.entries()) {
+        checkText(guide.id, `${qPath}.options[${o}].text`, option.text, issues)
+        if (option.feedback) checkText(guide.id, `${qPath}.options[${o}].feedback`, option.feedback, issues)
+      }
+    }
+  }
   return issues
 }
 

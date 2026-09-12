@@ -101,6 +101,29 @@ export function guideToMarkdown(guide: Guide, options: { baseUrl?: string; baseU
       for (const b of sub.blocks) out.push(block(b, 4))
     }
   }
+  if (guide.selfAssessment) {
+    const { intro, passPercent, questions } = guide.selfAssessment
+    out.push('## Testez votre maîtrise <a id="autoevaluation"></a>')
+    out.push(`${intro} Seuil de maîtrise : ${passPercent} % de bonnes réponses. ${questions.length} questions.`)
+    out.push(
+      questions
+        .map((question, i) => {
+          const kind = question.type === 'multiple' ? 'plusieurs réponses possibles' : question.type === 'true-false' ? 'vrai ou faux' : 'une seule réponse'
+          const options = question.options.map((option) => `   - ${option.id}) ${option.text}`).join('\n')
+          return `${i + 1}. ${question.prompt} *(${kind})*\n${options}`
+        })
+        .join('\n\n'),
+    )
+    out.push('### Corrigé')
+    out.push(
+      questions
+        .map((question, i) => {
+          const good = question.options.filter((option) => option.correct).map((option) => option.id).join(', ')
+          return `${i + 1}. **${good}** : ${question.explanation}`
+        })
+        .join('\n'),
+    )
+  }
   if (guide.related?.length) {
     out.push('## Guides liés')
     out.push(guide.related.map((link) => `- [${link.label}](${link.href})${link.description ? ` : ${link.description}` : ''}`).join('\n'))

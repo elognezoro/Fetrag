@@ -6,3 +6,18 @@ export { guideStats, toGuideMeta, type Guide, type GuideBlock, type GuideMeta, t
 export { accessibleGuides, canReadGuide, commonGuide, guideById, guideForRole, guidePath, guidesOf, staffGuide } from './access'
 export { defaultGuideBaseUrls, guideToMarkdown, resolveGuideUrls } from './markdown'
 export { validateGuide, validateGuides, type GuideValidationIssue } from './validate'
+export {
+  answersSchema,
+  assessmentMinutes,
+  masteryLabels,
+  masteryLevel,
+  masteryMessages,
+  scoreSelfAssessment,
+  sectionIndex,
+  type AssessmentResult,
+  type GuideAnswers,
+  type MasteryLevel,
+  type QuestionResult,
+  type SectionMastery,
+} from './assessment'
+// Les tentatives (base de données) s'importent depuis '@fetrag/guides/attempts' (serveur uniquement).

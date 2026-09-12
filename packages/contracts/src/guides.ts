@@ -266,6 +266,64 @@ export const guideSectionSchema = z.object({
 })
 export type GuideSection = z.infer<typeof guideSectionSchema>
 
+// -----------------------------------------------------------------------------
+// Autoévaluation : l'utilisateur teste sa maîtrise du guide (questions à choix, corrigé, score)
+// -----------------------------------------------------------------------------
+
+export const guideQuestionTypes = ['single', 'multiple', 'true-false'] as const
+export type GuideQuestionType = (typeof guideQuestionTypes)[number]
+
+export const guideAssessmentOptionSchema = z.object({
+  /** Lettre de l'option : `a`, `b`, `c`... unique dans la question. */
+  id: z.string().regex(/^[a-f]$/, 'Identifiant d’option : une lettre de a à f'),
+  text: text,
+  correct: z.boolean(),
+  /** Retour spécifique affiché quand cette option est choisie (facultatif). */
+  feedback: text.optional(),
+})
+export type GuideAssessmentOption = z.infer<typeof guideAssessmentOptionSchema>
+
+export const guideAssessmentQuestionSchema = z
+  .object({
+    /** Identifiant unique dans le guide (`q-connexion-1`). */
+    id: anchor,
+    /** Section ou sous-section du guide que la question vérifie (ancre existante). */
+    sectionId: anchor,
+    type: z.enum(guideQuestionTypes),
+    /** Question ou mise en situation, formulée simplement. */
+    prompt: text,
+    options: z.array(guideAssessmentOptionSchema).min(2).max(6),
+    /** Explication affichée après la réponse, qui renvoie au guide. */
+    explanation: text,
+  })
+  .superRefine((question, ctx) => {
+    const ids = new Set<string>()
+    for (const option of question.options) {
+      if (ids.has(option.id)) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: `Option ${option.id} en double` })
+      ids.add(option.id)
+    }
+    const correct = question.options.filter((option) => option.correct).length
+    if (question.type === 'true-false' && (question.options.length !== 2 || correct !== 1)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: 'Une question vrai / faux a deux options dont une seule est correcte' })
+    }
+    if (question.type === 'single' && correct !== 1) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: 'Une question à choix unique a exactement une option correcte' })
+    }
+    if (question.type === 'multiple' && (correct < 1 || correct === question.options.length)) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['options'], message: 'Une question à choix multiples a au moins une option correcte et une incorrecte' })
+    }
+  })
+export type GuideAssessmentQuestion = z.infer<typeof guideAssessmentQuestionSchema>
+
+export const guideSelfAssessmentSchema = z.object({
+  /** Phrase d'introduction : à quoi sert le test, combien de temps. */
+  intro: text,
+  /** Pourcentage de bonnes réponses à partir duquel le guide est considéré comme maîtrisé. */
+  passPercent: z.number().int().min(50).max(100),
+  questions: z.array(guideAssessmentQuestionSchema).min(6),
+})
+export type GuideSelfAssessment = z.infer<typeof guideSelfAssessmentSchema>
+
 export const guideRelatedLinkSchema = z.object({
   label: text,
   href: text,
@@ -297,6 +355,8 @@ export const guideSchema = z.object({
   quickStart: z.array(guideStepSchema).optional(),
   sections: z.array(guideSectionSchema).min(1),
   related: z.array(guideRelatedLinkSchema).optional(),
+  /** Module d'autoévaluation de la maîtrise du guide (questions, corrigé, seuil de réussite). */
+  selfAssessment: guideSelfAssessmentSchema.optional(),
 })
 export type Guide = z.infer<typeof guideSchema>
 
@@ -312,8 +372,8 @@ export function toGuideMeta(guide: Guide): GuideMeta {
   return { id, platform, role, title, subtitle, audience, summary, tone, icon, readingMinutes, updatedAt, version }
 }
 
-/** Compte les sections, les étapes et les questions d'un guide (statistiques affichées en en-tête). */
-export function guideStats(guide: Guide): { sections: number; steps: number; faq: number } {
+/** Compte les sections, les étapes, les questions fréquentes et les questions d'autoévaluation d'un guide. */
+export function guideStats(guide: Guide): { sections: number; steps: number; faq: number; questions: number } {
   let steps = guide.quickStart?.length ?? 0
   let faq = 0
   const visit = (blocks: GuideBlock[]) => {
@@ -326,5 +386,5 @@ export function guideStats(guide: Guide): { sections: number; steps: number; faq
     visit(section.blocks)
     for (const sub of section.subsections ?? []) visit(sub.blocks)
   }
-  return { sections: guide.sections.length, steps, faq }
+  return { sections: guide.sections.length, steps, faq, questions: guide.selfAssessment?.questions.length ?? 0 }
 }
