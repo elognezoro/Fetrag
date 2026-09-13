@@ -196,7 +196,7 @@ export const webEditeur: Guide = {
                   solution: 'Utilisez l’un des codes de secours notés lors de l’activation. Sans code de secours, demandez au super administrateur de réinitialiser la vérification en deux étapes de votre compte.',
                 },
                 {
-                  problem: 'Le message « Le code ne correspond pas. Vérifiez l’heure de votre appareil et réessayez. » s’affiche.',
+                  problem: 'Le message « Le code de vérification est invalide ou expiré. Réessayez avec un nouveau code. » s’affiche.',
                   cause: 'L’heure de votre téléphone est décalée : les codes dépendent de l’heure exacte.',
                   solution: 'Activez l’heure automatique dans les réglages du téléphone, attendez un nouveau code et recommencez. Après plusieurs échecs, le message « Trop de tentatives » impose une pause de quelques minutes.',
                 },
@@ -336,7 +336,7 @@ export const webEditeur: Guide = {
           areas: [
             {
               name: 'Menu de gauche (ordinateur) ou tiroir de navigation (mobile)',
-              purpose: 'Les rubriques du back-office groupées par sections : « Pilotage » (Tableau de bord), « Contenus » (Pages, Actualités, Catégories, Ressources, Médias, Menus, FAQ), « Services » (Catalogue, en lecture), « Relations » (Événements, Partenaires et organisations, Messages reçus, Newsletter), « Administration » (Rapports). En bas : votre nom, votre email et la pastille or « Éditeur communication ».',
+              purpose: 'Les rubriques du back-office groupées par sections : « Pilotage » (Tableau de bord), « Contenus » (Pages, Actualités, Catégories, Ressources, Médias, Menus, FAQ), « Services » (Catalogue, en lecture), « Relations » (Événements, Partenaires et organisations, Messages reçus, Newsletter), « Administration » (Rapports), « Aide » (Guide de mon rôle, qui ouvre ce guide). En bas : votre nom, votre email et la pastille or « Éditeur communication ».',
               icon: 'menu',
             },
             {

@@ -244,7 +244,7 @@ La **planification** transforme une demande acceptée en cohortes. Le système c
 
 > **Participants sans adresse email** : Un participant sans adresse email ne peut pas recevoir de compte : il est ignoré à la planification et listé dans « Éléments non traités ». Complétez son adresse dans la demande avant de planifier, ou ajoutez-le ensuite depuis la fiche de la cohorte.
 
-> **Aucun mot de passe n’est envoyé** : Les participants sans compte reçoivent un email « définissez votre mot de passe » avec un lien valable 7 jours. La convocation aux séances, elle, ne part pas à la planification : elle part à la création de chaque session.
+> **Aucun mot de passe n’est envoyé** : Les participants sans compte reçoivent un email « définissez votre mot de passe » avec un lien valable 7 jours. L’encadré affiché à l’écran (« Ce que déclenche la planification ») parle d’un « mot de passe temporaire envoyé par email » : en réalité aucun mot de passe n’est transmis, seul ce lien de création part par email. La convocation aux séances, elle, ne part pas à la planification : elle part à la création de chaque session.
 
 ### Lire les statuts d’une demande <a id="statuts-des-demandes"></a>
 

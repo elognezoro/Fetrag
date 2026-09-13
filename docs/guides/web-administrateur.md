@@ -299,7 +299,8 @@ Créez un compte pour un membre de l’équipe, un formateur ou un responsable d
    - Remarque : Ce rôle est toujours attribué en portée globale. Pour un rôle limité à une organisation, un cours ou une cohorte, laissez « Apprenant » ici et attribuez le rôle limité depuis la fiche, après création. Les rôles privilégiés exigent la vérification en deux étapes à la première connexion.
 7. Cliquez sur `Créer le compte`.
    - Où : en bas à droite (pleine largeur sur mobile)
-   - Résultat attendu : L’alerte verte « Compte créé pour <email> » s’affiche avec le message « Compte créé. Une invitation à définir son mot de passe (lien valable 7 jours) a été envoyée à <email>… » et un encadré contenant le mot de passe temporaire.
+   - Résultat attendu : L’alerte verte « Compte créé pour <email> » s’affiche, avec le texte « Le mot de passe temporaire ci-dessous n’est affiché qu’une seule fois. Transmettez-le par un canal sûr ; l’utilisateur devra le modifier depuis « Sécurité ». » et un encadré contenant le mot de passe temporaire avec son bouton `Copier`.
+   - Remarque : L’écran est identique que l’invitation par email soit partie ou non : il ne confirme ni ne signale l’envoi. Pour savoir si l’email est parti (ou a échoué), vérifiez la **File de traitements** et l’**État de santé** (voir « Superviser les traitements et les emails ») ; dans le doute, transmettez vous-même le mot de passe temporaire par un canal sûr.
 8. Si vous devez transmettre le mot de passe temporaire, cliquez sur `Copier` et envoyez-le par un canal sûr (jamais par email, jamais dans un groupe de discussion).
    - Résultat attendu : Le message « Copié dans le presse-papiers » apparaît. Le mot de passe ne sera plus jamais affiché.
    - Remarque : Dans le cas normal, la personne utilise le bouton « Définir mon mot de passe » de son email et vous n’avez pas besoin de transmettre le mot de passe temporaire.
@@ -312,7 +313,7 @@ Créez un compte pour un membre de l’équipe, un formateur ou un responsable d
 
 - **Message « Vérifiez les informations du compte. » avec un texte rouge sous un champ.** (cause probable : Un champ obligatoire est vide ou trop court (« Prénom trop court », « Adresse email invalide », « Numéro de téléphone invalide »).) : Corrigez le champ signalé puis cliquez de nouveau sur `Créer le compte`.
 - **Message « Un compte existe déjà avec cette adresse email ».** (cause probable : La personne s’est déjà inscrite (peut-être avec un compte désactivé).) : Recherchez l’adresse dans **Utilisateurs et rôles** avec le statut « Désactivés » inclus, puis réactivez le compte ou attribuez-lui le rôle voulu.
-- **Message « Compte créé, mais l’invitation par email n’a pas pu être envoyée… ».** (cause probable : Le service d’email est en panne ou mal configuré.) : Copiez le mot de passe temporaire et transmettez-le par un canal sûr. Vérifiez ensuite la **File de traitements** et l’**État de santé** (voir « Superviser les traitements et les emails »).
+- **Vous ne savez pas si l’invitation par email est bien partie.** (cause probable : L’écran de succès ne signale pas l’envoi ni son échec : il est identique dans les deux cas et n’affiche aucun message à ce sujet.) : Transmettez systématiquement le mot de passe temporaire par un canal sûr, puis vérifiez l’envoi dans la **File de traitements** et dans l’**État de santé** (voir « Superviser les traitements et les emails »). Au besoin, la personne peut aussi utiliser « Mot de passe oublié ? ».
 - **La personne dit n’avoir rien reçu.** (cause probable : Email dans les indésirables, adresse mal saisie ou lien expiré (7 jours).) : Faites vérifier le dossier « Courrier indésirable ». Passé 7 jours, la personne utilise « Mot de passe oublié ? » (lien de 30 minutes). Si l’adresse est fausse, créez un nouveau compte avec la bonne adresse et désactivez l’autre.
 
 ## 6. Comment attribuer et retirer des rôles <a id="attribuer-et-revoquer-des-roles"></a>
@@ -580,7 +581,7 @@ Chemin : Barre latérale › Administration › Paramètres › Section « File 
 | En file d’attente | La tâche sera exécutée dès sa date prévue, au prochain passage du cron. | Annulable avec `Annuler`. |
 | En cours | Un exécutant a verrouillé la tâche. | Si elle reste « En cours » plus de 10 minutes, elle est reprise automatiquement. |
 | Réussi | Terminée sans erreur. | Aucune action. |
-| En échec | La tâche a échoué et sera réessayée avec un délai croissant. | `Relancer` pour ne pas attendre, `Annuler` si elle n’a plus de sens. |
+| Échoué | La tâche a échoué et sera réessayée avec un délai croissant. La pastille affiche « Échoué » ; le filtre **Statut** et la tuile parlent, eux, d’« En échec ». | `Relancer` pour ne pas attendre, `Annuler` si elle n’a plus de sens. |
 | Abandonné | Tentatives épuisées ou annulation manuelle (motif dans **Dernière erreur**). | `Relancer` après avoir corrigé la cause. |
 
 *Types de tâches et ce qu’un échec signifie*
@@ -677,7 +678,7 @@ Chemin : Barre latérale › Administration › Journal d’audit (`/admin/audit
    - Où : section **Administration** de la barre latérale
    - Résultat attendu : Trois tuiles (**Entrées journalisées**, **Types d’action distincts**, **Types d’entité concernés**) puis le tableau, 20 entrées par page, les plus récentes en premier.
 2. Filtrez : champ de recherche (identifiant d’entité, email de l’acteur ou corrélation), liste **Action**, liste **Entité**, **Période** (**Du** / **Au**), champ **Acteur (email)** ; puis cliquez sur `Filtrer`.
-   - Remarque : Le filtre **Action** fonctionne par famille : « Connexion » couvre aussi les déconnexions et échecs de connexion. La date **Au** est incluse jusqu’à la fin de la journée. Sur mobile, les deux dates sont côte à côte.
+   - Remarque : Le filtre **Action** fonctionne par préfixe : « Connexion » capte aussi les « Échec de connexion » (même famille), mais pas les déconnexions, qui ont leur propre entrée « Déconnexion » dans la liste **Action**. Pour une revue de sécurité, filtrez explicitement par « Échec de connexion » (voir « Faire la revue mensuelle des comptes privilégiés »). La date **Au** est incluse jusqu’à la fin de la journée. Sur mobile, les deux dates sont côte à côte.
 3. Sur une ligne, cliquez sur `Détail` pour ouvrir les colonnes **Avant** et **Après**.
    - Résultat attendu : Le contenu technique (JSON) montre les valeurs modifiées ; sur mobile, il défile dans un cadre.
    - Remarque : Sur mobile, seules les colonnes **Horodatage**, **Action** (avec le badge d’entité) et **Détail** sont visibles ; **Acteur** et **Entité** apparaissent sur ordinateur. L’acteur « Système » désigne une tâche automatique.

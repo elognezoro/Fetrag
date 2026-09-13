@@ -66,7 +66,7 @@ En tant que super administrateur, vous avez accès à tout l’espace Administra
 
 Le super administrateur est le gardien de la plateforme de formation. Il monte les cours, en publie les versions, tient la banque de questions et les modèles de certificats, donne les bons rôles aux bonnes personnes et surveille que tout fonctionne. Chacune de vos actions sensibles est inscrite dans le **Journal d’audit** : une trace qui ne peut être ni modifiée ni effacée depuis l’interface.
 
-Un mot de vocabulaire, une fois pour toutes : la **plateforme** est le site de formation en ligne (formation.fetrag.ga), le **site institutionnel** est le site public de la Fédération (fetrag.ga). Un même compte ouvre les deux. Un **cours** est un module du programme ; une **cohorte** est un groupe d’apprenants qui suit un cours sur une période donnée ; la **coordination** anime ces cohortes.
+Un mot de vocabulaire, une fois pour toutes : la **plateforme** est le site de formation en ligne, le **site institutionnel** est le site public de la Fédération. Un même compte ouvre les deux. Un **cours** est un module du programme ; une **cohorte** est un groupe d’apprenants qui suit un cours sur une période donnée ; la **coordination** anime ces cohortes.
 
 ### Ce que le rôle vous permet de faire
 
@@ -123,7 +123,7 @@ L’activation se fait uniquement sur le **site institutionnel**, dans votre esp
 
 > **En cas de perte de votre téléphone** : Personne dans l’administration ne peut réinitialiser votre vérification : il n’existe pas de bouton pour cela. Utilisez un code de secours pour vous connecter, puis réactivez la vérification. Sans code de secours, seule une intervention en base de données par l’exploitant peut vous dépanner (runbook « incident-securite »).
 
-- **La page **Vérification en deux étapes** s’affiche et propose `Continuer sans activer pour le moment`.** (cause probable : Le déploiement exige la vérification pour les rôles privilégiés et votre compte ne l’a pas encore activée.) : Cliquez sur `Activer la vérification sur le site institutionnel`, activez-la, puis revenez.
+- **La page **Vérification en deux étapes** s’affiche et propose `Continuer sans activer pour le moment`.** (cause probable : Le déploiement exige la vérification pour les rôles privilégiés et votre compte ne l’a pas encore activée.) : Cliquez sur le bouton bleu d’activation de la vérification (il ouvre votre espace de sécurité sur le site institutionnel), activez-la, puis revenez.
 
 ### Se connecter et se déconnecter <a id="connexion-et-deconnexion"></a>
 

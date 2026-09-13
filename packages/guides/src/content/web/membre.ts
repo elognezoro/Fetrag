@@ -101,7 +101,7 @@ export const webMembre: Guide = {
           items: [
             'Changer vous-même votre adresse email : elle sert d’identifiant de connexion. Contactez le support pour la modifier.',
             'Modifier ou annuler une demande de service après son dépôt : écrivez à la Fédération en indiquant sa référence.',
-            'Déposer une **Demande de formation** pour un groupe : cette fonction est réservée aux responsables d’organisation (vous obtiendriez la page **Accès refusé**).',
+            'Déposer une **Demande de formation** pour un groupe : cette fonction est réservée aux responsables d’organisation. Ce lien ouvre la plateforme de formation, qui affiche alors la page **Vous devez être responsable d’une organisation** (espace **Organisation**) vous invitant à demander votre désignation comme gestionnaire ou à contacter la Fédération.',
             'Accéder à **Administration du site** : cette entrée n’apparaît que pour les personnels de la Fédération.',
             'Obtenir un remboursement en un clic : un remboursement est décidé et effectué par le service financier de la Fédération.',
           ],
@@ -482,7 +482,7 @@ export const webMembre: Guide = {
             { name: 'En-tête du menu', purpose: 'Votre nom, votre adresse email et votre rôle en majuscules (par exemple **APPRENANT**).', icon: 'user' },
             {
               name: 'Rubriques personnelles',
-              purpose: '**Mon espace**, **Mon profil**, **Mes inscriptions**, **Notifications**, **Sécurité** : raccourcis vers les pages de votre espace.',
+              purpose: '**Mon espace**, **Mon profil**, **Mes inscriptions**, **Notifications**, **Sécurité**, **Guide d’utilisation** : raccourcis vers les pages de votre espace.',
               icon: 'layout-dashboard',
             },
             { name: 'Plateforme de formation', purpose: 'Ouvre le tableau de bord de la plateforme de formation.', icon: 'external-link' },
@@ -510,7 +510,7 @@ export const webMembre: Guide = {
           areas: [
             {
               name: 'Menu de gauche (ordinateur) ou bouton « Ouvrir la navigation » (mobile)',
-              purpose: 'Groupe **Mon compte** : **Tableau de bord**, **Profil**, **Mes demandes**, **Mes inscriptions**, **Paiements et reçus**, **Notifications**, **Sécurité**. Groupe **Formation** : **Plateforme de formation**. En bas : bouton vert `Reprendre ma formation`. Un chiffre (badge) à côté de **Paiements et reçus** compte vos commandes en attente ; à côté de **Notifications**, vos notifications non lues.',
+              purpose: 'Groupe **Mon compte** : **Tableau de bord**, **Profil**, **Mes demandes**, **Mes inscriptions**, **Paiements et reçus**, **Notifications**, **Sécurité**, **Guide d’utilisation**. Groupe **Formation** : **Plateforme de formation**. En bas : bouton vert `Reprendre ma formation`. Un chiffre (badge) à côté de **Paiements et reçus** compte vos commandes en attente ; à côté de **Notifications**, vos notifications non lues.',
               icon: 'menu',
             },
             {
@@ -567,6 +567,7 @@ export const webMembre: Guide = {
             ['Paiements et reçus', 'Historique des commandes, paiement, reçus PDF.', '/espace/paiements'],
             ['Notifications', 'Centre des notifications internes.', '/espace/notifications'],
             ['Sécurité', 'Vérification en deux étapes, mot de passe, activité récente.', '/espace/securite'],
+            ['Guide d’utilisation', 'Ce guide et son autoévaluation.', '/espace/guide'],
           ],
         },
         { type: 'path', label: 'Chemin vers votre espace', items: ['Avatar en haut à droite', 'Mon espace'], href: '/espace' },
@@ -1284,7 +1285,7 @@ export const webMembre: Guide = {
           type: 'callout',
           tone: 'info',
           title: 'Demande de formation pour un groupe',
-          text: 'Le bouton **Déposer une demande de formation** (page **Formations** et pied de page) sert aux responsables d’organisation qui inscrivent plusieurs personnes. Avec un compte de membre, vous obtiendriez la page **Accès refusé**. Si votre organisation souhaite une formation de groupe, adressez-vous à son responsable ou cliquez sur **Affilier mon organisation**.',
+          text: 'Le bouton **Déposer une demande de formation** (page **Formations** et pied de page) sert aux responsables d’organisation qui inscrivent plusieurs personnes. Ce lien ouvre la plateforme de formation ; avec un compte de membre, elle affiche la page **Vous devez être responsable d’une organisation** (espace **Organisation**), qui vous invite à demander votre désignation comme gestionnaire ou à contacter la Fédération. Si votre organisation souhaite une formation de groupe, adressez-vous à son responsable ou cliquez sur **Affilier mon organisation**.',
         },
         {
           type: 'troubleshooting',
@@ -1942,8 +1943,8 @@ export const webMembre: Guide = {
               answer: 'Non : le site présente le programme et vous renvoie sur la plateforme de formation avec `S’inscrire à ce module`. Le suivi (progression, certificats) est ensuite visible dans **Mes inscriptions**.',
             },
             {
-              question: 'Pourquoi le lien « Demande de formation » m’affiche « Accès refusé » ?',
-              answer: 'Cette fonction est réservée aux responsables d’organisation qui inscrivent un groupe. Si votre organisation souhaite une formation, adressez-vous à son responsable ou à la coordination.',
+              question: 'Pourquoi ne puis-je pas déposer une **Demande de formation** ?',
+              answer: 'Cette fonction est réservée aux responsables d’organisation qui inscrivent un groupe. Le lien ouvre la plateforme de formation, qui affiche alors la page **Vous devez être responsable d’une organisation** (espace **Organisation**) : elle vous invite à demander votre désignation comme gestionnaire ou à contacter la Fédération. Si votre organisation souhaite une formation, adressez-vous à son responsable ou à la coordination.',
             },
             {
               question: 'Où télécharger mon certificat ?',

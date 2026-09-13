@@ -47,8 +47,7 @@ export const lmsFormateur: Guide = {
       result: 'Vous voyez ce qui vous attend : séances à émarger, devoirs et compositions à corriger.',
     },
     {
-      text: 'Ouvrez une cohorte pour émarger, corriger ou écrire aux participants.',
-      ui: 'Ouvrir la cohorte',
+      text: 'Ouvrez une cohorte pour émarger, corriger ou écrire aux participants : cliquez sur le nom de la cohorte.',
       where: 'section « Mes cohortes » du tableau de bord',
       result: 'La fiche de la cohorte s’ouvre sur l’onglet `Participants`.',
     },
@@ -227,7 +226,7 @@ export const lmsFormateur: Guide = {
           title: 'La coquille « Formateur » (menu de gauche et barre du haut)',
           description: 'Toutes les pages de votre espace partagent cette structure.',
           areas: [
-            { name: 'Barre latérale verte « Formateur »', purpose: 'Le menu de votre espace : **Tableau de bord**, **Mes cohortes**, **Calendrier**, **Forums**. Votre nom apparaît en sous-titre.', icon: 'layout-dashboard' },
+            { name: 'Barre latérale verte « Formateur »', purpose: 'Le menu de votre espace : **Tableau de bord**, **Mes cohortes**, **Calendrier**, **Forums**, **Guide d’utilisation**. Votre nom apparaît en sous-titre.', icon: 'layout-dashboard' },
             { name: 'Lien **Mon espace apprenant** (bas de la barre latérale)', purpose: 'Revient à votre tableau de bord apprenant, où s’affichent vos notifications.', icon: 'graduation-cap' },
             { name: 'Barre supérieure de l’espace', purpose: 'Affiche le titre « Formateur » et, sur ordinateur, un commutateur `Changer d’espace` si vous avez plusieurs rôles.', icon: 'compass' },
             { name: 'Bouton **Ouvrir le menu** (mobile)', purpose: 'Sur téléphone, la barre latérale devient un tiroir : touchez ce bouton pour l’ouvrir, la croix pour le fermer.', icon: 'menu' },

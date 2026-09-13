@@ -178,7 +178,7 @@ Cette barre est commune à toute la plateforme. Elle reste visible au-dessus de 
 Sur un écran large, l’espace se compose d’une barre latérale à gauche et d’une barre secondaire au-dessus du contenu.
 
 - **Barre latérale (à gauche) : ruban bleu « Organisation »** : Affiche le sigle ou le nom de l’organisation active (ou « N organisations » si vous en pilotez plusieurs).
-- **Menu « Organisation » (dans la barre latérale)** : Quatre rubriques : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**.
+- **Menu « Organisation » (dans la barre latérale)** : Cinq rubriques : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**, **Guide d’utilisation**.
 - **Bas de la barre latérale** : La devise de la Fédération et le lien **Mon espace apprenant** pour revenir à votre tableau de bord personnel.
 - **Barre secondaire (au-dessus du contenu) : « Changer d’espace »** : Bascule entre **Apprenant** et **Organisation** (et d’autres espaces si votre compte a d’autres rôles).
 - **Contenu (au centre)** : La page choisie : tableau de bord, assistant de demande, suivi d’une demande, participants, rapports.
@@ -187,7 +187,7 @@ Sur un écran large, l’espace se compose d’une barre latérale à gauche et 
 
 Sous 1024 pixels de large (téléphone, petite tablette), la barre latérale est masquée.
 
-- **Bouton **Ouvrir le menu** (icône, dans la barre secondaire)** : Ouvre un tiroir avec le même menu : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**, et un bouton `Fermer le menu`.
+- **Bouton **Ouvrir le menu** (icône, dans la barre secondaire)** : Ouvre un tiroir avec le même menu : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**, **Guide d’utilisation**, et un bouton `Fermer le menu`.
 - **Menu du compte (initiales, en haut à droite de la barre de la plateforme)** : Remplace le sélecteur « Changer d’espace », masqué sur téléphone : utilisez **Organisation** ou **Tableau de bord** dans ce menu pour changer d’espace.
 - **Tableaux** : Les tableaux larges (demandes, participants, rapports) se font défiler de gauche à droite avec le doigt, à l’intérieur de leur cadre.
 
@@ -859,7 +859,8 @@ Dix-huit questions pour vérifier ce que vous avez retenu : où cliquer, ce que 
    - b) Demande de formation
    - c) Participants
    - d) Rapports
-   - e) Paiements
+   - e) Guide d’utilisation
+   - f) Paiements
 
 4. Sur téléphone, comment affichez-vous le menu de l’espace « Organisation » ? *(une seule réponse)*
    - a) Avec le bouton **Ouvrir le menu** (trois traits) de la barre secondaire.
@@ -945,7 +946,7 @@ Dix-huit questions pour vérifier ce que vous avez retenu : où cliquer, ce que 
 
 1. **a** : Le lien **Organisation** se trouve dans le menu du compte ; sur mobile, le bouton `Mon espace` du tiroir y mène aussi. Voir « Comment accéder à votre espace ».
 2. **a** : Oui : le sélecteur **Organisation active** mémorise votre choix 30 jours. Voir « Comment accéder à votre espace ».
-3. **a, b, c, d** : Le menu compte quatre rubriques ; il n’y a pas de rubrique Paiements dans l’espace « Organisation ». Voir « Se repérer ».
+3. **a, b, c, d, e** : Le menu compte cinq rubriques (Tableau de bord, Demande de formation, Participants, Rapports, Guide d’utilisation) ; il n’y a pas de rubrique Paiements dans l’espace « Organisation ». Voir « Se repérer ».
 4. **a** : Sous 1024 pixels, la barre latérale est remplacée par un tiroir ouvert avec le bouton **Ouvrir le menu**. Voir « Se repérer ».
 5. **b** : Six étapes : Organisation, Modules, Participants, Préférences, Engagements, Récapitulatif. Voir « Comment déposer une demande de formation ».
 6. **a** : Seul le nom complet (2 caractères au moins) est obligatoire ; l’email est facultatif mais indispensable pour créer le compte. Voir « Étape 03 : Participants ».

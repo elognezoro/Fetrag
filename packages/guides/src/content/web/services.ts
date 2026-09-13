@@ -369,6 +369,11 @@ export const webServices: Guide = {
               icon: 'handshake',
             },
             {
+              name: 'Aide',
+              purpose: '**Guide de mon rôle** : ce guide, accessible à tout moment (/admin/guide).',
+              icon: 'help-circle',
+            },
+            {
               name: 'Pied du menu',
               purpose: 'Votre nom, votre email, la pastille « Responsable services » et un lien « Coordination LMS » (affiché à tous les administrateurs mais inaccessible à votre rôle).',
               icon: 'user',
@@ -654,7 +659,7 @@ export const webServices: Guide = {
             {
               text: 'Si une seconde personne doit relire, cliquez sur `Actions` puis **Envoyer en relecture**.',
               where: 'panneau « Publication », bouton `Actions` (menu déroulant)',
-              result: 'Le message « « {nom} » envoyé en relecture. » apparaît ; le service est listé dans « Contenus en relecture » du tableau de bord (type « Service »).',
+              result: 'Le message « « {nom} » a été envoyé en relecture. » apparaît ; le service est listé dans « Contenus en relecture » du tableau de bord (type « Service »).',
             },
             {
               text: 'Cliquez sur `Actions` puis **Publier**.',
@@ -754,7 +759,7 @@ export const webServices: Guide = {
             {
               text: 'Ouvrez la fiche puis cliquez sur `Actions` et **Archiver**.',
               where: 'panneau « Publication »',
-              result: '« « {nom} » archivé. » : le service disparaît du catalogue public mais reste dans la liste avec le badge « Archivé ».',
+              result: '« « {nom} » a été archivé. » : le service disparaît du catalogue public mais reste dans la liste avec le badge « Archivé ».',
             },
             {
               text: 'Pour le remettre en ligne, cliquez sur `Actions`, **Repasser en brouillon**, puis de nouveau `Actions` et **Publier**.',

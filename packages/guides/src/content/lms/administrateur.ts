@@ -75,7 +75,7 @@ export const lmsAdministrateur: Guide = {
         },
         {
           type: 'paragraph',
-          text: 'Un mot de vocabulaire, une fois pour toutes : la **plateforme** est le site de formation en ligne (formation.fetrag.ga), le **site institutionnel** est le site public de la Fédération (fetrag.ga). Un même compte ouvre les deux. Un **cours** est un module du programme ; une **cohorte** est un groupe d’apprenants qui suit un cours sur une période donnée ; la **coordination** anime ces cohortes.',
+          text: 'Un mot de vocabulaire, une fois pour toutes : la **plateforme** est le site de formation en ligne, le **site institutionnel** est le site public de la Fédération. Un même compte ouvre les deux. Un **cours** est un module du programme ; une **cohorte** est un groupe d’apprenants qui suit un cours sur une période donnée ; la **coordination** anime ces cohortes.',
         },
         {
           type: 'list',
@@ -182,7 +182,7 @@ export const lmsAdministrateur: Guide = {
                 {
                   problem: 'La page **Vérification en deux étapes** s’affiche et propose `Continuer sans activer pour le moment`.',
                   cause: 'Le déploiement exige la vérification pour les rôles privilégiés et votre compte ne l’a pas encore activée.',
-                  solution: 'Cliquez sur `Activer la vérification sur le site institutionnel`, activez-la, puis revenez.',
+                  solution: 'Cliquez sur le bouton bleu d’activation de la vérification (il ouvre votre espace de sécurité sur le site institutionnel), activez-la, puis revenez.',
                 },
               ],
             },

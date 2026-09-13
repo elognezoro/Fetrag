@@ -537,7 +537,7 @@ La rubrique **Finance** regroupe les commandes et les paiements des deux platefo
    - Où : menu de gauche, section « Administration »
    - Résultat attendu : La page « Finance » s’affiche avec la sous-navigation en pastilles `Tableau de bord`, `Commandes`, `Prises en charge`.
 2. Lisez les tuiles : « Chiffre d’affaires du mois », « Commandes en attente » (montant et nombre de paiements à confirmer), « Remboursés sur 12 mois », « Panier moyen ».
-3. Parcourez « Chiffre d’affaires mensuel » (12 mois) et « Moyens de paiement » (répartition Formations / Événements / Services / Ressources).
+3. Parcourez « Chiffre d’affaires mensuel » (12 mois) et « Moyens de paiement » (anneau des encaissements par moyen de paiement — Mobile Money, carte… — et, sous le graphique, une répartition Formations / Événements / Services / Ressources).
 4. Vérifiez la carte « Webhooks de paiement » : un badge « {n} anomalie(s) » signale des notifications de fournisseur en « Erreur » ou « Non vérifié ».
    - Remarque : Un webhook est un message automatique envoyé par le fournisseur de paiement (Mobile Money, carte) pour confirmer une transaction. En cas d’anomalies répétées, prévenez le rôle Finance et le support.
 5. Consultez « Dernières commandes » ; cliquez sur `Toutes les commandes` pour la liste complète.

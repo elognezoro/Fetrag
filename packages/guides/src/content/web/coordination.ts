@@ -1368,7 +1368,7 @@ export const webCoordination: Guide = {
                   text: 'Lisez les tuiles : « Chiffre d’affaires du mois », « Commandes en attente » (montant et nombre de paiements à confirmer), « Remboursés sur 12 mois », « Panier moyen ».',
                 },
                 {
-                  text: 'Parcourez « Chiffre d’affaires mensuel » (12 mois) et « Moyens de paiement » (répartition Formations / Événements / Services / Ressources).',
+                  text: 'Parcourez « Chiffre d’affaires mensuel » (12 mois) et « Moyens de paiement » (anneau des encaissements par moyen de paiement — Mobile Money, carte… — et, sous le graphique, une répartition Formations / Événements / Services / Ressources).',
                 },
                 {
                   text: 'Vérifiez la carte « Webhooks de paiement » : un badge « {n} anomalie(s) » signale des notifications de fournisseur en « Erreur » ou « Non vérifié ».',

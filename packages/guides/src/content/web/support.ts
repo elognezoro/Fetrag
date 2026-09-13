@@ -789,11 +789,15 @@ export const webSupport: Guide = {
               text: 'Dans la carte **Organisations**, repérez les organisations rattachées et le badge **Responsable** ou **Membre**. Le nom de l’organisation est un lien vers sa fiche.',
             },
             {
-              text: 'Dans la carte **Inscriptions à la formation**, lisez le statut de chaque inscription (En attente, En cours, Terminée, Suspendue, Annulée, Expirée) et la progression.',
+              text: 'Dans la carte **Inscriptions à la formation**, lisez le statut de chaque inscription (En attente, Actif, Terminé, Suspendue, Annulé, Expirée) et la progression.',
             },
             {
-              text: 'Dans la carte **Commandes**, lisez la référence CMD-…, le montant et le statut (En attente, Payée, Échouée, Annulée, Remboursée, Partiellement remboursée).',
+              text: 'Dans la carte **Commandes**, lisez la référence CMD-…, le montant et le statut (En attente, Payée, Échoué, Annulé, Remboursé, Partiellement remboursée).',
               note: 'La référence est un simple texte : le détail des commandes est réservé à Finance / contrôle.',
+            },
+            {
+              text: 'Dans la carte **Consentements**, lisez le dernier état enregistré pour chaque type (type, version, date) avec le badge **Accordé** ou **Refusé**.',
+              note: 'Cette carte est en lecture seule : aucune action n’est possible depuis la fiche.',
             },
             {
               text: 'Dans la carte **Dernières connexions**, lisez les dix derniers événements : **Connexion**, **Échec de connexion**, **Mot de passe modifié**, **MFA activée**, avec la date et le navigateur.',
@@ -1081,7 +1085,7 @@ export const webSupport: Guide = {
               result: 'Chaque commande affiche sa référence, sa date, son montant en FCFA et son statut.',
             },
             {
-              text: 'Lisez le statut : **En attente** (paiement non confirmé), **Payée**, **Échouée**, **Annulée**, **Remboursée**, **Partiellement remboursée**.',
+              text: 'Lisez le statut : **En attente** (paiement non confirmé), **Payée**, **Échoué**, **Annulé**, **Remboursé**, **Partiellement remboursée**.',
             },
             {
               text: 'Pour une demande de service payante, ouvrez la demande et lisez la carte **Paiement** : **Commande liée** ou « aucune commande réglée n’est encore associée ».',

@@ -100,9 +100,15 @@ export function answersSchema(guide: Guide) {
   const questions = guide.selfAssessment?.questions ?? []
   const shape: Record<string, z.ZodTypeAny> = {}
   for (const question of questions) {
-    const letters = question.options.map((option) => option.id) as [string, ...string[]]
+    const letters = question.options.map((option) => option.id)
+    // Une question sans option ne devrait jamais exister (garanti par le schéma), mais on ne
+    // laisse pas z.enum([]) lever à la construction : on accepte alors un tableau vide.
+    if (letters.length === 0) {
+      shape[question.id] = z.array(z.never()).max(0).optional()
+      continue
+    }
     const max = question.type === 'multiple' ? question.options.length : 1
-    shape[question.id] = z.array(z.enum(letters)).max(max).optional()
+    shape[question.id] = z.array(z.enum(letters as [string, ...string[]])).max(max).optional()
   }
   return z.object(shape).strict()
 }

@@ -2,7 +2,7 @@
 
 *Répondre aux messages et accompagner les utilisateurs*
 
-Plateforme : site institutionnel fetrag.ga · Rôle : SUPPORT · Version 1.0 du 2026-09-12 · Lecture : 45 min · 20 sections, 123 étapes.
+Plateforme : site institutionnel fetrag.ga · Rôle : SUPPORT · Version 1.0 du 2026-09-12 · Lecture : 45 min · 20 sections, 124 étapes.
 
 Version en ligne : https://fetrag.ga/admin/guide/web-support
 
@@ -379,12 +379,14 @@ L’annuaire contient tous les comptes, qu’ils aient été créés sur le site
 3. Dans la carte **Rôles et portées**, lisez les rôles et leur portée (**Globale**, **Organisation**, **Cours**, **Cohorte**) et leur expiration (**Sans limite**, **Jusqu’au …**, **Expiré le …**).
    - Remarque : Un rôle expiré n’accorde plus aucun droit : c’est une cause fréquente de « Accès refusé ».
 4. Dans la carte **Organisations**, repérez les organisations rattachées et le badge **Responsable** ou **Membre**. Le nom de l’organisation est un lien vers sa fiche.
-5. Dans la carte **Inscriptions à la formation**, lisez le statut de chaque inscription (En attente, En cours, Terminée, Suspendue, Annulée, Expirée) et la progression.
-6. Dans la carte **Commandes**, lisez la référence CMD-…, le montant et le statut (En attente, Payée, Échouée, Annulée, Remboursée, Partiellement remboursée).
+5. Dans la carte **Inscriptions à la formation**, lisez le statut de chaque inscription (En attente, Actif, Terminé, Suspendue, Annulé, Expirée) et la progression.
+6. Dans la carte **Commandes**, lisez la référence CMD-…, le montant et le statut (En attente, Payée, Échoué, Annulé, Remboursé, Partiellement remboursée).
    - Remarque : La référence est un simple texte : le détail des commandes est réservé à Finance / contrôle.
-7. Dans la carte **Dernières connexions**, lisez les dix derniers événements : **Connexion**, **Échec de connexion**, **Mot de passe modifié**, **MFA activée**, avec la date et le navigateur.
+7. Dans la carte **Consentements**, lisez le dernier état enregistré pour chaque type (type, version, date) avec le badge **Accordé** ou **Refusé**.
+   - Remarque : Cette carte est en lecture seule : aucune action n’est possible depuis la fiche.
+8. Dans la carte **Dernières connexions**, lisez les dix derniers événements : **Connexion**, **Échec de connexion**, **Mot de passe modifié**, **MFA activée**, avec la date et le navigateur.
    - Remarque : Les adresses IP ne sont pas affichées en clair.
-8. Dans le panneau **Compte**, lisez les compteurs **Inscriptions**, **Certificats**, **Commandes**, **Demandes**.
+9. Dans le panneau **Compte**, lisez les compteurs **Inscriptions**, **Certificats**, **Commandes**, **Demandes**.
 
 ### Les états d’un compte
 
@@ -500,7 +502,7 @@ Le back-office ne montre pas les envois d’emails et ne permet pas de « renvoy
 1. Demandez la référence de commande (CMD-AAAA-XXXXXX) ou l’adresse email du compte, ainsi que la preuve de débit (SMS de l’opérateur, capture de la messagerie).
 2. Ouvrez la fiche du compte, puis la carte **Commandes**.
    - Résultat attendu : Chaque commande affiche sa référence, sa date, son montant en FCFA et son statut.
-3. Lisez le statut : **En attente** (paiement non confirmé), **Payée**, **Échouée**, **Annulée**, **Remboursée**, **Partiellement remboursée**.
+3. Lisez le statut : **En attente** (paiement non confirmé), **Payée**, **Échoué**, **Annulé**, **Remboursé**, **Partiellement remboursée**.
 4. Pour une demande de service payante, ouvrez la demande et lisez la carte **Paiement** : **Commande liée** ou « aucune commande réglée n’est encore associée ».
 5. Invitez la personne à ouvrir **Paiements et reçus** dans son espace personnel pour retrouver son reçu ou reprendre un paiement échoué.
 6. Si le statut reste **En attente** alors que la personne a une preuve de débit, ou en cas de double débit, transmettez la référence CMD, l’email du compte et la preuve à Finance / contrôle.

@@ -324,7 +324,7 @@ export const lmsOrganisation: Guide = {
             },
             {
               name: 'Menu « Organisation » (dans la barre latérale)',
-              purpose: 'Quatre rubriques : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**.',
+              purpose: 'Cinq rubriques : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**, **Guide d’utilisation**.',
               icon: 'list-checks',
             },
             {
@@ -351,7 +351,7 @@ export const lmsOrganisation: Guide = {
           areas: [
             {
               name: 'Bouton **Ouvrir le menu** (icône, dans la barre secondaire)',
-              purpose: 'Ouvre un tiroir avec le même menu : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**, et un bouton `Fermer le menu`.',
+              purpose: 'Ouvre un tiroir avec le même menu : **Tableau de bord**, **Demande de formation**, **Participants**, **Rapports**, **Guide d’utilisation**, et un bouton `Fermer le menu`.',
               icon: 'menu',
             },
             {
@@ -548,8 +548,8 @@ export const lmsOrganisation: Guide = {
           title: 'Statuts des cohortes affichés sur les cartes',
           items: [
             { label: 'Planifiée', tone: 'info', meaning: 'La cohorte est créée, la date de début est fixée ou à confirmer.', next: 'Attendez les convocations ; vérifiez la liste des participants dans **Participants**.' },
-            { label: 'Inscriptions ouvertes', tone: 'info', meaning: 'La coordination peut encore ajuster la liste des membres.', next: 'Signalez à la coordination tout changement de participant.' },
-            { label: 'En cours', tone: 'success', meaning: 'Les sessions ont commencé.', next: 'Suivez la progression et l’assiduité dans **Rapports**.' },
+            { label: 'Inscriptions ouvertes', tone: 'success', meaning: 'La coordination peut encore ajuster la liste des membres.', next: 'Signalez à la coordination tout changement de participant.' },
+            { label: 'En cours', tone: 'info', meaning: 'Les sessions ont commencé.', next: 'Suivez la progression et l’assiduité dans **Rapports**.' },
             { label: 'Clôturé', tone: 'neutral', meaning: 'La formation est terminée ; les attestations ont été délivrées aux participants qui remplissent les critères.', next: 'Téléchargez le rapport de cohorte.' },
             { label: 'Annulé', tone: 'danger', meaning: 'La cohorte a été annulée (par la coordination, ou à la suite de l’annulation de votre demande).', next: 'Déposez une nouvelle demande si besoin.' },
           ],
@@ -1083,12 +1083,12 @@ export const lmsOrganisation: Guide = {
             { label: 'Brouillon', tone: 'neutral', meaning: 'Enregistrée mais non transmise. La coordination ne la voit pas.', next: 'Reprenez-la avec `Compléter la demande`, puis transmettez-la. Vous pouvez aussi l’annuler.' },
             { label: 'Soumise', tone: 'info', meaning: 'Transmise à la coordination, en cours d’instruction. Plus modifiable.', next: 'Attendez la réponse (l’accusé de réception annonce un délai indicatif de quelques jours ouvrés). Vous pouvez encore annuler la demande ; pour transmettre un document, contactez la coordination.' },
             { label: 'Complément demandé', tone: 'warning', meaning: 'La coordination attend des précisions ; sa note est affichée.', next: 'Cliquez sur `Compléter la demande`, corrigez, puis transmettez à nouveau.' },
-            { label: 'Autre date proposée', tone: 'warning', meaning: 'La coordination propose une autre date ou modalité.', next: 'Cliquez sur `Accepter la proposition` pour qu’elle planifie, ou annulez la demande.' },
+            { label: 'Autre date proposée', tone: 'info', meaning: 'La coordination propose une autre date ou modalité.', next: 'Cliquez sur `Accepter la proposition` pour qu’elle planifie, ou annulez la demande.' },
             { label: 'Acceptée', tone: 'success', meaning: 'Demande validée, en attente de planification par la coordination.', next: 'Rien à faire. Vous pouvez encore annuler.' },
             { label: 'Refusée', tone: 'danger', meaning: 'La coordination n’a pas donné suite. Le motif est dans l’historique et dans l’email.', next: 'Définitif. Déposez une nouvelle demande si nécessaire.' },
-            { label: 'Planifiée', tone: 'success', meaning: 'Cohorte(s) créée(s), comptes des participants créés, inscriptions réalisées.', next: 'Vérifiez vos participants. Une annulation reste possible mais annule aussi la cohorte.' },
-            { label: 'Formation en cours', tone: 'success', meaning: 'La cohorte a démarré.', next: 'Suivez la progression dans **Participants** et **Rapports**. Plus d’annulation possible.' },
-            { label: 'Terminée', tone: 'neutral', meaning: 'La cohorte est clôturée ; les attestations ont été délivrées aux participants qui remplissent les critères.', next: 'Définitif. Téléchargez les rapports.' },
+            { label: 'Planifiée', tone: 'info', meaning: 'Cohorte(s) créée(s), comptes des participants créés, inscriptions réalisées.', next: 'Vérifiez vos participants. Une annulation reste possible mais annule aussi la cohorte.' },
+            { label: 'Formation en cours', tone: 'info', meaning: 'La cohorte a démarré.', next: 'Suivez la progression dans **Participants** et **Rapports**. Plus d’annulation possible.' },
+            { label: 'Terminée', tone: 'success', meaning: 'La cohorte est clôturée ; les attestations ont été délivrées aux participants qui remplissent les critères.', next: 'Définitif. Téléchargez les rapports.' },
             { label: 'Annulée', tone: 'danger', meaning: 'Close par vous ou par la coordination, avec un motif.', next: 'Définitif. Déposez une nouvelle demande si nécessaire.' },
           ],
         },
@@ -1398,10 +1398,10 @@ export const lmsOrganisation: Guide = {
           title: 'Statuts d’inscription',
           items: [
             { label: 'Actif', tone: 'success', meaning: 'Le participant est inscrit et peut suivre le module.' },
-            { label: 'Terminé', tone: 'neutral', meaning: 'Le participant a achevé le module.' },
-            { label: 'En attente', tone: 'info', meaning: 'Inscription enregistrée mais pas encore active.' },
+            { label: 'Terminé', tone: 'success', meaning: 'Le participant a achevé le module.' },
+            { label: 'En attente', tone: 'warning', meaning: 'Inscription enregistrée mais pas encore active.' },
             { label: 'Suspendue', tone: 'warning', meaning: 'Inscription suspendue par la coordination.' },
-            { label: 'Expirée', tone: 'neutral', meaning: 'La période d’accès au module est dépassée.' },
+            { label: 'Expirée', tone: 'danger', meaning: 'La période d’accès au module est dépassée.' },
             { label: 'Annulé', tone: 'danger', meaning: 'Inscription annulée.' },
           ],
         },
@@ -1861,9 +1861,10 @@ export const lmsOrganisation: Guide = {
           { id: 'b', text: 'Demande de formation', correct: true },
           { id: 'c', text: 'Participants', correct: true },
           { id: 'd', text: 'Rapports', correct: true },
-          { id: 'e', text: 'Paiements', correct: false },
+          { id: 'e', text: 'Guide d’utilisation', correct: true },
+          { id: 'f', text: 'Paiements', correct: false },
         ],
-        explanation: 'Le menu compte quatre rubriques ; il n’y a pas de rubrique Paiements dans l’espace « Organisation ». Voir « Se repérer ».',
+        explanation: 'Le menu compte cinq rubriques (Tableau de bord, Demande de formation, Participants, Rapports, Guide d’utilisation) ; il n’y a pas de rubrique Paiements dans l’espace « Organisation ». Voir « Se repérer ».',
       },
       {
         id: 'q-reperer-2',

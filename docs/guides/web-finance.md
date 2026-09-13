@@ -180,7 +180,7 @@ Indispensable sur un appareil partagé ou prêté.
 
 Ce que vous voyez après avoir cliqué sur **Administration du site**.
 
-- **Barre latérale « Administration » (à gauche, sur ordinateur)** : Les rubriques autorisées pour votre rôle : **Pilotage** (Tableau de bord), **Relations** (Newsletter), **Administration** (Utilisateurs et rôles, Organisations, Finance, Rapports, Journal d’audit). Les rubriques Contenus, Services, Événements, Messages reçus, Demandes et Paramètres ne vous sont pas proposées.
+- **Barre latérale « Administration » (à gauche, sur ordinateur)** : Les rubriques autorisées pour votre rôle : **Pilotage** (Tableau de bord), **Relations** (Newsletter), **Administration** (Utilisateurs et rôles, Organisations, Finance, Rapports, Journal d’audit) et **Aide** (Guide de mon rôle, l’entrée qui ouvre ce guide). Les rubriques Contenus, Services, Événements, Messages reçus, Demandes et Paramètres ne vous sont pas proposées.
 - **Bouton **Ouvrir la navigation** (trois traits, en haut à gauche, sur mobile et tablette)** : Ouvre le même menu dans un tiroir. Le bouton **Fermer la navigation** (croix) le referme ; il se referme aussi de lui-même quand vous changez de page.
 - **Barre supérieure « Back-office »** : Le titre de la section courante (« Finance », « Journal d’audit »…) et le lien « Voir le site » (masqué sur les petits écrans).
 - **Pied de la barre latérale** : Votre nom, votre adresse email et la pastille or **FINANCE / CONTRÔLE**. Le lien « Coordination LMS » y figure mais mène à **Accès refusé** pour votre rôle.
@@ -874,6 +874,10 @@ Adresse postale : BP 1234 Libreville, Gabon.
 - [x] La référence de la commande (CMD-…), du reçu (REC-…) ou la référence fournisseur, si le problème concerne un paiement.
 - [x] Le message d’erreur exact, recopié mot pour mot, et l’heure approximative de l’action.
 - [x] Ce que vous avez déjà tenté (rapprochement lancé, page rechargée, reconnexion).
+
+### Retrouver ce guide
+
+- [Guide de mon rôle](/admin/guide) : Ce guide reste accessible à tout moment depuis le back-office, rubrique **Aide** > **Guide de mon rôle**.
 
 > **Avant d’écrire** : Rechargez la page, vérifiez la fiche de la commande et le journal d’audit : la réponse s’y trouve souvent (paiement encore en attente, remboursement refusé par l’opérateur, prise en charge expirée).
 

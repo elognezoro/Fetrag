@@ -201,6 +201,18 @@ describe('renderGuideInline', () => {
     expect(container.querySelector('b')).toBeNull()
     expect(container.textContent).toBe('<b>x</b> y')
   })
+
+  it('refuse les schémas d’URL dangereux et rend le libellé en texte', () => {
+    const { container } = render(<p>{renderGuideInline('[clic](javascript:alert(1)) et [data](data:text/html,x) et [aide](/espace/guide)')}</p>)
+    const links = container.querySelectorAll('a')
+    // Seul le chemin interne devient un lien ; javascript: et data: sont neutralisés.
+    expect(links).toHaveLength(1)
+    expect(links[0]?.getAttribute('href')).toBe('/espace/guide')
+    expect(container.querySelector('a[href^="javascript:"]')).toBeNull()
+    expect(container.querySelector('a[href^="data:"]')).toBeNull()
+    expect(container.textContent).toContain('clic')
+    expect(container.textContent).toContain('data')
+  })
 })
 
 describe('outils texte', () => {

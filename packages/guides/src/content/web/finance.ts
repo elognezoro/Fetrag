@@ -278,7 +278,7 @@ export const webFinance: Guide = {
           areas: [
             {
               name: 'Barre latérale « Administration » (à gauche, sur ordinateur)',
-              purpose: 'Les rubriques autorisées pour votre rôle : **Pilotage** (Tableau de bord), **Relations** (Newsletter), **Administration** (Utilisateurs et rôles, Organisations, Finance, Rapports, Journal d’audit). Les rubriques Contenus, Services, Événements, Messages reçus, Demandes et Paramètres ne vous sont pas proposées.',
+              purpose: 'Les rubriques autorisées pour votre rôle : **Pilotage** (Tableau de bord), **Relations** (Newsletter), **Administration** (Utilisateurs et rôles, Organisations, Finance, Rapports, Journal d’audit) et **Aide** (Guide de mon rôle, l’entrée qui ouvre ce guide). Les rubriques Contenus, Services, Événements, Messages reçus, Demandes et Paramètres ne vous sont pas proposées.',
               icon: 'menu',
             },
             {
@@ -1696,6 +1696,18 @@ export const webFinance: Guide = {
             'La référence de la commande (CMD-…), du reçu (REC-…) ou la référence fournisseur, si le problème concerne un paiement.',
             'Le message d’erreur exact, recopié mot pour mot, et l’heure approximative de l’action.',
             'Ce que vous avez déjà tenté (rapprochement lancé, page rechargée, reconnexion).',
+          ],
+        },
+        {
+          type: 'links',
+          title: 'Retrouver ce guide',
+          items: [
+            {
+              label: 'Guide de mon rôle',
+              href: '/admin/guide',
+              description: 'Ce guide reste accessible à tout moment depuis le back-office, rubrique **Aide** > **Guide de mon rôle**.',
+              icon: 'book-open',
+            },
           ],
         },
         {

@@ -24,6 +24,15 @@ function isAbsoluteHref(href: string): boolean {
   return /^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith('//')
 }
 
+/**
+ * Vrai si l'URL absolue utilise un schéma autorisé (liste blanche). Tout autre schéma
+ * (`javascript:`, `data:`, `vbscript:`...) est refusé : le lien est alors rendu en texte simple.
+ */
+function isSafeAbsoluteHref(href: string): boolean {
+  if (href.startsWith('//')) return true
+  return /^(https?|mailto|tel):/i.test(href)
+}
+
 /** Classes de base des pastilles « élément d'interface » (bouton, onglet, touche). */
 export const guideKbdClassName = cn(
   'inline-block rounded-md border border-neutral-300 bg-neutral-50 px-1.5 py-px align-baseline font-sans text-[0.9em] font-semibold text-navy',
@@ -50,7 +59,7 @@ export function GuideLink({
 }) {
   const resolved = resolveGuideText(href, baseUrls)
   const absolute = isAbsoluteHref(resolved)
-  const openInNewTab = external || (absolute && /^https?:/i.test(resolved))
+  const openInNewTab = external || (absolute && (/^https?:/i.test(resolved) || resolved.startsWith('//')))
 
   if (!absolute && !external && (resolved.startsWith('/') || resolved.startsWith('#'))) {
     return (
@@ -58,6 +67,11 @@ export function GuideLink({
         {children}
       </Link>
     )
+  }
+
+  // Schéma non autorisé (javascript:, data:...) : on neutralise le lien et on rend le libellé en texte.
+  if (absolute && !isSafeAbsoluteHref(resolved)) {
+    return <span className={className}>{children}</span>
   }
 
   return (

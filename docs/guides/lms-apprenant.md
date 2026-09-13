@@ -259,7 +259,7 @@ Le catalogue est public : vous pouvez le consulter sans être connecté. Il pré
 
 - **Le message « Aucune formation ne correspond à votre recherche » s’affiche.** (cause probable : Les filtres sont trop restrictifs ou le mot cherché est mal orthographié.) : Cliquez sur `Voir tout le catalogue` ou sur `Réinitialiser`, puis affinez un filtre à la fois.
 - **La fiche affiche « Cette formation n’est pas disponible ».** (cause probable : Le module n’est pas encore publié, ou il a été retiré.) : Cliquez sur `Voir le catalogue` pour choisir un module publié. Si votre organisation vous a annoncé cette formation, attendez la convocation ou contactez la coordination.
-- **Le catalogue affiche « Le catalogue est en cours de publication ».** (cause probable : Aucun module n’est encore publié.) : Revenez plus tard : la Fédération publie les modules au fil du programme.
+- **La page d’accueil affiche « Le catalogue est en cours de publication » ; sur le catalogue, la liste montre « Aucune formation ne correspond à votre recherche ».** (cause probable : Aucun module n’est encore publié.) : Revenez plus tard : la Fédération publie les modules au fil du programme.
 
 ## 5. Comment s’inscrire à une formation <a id="s-inscrire-a-une-formation"></a>
 
@@ -605,7 +605,7 @@ Une séance en direct est un rendez-vous à date fixe pour votre cohorte : en pr
 ### Assister à une séance <a id="assister-a-une-seance"></a>
 
 1. À la programmation d’une séance, vous recevez la notification « Convocation à une session » et l’email « Convocation : <séance> - <date> » avec la formation, les horaires, la modalité, le lieu, le formateur et le lien de connexion.
-   - Remarque : La veille, un rappel « Rappel : <séance> le <date> » est envoyé. En cas d’empêchement, prévenez votre formateur ou la coordination au plus tôt.
+   - Remarque : La veille, un rappel est envoyé : la notification « Rappel : <séance> le <date> » et l’email « Rappel : <séance> demain ». En cas d’empêchement, prévenez votre formateur ou la coordination au plus tôt.
 2. Dans le lecteur, ouvrez l’activité **Séance en direct**.
    - Résultat attendu : La carte affiche le format, l’ordre du jour et la liste des séances avec le badge « À venir », « En direct » ou « Passée », la date, les heures, l’intervenant et le lieu.
 3. Pour une classe virtuelle, cliquez sur `Rejoindre la classe virtuelle`.
@@ -711,7 +711,7 @@ Votre compte est commun aux deux plateformes, mais ses réglages vivent sur le s
 | Résultat disponible | Quand le formateur a noté vos compositions. | Ouvrez l’évaluation pour voir le score et la correction. |
 | Devoir corrigé / Devoir à reprendre | Après notation ou renvoi d’un devoir. | Ouvrez le devoir : lisez la note et le commentaire, ou remettez une nouvelle version. |
 | Convocation à une session | À la programmation d’une séance pour votre cohorte. | Notez la date, le lieu ou le lien ; ajoutez la séance à votre agenda. |
-| Rappel : <séance> le <date> | 24 heures avant une séance. | Préparez-vous ; prévenez le formateur en cas d’empêchement. |
+| Rappel : <séance> le <date> (email : « Rappel : <séance> demain ») | 24 heures avant une séance. | Préparez-vous ; prévenez le formateur en cas d’empêchement. |
 | Nouvelle réponse | Quand quelqu’un répond à un fil que vous avez ouvert. | Ouvrez le fil et poursuivez l’échange. |
 | Message masqué | Quand la modération masque un de vos messages. | Lisez le motif et adaptez vos prochains messages. |
 | Paiement confirmé / non abouti / Remboursement effectué (emails du site) | Pour une formation payante. | Conservez l’email ; en cas d’échec, refaites le paiement depuis votre espace personnel. |

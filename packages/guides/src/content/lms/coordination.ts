@@ -465,7 +465,7 @@ export const lmsCoordination: Guide = {
               type: 'callout',
               tone: 'info',
               title: 'Aucun mot de passe n’est envoyé',
-              text: 'Les participants sans compte reçoivent un email « définissez votre mot de passe » avec un lien valable 7 jours. La convocation aux séances, elle, ne part pas à la planification : elle part à la création de chaque session.',
+              text: 'Les participants sans compte reçoivent un email « définissez votre mot de passe » avec un lien valable 7 jours. L’encadré affiché à l’écran (« Ce que déclenche la planification ») parle d’un « mot de passe temporaire envoyé par email » : en réalité aucun mot de passe n’est transmis, seul ce lien de création part par email. La convocation aux séances, elle, ne part pas à la planification : elle part à la création de chaque session.',
             },
           ],
         },

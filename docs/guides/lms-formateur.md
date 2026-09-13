@@ -28,8 +28,8 @@ En tant que formateur, vous animez les cohortes qui vous sont confiées par la c
    - Remarque : Sur téléphone, touchez le bouton **Ouvrir le menu** (trois traits) puis `Mon espace`.
 3. Repérez la carte « Sessions à venir » et la section « Corrections en attente ».
    - Résultat attendu : Vous voyez ce qui vous attend : séances à émarger, devoirs et compositions à corriger.
-4. Ouvrez une cohorte pour émarger, corriger ou écrire aux participants.
-   - Élément : `Ouvrir la cohorte` (section « Mes cohortes » du tableau de bord)
+4. Ouvrez une cohorte pour émarger, corriger ou écrire aux participants : cliquez sur le nom de la cohorte.
+   - Où : section « Mes cohortes » du tableau de bord
    - Résultat attendu : La fiche de la cohorte s’ouvre sur l’onglet `Participants`.
 5. Consultez régulièrement vos notifications sur votre tableau de bord apprenant.
    - Où : section « Notifications » de **Mon espace apprenant**
@@ -149,7 +149,7 @@ Depuis n’importe quelle page de la plateforme, une fois connecté.
 
 Toutes les pages de votre espace partagent cette structure.
 
-- **Barre latérale verte « Formateur »** : Le menu de votre espace : **Tableau de bord**, **Mes cohortes**, **Calendrier**, **Forums**. Votre nom apparaît en sous-titre.
+- **Barre latérale verte « Formateur »** : Le menu de votre espace : **Tableau de bord**, **Mes cohortes**, **Calendrier**, **Forums**, **Guide d’utilisation**. Votre nom apparaît en sous-titre.
 - **Lien **Mon espace apprenant** (bas de la barre latérale)** : Revient à votre tableau de bord apprenant, où s’affichent vos notifications.
 - **Barre supérieure de l’espace** : Affiche le titre « Formateur » et, sur ordinateur, un commutateur `Changer d’espace` si vous avez plusieurs rôles.
 - **Bouton **Ouvrir le menu** (mobile)** : Sur téléphone, la barre latérale devient un tiroir : touchez ce bouton pour l’ouvrir, la croix pour le fermer.

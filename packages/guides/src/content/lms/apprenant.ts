@@ -539,7 +539,7 @@ export const lmsApprenant: Guide = {
               solution: 'Cliquez sur `Voir le catalogue` pour choisir un module publié. Si votre organisation vous a annoncé cette formation, attendez la convocation ou contactez la coordination.',
             },
             {
-              problem: 'Le catalogue affiche « Le catalogue est en cours de publication ».',
+              problem: 'La page d’accueil affiche « Le catalogue est en cours de publication » ; sur le catalogue, la liste montre « Aucune formation ne correspond à votre recherche ».',
               cause: 'Aucun module n’est encore publié.',
               solution: 'Revenez plus tard : la Fédération publie les modules au fil du programme.',
             },
@@ -1333,7 +1333,7 @@ export const lmsApprenant: Guide = {
               items: [
                 {
                   text: 'À la programmation d’une séance, vous recevez la notification « Convocation à une session » et l’email « Convocation : <séance> - <date> » avec la formation, les horaires, la modalité, le lieu, le formateur et le lien de connexion.',
-                  note: 'La veille, un rappel « Rappel : <séance> le <date> » est envoyé. En cas d’empêchement, prévenez votre formateur ou la coordination au plus tôt.',
+                  note: 'La veille, un rappel est envoyé : la notification « Rappel : <séance> le <date> » et l’email « Rappel : <séance> demain ». En cas d’empêchement, prévenez votre formateur ou la coordination au plus tôt.',
                 },
                 {
                   text: 'Dans le lecteur, ouvrez l’activité **Séance en direct**.',
@@ -1561,7 +1561,7 @@ export const lmsApprenant: Guide = {
             ['Résultat disponible', 'Quand le formateur a noté vos compositions.', 'Ouvrez l’évaluation pour voir le score et la correction.'],
             ['Devoir corrigé / Devoir à reprendre', 'Après notation ou renvoi d’un devoir.', 'Ouvrez le devoir : lisez la note et le commentaire, ou remettez une nouvelle version.'],
             ['Convocation à une session', 'À la programmation d’une séance pour votre cohorte.', 'Notez la date, le lieu ou le lien ; ajoutez la séance à votre agenda.'],
-            ['Rappel : <séance> le <date>', '24 heures avant une séance.', 'Préparez-vous ; prévenez le formateur en cas d’empêchement.'],
+            ['Rappel : <séance> le <date> (email : « Rappel : <séance> demain »)', '24 heures avant une séance.', 'Préparez-vous ; prévenez le formateur en cas d’empêchement.'],
             ['Nouvelle réponse', 'Quand quelqu’un répond à un fil que vous avez ouvert.', 'Ouvrez le fil et poursuivez l’échange.'],
             ['Message masqué', 'Quand la modération masque un de vos messages.', 'Lisez le motif et adaptez vos prochains messages.'],
             ['Paiement confirmé / non abouti / Remboursement effectué (emails du site)', 'Pour une formation payante.', 'Conservez l’email ; en cas d’échec, refaites le paiement depuis votre espace personnel.'],

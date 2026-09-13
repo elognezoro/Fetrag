@@ -80,7 +80,7 @@ Votre compte est votre identité auprès de la Fédération. Il est unique : il 
 
 - Changer vous-même votre adresse email : elle sert d’identifiant de connexion. Contactez le support pour la modifier.
 - Modifier ou annuler une demande de service après son dépôt : écrivez à la Fédération en indiquant sa référence.
-- Déposer une **Demande de formation** pour un groupe : cette fonction est réservée aux responsables d’organisation (vous obtiendriez la page **Accès refusé**).
+- Déposer une **Demande de formation** pour un groupe : cette fonction est réservée aux responsables d’organisation. Ce lien ouvre la plateforme de formation, qui affiche alors la page **Vous devez être responsable d’une organisation** (espace **Organisation**) vous invitant à demander votre désignation comme gestionnaire ou à contacter la Fédération.
 - Accéder à **Administration du site** : cette entrée n’apparaît que pour les personnels de la Fédération.
 - Obtenir un remboursement en un clic : un remboursement est décidé et effectué par le service financier de la Fédération.
 
@@ -236,7 +236,7 @@ La bande tricolore et le logo en haut de chaque page. Les éléments changent se
 S’ouvre en cliquant sur votre avatar en haut à droite (ordinateur et mobile).
 
 - **En-tête du menu** : Votre nom, votre adresse email et votre rôle en majuscules (par exemple **APPRENANT**).
-- **Rubriques personnelles** : **Mon espace**, **Mon profil**, **Mes inscriptions**, **Notifications**, **Sécurité** : raccourcis vers les pages de votre espace.
+- **Rubriques personnelles** : **Mon espace**, **Mon profil**, **Mes inscriptions**, **Notifications**, **Sécurité**, **Guide d’utilisation** : raccourcis vers les pages de votre espace.
 - **Plateforme de formation** : Ouvre le tableau de bord de la plateforme de formation.
 - **Déconnexion (en rouge)** : Ferme votre session immédiatement et vous ramène à l’accueil.
 
@@ -252,7 +252,7 @@ Panneau qui s’ouvre sur la droite. Il se ferme avec la croix, la touche `Écha
 
 Première page de votre espace personnel, après la connexion ou via **Mon espace** dans le menu du compte.
 
-- **Menu de gauche (ordinateur) ou bouton « Ouvrir la navigation » (mobile)** : Groupe **Mon compte** : **Tableau de bord**, **Profil**, **Mes demandes**, **Mes inscriptions**, **Paiements et reçus**, **Notifications**, **Sécurité**. Groupe **Formation** : **Plateforme de formation**. En bas : bouton vert `Reprendre ma formation`. Un chiffre (badge) à côté de **Paiements et reçus** compte vos commandes en attente ; à côté de **Notifications**, vos notifications non lues.
+- **Menu de gauche (ordinateur) ou bouton « Ouvrir la navigation » (mobile)** : Groupe **Mon compte** : **Tableau de bord**, **Profil**, **Mes demandes**, **Mes inscriptions**, **Paiements et reçus**, **Notifications**, **Sécurité**, **Guide d’utilisation**. Groupe **Formation** : **Plateforme de formation**. En bas : bouton vert `Reprendre ma formation`. Un chiffre (badge) à côté de **Paiements et reçus** compte vos commandes en attente ; à côté de **Notifications**, vos notifications non lues.
 - **Bandeau du haut (mobile)** : Affiche « Espace personnel » et votre nom, avec le bouton **Ouvrir la navigation** (trois traits) qui ouvre le menu à gauche ; le menu se referme à chaque navigation.
 - **Alerte jaune « Renforcez la sécurité de votre compte »** : Affichée tant que la vérification en deux étapes n’est pas activée ; le lien **Activer maintenant** mène à **Sécurité**.
 - **Quatre tuiles de chiffres** : **Formations en cours**, **Certificats obtenus**, **Demandes en cours**, **Notifications non lues**. Sur mobile, elles s’affichent sur deux colonnes.
@@ -273,6 +273,7 @@ Première page de votre espace personnel, après la connexion ou via **Mon espac
 | Paiements et reçus | Historique des commandes, paiement, reçus PDF. | /espace/paiements |
 | Notifications | Centre des notifications internes. | /espace/notifications |
 | Sécurité | Vérification en deux étapes, mot de passe, activité récente. | /espace/securite |
+| Guide d’utilisation | Ce guide et son autoévaluation. | /espace/guide |
 
 Chemin vers votre espace : Avatar en haut à droite › Mon espace (`/espace`)
 
@@ -584,7 +585,7 @@ Chemin : Navigation principale › Formations › Fiche du module › S’inscri
 | ANNULÉ | Inscription annulée. | Vous pouvez vous réinscrire si le module est ouvert. |
 | EXPIRÉE | Inscription arrivée à échéance sans être terminée. | Contactez la coordination. |
 
-> **Demande de formation pour un groupe** : Le bouton **Déposer une demande de formation** (page **Formations** et pied de page) sert aux responsables d’organisation qui inscrivent plusieurs personnes. Avec un compte de membre, vous obtiendriez la page **Accès refusé**. Si votre organisation souhaite une formation de groupe, adressez-vous à son responsable ou cliquez sur **Affilier mon organisation**.
+> **Demande de formation pour un groupe** : Le bouton **Déposer une demande de formation** (page **Formations** et pied de page) sert aux responsables d’organisation qui inscrivent plusieurs personnes. Ce lien ouvre la plateforme de formation ; avec un compte de membre, elle affiche la page **Vous devez être responsable d’une organisation** (espace **Organisation**), qui vous invite à demander votre désignation comme gestionnaire ou à contacter la Fédération. Si votre organisation souhaite une formation de groupe, adressez-vous à son responsable ou cliquez sur **Affilier mon organisation**.
 
 - **La fiche affiche « Aucune session collective planifiée pour le moment ».** (cause probable : Aucune cohorte n’est programmée.) : Inscrivez-vous quand même si l’inscription est libre (parcours individuel), ou cliquez sur `Être informé de l’ouverture` sur les fiches de repli.
 - **Le bouton d’inscription ouvre une page de connexion sur la plateforme.** (cause probable : Votre session a expiré (14 jours) ou vous n’étiez pas connecté sur le site.) : Connectez-vous avec le même email et le même mot de passe : le compte est unique pour les deux sites.
@@ -910,9 +911,9 @@ Le remboursement n’est pas automatique. Écrivez à la Fédération avec la r�
 
 Non : le site présente le programme et vous renvoie sur la plateforme de formation avec `S’inscrire à ce module`. Le suivi (progression, certificats) est ensuite visible dans **Mes inscriptions**.
 
-**Pourquoi le lien « Demande de formation » m’affiche « Accès refusé » ?**
+**Pourquoi ne puis-je pas déposer une **Demande de formation** ?**
 
-Cette fonction est réservée aux responsables d’organisation qui inscrivent un groupe. Si votre organisation souhaite une formation, adressez-vous à son responsable ou à la coordination.
+Cette fonction est réservée aux responsables d’organisation qui inscrivent un groupe. Le lien ouvre la plateforme de formation, qui affiche alors la page **Vous devez être responsable d’une organisation** (espace **Organisation**) : elle vous invite à demander votre désignation comme gestionnaire ou à contacter la Fédération. Si votre organisation souhaite une formation, adressez-vous à son responsable ou à la coordination.
 
 **Où télécharger mon certificat ?**
 

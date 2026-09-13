@@ -196,6 +196,7 @@ Sur ordinateur, le menu est toujours visible à gauche (fond marine). Sur télé
 - **Contenus** : **Pages**, **Actualités**, **Catégories**, **Ressources**, **Médias**, **FAQ**. Vous lisez les pages, actualités, ressources et FAQ ; vous agissez sur **Catégories** (domaine « Services ») et **Médias**.
 - **Services** : **Catalogue** (vos services) et **Demandes** (les demandes à instruire). Le badge à côté de **Demandes** indique le nombre de demandes « Nouvelle » et « En examen ».
 - **Relations** : **Événements** et **Partenaires et organisations** (lecture), **Messages reçus** (badge = messages « Nouveau ») et **Newsletter**.
+- **Aide** : **Guide de mon rôle** : ce guide, accessible à tout moment (/admin/guide).
 - **Pied du menu** : Votre nom, votre email, la pastille « Responsable services » et un lien « Coordination LMS » (affiché à tous les administrateurs mais inaccessible à votre rôle).
 
 > **Sur téléphone** : Les tableaux cachent certaines colonnes pour tenir dans la largeur de l’écran ; le statut est alors rappelé sous le nom de la ligne. Vous pouvez faire glisser un tableau horizontalement avec le doigt. Les boutons de validation occupent toute la largeur.
@@ -324,7 +325,7 @@ Seuls les services au statut « Publié » apparaissent sur la page publique des
    - Remarque : Le bouton « Prévisualiser » ne permet pas de voir la fiche publique d’un brouillon : la page publique ne charge que les services publiés et affiche « Ce service est introuvable ». Relisez donc directement dans le formulaire.
 3. Si une seconde personne doit relire, cliquez sur `Actions` puis **Envoyer en relecture**.
    - Où : panneau « Publication », bouton `Actions` (menu déroulant)
-   - Résultat attendu : Le message « « {nom} » envoyé en relecture. » apparaît ; le service est listé dans « Contenus en relecture » du tableau de bord (type « Service »).
+   - Résultat attendu : Le message « « {nom} » a été envoyé en relecture. » apparaît ; le service est listé dans « Contenus en relecture » du tableau de bord (type « Service »).
 4. Cliquez sur `Actions` puis **Publier**.
    - Où : panneau « Publication » de la fiche, ou bouton « Actions pour {nom} » à droite de la ligne dans le catalogue
    - Résultat attendu : Le message « « {nom} » a été publié. » apparaît et le badge passe à « Publié ».
@@ -372,7 +373,7 @@ Seuls les services au statut « Publié » apparaissent sur la page publique des
 
 1. Ouvrez la fiche puis cliquez sur `Actions` et **Archiver**.
    - Où : panneau « Publication »
-   - Résultat attendu : « « {nom} » archivé. » : le service disparaît du catalogue public mais reste dans la liste avec le badge « Archivé ».
+   - Résultat attendu : « « {nom} » a été archivé. » : le service disparaît du catalogue public mais reste dans la liste avec le badge « Archivé ».
 2. Pour le remettre en ligne, cliquez sur `Actions`, **Repasser en brouillon**, puis de nouveau `Actions` et **Publier**.
    - Résultat attendu : Le badge revient à « Publié ».
 

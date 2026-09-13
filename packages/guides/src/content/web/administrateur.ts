@@ -549,7 +549,8 @@ export const webAdministrateur: Guide = {
                 {
                   text: 'Cliquez sur `Créer le compte`.',
                   where: 'en bas à droite (pleine largeur sur mobile)',
-                  result: 'L’alerte verte « Compte créé pour <email> » s’affiche avec le message « Compte créé. Une invitation à définir son mot de passe (lien valable 7 jours) a été envoyée à <email>… » et un encadré contenant le mot de passe temporaire.',
+                  result: 'L’alerte verte « Compte créé pour <email> » s’affiche, avec le texte « Le mot de passe temporaire ci-dessous n’est affiché qu’une seule fois. Transmettez-le par un canal sûr ; l’utilisateur devra le modifier depuis « Sécurité ». » et un encadré contenant le mot de passe temporaire avec son bouton `Copier`.',
+                  note: 'L’écran est identique que l’invitation par email soit partie ou non : il ne confirme ni ne signale l’envoi. Pour savoir si l’email est parti (ou a échoué), vérifiez la **File de traitements** et l’**État de santé** (voir « Superviser les traitements et les emails ») ; dans le doute, transmettez vous-même le mot de passe temporaire par un canal sûr.',
                 },
                 {
                   text: 'Si vous devez transmettre le mot de passe temporaire, cliquez sur `Copier` et envoyez-le par un canal sûr (jamais par email, jamais dans un groupe de discussion).',
@@ -583,9 +584,9 @@ export const webAdministrateur: Guide = {
                   solution: 'Recherchez l’adresse dans **Utilisateurs et rôles** avec le statut « Désactivés » inclus, puis réactivez le compte ou attribuez-lui le rôle voulu.',
                 },
                 {
-                  problem: 'Message « Compte créé, mais l’invitation par email n’a pas pu être envoyée… ».',
-                  cause: 'Le service d’email est en panne ou mal configuré.',
-                  solution: 'Copiez le mot de passe temporaire et transmettez-le par un canal sûr. Vérifiez ensuite la **File de traitements** et l’**État de santé** (voir « Superviser les traitements et les emails »).',
+                  problem: 'Vous ne savez pas si l’invitation par email est bien partie.',
+                  cause: 'L’écran de succès ne signale pas l’envoi ni son échec : il est identique dans les deux cas et n’affiche aucun message à ce sujet.',
+                  solution: 'Transmettez systématiquement le mot de passe temporaire par un canal sûr, puis vérifiez l’envoi dans la **File de traitements** et dans l’**État de santé** (voir « Superviser les traitements et les emails »). Au besoin, la personne peut aussi utiliser « Mot de passe oublié ? ».',
                 },
                 {
                   problem: 'La personne dit n’avoir rien reçu.',
@@ -1161,7 +1162,7 @@ export const webAdministrateur: Guide = {
                 { label: 'En file d’attente', tone: 'info', meaning: 'La tâche sera exécutée dès sa date prévue, au prochain passage du cron.', next: 'Annulable avec `Annuler`.' },
                 { label: 'En cours', tone: 'warning', meaning: 'Un exécutant a verrouillé la tâche.', next: 'Si elle reste « En cours » plus de 10 minutes, elle est reprise automatiquement.' },
                 { label: 'Réussi', tone: 'success', meaning: 'Terminée sans erreur.', next: 'Aucune action.' },
-                { label: 'En échec', tone: 'danger', meaning: 'La tâche a échoué et sera réessayée avec un délai croissant.', next: '`Relancer` pour ne pas attendre, `Annuler` si elle n’a plus de sens.' },
+                { label: 'Échoué', tone: 'danger', meaning: 'La tâche a échoué et sera réessayée avec un délai croissant. La pastille affiche « Échoué » ; le filtre **Statut** et la tuile parlent, eux, d’« En échec ».', next: '`Relancer` pour ne pas attendre, `Annuler` si elle n’a plus de sens.' },
                 { label: 'Abandonné', tone: 'danger', meaning: 'Tentatives épuisées ou annulation manuelle (motif dans **Dernière erreur**).', next: '`Relancer` après avoir corrigé la cause.' },
               ],
             },
@@ -1367,7 +1368,7 @@ export const webAdministrateur: Guide = {
             },
             {
               text: 'Filtrez : champ de recherche (identifiant d’entité, email de l’acteur ou corrélation), liste **Action**, liste **Entité**, **Période** (**Du** / **Au**), champ **Acteur (email)** ; puis cliquez sur `Filtrer`.',
-              note: 'Le filtre **Action** fonctionne par famille : « Connexion » couvre aussi les déconnexions et échecs de connexion. La date **Au** est incluse jusqu’à la fin de la journée. Sur mobile, les deux dates sont côte à côte.',
+              note: 'Le filtre **Action** fonctionne par préfixe : « Connexion » capte aussi les « Échec de connexion » (même famille), mais pas les déconnexions, qui ont leur propre entrée « Déconnexion » dans la liste **Action**. Pour une revue de sécurité, filtrez explicitement par « Échec de connexion » (voir « Faire la revue mensuelle des comptes privilégiés »). La date **Au** est incluse jusqu’à la fin de la journée. Sur mobile, les deux dates sont côte à côte.',
             },
             {
               text: 'Sur une ligne, cliquez sur `Détail` pour ouvrir les colonnes **Avant** et **Après**.',

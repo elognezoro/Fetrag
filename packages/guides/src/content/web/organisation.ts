@@ -371,7 +371,7 @@ export const webOrganisation: Guide = {
             },
             {
               name: 'Menu de votre compte (vos initiales, en haut à droite)',
-              purpose: 'Votre nom, votre email, la pastille de rôle, puis **Mon espace**, **Mon profil**, **Mes inscriptions**, **Notifications**, **Sécurité**, **Plateforme de formation** et, en rouge, **Déconnexion**.',
+              purpose: 'Votre nom, votre email, la pastille de rôle, puis **Mon espace**, **Mon profil**, **Mes inscriptions**, **Notifications**, **Sécurité**, **Guide d’utilisation**, **Plateforme de formation** et, en rouge, **Déconnexion**.',
               icon: 'user',
             },
             {
@@ -388,7 +388,7 @@ export const webOrganisation: Guide = {
           areas: [
             {
               name: 'Menu de gauche (ordinateur)',
-              purpose: 'Rubrique **Mon compte** : **Tableau de bord**, **Profil**, **Mes demandes**, **Mes inscriptions**, **Paiements et reçus** (badge = commandes en attente), **Notifications** (badge = non lues), **Sécurité**. Bloc **Formation** : **Plateforme de formation**. En bas : bouton vert `Reprendre ma formation`.',
+              purpose: 'Rubrique **Mon compte** : **Tableau de bord**, **Profil**, **Mes demandes**, **Mes inscriptions**, **Paiements et reçus** (badge = commandes en attente), **Notifications** (badge = non lues), **Sécurité**, **Guide d’utilisation**. Bloc **Formation** : **Plateforme de formation**. En bas : bouton vert `Reprendre ma formation`.',
               icon: 'layout-dashboard',
             },
             {
