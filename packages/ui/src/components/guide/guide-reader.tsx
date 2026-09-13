@@ -205,7 +205,10 @@ export function GuideReader({ guide, baseUrls, viewerRoleLabel, breadcrumbs, oth
   const blockContext = { baseUrls, tone: guide.tone, expandAll: printing } as const
 
   return (
-    <article className={cn('flex flex-col gap-8 sm:gap-10', className)} data-guide-id={guide.id}>
+    <article
+      className={cn('flex flex-col gap-8 sm:gap-10 [&_dd]:break-words [&_li]:break-words [&_p]:break-words', className)}
+      data-guide-id={guide.id}
+    >
       {/* En-tête */}
       <Reveal as="header" className="flex flex-col gap-4">
         {breadcrumbs && breadcrumbs.length > 0 ? <Breadcrumbs items={breadcrumbs} data-print-hide="" /> : null}

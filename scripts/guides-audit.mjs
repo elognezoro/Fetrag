@@ -161,7 +161,10 @@ for (const [key, checks] of byAccount) {
       if (check.expect === 'guide') ok = status === 200 && (guideId === check.guide || (guideId === null && h1.length > 0)) && !finalUrl.includes('acces-refuse') && !finalUrl.includes('connexion')
       else if (check.expect === 'denied') ok = finalUrl.includes('/acces-refuse')
       else if (check.expect === 'login') ok = finalUrl.includes('/connexion')
-      else if (check.expect === 'notfound') ok = status === 404
+      // En dev, Next.js renvoie parfois 200 pour une page notFound() ; on valide donc le comportement :
+      // aucun guide rendu, pas de redirection vers un espace, et une page « introuvable ».
+      else if (check.expect === 'notfound')
+        ok = status === 404 || (guideId === null && !finalUrl.includes('acces-refuse') && !finalUrl.includes('connexion') && /introuvable|not[\s-]?found|404|n['’]existe pas/i.test(h1))
       else if (check.expect === 'other') ok = status === 200 && guideId === null && !finalUrl.includes('acces-refuse')
       if (check.expect === 'guide' && guideId !== null && guideId !== check.guide) ok = false
       if (check.expect === 'guide' && overflow > 0) {

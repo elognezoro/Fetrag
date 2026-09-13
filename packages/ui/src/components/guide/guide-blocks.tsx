@@ -479,24 +479,24 @@ export function GuideTroubleshooting({
       </BlockTitle>
       <ul className="flex flex-col gap-3">
         {items.map((item, index) => (
-          <li key={index} className="grid grid-cols-1 gap-2 rounded-2xl border border-gold-200 bg-gold-50/40 p-4 sm:grid-cols-3 sm:gap-4">
-            <div className="flex gap-2">
+          <li key={index} className="grid grid-cols-1 gap-2 rounded-2xl border border-gold-200 bg-gold-50/40 p-4 sm:grid-cols-3 sm:gap-4 [&>*]:min-w-0">
+            <div className="flex min-w-0 gap-2">
               <AlertTriangle aria-hidden="true" strokeWidth={1.75} className="mt-0.5 size-4 shrink-0 text-gold-700" />
-              <p className="text-sm leading-relaxed">
+              <p className="min-w-0 text-sm leading-relaxed">
                 <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-gold-800">Problème</span>
                 <span className="font-semibold text-navy">{renderGuideInline(item.problem, { baseUrls })}</span>
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex min-w-0 gap-2">
               <HelpCircle aria-hidden="true" strokeWidth={1.75} className="mt-0.5 size-4 shrink-0 text-blue-600" />
-              <p className="text-sm leading-relaxed text-neutral-700">
+              <p className="min-w-0 text-sm leading-relaxed text-neutral-700">
                 <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-blue-700">Cause probable</span>
                 {item.cause ? renderGuideInline(item.cause, { baseUrls }) : <span className="text-neutral-400">Non précisée</span>}
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex min-w-0 gap-2">
               <Wrench aria-hidden="true" strokeWidth={1.75} className="mt-0.5 size-4 shrink-0 text-green-700" />
-              <p className="text-sm leading-relaxed text-neutral-800">
+              <p className="min-w-0 text-sm leading-relaxed text-neutral-800">
                 <span className="block text-[11px] font-bold uppercase tracking-[0.14em] text-green-800">Solution</span>
                 {renderGuideInline(item.solution, { baseUrls })}
               </p>
