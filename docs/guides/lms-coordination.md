@@ -2,7 +2,7 @@
 
 *Instruire les demandes, planifier les cohortes, animer et certifier*
 
-Plateforme : plateforme de formation formation.fetrag.ga · Rôle : COORDINATOR · Version 1.0 du 2026-09-12 · Lecture : 55 min · 23 sections, 94 étapes.
+Plateforme : plateforme de formation formation.fetrag.ga · Rôle : COORDINATOR · Version 1.0 du 2026-09-12 · Lecture : 55 min · 23 sections, 96 étapes.
 
 Version en ligne : https://formation.fetrag.ga/coordination/guide
 
@@ -573,6 +573,18 @@ Un cours s’organise en **modules** (grandes parties), qui contiennent des **le
 *Créer, importer (CSV, Moodle XML, GIFT), exporter vers Moodle et réutiliser des questions dans les quiz.*
 
 La **banque de questions** rassemble des questions réutilisables dans plusieurs quiz. Chaque question est **versionnée** : modifier une question déjà répondue crée une nouvelle version et désactive l’ancienne, sans casser les tentatives passées.
+
+### Importer ou exporter des tests (compatible Moodle)
+
+La banque échange des questions avec une plateforme Moodle par fichier, aux formats Moodle XML ou GIFT.
+
+1. Pour importer, cliquez sur `Importer (Moodle / GIFT)`, choisissez le format (ou laissez la détection automatique), puis téléversez le fichier ou collez son contenu.
+   - Où : en haut de la page **Banque de questions**
+   - Résultat attendu : Un message indique le nombre de questions importées et celles éventuellement ignorées.
+2. Pour exporter, filtrez éventuellement la liste, puis cliquez sur `Exporter Moodle XML` ou `Exporter GIFT`.
+   - Résultat attendu : Un fichier se télécharge, prêt à être importé dans Moodle.
+
+> **Ce qui est transféré** : Tous les types passent en Moodle XML. En GIFT, le classement n’existe pas et est ignoré. Les questions d’enquête (à choix sans bonne réponse) ne sont pas exportées.
 
 1. Dans l’espace Administration, ouvrez **Banque de questions**.
    - Résultat attendu : La liste des questions s’affiche avec ses filtres.

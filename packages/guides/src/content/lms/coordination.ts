@@ -1237,6 +1237,28 @@ export const lmsCoordination: Guide = {
         },
         {
           type: 'steps',
+          title: 'Importer ou exporter des tests (compatible Moodle)',
+          intro: 'La banque échange des questions avec une plateforme Moodle par fichier, aux formats Moodle XML ou GIFT.',
+          items: [
+            {
+              text: 'Pour importer, cliquez sur `Importer (Moodle / GIFT)`, choisissez le format (ou laissez la détection automatique), puis téléversez le fichier ou collez son contenu.',
+              where: 'en haut de la page **Banque de questions**',
+              result: 'Un message indique le nombre de questions importées et celles éventuellement ignorées.',
+            },
+            {
+              text: 'Pour exporter, filtrez éventuellement la liste, puis cliquez sur `Exporter Moodle XML` ou `Exporter GIFT`.',
+              result: 'Un fichier se télécharge, prêt à être importé dans Moodle.',
+            },
+          ],
+        },
+        {
+          type: 'callout',
+          tone: 'info',
+          title: 'Ce qui est transféré',
+          text: 'Tous les types passent en Moodle XML. En GIFT, le classement n’existe pas et est ignoré. Les questions d’enquête (à choix sans bonne réponse) ne sont pas exportées.',
+        },
+        {
+          type: 'steps',
           items: [
             {
               text: 'Dans l’espace Administration, ouvrez **Banque de questions**.',
