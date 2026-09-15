@@ -15,6 +15,7 @@ export * as forums from './forums'
 export * as reports from './reports'
 export * as dashboards from './dashboards'
 export * as surveys from './surveys'
+export * as interop from './interop'
 
 // Schémas de contenu et helpers de parsing tolérants
 export {

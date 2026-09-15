@@ -2,7 +2,7 @@
 
 *Cours, questions, certificats, comptes et paramètres*
 
-Plateforme : plateforme de formation formation.fetrag.ga · Rôle : SUPER_ADMIN · Version 1.0 du 2026-09-12 · Lecture : 55 min · 21 sections, 93 étapes.
+Plateforme : plateforme de formation formation.fetrag.ga · Rôle : SUPER_ADMIN · Version 1.0 du 2026-09-12 · Lecture : 55 min · 21 sections, 98 étapes.
 
 Version en ligne : https://formation.fetrag.ga/admin/guide
 
@@ -72,7 +72,7 @@ Un mot de vocabulaire, une fois pour toutes : la **plateforme** est le site de f
 
 - [x] Créer, structurer, publier, retirer et archiver les cours du programme (`Nouveau cours`, `Publier`).
 - [x] Créer les versions figées d’un cours et publier la version courante suivie par les nouvelles inscriptions.
-- [x] Alimenter la **Banque de questions** (créer, importer par fichier CSV, dupliquer, désactiver) et composer les quiz.
+- [x] Alimenter la **Banque de questions** (créer, importer depuis un fichier CSV ou un fichier **Moodle XML / GIFT**, dupliquer, désactiver) et composer les quiz.
 - [x] Créer et gérer les **Modèles de certificats**, définir le modèle par défaut, révoquer un certificat émis.
 - [x] Attribuer et retirer tous les rôles, avec leur portée, et désactiver ou réactiver un compte.
 - [x] Modifier les **Paramètres** de la formation et lancer un lot de traitements de la file de jobs.
@@ -287,9 +287,34 @@ Un cours passe par plusieurs statuts. Vous les changez depuis la liste des cours
 
 ## 7. Tenir la banque de questions <a id="banque-de-questions"></a>
 
-*Créer, importer, dupliquer et gérer les questions réutilisables dans les quiz.*
+*Créer, importer (CSV, Moodle XML, GIFT), exporter vers Moodle, dupliquer et gérer les questions réutilisables dans les quiz.*
 
 La banque rassemble des questions réutilisables dans les quiz des cours. Chaque question est **versionnée** : si vous modifiez une question déjà répondue par un apprenant, une nouvelle version est créée et l’ancienne est désactivée. Les quiz sans aucune tentative suivent automatiquement la nouvelle version.
+
+### Importer et exporter des questions (compatible Moodle) <a id="importer-exporter-moodle"></a>
+
+La banque échange des questions avec une plateforme **Moodle** par fichier, dans les deux sens : au format **Moodle XML** (le plus complet) ou **GIFT** (texte).
+
+#### Importer un fichier Moodle
+
+1. Sur **Banque de questions**, cliquez sur `Importer (Moodle / GIFT)`.
+   - Où : en haut de la page, à côté de `Nouvelle question`
+   - Résultat attendu : Une fenêtre d’import s’ouvre.
+2. Laissez le **Format** sur `Détecter automatiquement`, ou choisissez `Moodle XML` ou `GIFT`.
+   - Remarque : Le format est deviné d’après l’extension du fichier (.xml ou .txt) si vous laissez la détection automatique.
+3. Téléversez le fichier exporté depuis Moodle, ou collez son contenu dans la zone de texte.
+   - Élément : `Importer`
+   - Résultat attendu : Un message indique le nombre de questions importées et, le cas échéant, celles ignorées.
+
+#### Exporter vers Moodle
+
+1. Filtrez éventuellement la liste (type, catégorie, étiquette) pour n’exporter qu’une partie de la banque.
+   - Remarque : L’export respecte les filtres affichés à l’écran.
+2. Cliquez sur `Exporter Moodle XML` ou `Exporter GIFT`.
+   - Où : en haut de la page
+   - Résultat attendu : Un fichier se télécharge, prêt à être importé dans Moodle (Banque de questions, Importer).
+
+> **Ce qui est transféré** : Tous les types sont pris en charge en Moodle XML. En GIFT, le **Classement** n’existe pas et est ignoré. Les questions d’enquête (à choix sans bonne réponse) ne sont pas exportées, car ce ne sont pas des questions notées.
 
 ### Créer une question <a id="creer-une-question"></a>
 

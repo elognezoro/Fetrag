@@ -570,7 +570,7 @@ Un cours s’organise en **modules** (grandes parties), qui contiennent des **le
 
 ## 15. Comment gérer la banque de questions <a id="banque-de-questions"></a>
 
-*Créer, importer et réutiliser des questions dans les quiz.*
+*Créer, importer (CSV, Moodle XML, GIFT), exporter vers Moodle et réutiliser des questions dans les quiz.*
 
 La **banque de questions** rassemble des questions réutilisables dans plusieurs quiz. Chaque question est **versionnée** : modifier une question déjà répondue crée une nouvelle version et désactive l’ancienne, sans casser les tentatives passées.
 

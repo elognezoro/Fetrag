@@ -6,6 +6,13 @@ Format inspiré de « Keep a Changelog » ; versions sémantiques. Les dates son
 
 ### Ajouté
 
+**Interopérabilité Moodle (banque de questions et tests)**
+
+- Import et export des questions aux formats **Moodle XML** et **GIFT** (`@fetrag/lms-core` module `interop`) : les tests sont transférables avec une plateforme Moodle par fichier, dans les deux sens.
+- Correspondance des huit types : choix unique et multiple, vrai/faux, réponse courte, appariement, composition, texte à trous (cloze Moodle) et classement (extension `qtype_ordering`, Moodle XML uniquement ; ignoré en GIFT). Les questions d'enquête (à choix sans bonne réponse) sont écartées de l'export.
+- Interface LMS : `Importer (Moodle / GIFT)` (téléversement ou copier-coller) et `Exporter Moodle XML` / `Exporter GIFT` dans **Administration, Banque de questions** (route protégée `question_bank.write`, filtres respectés).
+- Petit lecteur/écrivain XML dédié, sans dépendance externe ; tests de va-et-vient par type (`packages/lms-core/src/__tests__/interop.test.ts`) et vérification sur les données du seed.
+
 **Guides d'utilisation par rôle**
 
 - Package `@fetrag/guides` : contenu structuré (blocs typés, sans HTML) de 13 guides d'utilisation, un par rôle sur chaque plateforme, rédigés pour un public à culture numérique moyenne (mobile d'abord). Schéma et types dans `@fetrag/contracts` (`guides.ts`).

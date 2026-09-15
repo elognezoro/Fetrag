@@ -6,7 +6,7 @@ import { Copy, FileUp, Pencil, Plus, Save, Trash2 } from 'lucide-react'
 import { questionTypeLabels, questionTypes, type QuestionTypeName } from '@fetrag/contracts'
 import { Alert, AlertDescription, AlertTitle, Badge, Button, Checkbox, Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, FormField, Input, NativeSelect, Textarea } from '@fetrag/ui'
 import { idleState } from '@/server/staff/action-state'
-import { duplicateQuestion, importQuestionsCsv, removeQuestion, saveQuestion } from '@/server/staff/admin-actions'
+import { duplicateQuestion, importQuestionsCsv, importQuestionsInterop, removeQuestion, saveQuestion } from '@/server/staff/admin-actions'
 import { ActionButton } from './action-button'
 import { ActionAlert, ActionPayloadSummary, SubmitButton, useActionFeedback } from './action-feedback'
 
@@ -314,7 +314,7 @@ export function QuestionImportForm() {
       </Button>
       <DialogContent size="lg">
         <DialogHeader>
-          <DialogTitle>Importer des questions</DialogTitle>
+          <DialogTitle>Importer des questions (CSV)</DialogTitle>
           <DialogDescription>Une question par ligne, colonnes séparées par des points-virgules : type;énoncé;points;catégorie;options (A|B|C);correctes (1|3).</DialogDescription>
         </DialogHeader>
         <form action={formAction} className="flex flex-col gap-4">
@@ -325,6 +325,60 @@ export function QuestionImportForm() {
           </FormField>
           <p className="text-xs text-neutral-500">
             Types acceptés : {questionTypes.map((t) => <Badge key={t} variant="outline" size="sm" className="mr-1">{t}</Badge>)}
+          </p>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+              Fermer
+            </Button>
+            <SubmitButton pendingLabel="Import...">Importer</SubmitButton>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+/** Import de questions depuis un fichier Moodle XML ou GIFT (téléversé ou collé) - compatible Moodle. */
+export function QuestionInteropImportForm() {
+  const [open, setOpen] = useState(false)
+  const [state, formAction] = useActionState(importQuestionsInterop, idleState)
+  const id = useId()
+  useActionFeedback(state)
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Button type="button" variant="outline" size="sm" onClick={() => setOpen(true)} leftIcon={<FileUp aria-hidden="true" />}>
+        Importer (Moodle / GIFT)
+      </Button>
+      <DialogContent size="lg">
+        <DialogHeader>
+          <DialogTitle>Importer un fichier Moodle</DialogTitle>
+          <DialogDescription>
+            Depuis un fichier au format Moodle XML (.xml) ou GIFT (.txt), tel qu’exporté par une plateforme Moodle. Téléversez le fichier ou collez son contenu.
+          </DialogDescription>
+        </DialogHeader>
+        <form action={formAction} className="flex flex-col gap-4">
+          <ActionAlert state={state} />
+          <ActionPayloadSummary state={state} />
+          <FormField label="Format" htmlFor={`${id}-format`}>
+            <NativeSelect
+              id={`${id}-format`}
+              name="format"
+              defaultValue=""
+              options={[
+                { value: '', label: 'Détecter automatiquement' },
+                { value: 'moodle-xml', label: 'Moodle XML' },
+                { value: 'gift', label: 'GIFT' },
+              ]}
+            />
+          </FormField>
+          <FormField label="Fichier" htmlFor={`${id}-file`} hint="Fichier .xml (Moodle XML) ou .txt / .gift (GIFT).">
+            <Input id={`${id}-file`} type="file" name="file" accept=".xml,.txt,.gift,text/xml,application/xml,text/plain" />
+          </FormField>
+          <FormField label="Ou coller le contenu" htmlFor={`${id}-content`} error={state.status === 'error' ? state.fieldErrors?.content : undefined}>
+            <Textarea id={`${id}-content`} name="content" rows={8} className="font-mono text-xs" placeholder={'<?xml version="1.0"?>\n<quiz>\n  <question type="multichoice">...</question>\n</quiz>'} />
+          </FormField>
+          <p className="text-xs text-neutral-500">
+            Types repris : choix unique et multiple, vrai/faux, réponse courte, appariement, classement (Moodle XML uniquement), texte à trous (cloze), composition.
           </p>
           <div className="flex justify-end gap-2">
             <Button type="button" variant="ghost" onClick={() => setOpen(false)}>

@@ -84,7 +84,7 @@ export const lmsAdministrateur: Guide = {
           items: [
             'Créer, structurer, publier, retirer et archiver les cours du programme (`Nouveau cours`, `Publier`).',
             'Créer les versions figées d’un cours et publier la version courante suivie par les nouvelles inscriptions.',
-            'Alimenter la **Banque de questions** (créer, importer par fichier CSV, dupliquer, désactiver) et composer les quiz.',
+            'Alimenter la **Banque de questions** (créer, importer depuis un fichier CSV ou un fichier **Moodle XML / GIFT**, dupliquer, désactiver) et composer les quiz.',
             'Créer et gérer les **Modèles de certificats**, définir le modèle par défaut, révoquer un certificat émis.',
             'Attribuer et retirer tous les rôles, avec leur portée, et désactiver ou réactiver un compte.',
             'Modifier les **Paramètres** de la formation et lancer un lot de traitements de la file de jobs.',
@@ -556,7 +556,7 @@ export const lmsAdministrateur: Guide = {
       id: 'banque-de-questions',
       title: 'Tenir la banque de questions',
       icon: 'clipboard-list',
-      summary: 'Créer, importer, dupliquer et gérer les questions réutilisables dans les quiz.',
+      summary: 'Créer, importer (CSV, Moodle XML, GIFT), exporter vers Moodle, dupliquer et gérer les questions réutilisables dans les quiz.',
       blocks: [
         {
           type: 'paragraph',
@@ -564,6 +564,57 @@ export const lmsAdministrateur: Guide = {
         },
       ],
       subsections: [
+        {
+          id: 'importer-exporter-moodle',
+          title: 'Importer et exporter des questions (compatible Moodle)',
+          blocks: [
+            {
+              type: 'paragraph',
+              text: 'La banque échange des questions avec une plateforme **Moodle** par fichier, dans les deux sens : au format **Moodle XML** (le plus complet) ou **GIFT** (texte).',
+            },
+            {
+              type: 'steps',
+              title: 'Importer un fichier Moodle',
+              items: [
+                {
+                  text: 'Sur **Banque de questions**, cliquez sur `Importer (Moodle / GIFT)`.',
+                  where: 'en haut de la page, à côté de `Nouvelle question`',
+                  result: 'Une fenêtre d’import s’ouvre.',
+                },
+                {
+                  text: 'Laissez le **Format** sur `Détecter automatiquement`, ou choisissez `Moodle XML` ou `GIFT`.',
+                  note: 'Le format est deviné d’après l’extension du fichier (.xml ou .txt) si vous laissez la détection automatique.',
+                },
+                {
+                  text: 'Téléversez le fichier exporté depuis Moodle, ou collez son contenu dans la zone de texte.',
+                  ui: 'Importer',
+                  result: 'Un message indique le nombre de questions importées et, le cas échéant, celles ignorées.',
+                },
+              ],
+            },
+            {
+              type: 'steps',
+              title: 'Exporter vers Moodle',
+              items: [
+                {
+                  text: 'Filtrez éventuellement la liste (type, catégorie, étiquette) pour n’exporter qu’une partie de la banque.',
+                  note: 'L’export respecte les filtres affichés à l’écran.',
+                },
+                {
+                  text: 'Cliquez sur `Exporter Moodle XML` ou `Exporter GIFT`.',
+                  where: 'en haut de la page',
+                  result: 'Un fichier se télécharge, prêt à être importé dans Moodle (Banque de questions, Importer).',
+                },
+              ],
+            },
+            {
+              type: 'callout',
+              tone: 'info',
+              title: 'Ce qui est transféré',
+              text: 'Tous les types sont pris en charge en Moodle XML. En GIFT, le **Classement** n’existe pas et est ignoré. Les questions d’enquête (à choix sans bonne réponse) ne sont pas exportées, car ce ne sont pas des questions notées.',
+            },
+          ],
+        },
         {
           id: 'creer-une-question',
           title: 'Créer une question',

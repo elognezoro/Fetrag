@@ -1229,7 +1229,7 @@ export const lmsCoordination: Guide = {
       id: 'banque-de-questions',
       title: 'Comment gérer la banque de questions',
       icon: 'notebook',
-      summary: 'Créer, importer et réutiliser des questions dans les quiz.',
+      summary: 'Créer, importer (CSV, Moodle XML, GIFT), exporter vers Moodle et réutiliser des questions dans les quiz.',
       blocks: [
         {
           type: 'paragraph',

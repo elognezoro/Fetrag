@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { HelpCircle, Plus } from 'lucide-react'
+import { Download, HelpCircle, Plus } from 'lucide-react'
 import { questionTypeLabels, questionTypes } from '@fetrag/contracts'
 import { formatDate } from '@fetrag/domain'
 import { Badge, Button, Card, EmptyState, Pagination, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@fetrag/ui'
 import { FilterBar } from '@/components/staff/filter-bar'
 import { buildHref, readPage } from '@/components/staff/href'
-import { QuestionImportForm, QuestionRowActions } from '@/components/staff/question-editor'
+import { QuestionImportForm, QuestionInteropImportForm, QuestionRowActions } from '@/components/staff/question-editor'
 import { StaffPageHeader } from '@/components/staff/staff-page'
 import { guards } from '@/lib/auth'
 import { listQuestionsAdmin } from '@/server/staff/admin-queries'
@@ -26,6 +26,8 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
   const page = readPage(params.page)
   const { list, categories, tags } = await listQuestionsAdmin(principal, { q: params.q || undefined, type, category: params.categorie || undefined, tag: params.etiquette || undefined, includeInactive: params.inactives === '1', page })
   const hrefFor = (p: number) => buildHref('/admin/questions', { q: params.q, type: params.type, categorie: params.categorie, etiquette: params.etiquette, inactives: params.inactives, page: p > 1 ? p : undefined })
+  const exportHref = (format: 'moodle-xml' | 'gift') =>
+    buildHref('/admin/questions/export', { format, q: params.q, type: params.type, categorie: params.categorie, etiquette: params.etiquette, inactives: params.inactives })
 
   return (
     <>
@@ -47,7 +49,20 @@ export default async function AdminQuestionsPage({ searchParams }: PageProps) {
                 Nouvelle question
               </Link>
             </Button>
+            <QuestionInteropImportForm />
             <QuestionImportForm />
+            <Button asChild variant="outline" size="sm">
+              <a href={exportHref('moodle-xml')}>
+                <Download aria-hidden="true" />
+                Exporter Moodle XML
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="sm">
+              <a href={exportHref('gift')}>
+                <Download aria-hidden="true" />
+                Exporter GIFT
+              </a>
+            </Button>
           </>
         }
       />

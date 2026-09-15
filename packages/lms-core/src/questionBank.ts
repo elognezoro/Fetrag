@@ -124,6 +124,21 @@ export async function list(principal: Principal, query: QuestionListQuery = {}) 
   return toPaginated(items, total, q)
 }
 
+/** Toutes les questions correspondant aux filtres, avec leurs options, pour l'export (Moodle XML / GIFT). */
+export async function exportAll(principal: Principal, query: QuestionListQuery = {}) {
+  assertCan(principal, 'question_bank.write')
+  const q = questionListQuerySchema.parse(query)
+  const where: Prisma.QuestionWhereInput = {
+    ...(q.includeInactive ? {} : { isActive: true }),
+    ...(q.type ? { type: q.type } : {}),
+    ...(q.category ? { category: q.category } : {}),
+    ...(q.tag ? { tags: { has: q.tag } } : {}),
+    ...(q.difficulty ? { difficulty: q.difficulty } : {}),
+    ...(q.q ? { OR: [{ prompt: { contains: q.q, mode: 'insensitive' } }, { tags: { has: q.q } }] } : {}),
+  }
+  return prisma.question.findMany({ where, orderBy: [{ category: 'asc' }, { createdAt: 'asc' }], take: 2000, include: questionInclude })
+}
+
 export async function get(principal: Principal, questionId: string) {
   assertCan(principal, 'question_bank.write')
   const question = await prisma.question.findUnique({

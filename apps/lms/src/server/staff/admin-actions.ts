@@ -5,7 +5,7 @@ import { enrollmentStatuses, idSchema, z } from '@fetrag/contracts'
 import { prisma } from '@fetrag/db'
 import { audit, can, ForbiddenError, hasGlobalRole, isSuperAdmin, NotFoundError, PreconditionError, type Principal } from '@fetrag/domain'
 import { processJobs, registerDefaultHandlers } from '@fetrag/jobs'
-import { auditContext, certification, certificateTemplateInputSchema, enrollments, questionBank, questionInputSchema } from '@fetrag/lms-core'
+import { auditContext, certification, certificateTemplateInputSchema, enrollments, interop, questionBank, questionInputSchema } from '@fetrag/lms-core'
 import { failureState, successState, type ActionState } from './action-state'
 import { formBoolean, formInt, formJson, formLines, formNullable, formOptional, formString, runAction } from './context'
 import { parseQuestionCsv, roleGrantSchema, settingSchema } from './schemas'
@@ -125,6 +125,34 @@ export async function importQuestionsCsv(_previous: ActionState, formData: FormD
     revalidatePath('/admin/questions')
     const errors = result.errors.map((e) => `ligne ${e.index + 1} : ${e.message}`)
     return successState(`${result.created.length} question(s) importée(s)${errors.length ? `, ${errors.length} ligne(s) rejetée(s)` : ''}`, { payload: { errors } })
+  })
+}
+
+/** Importe des questions depuis un fichier Moodle XML ou GIFT (téléversé ou collé). */
+export async function importQuestionsInterop(_previous: ActionState, formData: FormData): Promise<ActionState> {
+  return runAction(async (principal, meta) => {
+    const formatRaw = formString(formData, 'format')
+    const format = formatRaw === 'gift' || formatRaw === 'moodle-xml' ? formatRaw : undefined
+    let text = formString(formData, 'content')
+    let fileName: string | undefined
+    const file = formData.get('file')
+    if (file && typeof file !== 'string' && typeof file.text === 'function' && file.size > 0) {
+      text = await file.text()
+      fileName = file.name
+    }
+    if (!text.trim()) return failureState('Fournissez un fichier ou collez le contenu à importer.', { content: 'Contenu requis' })
+    const parsed = interop.parseQuestionFile(text, format, fileName)
+    const warnings = parsed.warnings.map((w) => (w.index != null ? `question ${w.index + 1} : ${w.message}` : w.message))
+    if (parsed.questions.length === 0) {
+      const detail = warnings.length ? ` ${warnings.slice(0, 3).join(' ; ')}` : ''
+      return failureState(`Aucune question exploitable dans le fichier.${detail}`)
+    }
+    const result = await questionBank.import(principal, parsed.questions, meta)
+    revalidatePath('/admin/questions')
+    const errors = result.errors.map((e) => `question ${e.index + 1} : ${e.message}`)
+    const ignored = warnings.length + errors.length
+    const label = interop.interopFormatLabels[parsed.format]
+    return successState(`${result.created.length} question(s) importée(s) depuis ${label}${ignored ? `, ${ignored} ignorée(s)` : ''}.`, { payload: { errors: [...warnings, ...errors] } })
   })
 }
 
