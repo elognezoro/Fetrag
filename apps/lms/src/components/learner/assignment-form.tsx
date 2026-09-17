@@ -79,6 +79,13 @@ export function AssignmentForm(props: AssignmentFormProps) {
   const [fileName, setFileName] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const intentRef = useRef<'draft' | 'submit'>('draft')
+  const intentInputRef = useRef<HTMLInputElement>(null)
+
+  /** Écrit l'intention dans le DOM avant l'envoi du formulaire (lecture FormData au clic même). */
+  function setIntent(intent: 'draft' | 'submit') {
+    intentRef.current = intent
+    if (intentInputRef.current) intentInputRef.current.value = intent
+  }
 
   const combined = hasQuestions ? combineAnswers(answers) : text
 
@@ -108,9 +115,10 @@ export function AssignmentForm(props: AssignmentFormProps) {
     <form action={action} className="flex flex-col gap-5" aria-describedby="assignment-form-help">
       <input type="hidden" name="assignmentId" value={props.assignmentId} />
       <input type="hidden" name="courseId" value={props.courseId} />
-      {/* L'intention (brouillon / remise) est portée par le bouton déclencheur lui-même
-          (name/value du submitter dans FormData) : un champ caché piloté par ref envoyait
-          l'intention du clic PRÉCÉDENT, faisant partir la première remise comme brouillon. */}
+      {/* L'intention (brouillon / remise) est écrite DANS LE DOM au moment du clic (champ non contrôlé
+          muté impérativement) : tout mécanisme dépendant d'un re-rendu React envoyait l'intention du
+          clic PRÉCÉDENT, faisant partir la première remise comme simple brouillon. */}
+      <input ref={intentInputRef} type="hidden" name="intent" defaultValue="draft" />
 
       {props.allowText && hasQuestions ? (
         <div className="flex flex-col gap-6">
@@ -200,30 +208,22 @@ export function AssignmentForm(props: AssignmentFormProps) {
       <div className="flex flex-wrap gap-2">
         <Button
           type="submit"
-          name="intent"
-          value="draft"
           variant="outline"
           className="w-full sm:w-auto"
           loading={pending && intentRef.current === 'draft'}
           disabled={pending}
-          onClick={() => {
-            intentRef.current = 'draft'
-          }}
+          onClick={() => setIntent('draft')}
           leftIcon={<Save aria-hidden="true" />}
         >
           Enregistrer le brouillon
         </Button>
         <Button
           type="submit"
-          name="intent"
-          value="submit"
           variant="accent"
           className="w-full sm:w-auto"
           loading={pending && intentRef.current === 'submit'}
           disabled={pending}
-          onClick={() => {
-            intentRef.current = 'submit'
-          }}
+          onClick={() => setIntent('submit')}
           leftIcon={<Send aria-hidden="true" />}
         >
           {props.alreadySubmitted ? 'Mettre à jour ma remise' : 'Soumettre le devoir'}
