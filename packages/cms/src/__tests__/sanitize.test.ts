@@ -62,6 +62,11 @@ describe('sanitizeHtml', () => {
     }
   })
 
+  it('conserve les blocs dépliables (details/summary) sans attribut', () => {
+    const out = sanitizeHtml('<details open onclick="x()"><summary class="lab">Voir la réponse juridique</summary><p>Corrigé.</p></details>')
+    expect(out).toBe('<details><summary>Voir la réponse juridique</summary><p>Corrigé.</p></details>')
+  })
+
   it('retire les balises non listées (h1, div, span, form, input) en conservant leur texte', () => {
     const out = sanitizeHtml('<h1>Grand titre</h1><div><span>Texte</span></div><form><input value="x"></form>')
     expect(out).toBe('Grand titreTexte')
@@ -86,6 +91,7 @@ describe('renderExcerpt et stripHtml', () => {
 
   it('sépare les paragraphes par un espace et garde le texte court intact', () => {
     expect(renderExcerpt('<p>Un.</p><p>Deux.</p>')).toBe('Un. Deux.')
+    expect(renderExcerpt('<details><summary>Voir la réponse</summary><p>Corrigé.</p></details>')).toBe('Voir la réponse Corrigé.')
     expect(renderExcerpt('')).toBe('')
   })
 

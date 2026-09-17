@@ -44,6 +44,9 @@ export const allowedTags = [
   'figure',
   'figcaption',
   'iframe',
+  // Bloc dépliable (consignes, corrigés révélables) : balises structurelles inertes, sans attribut.
+  'details',
+  'summary',
 ]
 
 /** Force `rel="noopener noreferrer"` sur les liens ouverts dans un nouvel onglet ; retire les autres cibles. */
@@ -150,6 +153,6 @@ export function decodeEntities(text: string): string {
  */
 export function renderExcerpt(html: string | null | undefined, max = 160): string {
   if (!html) return ''
-  const withBreaks = html.replace(/<\/(p|h[1-6]|li|blockquote|tr|figcaption)>/gi, ' ').replace(/<br\s*\/?>/gi, ' ')
+  const withBreaks = html.replace(/<\/(p|h[1-6]|li|blockquote|tr|figcaption|summary|details)>/gi, ' ').replace(/<br\s*\/?>/gi, ' ')
   return excerpt(decodeEntities(withBreaks), max)
 }

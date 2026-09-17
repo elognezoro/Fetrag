@@ -169,10 +169,23 @@ function stripEmoji(input: string): string {
     .replace(/ {2,}/g, ' ')
 }
 
-/** HTML prêt pour le lecteur LMS : sans emoji, sans classes/styles/boutons de la plateforme source. */
+/**
+ * HTML prêt pour le lecteur LMS : sans emoji, sans classes/styles/boutons de la plateforme source.
+ * Conversions sémantiques vers la liste blanche du sanitizer (@fetrag/cms) : b/i → strong/em
+ * (sinon le gras et l'italique seraient supprimés au rendu), encadré « décisif » → blockquote,
+ * étiquettes `.lab` → paragraphe en gras.
+ * Contrainte : les blocs `.cours-decisif` et `.lab` de la source ne doivent pas imbriquer
+ * d'autres div/span (captures non gourmandes) — vérifié vrai sur tout le corpus actuel.
+ */
 function cleanHtml(html: string): string {
   return stripEmoji(html)
     .replace(/<button\b[^>]*>[\s\S]*?<\/button>/gi, '')
+    .replace(/<div class="cours-decisif">([\s\S]*?)<\/div>/gi, '<blockquote>$1</blockquote>')
+    .replace(/<span class="lab">([\s\S]*?)<\/span>/gi, '<p><strong>$1</strong></p>')
+    .replace(/<b(\s[^>]*)?>/gi, '<strong>')
+    .replace(/<\/b>/gi, '</strong>')
+    .replace(/<i(\s[^>]*)?>/gi, '<em>')
+    .replace(/<\/i>/gi, '</em>')
     .replace(/\s(?:class|style|id|onclick|data-[\w-]+)="[^"]*"/gi, '')
     .replace(/<(?:span|div)>\s*<\/(?:span|div)>/gi, '')
     .trim()
@@ -254,7 +267,7 @@ async function main(): Promise<void> {
     'statut syndical et protection des délégués, contrats et sécurité au travail, discipline et licenciement, salaires, contentieux et droit de grève.'
   const description = [
     `<p>Séminaire de formation syndicale conçu pour la FETRAG et les délégués de la SETRAG, transféré sur la plateforme de formation de la Fédération. Il couvre l'ensemble du Code du travail gabonais issu de la <b>Loi n°022/2021 du 19 novembre 2021</b>, sous l'angle de l'action syndicale : représentation du personnel, protection des délégués, contrats, santé et sécurité, discipline, rupture, salaires, contentieux et grève.</p>`,
-    `<p>Chaque module associe un cours structuré, des activités interactives corrigées automatiquement, une étude de cas à déposer (corrigée par le formateur) et un débat guidé. La formation se conclut par un entraînement chronométré rejouable puis un examen final en une seule tentative (20 questions, 30 minutes, seuil de réussite 70 %).</p>`,
+    `<p>Chaque module associe un cours structuré, des activités interactives corrigées automatiquement, une étude de cas avec réponses juridiques révélables, un débat guidé, des exercices à correction automatique et un livrable à déposer (corrigé par le formateur). La formation se conclut par un entraînement chronométré rejouable puis un examen final en une seule tentative (20 questions, 30 minutes, seuil de réussite 70 %).</p>`,
     `<p><b>Volume :</b> 30 heures (4 modules de 7 h 30). <b>Public :</b> délégués du personnel et délégués syndicaux.</p>`,
   ].join('\n')
 
@@ -333,6 +346,29 @@ async function main(): Promise<void> {
   log.done(`Cours ${COURSE_CODE} « ${course.title} » (version 1 publiée)`)
 
   // ---------------------------------------------------------------------------
+  // Nettoyage préalable : les leçons renommées changent de slug ; on supprime les
+  // anciennes leçons de CE cours (cascade : activités, quiz, devoirs, forums liés)
+  // avant de recréer la structure, pour éviter doublons et collisions d'identifiants.
+  // ---------------------------------------------------------------------------
+  const expectedLessonSlugs = new Set<string>([slugify('Syllabus, cadre et méthode'), slugify('Entraînement et examen final')])
+  for (const [i, m] of data.MODULES.entries()) {
+    expectedLessonSlugs.add(slugify(`Cours - ${plainText(m.titre)}`))
+    expectedLessonSlugs.add(slugify(`Activités d'apprentissage - Module ${i + 1}`))
+    expectedLessonSlugs.add(slugify(`Exercices à correction automatique - Module ${i + 1}`))
+    expectedLessonSlugs.add(slugify(`Devoir à déposer - Module ${i + 1}`))
+  }
+  const staleLessons = await prisma.lesson.findMany({
+    where: { module: { courseVersionId: version.id }, slug: { notIn: [...expectedLessonSlugs] } },
+    select: { id: true, title: true },
+  })
+  if (staleLessons.length > 0) {
+    await prisma.lesson.deleteMany({ where: { id: { in: staleLessons.map((l) => l.id) } } })
+    log.warn(
+      `${staleLessons.length} ancienne(s) leçon(s) supprimée(s) avec leurs activités, tentatives et dépôts : ${staleLessons.map((l) => l.title).join(' ; ')}`,
+    )
+  }
+
+  // ---------------------------------------------------------------------------
   // Aides de création (mêmes formats que le seed : content-format.md)
   // ---------------------------------------------------------------------------
 
@@ -375,8 +411,12 @@ async function main(): Promise<void> {
     weight?: number
   }
 
+  /** Toutes les activités attendues de ce cours (pour purger les activités obsolètes en fin d'import). */
+  const expectedActivityIds: string[] = []
+
   async function upsertActivity(input: ActivityInput): Promise<string> {
     const activityId = stableId('activity', COURSE_CODE, ...input.key)
+    expectedActivityIds.push(activityId)
     const activityData = {
       type: input.type,
       title: input.title,
@@ -425,8 +465,10 @@ async function main(): Promise<void> {
       isActive: true,
     }
     await prisma.question.upsert({ where: { id: questionId }, create: { id: questionId, ...questionData }, update: questionData })
+    const optionIds: string[] = []
     for (const [index, option] of input.options.entries()) {
       const optionId = stableId('option', SET_KEY, input.key, option.key)
+      optionIds.push(optionId)
       const optionData = {
         label: option.label,
         isCorrect: option.isCorrect,
@@ -436,6 +478,8 @@ async function main(): Promise<void> {
       }
       await prisma.questionOption.upsert({ where: { id: optionId }, create: { id: optionId, questionId, ...optionData }, update: optionData })
     }
+    // Purge des options obsolètes (changement de type ou d'énoncé lors d'une réimportation)
+    await prisma.questionOption.deleteMany({ where: { questionId, id: { notIn: optionIds } } })
     return questionId
   }
 
@@ -476,6 +520,8 @@ async function main(): Promise<void> {
         update: { position: index + 1, points: 1 },
       })
     }
+    // Purge des questions retirées du quiz lors d'une réimportation
+    await prisma.quizQuestion.deleteMany({ where: { quizId: quiz.id, questionId: { notIn: input.questionIds } } })
   }
 
   /** Convertit une question de la banque source vers la banque LMS. */
@@ -515,7 +561,7 @@ async function main(): Promise<void> {
         type: QuestionType.FILL_BLANK,
         prompt: 'Complétez le texte.',
         explanation,
-        config: { text: normalizeBlanks(q.q), answers, caseSensitive: false },
+        config: { text: normalizeBlanks(q.q), answers, partialCredit: true },
         tags,
         options: [],
       })
@@ -585,7 +631,9 @@ async function main(): Promise<void> {
     '# Livret du formateur - Séminaire FETRAG-SETRAG',
     '',
     "Corrigés des études de cas et des activités du cours DTC-SETRAG « L'action syndicale et le droit du travail gabonais »",
-    '(Loi n°022/2021 du 19 novembre 2021). Document réservé au formateur et à la coordination pédagogique.',
+    '(Loi n°022/2021 du 19 novembre 2021). Document destiné au formateur et à la coordination pédagogique.',
+    "Note : fidèlement à la plateforme source, les réponses juridiques des études de cas sont aussi révélables par l'apprenant",
+    'dans le cours (bloc « Voir la réponse juridique ») ; ce livret sert de référence pour la correction des dépôts.',
     '',
   ]
 
@@ -604,15 +652,15 @@ async function main(): Promise<void> {
     )
     corrigés.push(`## Module ${index + 1} - ${plainText(meta.titre)}`, '')
 
-    // Leçon 1 : cours
+    // Leçon 1 : cours — mêmes rubriques que la section source (objectifs, ancrage, cours)
     const objectifsHtml = meta.objectifs.map((o) => `<li>${cleanHtml(o)}</li>`).join('\n')
     const lessonCourseHtml = [
-      `<h3>Objectifs du module</h3>`,
+      `<h3>Objectifs</h3>`,
       `<ul>${objectifsHtml}</ul>`,
+      `<h3>Ancrage juridique (Code du travail)</h3>`,
       cleanHtml(meta.ancrage_html),
+      `<h3>Le cours</h3>`,
       cleanHtml(courseHtml),
-      `<h3>Livrable du module</h3>`,
-      `<p>${cleanHtml(meta.livrable)}</p>`,
     ].join('\n')
     const courseLesson = await upsertLesson(
       moduleId,
@@ -633,13 +681,13 @@ async function main(): Promise<void> {
       completionRule: CompletionRule.VIEW,
     })
 
-    // Leçon 2 : activités pratiques (exercice à trous, classement, étude de cas, débat)
+    // Leçon 2 : activités d'apprentissage (exercice à trous, classement, QCM, étude de cas, débat)
     const practiceLesson = await upsertLesson(
       moduleId,
       2,
-      `Activités pratiques - Module ${index + 1}`,
-      'Exercices interactifs corrigés automatiquement, étude de cas à déposer et débat guidé.',
-      180,
+      `Activités d'apprentissage - Module ${index + 1}`,
+      'Exercices interactifs corrigés automatiquement, étude de cas avec réponses juridiques révélables et débat guidé.',
+      150,
     )
     let activityPosition = 0
     for (const [aIndex, act] of activites.entries()) {
@@ -650,7 +698,7 @@ async function main(): Promise<void> {
           key: `${code}-exo-${aIndex}`,
           type: QuestionType.FILL_BLANK,
           prompt: plainText(act.data.consigne ?? act.d),
-          config: { text: normalizeBlanks(act.data.q), answers: act.data.sol, caseSensitive: false },
+          config: { text: normalizeBlanks(act.data.q), answers: act.data.sol, partialCredit: true },
           tags: ['setrag', 'exercice', code.toLowerCase()],
           options: [],
         })
@@ -781,10 +829,11 @@ async function main(): Promise<void> {
       } else if (act.kind === 'cas' && act.data.situation) {
         activityPosition += 1
         const questions = (act.data.questions ?? []) as CaseQuestion[]
-        const questionsHtml = questions.length
-          ? `<h4>Questions</h4>\n<ol>${questions.map((cq) => `<li>${plainText(cq.q).replace(/^Q\d+\s*:\s*/, '')}</li>`).join('\n')}</ol>`
-          : ''
-        const caseStudy = `<p>${cleanHtml(act.data.situation)}</p>\n${questionsHtml}`
+        // Fidèle à la source : chaque question est suivie de sa « réponse juridique » révélable.
+        const questionsHtml = questions
+          .map((cq) => `<h4>${plainText(cq.q)}</h4>\n<details><summary>Voir la réponse juridique</summary><p>${cleanHtml(cq.r)}</p></details>`)
+          .join('\n')
+        const caseStudy = `<h4>Situation</h4>\n<p>${cleanHtml(act.data.situation)}</p>\n${questionsHtml}`
         const activityId = await upsertActivity({
           lessonId: practiceLesson.id,
           key: [practiceLesson.slug, 'cas'],
@@ -861,12 +910,12 @@ async function main(): Promise<void> {
       }
     }
 
-    // Leçon 3 : quiz du module (5 questions de la banque)
+    // Leçon 3 : exercices à correction automatique (les 5 questions de la banque du module)
     const quizLesson = await upsertLesson(
       moduleId,
       3,
-      `Évaluation du module ${index + 1}`,
-      'Quiz de validation des acquis du module, corrigé automatiquement.',
+      `Exercices à correction automatique - Module ${index + 1}`,
+      'Questions auto-corrigées sur le module, correction affichée à chaque tentative.',
       30,
     )
     const questionIds: string[] = []
@@ -876,8 +925,8 @@ async function main(): Promise<void> {
       key: [quizLesson.slug, 'quiz'],
       position: 1,
       type: ActivityType.QUIZ,
-      title: `Quiz du module ${index + 1}`,
-      instructions: `${bank.length} questions sur le module. Trois tentatives autorisées, correction affichée à l'issue de chaque tentative, score minimum de 60 %.`,
+      title: `Exercices à correction automatique - Module ${index + 1}`,
+      instructions: `${bank.length} questions auto-corrigées sur le module (Q${index + 1}.1 à Q${index + 1}.${bank.length}). Correction affichée à l'issue de chaque tentative, rejouable, score minimum de 60 %.`,
       content: { kind: 'quiz' },
       durationMinutes: 30,
       completionRule: CompletionRule.PASS_SCORE,
@@ -888,16 +937,64 @@ async function main(): Promise<void> {
     await upsertQuiz({
       activityId: quizActivityId,
       key: [code, 'quiz'],
-      description: `Évaluation du module ${index + 1} : ${plainText(meta.titre)}.`,
+      description: `Exercices à correction automatique du module ${index + 1} : ${plainText(meta.titre)}.`,
       timeLimitMinutes: null,
-      maxAttempts: 3,
+      maxAttempts: 10,
       shuffleQuestions: false,
       shuffleOptions: true,
       showCorrection: true,
       passScore: 60,
       questionIds,
     })
-    log.info(`${code} : ${activites.length} activités, ${bank.length} questions`)
+
+    // Leçon 4 : devoir à déposer (livrable du module, corrigé par le formateur)
+    const livrableLesson = await upsertLesson(
+      moduleId,
+      4,
+      `Devoir à déposer - Module ${index + 1}`,
+      `Livrable du module : ${plainText(meta.livrable)}`,
+      90,
+    )
+    const livrableActivityId = await upsertActivity({
+      lessonId: livrableLesson.id,
+      key: [livrableLesson.slug, 'livrable'],
+      position: 1,
+      type: ActivityType.ASSIGNMENT,
+      title: `Livrable du module ${index + 1}`,
+      instructions: `Consigne du livrable : ${plainText(meta.livrable)} Rédigez votre production dans le champ texte (fiche, check-list, grille, déroulé...) ou joignez un fichier, puis déposez.`,
+      content: {},
+      durationMinutes: 90,
+      completionRule: CompletionRule.SUBMIT,
+      maxScore: 20,
+      passScore: 10,
+      weight: 2,
+    })
+    const livrableAssignment = {
+      description:
+        'Livrable institutionnel du module, corrigé par le formateur. Rédigez votre production directement dans le champ texte ou déposez un fichier PDF ou Word.',
+      allowFile: true,
+      allowText: true,
+      allowedMimeTypes: [
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      ],
+      maxFileSizeMb: 10,
+      dueAt: null,
+      lateAllowed: true,
+      maxScore: 20,
+      rubric: json([
+        { criterion: 'Exactitude juridique (articles cités à l\'appui)', maxPoints: 8 },
+        { criterion: 'Complétude de la procédure ou du contenu attendu', maxPoints: 8 },
+        { criterion: 'Clarté et applicabilité sur le terrain', maxPoints: 4 },
+      ]),
+    }
+    await prisma.assignment.upsert({
+      where: { activityId: livrableActivityId },
+      create: { id: stableId('assignment', SET_KEY, code, 'livrable'), activityId: livrableActivityId, ...livrableAssignment },
+      update: livrableAssignment,
+    })
+    log.info(`${code} : ${activites.length} activités, ${bank.length} questions, livrable en devoir`)
   }
   log.done('Modules M1 à M4 importés')
 
@@ -927,12 +1024,20 @@ async function main(): Promise<void> {
 
   const moduleCodes = new Set(data.MODULES.map((m) => m.code))
   // Questions transversales (mod « Final ») : importées ici, elles n'appartiennent à aucun module.
-  for (const q of data.BANK.filter((question) => !moduleCodes.has(question.mod))) {
+  const finalBank = data.BANK.filter((question) => !moduleCodes.has(question.mod))
+  for (const q of finalBank) {
     await importBankQuestion(q)
   }
   const allBankIds = data.BANK.map((q) => stableId('question', SET_KEY, q.id))
-  const examBank = data.BANK.filter((q) => moduleCodes.has(q.mod)).slice(0, examSize)
-  const examIds = (examBank.length >= examSize ? examBank : data.BANK.slice(0, examSize)).map((q) => stableId('question', SET_KEY, q.id))
+  // Composition de l'examen : la source tire `taille` questions de toute la banque ; le quiz LMS
+  // étant à jeu fixe, on équilibre — quota égal par module puis toutes les questions transversales.
+  const perModuleQuota = Math.max(1, Math.floor((examSize - finalBank.length) / Math.max(1, data.MODULES.length)))
+  let examBank = data.MODULES.flatMap((m) => data.BANK.filter((q) => q.mod === m.code).slice(0, perModuleQuota)).concat(finalBank)
+  if (examBank.length < examSize) {
+    const chosen = new Set(examBank.map((q) => q.id))
+    examBank = examBank.concat(data.BANK.filter((q) => !chosen.has(q.id)).slice(0, examSize - examBank.length))
+  }
+  const examIds = examBank.slice(0, examSize).map((q) => stableId('question', SET_KEY, q.id))
 
   const trainingActivityId = await upsertActivity({
     lessonId: finalLesson.id,
@@ -988,6 +1093,20 @@ async function main(): Promise<void> {
     questionIds: examIds,
   })
   log.done(`Évaluation finale : entraînement (${allBankIds.length} questions) + examen (${examIds.length} questions)`)
+
+  // ---------------------------------------------------------------------------
+  // Purge finale : activités de ce cours absentes de la structure attendue
+  // (leçons conservées mais activités retirées lors d'une réimportation).
+  // Attention : la cascade supprime tentatives, dépôts et complétions liés.
+  // ---------------------------------------------------------------------------
+  const staleActivities = await prisma.activity.deleteMany({
+    where: { lesson: { module: { courseVersionId: version.id } }, id: { notIn: expectedActivityIds } },
+  })
+  if (staleActivities.count > 0) log.warn(`${staleActivities.count} activité(s) obsolète(s) supprimée(s) (tentatives et dépôts liés inclus)`)
+  await prisma.enrollment.updateMany({
+    where: { courseId: course.id, NOT: { lastActivityId: null }, lastActivityId: { notIn: expectedActivityIds } },
+    data: { lastActivityId: null },
+  })
 
   // ---------------------------------------------------------------------------
   // 6. Livret du formateur (corrigés des études de cas)

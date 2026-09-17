@@ -1,7 +1,9 @@
 # Livret du formateur - Séminaire FETRAG-SETRAG
 
 Corrigés des études de cas et des activités du cours DTC-SETRAG « L'action syndicale et le droit du travail gabonais »
-(Loi n°022/2021 du 19 novembre 2021). Document réservé au formateur et à la coordination pédagogique.
+(Loi n°022/2021 du 19 novembre 2021). Document destiné au formateur et à la coordination pédagogique.
+Note : fidèlement à la plateforme source, les réponses juridiques des études de cas sont aussi révélables par l'apprenant
+dans le cours (bloc « Voir la réponse juridique ») ; ce livret sert de référence pour la correction des dépôts.
 
 ## Module 1 - Statut syndical, droits fondamentaux et protection des délégués
 
