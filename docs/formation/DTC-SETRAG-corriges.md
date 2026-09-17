@@ -13,7 +13,7 @@ Réponses attendues : Inspecteur du travail du ressort ; 2 jours ouvrables ; 15 
 
 ### Étude de cas — Mutation d'un délégué syndical
 
-Situation : Camarade Paul, Délégué Syndical FETRAG à la gare d'O interior de la SETRAG, mène une sensibilisation active sur la grille des salaires. Deux semaines plus tard, la Direction lui notifie une « mutation disciplinaire immédiate » vers la gare isolée de Ndjolé avec changement de poste, au motif que ses prises de parole « troublent le climat de travail ». Devant son refus, la Direction lui interdit l'accès au site et suspend son salaire pour « abandon de poste ».
+Situation : Camarade Paul, Délégué Syndical FETRAG à la gare d'Owendo de la SETRAG, mène une sensibilisation active sur la grille des salaires. Deux semaines plus tard, la Direction lui notifie une « mutation disciplinaire immédiate » vers la gare isolée de Ndjolé avec changement de poste, au motif que ses prises de parole « troublent le climat de travail ». Devant son refus, la Direction lui interdit l'accès au site et suspend son salaire pour « abandon de poste ».
 
 **Q1 : La mutation unilatérale d'un Délégué Syndical avec changement de poste est-elle légale ?**
 
