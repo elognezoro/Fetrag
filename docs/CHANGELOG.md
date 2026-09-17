@@ -6,6 +6,13 @@ Format inspiré de « Keep a Changelog » ; versions sémantiques. Les dates son
 
 ### Ajouté
 
+**Formation « L'action syndicale et le droit du travail gabonais » (FETRAG-SETRAG)**
+
+- Transfert du séminaire FETRAG-SETRAG (Code du travail gabonais, Loi n°022/2021 du 19 novembre 2021) dans le LMS, en contenus natifs de la plateforme : nouvelle catégorie de cours **« Droit du travail et contentieux »** (position 2) et cours publié `DTC-SETRAG` (30 h, gratuit, pilier défense, niveau intermédiaire).
+- Structure : module de présentation (syllabus, cadre pédagogique, synthèse, références), quatre modules de 7 h 30 (cours, activités interactives auto-corrigées, étude de cas déposée en devoir avec grille de correction, débat en forum modéré, quiz de module), puis évaluation finale conforme au dispositif source : **entraînement chronométré** (20 min, rejouable, correction affichée, seuil 70 %) et **examen final** (20 questions, 30 min, une tentative, sans correction, seuil 70 %).
+- 28 questions versées à la banque de questions (catégorie « Droit du travail gabonais - SETRAG », étiquettes par module) réutilisables dans d'autres tests ; corrigés des études de cas réservés au formateur dans `docs/formation/DTC-SETRAG-corriges.md`.
+- Import idempotent rejouable : `pnpm --filter @fetrag/db exec tsx ../../scripts/import-fetrag-setrag.ts` (données épurées, sans emoji, dans `scripts/data/fetrag-setrag.json`).
+
 **Interopérabilité Moodle (banque de questions et tests)**
 
 - Import et export des questions aux formats **Moodle XML** et **GIFT** (`@fetrag/lms-core` module `interop`) : les tests sont transférables avec une plateforme Moodle par fichier, dans les deux sens.
