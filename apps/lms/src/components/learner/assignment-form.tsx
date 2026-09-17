@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { FileUp, Save, Send, X } from 'lucide-react'
+import { FileUp, Lock, Save, Send, X } from 'lucide-react'
 import { Alert, AlertDescription, Button, FormField, Input, cn, toast } from '@fetrag/ui'
 import { saveSubmissionAction } from '@/server/learner/assignment-actions'
 import { initialSubmissionState } from '@/server/learner/types'
@@ -132,12 +132,25 @@ export function AssignmentForm(props: AssignmentFormProps) {
                     <div dangerouslySetInnerHTML={{ __html: question.correctionHtml }} />
                   </details>
                 </div>
-              ) : null}
+              ) : (
+                <div className="mt-1">
+                  {/* Même structure que le support source : le bouton existe dès le départ, verrouillé avant remise. */}
+                  <button
+                    type="button"
+                    disabled
+                    title="Disponible après votre remise"
+                    className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-4 py-1.5 text-sm font-semibold text-neutral-400"
+                  >
+                    <Lock className="size-3.5" aria-hidden="true" />
+                    Voir la réponse juridique
+                  </button>
+                  <span className="ml-2 align-middle text-xs text-neutral-500">disponible après votre remise</span>
+                </div>
+              )}
             </div>
           ))}
           <p className="text-xs text-neutral-500">
             {words} mot{words > 1 ? 's' : ''} · mise en forme, listes et tableaux disponibles dans chaque barre d&apos;outils
-            {questions.every((q) => q.correctionHtml === null) ? ' · les réponses juridiques s’affichent après votre remise' : ''}
           </p>
         </div>
       ) : props.allowText ? (
