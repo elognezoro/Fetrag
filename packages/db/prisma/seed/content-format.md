@@ -18,7 +18,7 @@ formats à l'identique. Les schémas Zod de référence pour les réponses sont 
 | `PRESENTATION` | `{ url: string }` | Fichier ou lien d'intégration (PDF, diaporama). |
 | `QUIZ` | `{ kind: 'quiz' }` | La configuration réelle est dans `Quiz` (relation 1-1 par `activityId`) et `QuizQuestion`. Complétion `PASS_SCORE` avec `Activity.passScore`. |
 | `SURVEY` | `{ kind: 'survey' }` | `Quiz.isSurvey = true`, `passScore = 0`, aucune option correcte, `points = 0`. Complétion `SUBMIT`. |
-| `ASSIGNMENT` | `{ caseStudy?: string }` | Le cadre du devoir est dans `Assignment` (relation 1-1) : dépôt fichier et/ou texte, `dueAt`, `maxScore`, `rubric`. Complétion `SUBMIT`. |
+| `ASSIGNMENT` | `{ caseStudy?: string, questions?: [{ prompt: string, correction?: string }] }` | Le cadre du devoir est dans `Assignment` (relation 1-1) : dépôt fichier et/ou texte, `dueAt`, `maxScore`, `rubric`. Complétion `SUBMIT`. `questions` (études de cas) : une zone de réponse par question dans le formulaire ; `correction` (HTML) n'est servie par le serveur qu'après la remise (`assignment-queries`). |
 | `FORUM` | `{ prompt: string }` | Le `Forum` lié porte `activityId`. Complétion `MANUAL` (ou non obligatoire). |
 | `LIVE_SESSION` | `{ format: 'in_person' \| 'virtual' \| 'hybrid', agenda: string[] }` | La séance est décrite par `LiveSession` (`activityId`, `trainingSessionId`). Complétion `ATTEND` : achevée lorsque `Attendance.status` est `PRESENT` ou `LATE` pour la `TrainingSession` liée. |
 

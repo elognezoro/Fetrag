@@ -20,6 +20,33 @@ interface AssignmentFormProps {
   existingFileName: string | null
   /** Une remise existe déjà : le bouton principal devient « Mettre à jour ma remise ». */
   alreadySubmitted: boolean
+  /**
+   * Questions de l'étude de cas : une zone de réponse par question.
+   * `correctionHtml` (assaini côté serveur) n'est fourni qu'après la remise.
+   */
+  questions?: Array<{ prompt: string; correctionHtml: string | null }>
+}
+
+/** Document remis : une section `<h4>Question n</h4>` par zone de réponse. */
+function combineAnswers(answers: string[]): string {
+  if (answers.every((a) => !a.trim())) return ''
+  return answers.map((answer, index) => `<h4>Question ${index + 1}</h4>\n${answer.trim() || '<p>Sans réponse.</p>'}`).join('\n')
+}
+
+/** Redistribue un document remis vers les zones de réponse (repli : tout dans la première zone). */
+function splitAnswers(text: string, count: number): string[] {
+  const out = Array.from({ length: count }, () => '')
+  if (!text.trim()) return out
+  const parts = text.split(/<h4>Question (\d+)<\/h4>/)
+  if (parts.length < 3) {
+    out[0] = text
+    return out
+  }
+  for (let i = 1; i + 1 < parts.length; i += 2) {
+    const index = Number(parts[i]) - 1
+    if (index >= 0 && index < count) out[index] = (parts[i + 1] ?? '').trim()
+  }
+  return out
 }
 
 function formatMime(types: string[]): string {
@@ -44,11 +71,20 @@ function formatMime(types: string[]): string {
  */
 export function AssignmentForm(props: AssignmentFormProps) {
   const router = useRouter()
+  const questions = props.questions ?? []
+  const hasQuestions = questions.length > 0
   const [state, action, pending] = useActionState(saveSubmissionAction, initialSubmissionState)
   const [text, setText] = useState(state.text ?? props.initialText)
+  const [answers, setAnswers] = useState<string[]>(() => splitAnswers(state.text ?? props.initialText, questions.length))
   const [fileName, setFileName] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const intentRef = useRef<'draft' | 'submit'>('draft')
+
+  const combined = hasQuestions ? combineAnswers(answers) : text
+
+  function setAnswer(index: number, html: string) {
+    setAnswers((prev) => prev.map((value, i) => (i === index ? html : value)))
+  }
 
   useEffect(() => {
     if (state.status === 'saved' || state.status === 'submitted') {
@@ -61,8 +97,9 @@ export function AssignmentForm(props: AssignmentFormProps) {
     }
   }, [state, router])
 
-  const words = text
+  const words = combined
     .replace(/<[^>]+>/g, ' ')
+    .replace(/Question \d+|Sans réponse\./g, ' ')
     .trim()
     .split(/\s+/)
     .filter(Boolean).length
@@ -73,7 +110,37 @@ export function AssignmentForm(props: AssignmentFormProps) {
       <input type="hidden" name="courseId" value={props.courseId} />
       <input type="hidden" name="intent" value={intentRef.current} readOnly />
 
-      {props.allowText ? (
+      {props.allowText && hasQuestions ? (
+        <div className="flex flex-col gap-6">
+          <input type="hidden" name="text" value={combined} />
+          {questions.map((question, index) => (
+            <div key={index} className="flex flex-col gap-2">
+              <p className="font-semibold leading-snug text-navy">{question.prompt}</p>
+              <AnswerEditor
+                label={`Votre réponse à la question ${index + 1}`}
+                value={answers[index] ?? ''}
+                onChange={(html) => setAnswer(index, html)}
+                placeholder="Votre analyse..."
+                disabled={pending}
+                minHeightClassName="min-h-[9rem]"
+              />
+              {question.correctionHtml ? (
+                <div className="prose-fetrag mt-1 max-w-none text-sm">
+                  <details>
+                    <summary>Voir la réponse juridique</summary>
+                    {/* HTML assaini côté serveur (assignment-queries), servi uniquement après la remise. */}
+                    <div dangerouslySetInnerHTML={{ __html: question.correctionHtml }} />
+                  </details>
+                </div>
+              ) : null}
+            </div>
+          ))}
+          <p className="text-xs text-neutral-500">
+            {words} mot{words > 1 ? 's' : ''} · mise en forme, listes et tableaux disponibles dans chaque barre d&apos;outils
+            {questions.every((q) => q.correctionHtml === null) ? ' · les réponses juridiques s’affichent après votre remise' : ''}
+          </p>
+        </div>
+      ) : props.allowText ? (
         <FormField label="Votre réponse" htmlFor="submission-text" error={state.fieldErrors?.text} hint={`${words} mot${words > 1 ? 's' : ''} · mise en forme, listes et tableaux disponibles dans la barre d'outils`}>
           <input type="hidden" name="text" value={text} />
           <AnswerEditor label="Votre réponse" value={text} onChange={setText} placeholder="Rédigez votre travail ici ou déposez un fichier ci-dessous." disabled={pending} minHeightClassName="min-h-[16rem]" />

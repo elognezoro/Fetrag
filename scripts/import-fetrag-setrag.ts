@@ -829,19 +829,18 @@ async function main(): Promise<void> {
       } else if (act.kind === 'cas' && act.data.situation) {
         activityPosition += 1
         const questions = (act.data.questions ?? []) as CaseQuestion[]
-        // Fidèle à la source : chaque question est suivie de sa « réponse juridique » révélable.
-        const questionsHtml = questions
-          .map((cq) => `<h4>${plainText(cq.q)}</h4>\n<details><summary>Voir la réponse juridique</summary><p>${cleanHtml(cq.r)}</p></details>`)
-          .join('\n')
-        const caseStudy = `<h4>Situation</h4>\n<p>${cleanHtml(act.data.situation)}</p>\n${questionsHtml}`
+        // Une zone de réponse par question dans le formulaire de dépôt ; la « réponse juridique »
+        // de chaque question n'est servie par le serveur qu'après la remise (voir assignment-queries).
+        const caseStudy = `<h4>Situation</h4>\n<p>${cleanHtml(act.data.situation)}</p>`
+        const caseQuestions = questions.map((cq) => ({ prompt: plainText(cq.q), correction: `<p>${cleanHtml(cq.r)}</p>` }))
         const activityId = await upsertActivity({
           lessonId: practiceLesson.id,
           key: [practiceLesson.slug, 'cas'],
           position: activityPosition,
           type: ActivityType.ASSIGNMENT,
           title,
-          instructions: `${plainText(act.data.consigne ?? act.d)} Fondez chaque réponse sur les articles du Code du travail (Loi n°022/2021). Répondez dans le champ texte ou déposez un fichier PDF ou Word.`,
-          content: { caseStudy },
+          instructions: `${plainText(act.data.consigne ?? act.d)} Fondez chaque réponse sur les articles du Code du travail (Loi n°022/2021). Répondez à chaque question dans sa zone de réponse (ou déposez un fichier PDF ou Word) : la réponse juridique de chaque question s'affiche après votre remise.`,
+          content: { caseStudy, questions: caseQuestions },
           durationMinutes: 60,
           completionRule: CompletionRule.SUBMIT,
           maxScore: 20,

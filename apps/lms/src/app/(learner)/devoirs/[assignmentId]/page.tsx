@@ -31,7 +31,7 @@ export default async function AssignmentPage({ params }: PageProps) {
   const view = await getAssignmentView(principal, assignmentId)
   if (!view) notFound()
 
-  const { data, rubric, caseStudyHtml, submissionFileUrl, rubricScores } = view
+  const { data, rubric, caseStudyHtml, questions, submissionFileUrl, rubricScores } = view
   const { assignment, activity, lesson, course, submission, dueAt, isOverdue, canSubmit } = data
   const grade = submission?.grade ?? null
   const graded = submission?.status === 'GRADED' && grade !== null
@@ -218,6 +218,7 @@ export default async function AssignmentPage({ params }: PageProps) {
                   initialText={submission?.text ?? ''}
                   existingFileName={submission?.fileName ?? null}
                   alreadySubmitted={alreadySubmitted}
+                  questions={questions}
                 />
               ) : graded ? (
                 <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft">
@@ -235,6 +236,22 @@ export default async function AssignmentPage({ params }: PageProps) {
                     </a>
                   ) : null}
                   {!submission?.text && !submissionFileUrl ? <p className="text-sm text-neutral-500">Remise sans contenu consultable.</p> : null}
+                  {questions.some((q) => q.correctionHtml) ? (
+                    <div className="mt-5 border-t border-neutral-200 pt-4">
+                      <p className="text-sm font-semibold text-navy">Réponses juridiques</p>
+                      <div className="prose-fetrag mt-2 max-w-none text-sm">
+                        {questions.map((question, index) =>
+                          question.correctionHtml ? (
+                            <details key={index}>
+                              <summary>{question.prompt}</summary>
+                              {/* HTML assaini côté serveur (assignment-queries), servi uniquement après la remise. */}
+                              <div dangerouslySetInnerHTML={{ __html: question.correctionHtml }} />
+                            </details>
+                          ) : null,
+                        )}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               ) : (
                 <Alert variant="info" icon={Lock}>
