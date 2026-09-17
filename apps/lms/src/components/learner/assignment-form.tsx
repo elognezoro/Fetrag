@@ -108,7 +108,9 @@ export function AssignmentForm(props: AssignmentFormProps) {
     <form action={action} className="flex flex-col gap-5" aria-describedby="assignment-form-help">
       <input type="hidden" name="assignmentId" value={props.assignmentId} />
       <input type="hidden" name="courseId" value={props.courseId} />
-      <input type="hidden" name="intent" value={intentRef.current} readOnly />
+      {/* L'intention (brouillon / remise) est portée par le bouton déclencheur lui-même
+          (name/value du submitter dans FormData) : un champ caché piloté par ref envoyait
+          l'intention du clic PRÉCÉDENT, faisant partir la première remise comme brouillon. */}
 
       {props.allowText && hasQuestions ? (
         <div className="flex flex-col gap-6">
@@ -198,6 +200,8 @@ export function AssignmentForm(props: AssignmentFormProps) {
       <div className="flex flex-wrap gap-2">
         <Button
           type="submit"
+          name="intent"
+          value="draft"
           variant="outline"
           className="w-full sm:w-auto"
           loading={pending && intentRef.current === 'draft'}
@@ -211,6 +215,8 @@ export function AssignmentForm(props: AssignmentFormProps) {
         </Button>
         <Button
           type="submit"
+          name="intent"
+          value="submit"
           variant="accent"
           className="w-full sm:w-auto"
           loading={pending && intentRef.current === 'submit'}

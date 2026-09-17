@@ -95,7 +95,8 @@ export type LessonInput = z.input<typeof lessonInputSchema>
 export const quizInputSchema = z.object({
   description: z.string().trim().max(5000).nullable().optional(),
   timeLimitMinutes: z.number().int().min(1).max(600).nullable().optional(),
-  maxAttempts: z.number().int().min(1).max(20).default(3),
+  // Jusqu'à 99 reprises pour les évaluations formatives (entraînements rejouables).
+  maxAttempts: z.number().int().min(1).max(99).default(3),
   shuffleQuestions: z.boolean().default(false),
   shuffleOptions: z.boolean().default(false),
   showCorrection: z.boolean().default(true),

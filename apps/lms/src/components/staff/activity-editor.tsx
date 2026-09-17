@@ -192,8 +192,8 @@ export function ActivityEditor({ courseId, lessonId, activity, resources, questi
                     <FormField label="Temps limite (minutes)" htmlFor={`${id}-time`}>
                       <Input name="timeLimitMinutes" type="number" min={1} max={600} defaultValue={activity?.quiz?.timeLimitMinutes ?? ''} />
                     </FormField>
-                    <FormField label="Tentatives autorisées" htmlFor={`${id}-attempts`}>
-                      <Input name="maxAttempts" type="number" min={1} max={20} defaultValue={activity?.quiz?.maxAttempts ?? 3} />
+                    <FormField label="Tentatives autorisées" htmlFor={`${id}-attempts`} hint="Jusqu'à 99 reprises pour une évaluation formative rejouable.">
+                      <Input name="maxAttempts" type="number" min={1} max={99} defaultValue={activity?.quiz?.maxAttempts ?? 3} />
                     </FormField>
                     {type === 'QUIZ' ? (
                       <FormField label="Score de réussite du quiz (%)" htmlFor={`${id}-quizPass`}>

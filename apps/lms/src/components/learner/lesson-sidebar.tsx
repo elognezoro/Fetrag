@@ -6,6 +6,7 @@ import { CheckCircle2, ChevronLeft, Circle, ListTree, Lock, Play } from 'lucide-
 import type { ProgressSummary } from '@fetrag/lms-core'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Button, Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, Progress, cn, padNumber, toneAt, toneClasses } from '@fetrag/ui'
 import { ActivityIcon } from './activity-icon'
+import { moduleLabel } from './course-grid'
 
 export interface LessonSidebarProps {
   modules: ProgressSummary['modules']
@@ -117,7 +118,7 @@ function SidebarHeader({ courseTitle, courseSlug, courseCode, progressPercent, c
         <ChevronLeft className="size-3.5" aria-hidden="true" />
         Fiche de la formation
       </Link>
-      <p className="eyebrow mt-2 text-[11px] text-blue-700">Module {courseCode.replace(/\D/g, '').padStart(2, '0')}</p>
+      <p className="eyebrow mt-2 text-[11px] text-blue-700">{moduleLabel(courseCode)}</p>
       <h2 className="mt-1 font-display text-lg font-semibold leading-tight text-navy">{courseTitle}</h2>
       <div className="mt-3">
         <Progress value={progressPercent} size="sm" showValue label={`Progression du cours : ${progressPercent} %`} />

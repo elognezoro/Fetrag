@@ -18,6 +18,12 @@ export function moduleNumber(code: string): string {
   return digits ? digits.padStart(2, '0').slice(-2) : code
 }
 
+/** Libellé d'un cours : « Module 02 » pour le programme numéroté, sinon le code tel quel (séminaires). */
+export function moduleLabel(code: string): string {
+  const digits = code.replace(/\D/g, '')
+  return digits ? `Module ${digits.padStart(2, '0').slice(-2)}` : code
+}
+
 /** Grille des 10 modules du programme (cartes numérotées, filet par pilier, révélation en cascade). */
 export function CourseGrid({ courses, label = 'Formations', emptyTitle = 'Aucune formation ne correspond à votre recherche', emptyDescription }: CourseGridProps) {
   if (courses.length === 0) {

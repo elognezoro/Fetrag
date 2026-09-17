@@ -7,7 +7,7 @@ import { sanitizeHtml } from '@fetrag/cms'
 import { courseLevelLabels, courseModalityLabels, pillarLabels, sessionModeLabels } from '@fetrag/contracts'
 import { formatDate } from '@fetrag/domain'
 import { ArcRing, Avatar, AvatarFallback, AvatarImage, Badge, Card, CardContent, GradientDivider, PageHeader, Prose, Reveal, Ribbon, cn, initials, padNumber, pillarTone, toneClasses } from '@fetrag/ui'
-import { moduleNumber } from '@/components/learner/course-grid'
+import { moduleLabel, moduleNumber } from '@/components/learner/course-grid'
 import { CourseMeta, priceLabel } from '@/components/learner/course-meta'
 import { CourseProgramme } from '@/components/learner/course-programme'
 import { EnrollCta } from '@/components/learner/enroll-cta'
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!view) return { title: 'Formation introuvable', robots: { index: false, follow: false } }
   const { course } = view
   return {
-    title: `Module ${moduleNumber(course.code)} - ${course.title}`,
+    title: `${moduleLabel(course.code)} - ${course.title}`,
     description: course.summary ?? course.subtitle ?? `Formation ${course.title} du programme 2026 de la FETRAG.`,
     alternates: { canonical: `/cours/${course.slug}` },
     openGraph: { title: course.title, description: course.summary ?? undefined, type: 'article' },
@@ -45,6 +45,8 @@ export default async function CoursePage({ params }: PageProps) {
   const { course, enrollment, nextActivity, offer } = view
 
   const number = moduleNumber(course.code)
+  /** Cours du programme numéroté (01 à 10) ou formation à code libre (séminaire). */
+  const numbered = /^\d+$/.test(number)
   const tone = course.pillar ? pillarTone[course.pillar] : 'blue'
   const classes = toneClasses[tone]
   const price = priceLabel(course.isFree, offer?.amount ?? course.priceAmount, offer?.currency ?? course.currency)
@@ -57,19 +59,26 @@ export default async function CoursePage({ params }: PageProps) {
         variant="dark"
         tone={tone}
         size="lg"
-        eyebrow={`Module ${number}${course.pillar ? ` · ${pillarLabels[course.pillar]}` : ''}`}
+        eyebrow={`${moduleLabel(course.code)}${course.pillar ? ` · ${pillarLabels[course.pillar]}` : ''}`}
         title={course.title}
         description={course.subtitle ?? course.summary ?? undefined}
-        breadcrumbs={[{ label: 'Catalogue', href: '/catalogue' }, { label: `Module ${number}` }]}
+        breadcrumbs={[{ label: 'Catalogue', href: '/catalogue' }, { label: moduleLabel(course.code) }]}
         homeHref="/"
         meta={<CourseMeta modality={course.modality} level={course.level} durationHours={course.durationHours} isFree={course.isFree} priceAmount={offer?.amount ?? course.priceAmount} currency={offer?.currency ?? course.currency} inverted />}
         aside={
           <div className="flex justify-center lg:justify-end">
             <ArcRing size={168} stroke={12} tone={tone} track={false} className="drop-shadow-[0_0_24px_rgba(156,193,2,0.35)]">
-              <span className="flex flex-col items-center">
-                <span className="font-display text-6xl font-semibold leading-none text-white">{padNumber(number)}</span>
-                <span className="mt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">sur 10</span>
-              </span>
+              {numbered ? (
+                <span className="flex flex-col items-center">
+                  <span className="font-display text-6xl font-semibold leading-none text-white">{padNumber(number)}</span>
+                  <span className="mt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">sur 10</span>
+                </span>
+              ) : (
+                <span className="flex max-w-[7.5rem] flex-col items-center text-center">
+                  <span className="font-display text-3xl font-semibold leading-none text-white">{course.code.split('-')[0]}</span>
+                  <span className="mt-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">séminaire</span>
+                </span>
+              )}
             </ArcRing>
           </div>
         }

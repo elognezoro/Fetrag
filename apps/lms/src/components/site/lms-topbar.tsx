@@ -74,10 +74,11 @@ export function LmsTopbar({ user }: LmsTopbarProps) {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden min-w-0 shrink items-center gap-2 lg:flex">
+          {/* Le lien vers le site institutionnel attend l'écran xl : à 1024 px, il faisait déborder l'en-tête. */}
           <a
             href={webHref('/')}
-            className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-navy"
+            className="hidden items-center gap-1 rounded-full px-3 py-2 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-navy xl:inline-flex"
           >
             {siteConfig.domains.web}
             <ArrowUpRight className="size-3.5 opacity-70" aria-hidden="true" />
