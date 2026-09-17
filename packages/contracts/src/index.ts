@@ -487,20 +487,20 @@ export const progressReportSchema = z.object({
 })
 export type ProgressReport = z.infer<typeof progressReportSchema>
 
-/** Réponse à une question selon son type. */
+/** Réponse à une question selon son type (tableaux bornés : aucun quiz réel n'approche ces limites). */
 export const answerResponseSchema = z.union([
-  z.object({ type: z.literal('choice'), optionIds: z.array(idSchema) }),
+  z.object({ type: z.literal('choice'), optionIds: z.array(idSchema).max(100) }),
   z.object({ type: z.literal('boolean'), value: z.boolean() }),
   z.object({ type: z.literal('text'), value: z.string().max(20000) }),
-  z.object({ type: z.literal('blanks'), values: z.array(z.string().max(200)) }),
-  z.object({ type: z.literal('matching'), pairs: z.array(z.object({ optionId: idSchema, value: z.string() })) }),
-  z.object({ type: z.literal('ordering'), optionIds: z.array(idSchema) }),
+  z.object({ type: z.literal('blanks'), values: z.array(z.string().max(200)).max(100) }),
+  z.object({ type: z.literal('matching'), pairs: z.array(z.object({ optionId: idSchema, value: z.string().max(500) })).max(100) }),
+  z.object({ type: z.literal('ordering'), optionIds: z.array(idSchema).max(100) }),
 ])
 export type AnswerResponse = z.infer<typeof answerResponseSchema>
 
 export const submitAttemptSchema = z.object({
   attemptId: idSchema,
-  answers: z.array(z.object({ questionId: idSchema, response: answerResponseSchema })),
+  answers: z.array(z.object({ questionId: idSchema, response: answerResponseSchema })).max(300),
 })
 
 export const submissionInputSchema = z.object({

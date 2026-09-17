@@ -67,9 +67,25 @@ describe('sanitizeHtml', () => {
     expect(out).toBe('<details><summary>Voir la réponse juridique</summary><p>Corrigé.</p></details>')
   })
 
-  it('retire les balises non listées (h1, div, span, form, input) en conservant leur texte', () => {
-    const out = sanitizeHtml('<h1>Grand titre</h1><div><span>Texte</span></div><form><input value="x"></form>')
-    expect(out).toBe('Grand titreTexte')
+  it('retire les balises non listées (h1, div, form, input) en conservant leur texte', () => {
+    const out = sanitizeHtml('<h1>Grand titre</h1><div>Bloc</div><form><input value="x"></form>')
+    expect(out).toBe('Grand titreBloc')
+  })
+
+  it("conserve indice, exposant, alignement et couleurs de la charte (éditeur de réponses)", () => {
+    const out = sanitizeHtml('<p style="text-align: center">m<sup>2</sup> et H<sub>2</sub>O</p><p><span style="color: #C62828">alerte</span></p>')
+    expect(out).toContain('text-align:center')
+    expect(out).toContain('<sup>2</sup>')
+    expect(out).toContain('<sub>2</sub>')
+    expect(out).toContain('color:#C62828')
+  })
+
+  it('rejette les couleurs hors charte et les autres propriétés de style', () => {
+    const out = sanitizeHtml('<p style="text-align: parent; position: fixed"><span style="color: #123456; display: none">x</span></p>')
+    expect(out).not.toContain('position')
+    expect(out).not.toContain('display')
+    expect(out).not.toContain('#123456')
+    expect(out).toContain('<span>x</span>')
   })
 
   it('renvoie une chaîne vide pour une entrée absente', () => {

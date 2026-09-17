@@ -2,9 +2,11 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { AlertTriangle, ArrowLeft, CalendarClock, CheckCircle2, Download, FileText, ListChecks, Lock, MessageSquareText, Target } from 'lucide-react'
+import { sanitizeHtml, stripHtml } from '@fetrag/cms'
 import { formatDateTime, formatRelative } from '@fetrag/domain'
 import { Alert, AlertDescription, AlertTitle, ArcRing, Breadcrumbs, Button, Card, CardContent, Prose, Ribbon, StatusBadge, cn } from '@fetrag/ui'
 import { AssignmentForm } from '@/components/learner/assignment-form'
+import { SpeakButton } from '@/components/learner/speak-button'
 import { guards } from '@/lib/auth'
 import { getAssignmentView } from '@/server/learner/assignment-queries'
 
@@ -97,10 +99,13 @@ export default async function AssignmentPage({ params }: PageProps) {
 
           {activity.instructions || assignment.description ? (
             <section aria-labelledby="consignes-title" className="rounded-2xl border border-blue-100 bg-blue-50/60 p-5 sm:p-6">
-              <h2 id="consignes-title" className="flex items-center gap-2 text-xl">
-                <ListChecks className="size-5 text-blue-700" aria-hidden="true" />
-                Consignes
-              </h2>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 id="consignes-title" className="flex items-center gap-2 text-xl">
+                  <ListChecks className="size-5 text-blue-700" aria-hidden="true" />
+                  Consignes
+                </h2>
+                <SpeakButton text={[activity.instructions ?? '', assignment.description ?? ''].filter(Boolean).join(' ')} label="Écouter la consigne" />
+              </div>
               {activity.instructions ? <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-blue-950">{activity.instructions}</p> : null}
               {assignment.description ? <p className="mt-3 whitespace-pre-line text-[15px] leading-relaxed text-blue-950">{assignment.description}</p> : null}
             </section>
@@ -108,10 +113,13 @@ export default async function AssignmentPage({ params }: PageProps) {
 
           {caseStudyHtml ? (
             <section aria-labelledby="cas-title">
-              <h2 id="cas-title" className="flex items-center gap-2 text-xl">
-                <FileText className="size-5 text-green-700" aria-hidden="true" />
-                Étude de cas
-              </h2>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 id="cas-title" className="flex items-center gap-2 text-xl">
+                  <FileText className="size-5 text-green-700" aria-hidden="true" />
+                  Étude de cas
+                </h2>
+                <SpeakButton text={stripHtml(caseStudyHtml)} label="Écouter le texte" />
+              </div>
               <Prose html={caseStudyHtml} className="mt-4 rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft sm:p-6" />
             </section>
           ) : null}
@@ -157,10 +165,16 @@ export default async function AssignmentPage({ params }: PageProps) {
                 </span>
               </ArcRing>
               <div>
-                <h2 id="note-title" className="flex items-center gap-2 text-xl">
-                  <CheckCircle2 className="size-5 text-green-700" aria-hidden="true" />
-                  Devoir corrigé
-                </h2>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h2 id="note-title" className="flex items-center gap-2 text-xl">
+                    <CheckCircle2 className="size-5 text-green-700" aria-hidden="true" />
+                    Devoir corrigé
+                  </h2>
+                  <SpeakButton
+                    text={`Devoir corrigé. Note : ${grade.score} sur ${grade.maxScore}, soit ${percent ?? 0} pour cent. ${grade.feedback ? `Commentaire du formateur : ${grade.feedback}` : ''}`}
+                    label="Écouter le résultat"
+                  />
+                </div>
                 <p className="mt-1 text-sm text-neutral-600">Noté le {formatDateTime(grade.gradedAt)}.</p>
                 {grade.feedback ? (
                   <blockquote className="mt-4 rounded-xl border-l-4 border-green-500 bg-green-50/60 p-4 text-[15px] leading-relaxed text-neutral-800">
@@ -207,7 +221,13 @@ export default async function AssignmentPage({ params }: PageProps) {
                 />
               ) : graded ? (
                 <div className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft">
-                  {submission?.text ? <p className="whitespace-pre-line text-[15px] leading-relaxed text-neutral-800">{submission.text}</p> : null}
+                  {submission?.text ? (
+                    /<\/?[a-z][^>]*>/i.test(submission.text) ? (
+                      <Prose html={sanitizeHtml(submission.text)} className="text-[15px]" />
+                    ) : (
+                      <p className="whitespace-pre-line text-[15px] leading-relaxed text-neutral-800">{submission.text}</p>
+                    )
+                  ) : null}
                   {submissionFileUrl ? (
                     <a href={submissionFileUrl} className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:underline" target="_blank" rel="noopener noreferrer">
                       <Download className="size-4" aria-hidden="true" />

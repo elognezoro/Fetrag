@@ -71,7 +71,10 @@ export function GradingForm({ submission, cohortId, onDone }: GradingFormProps) 
           {submission.isLate ? <Badge variant="warning" size="sm" className="ml-2">En retard</Badge> : null}
           {submission.dueAt ? ` · échéance ${fmtDateTime(submission.dueAt)}` : ''}
         </p>
-        {submission.text ? (
+        {submission.textHtml ? (
+          // HTML assaini côté serveur (trainer-queries) : rendu fidèle de la mise en forme de l'apprenant.
+          <div className="prose-fetrag mt-3 max-h-64 max-w-none overflow-y-auto rounded-lg border border-neutral-200 bg-white p-3 text-sm" dangerouslySetInnerHTML={{ __html: submission.textHtml }} />
+        ) : submission.text ? (
           <div className="mt-3 max-h-64 overflow-y-auto whitespace-pre-line rounded-lg border border-neutral-200 bg-white p-3 text-sm leading-relaxed text-neutral-800">{submission.text}</div>
         ) : null}
         {submission.fileUrl ? (
@@ -203,7 +206,8 @@ function EssayQuestionForm({ attemptId, question, cohortId, onDone }: { attemptI
   const id = useId()
   useActionFeedback(state, { onSuccess: () => onDone?.() })
   const answer = question.response && question.response.type === 'text' ? question.response.value : ''
-  const words = answer.trim() ? answer.trim().split(/\s+/).length : 0
+  const plainAnswer = answer.replace(/<[^>]+>/g, ' ').trim()
+  const words = plainAnswer ? plainAnswer.split(/\s+/).length : 0
   const config = (question.config ?? {}) as { minWords?: number; maxWords?: number; rubric?: Array<{ label?: string; criterion?: string; points?: number; maxPoints?: number }> }
   const rubric = readRubric(config.rubric)
 
@@ -218,7 +222,12 @@ function EssayQuestionForm({ attemptId, question, cohortId, onDone }: { attemptI
           {question.score === null ? 'À corriger' : `Noté ${question.score} / ${question.points}`}
         </Badge>
       </div>
-      <div className="max-h-56 overflow-y-auto whitespace-pre-line rounded-lg bg-neutral-50 p-3 text-sm leading-relaxed text-neutral-800">{answer || <span className="text-neutral-400">Réponse vide</span>}</div>
+      {question.answerHtml ? (
+        // HTML assaini côté serveur (trainer-queries) : rendu fidèle de la composition de l'apprenant.
+        <div className="prose-fetrag max-h-56 max-w-none overflow-y-auto rounded-lg bg-neutral-50 p-3 text-sm" dangerouslySetInnerHTML={{ __html: question.answerHtml }} />
+      ) : (
+        <div className="max-h-56 overflow-y-auto whitespace-pre-line rounded-lg bg-neutral-50 p-3 text-sm leading-relaxed text-neutral-800">{answer || <span className="text-neutral-400">Réponse vide</span>}</div>
+      )}
       <p className="text-xs text-neutral-500">
         {words} mot(s){config.minWords ? ` · minimum attendu ${config.minWords}` : ''}
         {config.maxWords ? ` · maximum ${config.maxWords}` : ''}

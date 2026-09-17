@@ -1,7 +1,13 @@
 import 'server-only'
+import { sanitizeHtml } from '@fetrag/cms'
 import { prisma } from '@fetrag/db'
 import { NotFoundError, type Principal } from '@fetrag/domain'
 import { assignments, attendance, cohorts, quizzes, reports } from '@fetrag/lms-core'
+
+/** La réponse vient-elle de l'éditeur riche (HTML) plutôt que d'un texte simple hérité ? */
+function looksLikeHtml(text: string): boolean {
+  return /<\/?[a-z][^>]*>/i.test(text)
+}
 
 /**
  * Lecteurs composés de l'espace formateur : une cohorte avec ses participants, présences,
@@ -51,15 +57,28 @@ export async function loadAttendanceSheet(principal: Principal, sessionId: strin
   }
 }
 
-/** Remise à corriger avec le contexte du devoir. */
+/** Remise à corriger avec le contexte du devoir (HTML de la remise assaini côté serveur). */
 export async function loadSubmission(principal: Principal, submissionId: string) {
-  return assignments.get(principal, submissionId)
+  const submission = await assignments.get(principal, submissionId)
+  return {
+    ...submission,
+    /** Remise de l'éditeur riche, assainie pour affichage ; null si texte simple hérité. */
+    textHtml: submission.text && looksLikeHtml(submission.text) ? sanitizeHtml(submission.text) : null,
+  }
 }
 export type SubmissionDetail = Awaited<ReturnType<typeof loadSubmission>>
 
-/** Tentative avec compositions à corriger. */
+/** Tentative avec compositions à corriger (réponses HTML assainies côté serveur). */
 export async function loadEssayReview(principal: Principal, attemptId: string) {
-  return quizzes.getAttemptReview(principal, attemptId)
+  const review = await quizzes.getAttemptReview(principal, attemptId)
+  return {
+    ...review,
+    questions: review.questions.map((question) => ({
+      ...question,
+      /** Composition de l'éditeur riche, assainie pour affichage ; null si texte simple hérité. */
+      answerHtml: question.response?.type === 'text' && looksLikeHtml(question.response.value) ? sanitizeHtml(question.response.value) : null,
+    })),
+  }
 }
 export type EssayReview = Awaited<ReturnType<typeof loadEssayReview>>
 

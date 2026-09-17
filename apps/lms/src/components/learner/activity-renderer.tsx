@@ -17,7 +17,7 @@ import {
   Radio,
   Video,
 } from 'lucide-react'
-import { sanitizeHtml } from '@fetrag/cms'
+import { sanitizeHtml, stripHtml } from '@fetrag/cms'
 import { activityTypeLabels, sessionModeLabels } from '@fetrag/contracts'
 import { formatDate, formatDateTime, formatDuration, formatTime } from '@fetrag/domain'
 import { Alert, AlertDescription, AlertTitle, Badge, Button, Prose, StatusBadge, cn } from '@fetrag/ui'
@@ -25,20 +25,24 @@ import { isPdf, readMediaContent, readString, readStringList, readTextHtml, vime
 import type { LessonViewResult } from '@/server/learner/queries'
 import { ActivityIcon } from './activity-icon'
 import { LowBandwidthPanel } from './low-bandwidth-panel'
+import { SpeakButton } from './speak-button'
 
 interface ActivityRendererProps {
   result: LessonViewResult
 }
 
-/** Encadré de consignes (instructions du formateur). */
+/** Encadré de consignes (instructions du formateur), avec lecture audio. */
 function Instructions({ text }: { text: string | null }) {
   if (!text) return null
   return (
     <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-4 text-sm leading-relaxed text-blue-900">
-      <p className="mb-1 inline-flex items-center gap-2 font-semibold">
-        <ListChecks className="size-4" aria-hidden="true" />
-        Consignes
-      </p>
+      <div className="mb-1 flex flex-wrap items-center justify-between gap-2">
+        <p className="inline-flex items-center gap-2 font-semibold">
+          <ListChecks className="size-4" aria-hidden="true" />
+          Consignes
+        </p>
+        <SpeakButton text={text} label="Écouter la consigne" />
+      </div>
       <p>{text}</p>
     </div>
   )
@@ -63,7 +67,14 @@ function EmbedFrame({ src, title, className }: { src: string; title: string; cla
 function TextActivity({ result }: ActivityRendererProps) {
   const html = readTextHtml(result.rawContent)
   if (!html.trim()) return <p className="rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-sm text-neutral-600">Le contenu de cette lecture sera publié prochainement.</p>
-  return <Prose html={sanitizeHtml(html)} as="article" size="lg" className="rounded-2xl border border-neutral-200 bg-white p-4 sm:p-8" />
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex justify-end">
+        <SpeakButton text={stripHtml(html)} label="Écouter le texte" />
+      </div>
+      <Prose html={sanitizeHtml(html)} as="article" size="lg" className="rounded-2xl border border-neutral-200 bg-white p-4 sm:p-8" />
+    </div>
+  )
 }
 
 function VideoActivity({ result }: ActivityRendererProps) {

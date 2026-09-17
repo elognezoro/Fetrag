@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { unstable_rethrow } from 'next/navigation'
+import { sanitizeHtml } from '@fetrag/cms'
 import { resolvePublicUrl } from '@fetrag/config'
 import { idSchema } from '@fetrag/contracts'
 import { assignments } from '@fetrag/lms-core'
@@ -39,7 +40,9 @@ export async function saveSubmissionAction(_previous: SubmissionFormState, formD
     return { status: 'error', message: 'Vérifiez les informations saisies.', text: field(formData, 'text') }
   }
   const data = parsed.data
-  const text = data.text?.trim() ?? ''
+  // HTML de l'éditeur de réponse : assaini à l'écriture (liste blanche), comme les contenus CMS.
+  const rawText = data.text?.trim() ?? ''
+  const text = rawText ? sanitizeHtml(rawText).trim() : ''
 
   try {
     const learnerView = await assignments.getForLearner(principal, data.assignmentId)

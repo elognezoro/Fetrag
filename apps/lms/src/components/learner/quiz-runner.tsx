@@ -3,15 +3,16 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { AlertTriangle, ArrowLeft, ArrowRight, CheckCircle2, ClipboardCheck, Clock, LayoutList, ListOrdered, Play, RotateCcw, Save, Send, XCircle } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, ArrowRight, CheckCircle2, ClipboardCheck, Clock, LayoutList, ListChecks, ListOrdered, Play, RotateCcw, Save, Send, XCircle } from 'lucide-react'
 import type { AnswerResponse } from '@fetrag/contracts'
 import { questionTypeLabels } from '@fetrag/contracts'
 import { formatDateTime } from '@fetrag/domain'
 import { Alert, AlertDescription, AlertTitle, ArcRing, Button, Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, Progress, StatusBadge, cn, toast } from '@fetrag/ui'
-import { startQuizAction, submitQuizAction, type QuizSession, type QuizSubmission } from '@/server/learner/quiz-actions'
+import { checkQuizAction, startQuizAction, submitQuizAction, type QuizCheck, type QuizSession, type QuizSubmission } from '@/server/learner/quiz-actions'
 import type { QuizEntry } from '@/server/learner/quiz-queries'
 import { QuestionRenderer, isAnswered } from './question-renderers'
 import { QuizReview } from './quiz-review'
+import { SpeakButton } from './speak-button'
 
 interface QuizRunnerProps {
   entry: QuizEntry
@@ -167,20 +168,32 @@ function IntroScreen({ entry, onStart, starting, error }: { entry: QuizEntry; on
 // Passage du quiz
 // -----------------------------------------------------------------------------
 
+type CheckVerdicts = Record<string, QuizCheck[number]>
+
 function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmitted: (result: QuizSubmission) => void }) {
   const attemptId = session.attempt.id
   const [answers, setAnswers] = useState<Answers>(() => readDraft(attemptId))
-  const [mode, setMode] = useState<'single' | 'list'>(session.questions.length <= 4 ? 'list' : 'single')
+  const [mode, setMode] = useState<'single' | 'list'>(session.questions.length <= 8 ? 'list' : 'single')
   const [index, setIndex] = useState(0)
   const [submitting, setSubmitting] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [resetOpen, setResetOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [savedAt, setSavedAt] = useState<number | null>(null)
+  // Vérification immédiate (mode entraînement) : verdicts par question, effacés dès que la réponse change.
+  const [verdicts, setVerdicts] = useState<CheckVerdicts>({})
+  /** Vérification en vol : portée « Tout vérifier » ou question(s) individuelle(s). */
+  const [checking, setChecking] = useState<{ scope: 'all' | 'one'; ids: string[] } | null>(null)
   const submittingRef = useRef(false)
+  /** Dernière valeur des réponses, pour écarter les verdicts périmés à la résolution. */
+  const answersRef = useRef<Answers>({})
 
   const questions = session.questions
+  const canCheck = session.quiz.showCorrection && !session.quiz.isSurvey
   const answeredCount = useMemo(() => questions.filter((q) => isAnswered(answers[q.id])).length, [answers, questions])
   const unanswered = questions.length - answeredCount
+
+  answersRef.current = answers
 
   // Brouillon local synchronisé à chaque changement.
   useEffect(() => {
@@ -218,6 +231,61 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
 
   function setAnswer(questionId: string, response: AnswerResponse) {
     setAnswers((prev) => ({ ...prev, [questionId]: response }))
+    setVerdicts((prev) => {
+      if (!(questionId in prev)) return prev
+      const next = { ...prev }
+      delete next[questionId]
+      return next
+    })
+  }
+
+  /** Vérifie immédiatement une ou plusieurs questions répondues (comme « Vérifier » sur le support source). */
+  const check = useCallback(
+    async (questionIds: string[], scope: 'all' | 'one' = 'one') => {
+      if (checking) return
+      const payload = questionIds.filter((id) => isAnswered(answers[id])).map((id) => ({ questionId: id, response: answers[id] as AnswerResponse }))
+      if (payload.length === 0) return
+      setChecking({ scope, ids: payload.map((a) => a.questionId) })
+      const result = await checkQuizAction({ attemptId, answers: payload })
+      setChecking(null)
+      // La tentative vient d'être soumise (ou le temps a expiré) : la vérification en vol est caduque.
+      if (submittingRef.current) return
+      if (!result.ok) {
+        toast.error(result.error)
+        return
+      }
+      const sent = new Map(payload.map((a) => [a.questionId, a.response]))
+      setVerdicts((prev) => {
+        const next = { ...prev }
+        for (const verdict of result.data) {
+          // Verdict périmé : la réponse a changé pendant l'aller-retour serveur.
+          if (answersRef.current[verdict.questionId] !== sent.get(verdict.questionId)) continue
+          next[verdict.questionId] = verdict
+        }
+        return next
+      })
+    },
+    [answers, attemptId, checking],
+  )
+
+  function resetAll() {
+    setAnswers({})
+    setVerdicts({})
+    setResetOpen(false)
+  }
+
+  /** Effacement d'une seule question (bouton « Effacer » des exercices à question unique). */
+  function clearQuestion(questionId: string) {
+    setAnswers((prev) => {
+      const next = { ...prev }
+      delete next[questionId]
+      return next
+    })
+    setVerdicts((prev) => {
+      const next = { ...prev }
+      delete next[questionId]
+      return next
+    })
   }
 
   function requestSubmit() {
@@ -287,7 +355,19 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
               )
             })}
           </nav>
-          <QuestionCard question={current} number={index + 1} total={questions.length} value={answers[current.id]} onChange={(r) => setAnswer(current.id, r)} disabled={submitting} />
+          <QuestionCard
+            question={current}
+            number={index + 1}
+            total={questions.length}
+            value={answers[current.id]}
+            onChange={(r) => setAnswer(current.id, r)}
+            disabled={submitting}
+            verdict={verdicts[current.id]}
+            onCheck={canCheck ? () => void check([current.id]) : undefined}
+            onReset={canCheck && questions.length === 1 ? () => clearQuestion(current.id) : undefined}
+            checking={checking?.scope === 'one' && checking.ids.includes(current.id)}
+            checkDisabled={checking !== null}
+          />
           <div className="flex flex-wrap items-center justify-between gap-2">
             <Button type="button" variant="outline" disabled={index === 0 || submitting} onClick={() => setIndex((i) => Math.max(0, i - 1))} leftIcon={<ArrowLeft aria-hidden="true" />}>
               Précédente
@@ -306,9 +386,41 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
       ) : (
         <div className="flex flex-col gap-5">
           {questions.map((q, i) => (
-            <QuestionCard key={q.id} question={q} number={i + 1} total={questions.length} value={answers[q.id]} onChange={(r) => setAnswer(q.id, r)} disabled={submitting} />
+            <QuestionCard
+              key={q.id}
+              question={q}
+              number={i + 1}
+              total={questions.length}
+              value={answers[q.id]}
+              onChange={(r) => setAnswer(q.id, r)}
+              disabled={submitting}
+              verdict={verdicts[q.id]}
+              onCheck={canCheck ? () => void check([q.id]) : undefined}
+              onReset={canCheck && questions.length === 1 ? () => clearQuestion(q.id) : undefined}
+              checking={checking?.scope === 'one' && checking.ids.includes(q.id)}
+              checkDisabled={checking !== null}
+            />
           ))}
-          <div className="flex justify-end">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            {canCheck && questions.length > 1 ? (
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  loading={checking?.scope === 'all'}
+                  disabled={submitting || answeredCount === 0 || (checking !== null && checking.scope !== 'all')}
+                  onClick={() => void check(questions.map((q) => q.id), 'all')}
+                  leftIcon={<ListChecks aria-hidden="true" />}
+                >
+                  Tout vérifier
+                </Button>
+                <Button type="button" variant="ghost" disabled={submitting || answeredCount === 0 || checking !== null} onClick={() => setResetOpen(true)} leftIcon={<RotateCcw aria-hidden="true" />}>
+                  Réinitialiser
+                </Button>
+              </div>
+            ) : (
+              <span aria-hidden="true" />
+            )}
             <Button type="button" variant="accent" size="lg" className="w-full sm:w-auto" loading={submitting} onClick={requestSubmit} leftIcon={<Send aria-hidden="true" />}>
               Soumettre mes réponses
             </Button>
@@ -321,6 +433,23 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
           <AlertDescription>{error}</AlertDescription>
         </Alert>
       ) : null}
+
+      <Dialog open={resetOpen} onOpenChange={setResetOpen}>
+        <DialogContent size="sm">
+          <DialogHeader>
+            <DialogTitle>Réinitialiser vos réponses ?</DialogTitle>
+            <DialogDescription>Toutes les réponses saisies dans cette tentative et leurs vérifications seront effacées. La tentative reste en cours.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button type="button" variant="ghost" onClick={() => setResetOpen(false)}>
+              Conserver mes réponses
+            </Button>
+            <Button type="button" variant="accent" onClick={resetAll} leftIcon={<RotateCcw aria-hidden="true" />}>
+              Réinitialiser
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <DialogContent size="sm">
@@ -352,8 +481,43 @@ function RunningScreen({ session, onSubmitted }: { session: QuizSession; onSubmi
   )
 }
 
-function QuestionCard({ question, number, total, value, onChange, disabled }: { question: QuizSession['questions'][number]; number: number; total: number; value: AnswerResponse | undefined; onChange: (r: AnswerResponse) => void; disabled: boolean }) {
+function QuestionCard({
+  question,
+  number,
+  total,
+  value,
+  onChange,
+  disabled,
+  verdict,
+  onCheck,
+  onReset,
+  checking = false,
+  checkDisabled = false,
+}: {
+  question: QuizSession['questions'][number]
+  number: number
+  total: number
+  value: AnswerResponse | undefined
+  onChange: (r: AnswerResponse) => void
+  disabled: boolean
+  /** Verdict de la vérification immédiate (mode entraînement), effacé quand la réponse change. */
+  verdict?: QuizCheck[number]
+  /** Présent uniquement quand la correction est affichée (jamais pour l'examen final). */
+  onCheck?: () => void
+  /** Bouton « Effacer » sous l'exercice (quiz à question unique, comme le support source). */
+  onReset?: () => void
+  checking?: boolean
+  /** Une autre vérification est en vol : le bouton reste inerte pour éviter les verdicts entremêlés. */
+  checkDisabled?: boolean
+}) {
   const answered = isAnswered(value)
+  const optionTypes = ['SINGLE_CHOICE', 'MULTIPLE_CHOICE', 'TRUE_FALSE']
+  const speechText = [
+    question.type === 'FILL_BLANK' ? (question.blankText ?? question.prompt).replace(/_{3,}/g, ' (champ à compléter) ') : question.prompt,
+    optionTypes.includes(question.type) && question.options.length > 0 ? `Réponses possibles : ${question.options.map((o) => o.label).join(' ; ')}.` : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
   return (
     <fieldset className={cn('rounded-2xl border bg-white p-5 shadow-soft sm:p-6', answered ? 'border-green-200' : 'border-neutral-200')}>
       <legend className="sr-only">
@@ -368,9 +532,59 @@ function QuestionCard({ question, number, total, value, onChange, disabled }: { 
           {question.type === 'MULTIPLE_CHOICE' ? <p className="mt-1 text-xs text-neutral-500">Plusieurs réponses possibles.</p> : null}
           {question.type === 'MATCHING' ? <p className="mt-1 text-xs text-neutral-500">Associez chaque élément à sa définition.</p> : null}
         </div>
-        {answered ? <CheckCircle2 className="size-5 shrink-0 text-green-600" aria-hidden="true" /> : null}
+        <div className="flex shrink-0 items-center gap-2">
+          <SpeakButton text={speechText} label="Écouter" />
+          {answered ? <CheckCircle2 className="size-5 shrink-0 text-green-600" aria-hidden="true" /> : null}
+        </div>
       </div>
       <QuestionRenderer question={question} value={value} onChange={onChange} disabled={disabled} />
+      {onCheck ? (
+        <div className="mt-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <Button type="button" variant="outline" size="sm" loading={checking} disabled={disabled || !answered || (checkDisabled && !checking)} onClick={onCheck} leftIcon={<ClipboardCheck aria-hidden="true" />}>
+              {total === 1 ? 'Vérifier' : 'Vérifier cette question'}
+            </Button>
+            {onReset ? (
+              <Button type="button" variant="ghost" size="sm" disabled={disabled || !answered || checkDisabled} onClick={onReset} leftIcon={<RotateCcw aria-hidden="true" />}>
+                Effacer
+              </Button>
+            ) : null}
+          </div>
+          {/* Région de statut permanente : le verdict inséré est annoncé par les lecteurs d'écran. */}
+          <div role="status" aria-live="polite">
+          {verdict ? (
+            <div
+              className={cn(
+                'mt-3 flex items-start gap-2 rounded-xl border p-3 text-sm leading-relaxed',
+                verdict.needsManualGrading
+                  ? 'border-gold-200 bg-gold-50 text-gold-900'
+                  : verdict.isCorrect
+                    ? 'border-green-200 bg-green-50 text-green-900'
+                    : 'border-danger/30 bg-danger-soft text-danger',
+              )}
+            >
+              {verdict.needsManualGrading ? (
+                <Clock className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+              ) : verdict.isCorrect ? (
+                <CheckCircle2 className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+              ) : (
+                <XCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+              )}
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold">
+                  {verdict.needsManualGrading ? 'Corrigée par le formateur après soumission' : verdict.isCorrect ? 'Bonne réponse' : 'Réponse incorrecte'}
+                </p>
+                {verdict.feedback ? <p className="mt-0.5">{verdict.feedback}</p> : null}
+              </div>
+              <SpeakButton
+                text={`${verdict.needsManualGrading ? 'Réponse corrigée par le formateur après soumission.' : verdict.isCorrect ? 'Bonne réponse.' : 'Réponse incorrecte.'} ${verdict.feedback ?? ''}`}
+                label="Écouter"
+              />
+            </div>
+          ) : null}
+          </div>
+        </div>
+      ) : null}
     </fieldset>
   )
 }
@@ -421,6 +635,16 @@ function ResultScreen({ result, entry, onRetry }: { result: QuizSubmission; entr
               ? `${result.pendingManualGrading} composition${result.pendingManualGrading > 1 ? 's' : ''} en attente de correction par le formateur. Votre score final sera notifié.`
               : `Score : ${result.score ?? 0}/${result.maxScore ?? 0} points (${percent} %) · seuil de réussite ${result.passScore} %.`}
           </p>
+          <div className="mt-3">
+            <SpeakButton
+              text={
+                pending
+                  ? `Réponses soumises. ${result.pendingManualGrading} composition en attente de correction par le formateur.`
+                  : `${passed ? 'Bravo, évaluation réussie.' : 'Évaluation non réussie.'} Score : ${result.score ?? 0} sur ${result.maxScore ?? 0} points, soit ${percent} pour cent. Seuil de réussite : ${result.passScore} pour cent.`
+              }
+              label="Écouter le résultat"
+            />
+          </div>
           <div className="mt-5 flex flex-wrap gap-2">
             <Button asChild variant="primary" className="w-full sm:w-auto">
               <Link href={`/apprendre/${entry.course.id}/${entry.lesson.id}?activite=${entry.activity.id}`}>

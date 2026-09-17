@@ -3,9 +3,10 @@
 import { useActionState, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { FileUp, Save, Send, X } from 'lucide-react'
-import { Alert, AlertDescription, Button, FormField, Input, Textarea, cn, toast } from '@fetrag/ui'
+import { Alert, AlertDescription, Button, FormField, Input, cn, toast } from '@fetrag/ui'
 import { saveSubmissionAction } from '@/server/learner/assignment-actions'
 import { initialSubmissionState } from '@/server/learner/types'
+import { AnswerEditor } from './answer-editor'
 
 interface AssignmentFormProps {
   assignmentId: string
@@ -60,7 +61,11 @@ export function AssignmentForm(props: AssignmentFormProps) {
     }
   }, [state, router])
 
-  const words = text.trim().split(/\s+/).filter(Boolean).length
+  const words = text
+    .replace(/<[^>]+>/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length
 
   return (
     <form action={action} className="flex flex-col gap-5" aria-describedby="assignment-form-help">
@@ -69,8 +74,9 @@ export function AssignmentForm(props: AssignmentFormProps) {
       <input type="hidden" name="intent" value={intentRef.current} readOnly />
 
       {props.allowText ? (
-        <FormField label="Votre réponse" htmlFor="submission-text" error={state.fieldErrors?.text} hint={`${words} mot${words > 1 ? 's' : ''} · texte simple, mise en forme conservée par les retours à la ligne`}>
-          <Textarea name="text" rows={12} value={text} onChange={(event) => setText(event.target.value)} placeholder="Rédigez votre travail ici ou déposez un fichier ci-dessous." maxLength={50000} />
+        <FormField label="Votre réponse" htmlFor="submission-text" error={state.fieldErrors?.text} hint={`${words} mot${words > 1 ? 's' : ''} · mise en forme, listes et tableaux disponibles dans la barre d'outils`}>
+          <input type="hidden" name="text" value={text} />
+          <AnswerEditor label="Votre réponse" value={text} onChange={setText} placeholder="Rédigez votre travail ici ou déposez un fichier ci-dessous." disabled={pending} minHeightClassName="min-h-[16rem]" />
         </FormField>
       ) : null}
 

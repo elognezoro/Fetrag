@@ -47,7 +47,17 @@ export const allowedTags = [
   // Bloc dépliable (consignes, corrigés révélables) : balises structurelles inertes, sans attribut.
   'details',
   'summary',
+  // Indice / exposant et portée de couleur (éditeur de réponses des évaluations subjectives).
+  'sub',
+  'sup',
+  'span',
 ]
+
+/** Couleurs de texte autorisées dans les contenus riches : palette de la charte uniquement. */
+const allowedTextColors = /^#(?:042768|0259c7|9cc102|f9c804|c62828)$/i
+
+/** Alignements de paragraphe autorisés. */
+const allowedTextAlign = /^(?:left|right|center|justify)$/
 
 /** Force `rel="noopener noreferrer"` sur les liens ouverts dans un nouvel onglet ; retire les autres cibles. */
 function transformAnchor(tagName: string, attribs: Attributes): { tagName: string; attribs: Attributes } {
@@ -82,6 +92,16 @@ export const sanitizeOptions: IOptions = {
     iframe: ['src', 'width', 'height', 'title', 'allow', 'allowfullscreen', 'frameborder', 'loading'],
     th: ['colspan', 'rowspan', 'scope'],
     td: ['colspan', 'rowspan'],
+    // Éditeur de réponses : alignement des blocs et couleur (palette charte) sur les portées.
+    p: ['style'],
+    h2: ['style'],
+    h3: ['style'],
+    h4: ['style'],
+    span: ['style'],
+  },
+  allowedStyles: {
+    '*': { 'text-align': [allowedTextAlign] },
+    span: { color: [allowedTextColors] },
   },
   allowedSchemes: ['http', 'https', 'mailto', 'tel'],
   allowedSchemesByTag: { img: ['http', 'https'], iframe: ['https'] },

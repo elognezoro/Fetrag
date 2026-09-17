@@ -219,10 +219,47 @@
     padding: 0.75rem 1rem;
     background: var(--color-neutral-50);
   }
+  /* Le summary se présente comme un bouton discret (« Voir la réponse juridique »), chevron d'état inclus */
   & summary {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
     cursor: pointer;
+    user-select: none;
     font-weight: 600;
+    font-size: 0.875rem;
     color: var(--color-navy);
+    background: var(--color-white);
+    border: 1px solid var(--color-neutral-300);
+    border-radius: 9999px;
+    padding: 0.4rem 1rem;
+  }
+  & summary::-webkit-details-marker {
+    display: none;
+  }
+  & summary::after {
+    content: '';
+    width: 0.4em;
+    height: 0.4em;
+    margin-left: 0.55rem;
+    margin-top: -0.2em;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 150ms ease;
+  }
+  & details[open] > summary::after {
+    transform: rotate(-135deg);
+    margin-top: 0.2em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    & summary::after {
+      transition: none;
+    }
+  }
+  & summary:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
   & details > * + * {
     margin-top: 0.6em;

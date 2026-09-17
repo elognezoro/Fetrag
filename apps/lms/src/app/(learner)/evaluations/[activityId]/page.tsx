@@ -5,6 +5,7 @@ import { ArrowLeft, BookOpen, ClipboardCheck, Clock, ListChecks, Lock, RotateCcw
 import { formatDateTime } from '@fetrag/domain'
 import { Alert, AlertDescription, AlertTitle, Breadcrumbs, Button, Ribbon, cn } from '@fetrag/ui'
 import { QuizRunner } from '@/components/learner/quiz-runner'
+import { SpeakButton } from '@/components/learner/speak-button'
 import { guards } from '@/lib/auth'
 import { getQuizEntry } from '@/server/learner/quiz-queries'
 
@@ -83,6 +84,12 @@ export default async function EvaluationPage({ params }: PageProps) {
               </div>
             ) : null}
           </dl>
+          <div className="mt-4">
+            <SpeakButton
+              text={[entry.activity.title, entry.quiz.description ?? '', entry.activity.instructions ?? ''].filter(Boolean).join('. ')}
+              label="Écouter la consigne"
+            />
+          </div>
         </header>
 
         {!entry.enrolled ? (

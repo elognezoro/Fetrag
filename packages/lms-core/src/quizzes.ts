@@ -175,6 +175,44 @@ function toGradableOptions(options: Array<{ id: string; label: string; isCorrect
 }
 
 /**
+ * Vérification immédiate (mode entraînement) : corrige les réponses fournies d'une tentative
+ * en cours SANS la soumettre ni rien enregistrer. Réservée aux évaluations d'entraînement :
+ * correction affichée (`showCorrection`), hors questionnaire ET plusieurs tentatives autorisées.
+ * Une évaluation à correction masquée ou à tentative unique (examen final, contrôle noté sec)
+ * reste inaccessible à cette vérification, y compris côté serveur : sans ce dernier critère,
+ * la vérification servirait d'oracle pour composer une tentative unique parfaite avant remise.
+ * Le retour (verdict + feedback avec explication) est le même niveau d'information que la
+ * revue déjà affichée après chaque tentative de ces quiz — fidèle au « Vérifier » du support source.
+ */
+export async function check(principal: Principal, input: SubmitAttemptInput) {
+  const p = requirePrincipal(principal)
+  const data = submitAttemptSchema.parse(input)
+  const attempt = await prisma.attempt.findUnique({ where: { id: data.attemptId }, include: { quiz: { include: quizWithQuestions } } })
+  if (!attempt) throw new NotFoundError('Tentative', data.attemptId)
+  if (attempt.userId !== p.id) throw new ForbiddenError("Cette tentative n'est pas la vôtre")
+  if (attempt.status !== 'IN_PROGRESS') throw new PreconditionError('Cette tentative a déjà été soumise')
+  const quiz = attempt.quiz
+  if (quiz.isSurvey || !quiz.showCorrection || quiz.maxAttempts <= 1) {
+    throw new PreconditionError("La vérification immédiate n'est pas disponible pour cette évaluation")
+  }
+  const elapsed = Math.max(0, Math.floor((Date.now() - attempt.startedAt.getTime()) / 1000))
+  if (quiz.timeLimitMinutes && elapsed > quiz.timeLimitMinutes * 60 + TIME_LIMIT_GRACE_SECONDS) {
+    throw new PreconditionError('Le temps imparti est dépassé', { timeLimitMinutes: quiz.timeLimitMinutes, elapsedSeconds: elapsed })
+  }
+  const partialCredit = await getSetting(settingKeys.quizPartialCredit, z.boolean(), false)
+  const byId = new Map(quiz.questions.map((qq) => [qq.questionId, qq]))
+  // Une seule vérification par question et par appel (dernière réponse fournie), comme submit().
+  const responses = new Map<string, AnswerResponse>()
+  for (const answer of data.answers) responses.set(answer.questionId, answer.response)
+  return [...responses.entries()].flatMap(([questionId, response]) => {
+    const qq = byId.get(questionId)
+    if (!qq) return []
+    const result = gradeAnswer(toGradable(qq.question), toGradableOptions(qq.question.options), response, { partialCredit, points: qq.points })
+    return [{ questionId, isCorrect: result.isCorrect, feedback: result.feedback, needsManualGrading: result.needsManualGrading }]
+  })
+}
+
+/**
  * Soumet une tentative : correction automatique de tous les types sauf ESSAY,
  * calcul score / maxScore / percent / passed, enregistrement des réponses,
  * mise à jour de l'achèvement (PASS_SCORE / SUBMIT) et de la progression.

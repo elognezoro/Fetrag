@@ -22,7 +22,8 @@ function renderResponse(question: ReviewQuestion, response: AnswerResponse | nul
     case 'boolean':
       return response.value ? 'Vrai' : 'Faux'
     case 'text':
-      return response.value.trim() || 'Aucune réponse'
+      // Les compositions de l'éditeur riche sont montrées en texte simple dans la revue.
+      return response.value.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() || 'Aucune réponse'
     case 'blanks':
       return response.values.map((v, i) => `${i + 1}. ${v || '-'}`).join(' · ')
     case 'matching':

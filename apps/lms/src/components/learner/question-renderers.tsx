@@ -4,7 +4,8 @@ import { Fragment, useId } from 'react'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import type { AnswerResponse } from '@fetrag/contracts'
 import type { PresentedQuestion } from '@fetrag/lms-core'
-import { Checkbox, IconButton, Input, Label, NativeSelect, RadioGroup, RadioGroupItem, Textarea, cn } from '@fetrag/ui'
+import { Checkbox, IconButton, Input, Label, NativeSelect, RadioGroup, RadioGroupItem, cn } from '@fetrag/ui'
+import { AnswerEditor } from './answer-editor'
 
 export interface QuestionRendererProps {
   question: PresentedQuestion
@@ -190,7 +191,11 @@ function ShortAnswer({ value, onChange, disabled }: QuestionRendererProps) {
 }
 
 function countWords(text: string): number {
-  return text.trim().split(/\s+/).filter(Boolean).length
+  return text
+    .replace(/<[^>]+>/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length
 }
 
 function Essay({ question, value, onChange, disabled }: QuestionRendererProps) {
@@ -201,10 +206,7 @@ function Essay({ question, value, onChange, disabled }: QuestionRendererProps) {
   const tooLong = question.maxWords !== undefined && words > question.maxWords
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor={id} className="sr-only">
-        Votre composition
-      </Label>
-      <Textarea id={id} rows={10} value={text} disabled={disabled} placeholder="Rédigez votre réponse argumentée..." onChange={(event) => onChange({ type: 'text', value: event.target.value })} aria-describedby={`${id}-count`} />
+      <AnswerEditor label="Votre composition" value={text} onChange={(html) => onChange({ type: 'text', value: html })} placeholder="Rédigez votre réponse argumentée..." disabled={disabled} minHeightClassName="min-h-[14rem]" />
       <p id={`${id}-count`} className={cn('text-xs', tooShort || tooLong ? 'font-semibold text-gold-800' : 'text-neutral-500')}>
         {words} mot{words > 1 ? 's' : ''}
         {question.minWords !== undefined ? ` · minimum ${question.minWords}` : ''}
