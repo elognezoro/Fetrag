@@ -34,7 +34,9 @@ export const AccordionTrigger = React.forwardRef<
       <AccordionPrimitive.Trigger
         ref={ref}
         className={cn(
-          'flex min-h-11 flex-1 items-center justify-between gap-4 px-5 py-4 text-left font-semibold text-navy',
+          // min-w-0 : sans lui, la largeur minimale « auto » de l'item flex vaut la largeur du texte
+          // non tronqué et fait déborder l'accordéon de son conteneur (sommaire du lecteur).
+          'flex min-h-11 min-w-0 flex-1 items-center justify-between gap-4 px-5 py-4 text-left font-semibold text-navy',
           'transition-colors hover:text-blue-700 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-blue-500/40 rounded-xl',
           '[&[data-state=open]>svg]:rotate-180 [&[data-state=open]]:text-blue-700',
           className,

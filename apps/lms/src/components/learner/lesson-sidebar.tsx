@@ -146,7 +146,7 @@ export function LessonSidebar(props: LessonSidebarProps) {
     <>
       <aside
         aria-label="Sommaire du cours"
-        className="hidden max-h-[calc(100dvh-var(--header-height)-2rem)] overflow-y-auto rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft lg:sticky lg:top-[calc(var(--header-height)+1rem)] lg:block"
+        className="hidden max-h-[calc(100dvh-var(--header-height)-2rem)] overflow-x-hidden overflow-y-auto rounded-2xl border border-neutral-200 bg-white p-4 shadow-soft lg:sticky lg:top-[calc(var(--header-height)+1rem)] lg:block"
       >
         <SidebarHeader {...props} />
         <Tree {...props} />
