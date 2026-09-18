@@ -24,6 +24,12 @@ export function moduleLabel(code: string): string {
   return digits ? `Module ${digits.padStart(2, '0').slice(-2)}` : code
 }
 
+/** Numéro compact pour les cartes : « 02 » pour le programme, sinon le premier segment du code (« DTC »). */
+export function moduleShort(code: string): string {
+  const digits = code.replace(/\D/g, '')
+  return digits ? digits.padStart(2, '0').slice(-2) : (code.split('-')[0] ?? code)
+}
+
 /** Grille des 10 modules du programme (cartes numérotées, filet par pilier, révélation en cascade). */
 export function CourseGrid({ courses, label = 'Formations', emptyTitle = 'Aucune formation ne correspond à votre recherche', emptyDescription }: CourseGridProps) {
   if (courses.length === 0) {
@@ -52,7 +58,7 @@ export function CourseGrid({ courses, label = 'Formations', emptyTitle = 'Aucune
       {courses.map((course) => (
         <StaggerItem key={course.id} as="li" className="h-full">
           <ModuleCard
-            number={moduleNumber(course.code)}
+            number={moduleShort(course.code)}
             title={course.title}
             items={course.objectives.slice(0, 3)}
             pillar={course.pillar ?? 'blue'}

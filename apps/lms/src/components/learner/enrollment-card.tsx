@@ -4,7 +4,7 @@ import { courseModalityLabels, pillarSchema } from '@fetrag/contracts'
 import { formatDate } from '@fetrag/domain'
 import type { enrollments } from '@fetrag/lms-core'
 import { Button, ProgressArc, StatusBadge, cn, padNumber, resolveTone, toneClasses } from '@fetrag/ui'
-import { moduleNumber } from './course-grid'
+import { moduleLabel, moduleShort } from './course-grid'
 
 export type EnrollmentRow = Awaited<ReturnType<typeof enrollments.listForUser>>[number]
 
@@ -19,7 +19,7 @@ export function EnrollmentCard({ enrollment, nextHref }: EnrollmentCardProps) {
   const pillar = pillarSchema.safeParse(enrollment.course.pillar)
   const tone = resolveTone(pillar.success ? pillar.data : null)
   const classes = toneClasses[tone]
-  const number = moduleNumber(enrollment.course.code)
+  const number = moduleShort(enrollment.course.code)
   const learnable = enrollment.status === 'ACTIVE' || enrollment.status === 'COMPLETED'
   const certificate = enrollment.certificates[0] ?? null
   const resumeHref = nextHref ?? `/apprendre/${enrollment.courseId}`
@@ -35,7 +35,7 @@ export function EnrollmentCard({ enrollment, nextHref }: EnrollmentCardProps) {
             <StatusBadge status={enrollment.status} size="sm" />
             <h3 className="mt-2 text-lg leading-snug">
               <Link href={`/cours/${enrollment.course.slug}`} className="hover:text-blue-700 hover:underline">
-                <span className="sr-only">Module {number} : </span>
+                <span className="sr-only">{moduleLabel(enrollment.course.code)} : </span>
                 {enrollment.course.title}
               </Link>
             </h3>

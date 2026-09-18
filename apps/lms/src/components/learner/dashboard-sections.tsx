@@ -5,7 +5,7 @@ import { formatDate, formatDateTime, formatRelative } from '@fetrag/domain'
 import { Badge, Button, EmptyState, ProgressArc, StatusBadge, cn, padNumber, resolveTone, toneClasses, type Tone } from '@fetrag/ui'
 import type { LearnerDashboard } from '@/server/learner/dashboard-queries'
 import { ActivityIcon } from './activity-icon'
-import { moduleNumber } from './course-grid'
+import { moduleLabel, moduleShort } from './course-grid'
 
 // -----------------------------------------------------------------------------
 // Enveloppe de section (numéro serif, icône, titre, action)
@@ -58,7 +58,7 @@ export function ContinueCard({ item }: { item: ContinueItem }) {
   const pillar = pillarSchema.safeParse(enrollment.course.pillar)
   const tone = resolveTone(pillar.success ? pillar.data : null)
   const classes = toneClasses[tone]
-  const number = moduleNumber(enrollment.course.code)
+  const number = moduleShort(enrollment.course.code)
   const href = next?.href ?? `/apprendre/${enrollment.courseId}`
   return (
     <article className={cn('flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-5 shadow-soft transition-[transform,box-shadow] duration-180 ease-out-expo hover:-translate-y-0.5 hover:shadow-lift', classes.topRule)}>
@@ -68,7 +68,7 @@ export function ContinueCard({ item }: { item: ContinueItem }) {
             {padNumber(number)}
           </span>
           <div className="min-w-0">
-            <p className="eyebrow text-[10px] text-neutral-500">Module {number}</p>
+            <p className="eyebrow text-[10px] text-neutral-500">{moduleLabel(enrollment.course.code)}</p>
             <h3 className="mt-1 text-base leading-snug">
               <Link href={`/cours/${enrollment.course.slug}`} className="hover:text-blue-700 hover:underline">
                 {enrollment.course.title}
@@ -230,7 +230,7 @@ export function PendingEnrollments({ enrollments }: { enrollments: Enrollment[] 
     <ul className="flex flex-col gap-2">
       {pending.map((enrollment) => (
         <li key={enrollment.id} className="flex items-center gap-3 rounded-2xl border border-gold-200 bg-gold-50/50 p-4">
-          <span className="font-display text-2xl font-semibold text-gold-700">{padNumber(moduleNumber(enrollment.course.code))}</span>
+          <span className="font-display text-2xl font-semibold text-gold-700">{padNumber(moduleShort(enrollment.course.code))}</span>
           <span className="min-w-0 flex-1">
             <Link href={`/cours/${enrollment.course.slug}`} className="line-clamp-2 font-semibold text-navy hover:underline sm:line-clamp-1">
               {enrollment.course.title}

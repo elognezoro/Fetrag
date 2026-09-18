@@ -130,11 +130,11 @@ export default async function CoursePage({ params }: PageProps) {
                             <li key={p.id}>
                               {p.status === 'PUBLISHED' ? (
                                 <Link href={`/cours/${p.slug}`} className="font-semibold text-blue-700 hover:underline">
-                                  Module {moduleNumber(p.code)} - {p.title}
+                                  {moduleLabel(p.code)} - {p.title}
                                 </Link>
                               ) : (
                                 <span className="font-semibold text-navy">
-                                  Module {moduleNumber(p.code)} - {p.title}
+                                  {moduleLabel(p.code)} - {p.title}
                                 </span>
                               )}
                               {!p.isMandatory ? <span className="text-xs text-neutral-500"> (recommandé)</span> : null}
